@@ -1,0 +1,55 @@
+---
+title: "Welcome to Energy System Optimization (ESO) with Julia!"
+subtitle: "Hamburg University of Applied Science - Summer 2025"
+
+html:
+    theme: [default, styles.scss]
+    highlight-style: breezedark
+    linkcolor: "#a60000"
+---
+
+# Course Description
+In this module we will focus on solving practical energy system problems with the help of optimization. Over the course of the semester, you will become familiar with advanced Operations Research methods and mathematical programming techniques applied to real-world energy challenges. You'll work on diverse problems including renewable integration, storage optimization, and green hydrogen value chain optimization - all using modern programming tools.
+The module consists of lectures and hands-on programming exercises, totaling 2 semester hours per week (SWS). Students can earn 2.5 credit points through a portfolio examination that includes the programming excercieses (10%) and a final exam (90%).
+
+# Learning Outcomes
+You can find our specific outcomes in the module handbook. Our broader goal is to enable you to tackle complex energy system optimization problems independently. We want you to develop both theoretical understanding and practical implementation skills. Is our module hard? That's a subjective question. We would say it is exciting and doable. If you have a basic interest in logical relationships and mathematics, you are in the right place. If you also have basic knowledge of programming or want to get into the subject with help, our module is perfect for you.
+
+Upon completion of the course, you …
+
+- can implement solutions to complex energy system optimization problems in Julia
+- understand fundamental concepts of Operations Research and mathematical programming
+- know advanced optimization techniques including linear and mixed-integer programming
+- can develop and analyze mathematical models for energy system planning
+- know basic concepts of programming and algorithms such as loops, functions
+- will be able to read and write code in Julia
+- will have experience working with Julia libraries such as JuMP and HiGHS
+- will know how to collaborate in a small team to find solutions for problems at hand
+- will know how to tackle real-world energy system challenges
+
+Please note that this course **welcomes students from diverse study backgrounds** interested in the field of energy from engineering and business perspective. While basic programming knowledge and mathematics fundamentals are prerequisites, it is **not required to have any advanced knowledge or experience in programming** to attend this course. The teaching format will make it possible to account for different levels of programming skills such that every student can take the most out of the course.
+
+# Course Blocks
+The core content of the course is organized in three blocks:
+
+1. **Part I**: Introduction to Julia and Modelling
+2. **Part II**: Energy System Optimization with Basic Models
+3. **Part III**: Energy System Optimization with Advanced Models
+
+You can find more information on the course blocks and the corresponding lectures in the [syllabus](general/syllabus.qmd).
+
+# Tutorials
+The tutorials accompany the lectures. In the tutorials, you will apply the concepts from the lectures to realistic data sets. You will work in small groups of 2-3 participants, in which you can work out solutions together. We will help you during the weekly practice sessions by answering your questions or briefly explaining individual issues in case of difficulties. Afterwards, you have the opportunity to submit your jointly developed solution until the next exercise date in order to earn bonus points for the exam. You can earn up to half a bonus point per exercise, up to 6.0 bonus points in total. Important: the bonus points will only be credited to you if you pass the exam with at least a 4.0. Furthermore, we will not award bonus points for exercises in which you have simply copied the results of another group.
+
+# How to see the slides
+- This course is based on [Quarto](https://quarto.org/) 
+- It uses [revealjs](https://revealjs.com/) to render the slides
+- You find the slides for each lecture in the corresponding lecture
+- To see the slides, click on `RevealJS` in the top right side in the lecture
+
+# Questions
+If you have any questions regarding the course, please contact me under [tobias.cors@haw-hamburg.de](mailto:tobias.cors@haw-hamburg.de?subject=Energy%20System%20Optimization%3A%20%3CYour%20subject%3E).
+
+# Contributors
+
+Thanks to [Tobias Vlcek](https://github.com/beyondsimulations), who helped to prepare the lecture materials, especially for the first part of the course.
