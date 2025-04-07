@@ -168,7 +168,7 @@ Where:
 For example:
 
 ```julia
-constraint(model_name, constraint_name, 4 * variable_name <= 100)
+@constraint(model_name, constraint_name, 4 * variable_name <= 100)
 ```
 
 This defines a constraint that ensures, that the variable `variable_name` can maximally be 25. Note, that you will have to change `model_name`, `constraint_name` and `variable_name` according to your instance.

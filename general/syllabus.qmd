@@ -30,7 +30,7 @@ Package Management, DataFrames, reading and writing data
 Modeling with JuMP with variables, parameters and constraints
 
 # Part II 
-## Applied Optimization with Basic Models
+## Energy System Optimization with Basic Models
 
 In the second part, we will cover energy system optimization based on basic modelling concepts. We will start with the classic generator expansion problem and learn how to model and solve it using JuMP. Afterwards we start to bring together further modelling concepts, such as the unit commitment and storages, to build a digital twin of a power system for various decision problems. Finally, we developed a basic framework to model and solve operations and investment planning problems of energy systems.
 
@@ -49,7 +49,7 @@ A case study on storages
 A case study on investment planning
 
 # Part III 
-## Applied Optimization with Advanced Models
+## Energy System Optimization with Advanced Models
 
 In the third part, we will cover more advanced optimization models and concepts. We will start to extend the basic models to more complex models, such as multi-energy systems and uncertainty modelling.
 

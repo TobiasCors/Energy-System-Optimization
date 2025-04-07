@@ -105,9 +105,11 @@ Bonus points only count if the mark is at least 4.0!
 - Policy design
 - ...
 
-## TODO: Add more information with examples Westküste100 and from literature of my papers
 
 <!--
+## TODO: Add more information with examples Westküste100 and from literature of my papers
+
+
 ## Research in Operations Research
 
 - Part of the University of Hamburg Business School
@@ -179,14 +181,14 @@ Usama Dkaidik and Matthes Koch; Current research with a likely paper submission 
 3. Packages and Data Management
 4. Modelling with JuMP
 
-## Part II
+## Part II (preliminary)
 
 5. Generator Expansion Planning
 6. Unit Commitment as Short-term Scheduling
 7. Storages
 8. Investment Planning
 
-## Part III
+## Part III (preliminary)
 
 9. Multi-energy systems
 10. Intermission: Exam Preparation

@@ -453,13 +453,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">JuMP</span>, <span class="bu">HiGHS</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Precompiling JuMP...
-    532.5 ms  ✓ BenchmarkTools
-  25862.3 ms  ✓ MathOptInterface
-   7095.4 ms  ✓ JuMP
-  3 dependencies successfully precompiled in 34 seconds. 53 already precompiled.
+  14348.5 ms  ✓ MathOptInterface
+   6851.1 ms  ✓ JuMP
+  2 dependencies successfully precompiled in 21 seconds. 49 already precompiled.
 Precompiling HiGHS...
-   5259.8 ms  ✓ HiGHS
-  1 dependency successfully precompiled in 5 seconds. 56 already precompiled.</code></pre>
+   5062.5 ms  ✓ HiGHS
+  1 dependency successfully precompiled in 5 seconds. 51 already precompiled.</code></pre>
 </div>
 </div>
 <p>Great! We’re now ready to start building our optimization model.</p>
@@ -530,7 +529,7 @@ Precompiling HiGHS...
 <li><code>constraint_expression</code> is the mathematical expression of the constraint</li>
 </ul>
 <p>For example:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">constraint</span>(model_name, constraint_name, <span class="fl">4</span> <span class="op">*</span> variable_name <span class="op">&lt;=</span> <span class="fl">100</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="pp">@constraint</span>(model_name, constraint_name, <span class="fl">4</span> <span class="op">*</span> variable_name <span class="op">&lt;=</span> <span class="fl">100</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>This defines a constraint that ensures, that the variable <code>variable_name</code> can maximally be 25. Note, that you will have to change <code>model_name</code>, <code>constraint_name</code> and <code>variable_name</code> according to your instance.</p>
 <section id="exercise-3.1---create-constraints" class="level2">
 <h2 class="anchored" data-anchor-id="exercise-3.1---create-constraints">Exercise 3.1 - Create Constraints</h2>
