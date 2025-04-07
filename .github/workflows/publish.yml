@@ -19,8 +19,18 @@ jobs:
         with:
           version: '1.11'  # Specify the Julia version you need
 
-      - name: Install IJulia
-        run: julia -e 'using Pkg; Pkg.add("IJulia")'
+      - name: Install Python and Jupyter
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-pip
+          pip3 install jupyter
+
+      - name: Install IJulia and Rebuild
+        run: |
+          julia -e 'using Pkg; Pkg.add("IJulia"); Pkg.build("IJulia")'
+
+      - name: List Jupyter Kernels
+        run: jupyter kernelspec list
 
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
