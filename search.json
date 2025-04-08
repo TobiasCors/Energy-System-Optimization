@@ -114,7 +114,7 @@
     "href": "part-04/tutorial-04-01-jump.html",
     "title": "Tutorial IV.I - Introduction to Mathematical Optimization with JuMP and HiGHS",
     "section": "",
-    "text": "Welcome to this beginner-friendly tutorial on mathematical optimization using JuMP and the HiGHS solver in Julia! Don’t worry if these terms sound unfamiliar – we’ll explain everything step by step.\nIn this tutorial, you’ll learn how to:\n\nSet up a simple optimization problem\nDefine variables and constraints\nCreate an objective function\nSolve the problem and interpret the results\n\nWe’ll use a real-world example to make these concepts more relatable. Imagine you’re managing a small factory that produces two types of products. Your goal is to maximize profit while working within certain limitations. This is exactly the kind of problem that mathematical optimization can solve!\n\n\nJuMP (Julia for Mathematical Programming) is a powerful tool that helps us describe optimization problems in a way that computers can understand and solve. Think of it as a translator between your business problem and the mathematical solver.\n\n\n\nHiGHS is an open-source solver that can find solutions to the optimization problems we describe using JuMP. It’s like a very smart calculator that can handle complex problems quickly and efficiently.\n\n\n\nLet’s break down our factory management problem:\n\nYou produce two products: Product A and Product B\nEach product gives you a different profit:\n\nProduct A: 100 profit per unit\nProduct B: 150 profit per unit\n\nYou have two departments: Cutting and Finishing\nEach product requires different amounts of time in each department:\n\nProduct A: 2 hours in Cutting, 4 hours in Finishing\nProduct B: 4 hours in Cutting, 3 hours in Finishing\n\nYou have limited time available in each department:\n\nCutting: 40 hours total\nFinishing: 60 hours total\n\n\nYour goal is to decide how many of each product to make to maximize your total profit, while not exceeding the available time in each department.\n\n\n\nFirst, we need to install and load the necessary packages. If you haven’t already installed JuMP and HiGHS, run the following code:\n\nimport Pkg; Pkg.add([\"JuMP\",\"HiGHS\"])\n\nNow, let’s load these packages:\n\nusing JuMP, HiGHS\n\nPrecompiling JuMP...\n    532.5 ms  ✓ BenchmarkTools\n  25862.3 ms  ✓ MathOptInterface\n   7095.4 ms  ✓ JuMP\n  3 dependencies successfully precompiled in 34 seconds. 53 already precompiled.\nPrecompiling HiGHS...\n   5259.8 ms  ✓ HiGHS\n  1 dependency successfully precompiled in 5 seconds. 56 already precompiled.\n\n\nGreat! We’re now ready to start building our optimization model.",
+    "text": "Welcome to this beginner-friendly tutorial on mathematical optimization using JuMP and the HiGHS solver in Julia! Don’t worry if these terms sound unfamiliar – we’ll explain everything step by step.\nIn this tutorial, you’ll learn how to:\n\nSet up a simple optimization problem\nDefine variables and constraints\nCreate an objective function\nSolve the problem and interpret the results\n\nWe’ll use a real-world example to make these concepts more relatable. Imagine you’re managing a small factory that produces two types of products. Your goal is to maximize profit while working within certain limitations. This is exactly the kind of problem that mathematical optimization can solve!\n\n\nJuMP (Julia for Mathematical Programming) is a powerful tool that helps us describe optimization problems in a way that computers can understand and solve. Think of it as a translator between your business problem and the mathematical solver.\n\n\n\nHiGHS is an open-source solver that can find solutions to the optimization problems we describe using JuMP. It’s like a very smart calculator that can handle complex problems quickly and efficiently.\n\n\n\nLet’s break down our factory management problem:\n\nYou produce two products: Product A and Product B\nEach product gives you a different profit:\n\nProduct A: 100 profit per unit\nProduct B: 150 profit per unit\n\nYou have two departments: Cutting and Finishing\nEach product requires different amounts of time in each department:\n\nProduct A: 2 hours in Cutting, 4 hours in Finishing\nProduct B: 4 hours in Cutting, 3 hours in Finishing\n\nYou have limited time available in each department:\n\nCutting: 40 hours total\nFinishing: 60 hours total\n\n\nYour goal is to decide how many of each product to make to maximize your total profit, while not exceeding the available time in each department.\n\n\n\nFirst, we need to install and load the necessary packages. If you haven’t already installed JuMP and HiGHS, run the following code:\n\nimport Pkg; Pkg.add([\"JuMP\",\"HiGHS\"])\n\nNow, let’s load these packages:\n\nusing JuMP, HiGHS\n\nPrecompiling JuMP...\n  14348.5 ms  ✓ MathOptInterface\n   6851.1 ms  ✓ JuMP\n  2 dependencies successfully precompiled in 21 seconds. 49 already precompiled.\nPrecompiling HiGHS...\n   5062.5 ms  ✓ HiGHS\n  1 dependency successfully precompiled in 5 seconds. 51 already precompiled.\n\n\nGreat! We’re now ready to start building our optimization model.",
     "crumbs": [
       "04 Optimization",
       "01 - JuMP"
@@ -158,7 +158,7 @@
     "href": "part-04/tutorial-04-01-jump.html#setting-up",
     "title": "Tutorial IV.I - Introduction to Mathematical Optimization with JuMP and HiGHS",
     "section": "",
-    "text": "First, we need to install and load the necessary packages. If you haven’t already installed JuMP and HiGHS, run the following code:\n\nimport Pkg; Pkg.add([\"JuMP\",\"HiGHS\"])\n\nNow, let’s load these packages:\n\nusing JuMP, HiGHS\n\nPrecompiling JuMP...\n    532.5 ms  ✓ BenchmarkTools\n  25862.3 ms  ✓ MathOptInterface\n   7095.4 ms  ✓ JuMP\n  3 dependencies successfully precompiled in 34 seconds. 53 already precompiled.\nPrecompiling HiGHS...\n   5259.8 ms  ✓ HiGHS\n  1 dependency successfully precompiled in 5 seconds. 56 already precompiled.\n\n\nGreat! We’re now ready to start building our optimization model.",
+    "text": "First, we need to install and load the necessary packages. If you haven’t already installed JuMP and HiGHS, run the following code:\n\nimport Pkg; Pkg.add([\"JuMP\",\"HiGHS\"])\n\nNow, let’s load these packages:\n\nusing JuMP, HiGHS\n\nPrecompiling JuMP...\n  14348.5 ms  ✓ MathOptInterface\n   6851.1 ms  ✓ JuMP\n  2 dependencies successfully precompiled in 21 seconds. 49 already precompiled.\nPrecompiling HiGHS...\n   5062.5 ms  ✓ HiGHS\n  1 dependency successfully precompiled in 5 seconds. 51 already precompiled.\n\n\nGreat! We’re now ready to start building our optimization model.",
     "crumbs": [
       "04 Optimization",
       "01 - JuMP"
@@ -697,16 +697,6 @@
     ]
   },
   {
-    "objectID": "part-01/lecture-introduction.html#todo-add-more-information-with-examples-westküste100-and-from-literature-of-my-papers",
-    "href": "part-01/lecture-introduction.html#todo-add-more-information-with-examples-westküste100-and-from-literature-of-my-papers",
-    "title": "Lecture I - Welcome and Introduction",
-    "section": "TODO: Add more information with examples Westküste100 and from literature of my papers",
-    "text": "TODO: Add more information with examples Westküste100 and from literature of my papers",
-    "crumbs": [
-      "01 Introduction"
-    ]
-  },
-  {
     "objectID": "part-01/lecture-introduction.html#part-i",
     "href": "part-01/lecture-introduction.html#part-i",
     "title": "Lecture I - Welcome and Introduction",
@@ -717,21 +707,21 @@
     ]
   },
   {
-    "objectID": "part-01/lecture-introduction.html#part-ii",
-    "href": "part-01/lecture-introduction.html#part-ii",
+    "objectID": "part-01/lecture-introduction.html#part-ii-preliminary",
+    "href": "part-01/lecture-introduction.html#part-ii-preliminary",
     "title": "Lecture I - Welcome and Introduction",
-    "section": "Part II",
-    "text": "Part II\n\nGenerator Expansion Planning\nUnit Commitment as Short-term Scheduling\nStorages\nInvestment Planning",
+    "section": "Part II (preliminary)",
+    "text": "Part II (preliminary)\n\nGenerator Expansion Planning\nUnit Commitment as Short-term Scheduling\nStorages\nInvestment Planning",
     "crumbs": [
       "01 Introduction"
     ]
   },
   {
-    "objectID": "part-01/lecture-introduction.html#part-iii",
-    "href": "part-01/lecture-introduction.html#part-iii",
+    "objectID": "part-01/lecture-introduction.html#part-iii-preliminary",
+    "href": "part-01/lecture-introduction.html#part-iii-preliminary",
     "title": "Lecture I - Welcome and Introduction",
-    "section": "Part III",
-    "text": "Part III\n\nMulti-energy systems\nIntermission: Exam Preparation\nUncertainty Modelling and Renewable Energy Integration\nElectricity Market and Carbon Pricing\nRecap and Discussion",
+    "section": "Part III (preliminary)",
+    "text": "Part III (preliminary)\n\nMulti-energy systems\nIntermission: Exam Preparation\nUncertainty Modelling and Renewable Energy Integration\nElectricity Market and Carbon Pricing\nRecap and Discussion",
     "crumbs": [
       "01 Introduction"
     ]
@@ -1259,13 +1249,6 @@
     "text": "Energy System Optimization\n\nUnit commitment\nShort-term scheduling\nLong-term scheduling\nExpansion planning\nInvestment planning\nHydrogen supply chain network design\nMacro-economic models / regional energy systems\nMicro-economic models / local energy systems\nMulti-energy systems\nEnergy hub\nEnergy system flexibility\nEnergy storage\nRenewable energy integration\nCarbon pricing\nPolicy design\n…"
   },
   {
-    "objectID": "part-01/lecture-presentation.html#todo-add-more-information-with-examples-westküste100-and-from-literature-of-my-papers",
-    "href": "part-01/lecture-presentation.html#todo-add-more-information-with-examples-westküste100-and-from-literature-of-my-papers",
-    "title": "Lecture I - Welcome and Introduction",
-    "section": "TODO: Add more information with examples Westküste100 and from literature of my papers",
-    "text": "TODO: Add more information with examples Westküste100 and from literature of my papers"
-  },
-  {
     "objectID": "part-01/lecture-presentation.html#part-i",
     "href": "part-01/lecture-presentation.html#part-i",
     "title": "Lecture I - Welcome and Introduction",
@@ -1273,18 +1256,18 @@
     "text": "Part I\n\nWelcome and Introduction\nFirst Steps in Julia\nPackages and Data Management\nModelling with JuMP"
   },
   {
-    "objectID": "part-01/lecture-presentation.html#part-ii",
-    "href": "part-01/lecture-presentation.html#part-ii",
+    "objectID": "part-01/lecture-presentation.html#part-ii-preliminary",
+    "href": "part-01/lecture-presentation.html#part-ii-preliminary",
     "title": "Lecture I - Welcome and Introduction",
-    "section": "Part II",
-    "text": "Part II\n\nGenerator Expansion Planning\nUnit Commitment as Short-term Scheduling\nStorages\nInvestment Planning"
+    "section": "Part II (preliminary)",
+    "text": "Part II (preliminary)\n\nGenerator Expansion Planning\nUnit Commitment as Short-term Scheduling\nStorages\nInvestment Planning"
   },
   {
-    "objectID": "part-01/lecture-presentation.html#part-iii",
-    "href": "part-01/lecture-presentation.html#part-iii",
+    "objectID": "part-01/lecture-presentation.html#part-iii-preliminary",
+    "href": "part-01/lecture-presentation.html#part-iii-preliminary",
     "title": "Lecture I - Welcome and Introduction",
-    "section": "Part III",
-    "text": "Part III\n\nMulti-energy systems\nIntermission: Exam Preparation\nUncertainty Modelling and Renewable Energy Integration\nElectricity Market and Carbon Pricing\nRecap and Discussion"
+    "section": "Part III (preliminary)",
+    "text": "Part III (preliminary)\n\nMulti-energy systems\nIntermission: Exam Preparation\nUncertainty Modelling and Renewable Energy Integration\nElectricity Market and Carbon Pricing\nRecap and Discussion"
   },
   {
     "objectID": "part-01/lecture-presentation.html#choice-of-programming-language",
@@ -2225,11 +2208,11 @@
     ]
   },
   {
-    "objectID": "general/syllabus.html#applied-optimization-with-basic-models",
-    "href": "general/syllabus.html#applied-optimization-with-basic-models",
+    "objectID": "general/syllabus.html#energy-system-optimization-with-basic-models",
+    "href": "general/syllabus.html#energy-system-optimization-with-basic-models",
     "title": "Syllabus",
-    "section": "Applied Optimization with Basic Models",
-    "text": "Applied Optimization with Basic Models\nIn the second part, we will cover energy system optimization based on basic modelling concepts. We will start with the classic generator expansion problem and learn how to model and solve it using JuMP. Afterwards we start to bring together further modelling concepts, such as the unit commitment and storages, to build a digital twin of a power system for various decision problems. Finally, we developed a basic framework to model and solve operations and investment planning problems of energy systems.",
+    "section": "Energy System Optimization with Basic Models",
+    "text": "Energy System Optimization with Basic Models\nIn the second part, we will cover energy system optimization based on basic modelling concepts. We will start with the classic generator expansion problem and learn how to model and solve it using JuMP. Afterwards we start to bring together further modelling concepts, such as the unit commitment and storages, to build a digital twin of a power system for various decision problems. Finally, we developed a basic framework to model and solve operations and investment planning problems of energy systems.",
     "crumbs": [
       "Syllabus"
     ]
@@ -2245,11 +2228,11 @@
     ]
   },
   {
-    "objectID": "general/syllabus.html#applied-optimization-with-advanced-models",
-    "href": "general/syllabus.html#applied-optimization-with-advanced-models",
+    "objectID": "general/syllabus.html#energy-system-optimization-with-advanced-models",
+    "href": "general/syllabus.html#energy-system-optimization-with-advanced-models",
     "title": "Syllabus",
-    "section": "Applied Optimization with Advanced Models",
-    "text": "Applied Optimization with Advanced Models\nIn the third part, we will cover more advanced optimization models and concepts. We will start to extend the basic models to more complex models, such as multi-energy systems and uncertainty modelling.",
+    "section": "Energy System Optimization with Advanced Models",
+    "text": "Energy System Optimization with Advanced Models\nIn the third part, we will cover more advanced optimization models and concepts. We will start to extend the basic models to more complex models, such as multi-energy systems and uncertainty modelling.",
     "crumbs": [
       "Syllabus"
     ]
