@@ -24,7 +24,7 @@ format:
         footer: " {{< meta title >}} | {{< meta author >}} | [Home](lecture-firststeps.qmd)"
         output-file: lecture-presentation.html
 
-bibliography: ../eso-bib.bib
+bibliography: ../ESO-bib.bib
 
 engine: julia
 
