@@ -14,17 +14,17 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Print working directory
-        run: pwd
+      # - name: Print working directory
+      #   run: pwd
 
-      - name: List files in current directory
-        run: ls -la
+      # - name: List files in current directory
+      #   run: ls -la
 
-      - name: List files in parent directory
-        run: ls -la ..
+      # - name: List files in parent directory
+      #   run: ls -la ..
 
-      - name: List files in grandparent directory
-        run: ls -la ../..
+      # - name: List files in grandparent directory
+      #   run: ls -la ../..
 
       - name: Set up Julia
         uses: julia-actions/setup-julia@v1

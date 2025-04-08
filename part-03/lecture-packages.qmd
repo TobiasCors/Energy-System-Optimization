@@ -24,7 +24,7 @@ format:
         footer: " {{< meta title >}} | {{< meta author >}} | [Home](lecture-packages.qmd)"
         output-file: lecture-presentation.html
 
-bibliography: ../ESO-Bib.bib
+bibliography: ../eso-bib.bib
 
 execute:
     echo: true
