@@ -831,7 +831,7 @@
     "href": "part-01/lecture-introduction.html#linear-optimization-model",
     "title": "Lecture I - Welcome and Introduction",
     "section": "Linear Optimization Model",
-    "text": "Linear Optimization Model\n\n\n\nBasic Model Formulation\n\\[\n\\begin{aligned}\n&\\text{maximize} \\quad F = \\sum_{j\\in \\mathcal{J}} c_j \\times X_j\n\\end{aligned}\n\\]\nsubject to\n\\[\n\\begin{aligned}\n&\\sum_{j\\in \\mathcal{J}} a_{i,j} \\times X_j  \\le b_i && \\forall i \\in \\mathcal{I} \\\\\n&X_j \\ge 0 &&  \\forall  j \\in \\mathcal{J}\n\\end{aligned}\n\\]\n\n\n\nModel Components\n\\[\n\\begin{aligned}\n\\mathcal{I} &: \\text{set of $i \\in \\mathcal{I}$,}\\\\\n\\mathcal{J} &: \\text{set of $j \\in \\mathcal{J}$,}\\\\\nF   &: \\text{Objective function variable,}\\\\\nX_{j}   &: \\text{decision variables,}\\\\\nc_{j}   &: \\text{objective function coefficients,}\\\\\na_{i,j} &: \\text{parameters,}\\\\\nb_{i}   &: \\text{parameters}\n\\end{aligned}\n\\]\n\n\n\n. . .\nQuestion: Have you ever seen something like this before?",
+    "text": "Linear Optimization Model\n\n\n\nBasic Model Formulation\n\\[\n\\begin{aligned}\n&\\text{maximize} \\quad F = \\sum_{j\\in \\mathcal{J}} c_j X_j\n\\end{aligned}\n\\]\nsubject to\n\\[\n\\begin{aligned}\n&\\sum_{j\\in \\mathcal{J}} a_{i,j} X_j  \\le b_i && \\forall i \\in \\mathcal{I} \\\\\n&X_j \\ge 0 &&  \\forall  j \\in \\mathcal{J}\n\\end{aligned}\n\\]\n\n\n\nModel Components\n\\[\n\\begin{aligned}\n\\mathcal{I} &: \\text{set of $i \\in \\mathcal{I}$,}\\\\\n\\mathcal{J} &: \\text{set of $j \\in \\mathcal{J}$,}\\\\\nF   &: \\text{Objective function variable,}\\\\\nX_{j}   &: \\text{decision variables,}\\\\\nc_{j}   &: \\text{objective function coefficients,}\\\\\na_{i,j} &: \\text{parameters,}\\\\\nb_{i}   &: \\text{parameters}\n\\end{aligned}\n\\]\n\n\n\n. . .\nQuestion: Have you ever seen something like this before?",
     "crumbs": [
       "01 Introduction"
     ]
@@ -961,7 +961,7 @@
     "href": "part-01/lecture-introduction.html#minimizing-the-transport-costs",
     "title": "Lecture I - Welcome and Introduction",
     "section": "Minimizing the Transport Costs",
-    "text": "Minimizing the Transport Costs\nMinimize the transport costs over all truckloads while meeting the demand based on the available solar panels adhering to the available panels.\n. . .\nQuestion: How can we write this down?\n. . .\n\\[\n\\text{Minimize} \\quad \\sum_{i \\in \\mathcal{I}} \\sum_{j \\in \\mathcal{J}} c_{i,j} \\times X_{i,j}\n\\]",
+    "text": "Minimizing the Transport Costs\nMinimize the transport costs over all truckloads while meeting the demand based on the available solar panels adhering to the available panels.\n. . .\nQuestion: How can we write this down?\n. . .\n\\[\n\\text{Minimize} \\quad \\sum_{i \\in \\mathcal{I}} \\sum_{j \\in \\mathcal{J}} c_{i,j} X_{i,j}\n\\]",
     "crumbs": [
       "01 Introduction"
     ]
@@ -1011,7 +1011,7 @@
     "href": "part-01/lecture-introduction.html#transport-problem",
     "title": "Lecture I - Welcome and Introduction",
     "section": "Transport Problem",
-    "text": "Transport Problem\nThe complete model can then be written as:\n\\[\n\\begin{aligned}\n\\text{Minimize} \\quad F &= \\sum_{i \\in \\mathcal{I}} \\sum_{j \\in \\mathcal{J}} c_{i,j} \\times X_{ij} \\\\\n\\text{subject to:} \\quad\n&\\sum_{j \\in \\mathcal{J}} X_{i,j} \\leq a_i \\quad &&\\forall i \\in \\mathcal{I} \\\\\n&\\sum_{i \\in \\mathcal{I}} X_{i,j} = b_j \\quad &&\\forall j \\in \\mathcal{J} \\\\\n&X_{i,j} \\geq 0 \\quad &&\\forall i \\in \\mathcal{I}, \\forall j \\in \\mathcal{J}\n\\end{aligned}\n\\]",
+    "text": "Transport Problem\nThe complete model can then be written as:\n\\[\n\\begin{aligned}\n\\text{Minimize} \\quad F &= \\sum_{i \\in \\mathcal{I}} \\sum_{j \\in \\mathcal{J}} c_{i,j} X_{ij} \\\\\n\\text{subject to:} \\quad\n&\\sum_{j \\in \\mathcal{J}} X_{i,j} \\leq a_i \\quad &&\\forall i \\in \\mathcal{I} \\\\\n&\\sum_{i \\in \\mathcal{I}} X_{i,j} = b_j \\quad &&\\forall j \\in \\mathcal{J} \\\\\n&X_{i,j} \\geq 0 \\quad &&\\forall i \\in \\mathcal{I}, \\forall j \\in \\mathcal{J}\n\\end{aligned}\n\\]",
     "crumbs": [
       "01 Introduction"
     ]
@@ -1071,7 +1071,7 @@
     "href": "part-01/lecture-introduction.html#former-model",
     "title": "Lecture I - Welcome and Introduction",
     "section": "Former Model",
-    "text": "Former Model\n\\[\n\\begin{aligned}\n\\text{Minimize} \\quad F &= \\sum_{i \\in \\mathcal{I}} \\sum_{j \\in \\mathcal{J}} c_{i,j} \\times X_{i,j} \\\\\n\\text{subject to:} \\quad\n&\\sum_{j \\in \\mathcal{J}} X_{i,j} \\leq a_i \\quad &&\\forall i \\in \\mathcal{I} \\\\\n&\\sum_{i \\in \\mathcal{I}} X_{i,j} \\geq b_j \\quad &&\\forall j \\in \\mathcal{J} \\\\\n&X_{i,j} \\geq 0 \\quad &&\\forall i \\in \\mathcal{I}, \\forall j \\in \\mathcal{J}\n\\end{aligned}\n\\]",
+    "text": "Former Model\n\\[\n\\begin{aligned}\n\\text{Minimize} \\quad F &= \\sum_{i \\in \\mathcal{I}} \\sum_{j \\in \\mathcal{J}} c_{i,j} X_{i,j} \\\\\n\\text{subject to:} \\quad\n&\\sum_{j \\in \\mathcal{J}} X_{i,j} \\leq a_i \\quad &&\\forall i \\in \\mathcal{I} \\\\\n&\\sum_{i \\in \\mathcal{I}} X_{i,j} \\geq b_j \\quad &&\\forall j \\in \\mathcal{J} \\\\\n&X_{i,j} \\geq 0 \\quad &&\\forall i \\in \\mathcal{I}, \\forall j \\in \\mathcal{J}\n\\end{aligned}\n\\]",
     "crumbs": [
       "01 Introduction"
     ]
@@ -1081,7 +1081,7 @@
     "href": "part-01/lecture-introduction.html#new-model",
     "title": "Lecture I - Welcome and Introduction",
     "section": "New Model",
-    "text": "New Model\n\\[\n\\begin{aligned}\n\\text{Maximize} \\quad F &= \\sum_{i \\in \\mathcal{I}} \\sum_{j \\in \\mathcal{J}} (p-c-c_{i,j}) \\times X_{i,j} \\\\\n\\text{subject to:} \\quad\n&\\sum_{j \\in \\mathcal{J}} X_{i,j} \\leq a_i \\quad &&\\forall i \\in \\mathcal{I} \\\\\n&\\sum_{i \\in \\mathcal{I}} X_{i,j} \\leq b_j \\quad &&\\forall j \\in \\mathcal{J} \\\\\n&X_{i,j} \\geq 0 \\quad &&\\forall i \\in \\mathcal{I}, \\forall j \\in \\mathcal{J}\n\\end{aligned}\n\\]",
+    "text": "New Model\n\\[\n\\begin{aligned}\n\\text{Maximize} \\quad F &= \\sum_{i \\in \\mathcal{I}} \\sum_{j \\in \\mathcal{J}} (p-c-c_{i,j}) X_{i,j} \\\\\n\\text{subject to:} \\quad\n&\\sum_{j \\in \\mathcal{J}} X_{i,j} \\leq a_i \\quad &&\\forall i \\in \\mathcal{I} \\\\\n&\\sum_{i \\in \\mathcal{I}} X_{i,j} \\leq b_j \\quad &&\\forall j \\in \\mathcal{J} \\\\\n&X_{i,j} \\geq 0 \\quad &&\\forall i \\in \\mathcal{I}, \\forall j \\in \\mathcal{J}\n\\end{aligned}\n\\]",
     "crumbs": [
       "01 Introduction"
     ]
@@ -1344,7 +1344,7 @@
     "href": "part-01/lecture-presentation.html#linear-optimization-model",
     "title": "Lecture I - Welcome and Introduction",
     "section": "Linear Optimization Model",
-    "text": "Linear Optimization Model\n\n\nBasic Model Formulation\n\\[\n\\begin{aligned}\n&\\text{maximize} \\quad F = \\sum_{j\\in \\mathcal{J}} c_j \\times X_j\n\\end{aligned}\n\\]\nsubject to\n\\[\n\\begin{aligned}\n&\\sum_{j\\in \\mathcal{J}} a_{i,j} \\times X_j  \\le b_i && \\forall i \\in \\mathcal{I} \\\\\n&X_j \\ge 0 &&  \\forall  j \\in \\mathcal{J}\n\\end{aligned}\n\\]\n\nModel Components\n\\[\n\\begin{aligned}\n\\mathcal{I} &: \\text{set of $i \\in \\mathcal{I}$,}\\\\\n\\mathcal{J} &: \\text{set of $j \\in \\mathcal{J}$,}\\\\\nF   &: \\text{Objective function variable,}\\\\\nX_{j}   &: \\text{decision variables,}\\\\\nc_{j}   &: \\text{objective function coefficients,}\\\\\na_{i,j} &: \\text{parameters,}\\\\\nb_{i}   &: \\text{parameters}\n\\end{aligned}\n\\]\n\n\nQuestion: Have you ever seen something like this before?"
+    "text": "Linear Optimization Model\n\n\nBasic Model Formulation\n\\[\n\\begin{aligned}\n&\\text{maximize} \\quad F = \\sum_{j\\in \\mathcal{J}} c_j X_j\n\\end{aligned}\n\\]\nsubject to\n\\[\n\\begin{aligned}\n&\\sum_{j\\in \\mathcal{J}} a_{i,j} X_j  \\le b_i && \\forall i \\in \\mathcal{I} \\\\\n&X_j \\ge 0 &&  \\forall  j \\in \\mathcal{J}\n\\end{aligned}\n\\]\n\nModel Components\n\\[\n\\begin{aligned}\n\\mathcal{I} &: \\text{set of $i \\in \\mathcal{I}$,}\\\\\n\\mathcal{J} &: \\text{set of $j \\in \\mathcal{J}$,}\\\\\nF   &: \\text{Objective function variable,}\\\\\nX_{j}   &: \\text{decision variables,}\\\\\nc_{j}   &: \\text{objective function coefficients,}\\\\\na_{i,j} &: \\text{parameters,}\\\\\nb_{i}   &: \\text{parameters}\n\\end{aligned}\n\\]\n\n\nQuestion: Have you ever seen something like this before?"
   },
   {
     "objectID": "part-01/lecture-presentation.html#what-is-this-good-for",
@@ -1435,7 +1435,7 @@
     "href": "part-01/lecture-presentation.html#minimizing-the-transport-costs",
     "title": "Lecture I - Welcome and Introduction",
     "section": "Minimizing the Transport Costs",
-    "text": "Minimizing the Transport Costs\nMinimize the transport costs over all truckloads while meeting the demand based on the available solar panels adhering to the available panels.\n\nQuestion: How can we write this down?\n\n\n\\[\n\\text{Minimize} \\quad \\sum_{i \\in \\mathcal{I}} \\sum_{j \\in \\mathcal{J}} c_{i,j} \\times X_{i,j}\n\\]"
+    "text": "Minimizing the Transport Costs\nMinimize the transport costs over all truckloads while meeting the demand based on the available solar panels adhering to the available panels.\n\nQuestion: How can we write this down?\n\n\n\\[\n\\text{Minimize} \\quad \\sum_{i \\in \\mathcal{I}} \\sum_{j \\in \\mathcal{J}} c_{i,j} X_{i,j}\n\\]"
   },
   {
     "objectID": "part-01/lecture-presentation.html#constraints",
@@ -1470,7 +1470,7 @@
     "href": "part-01/lecture-presentation.html#transport-problem",
     "title": "Lecture I - Welcome and Introduction",
     "section": "Transport Problem",
-    "text": "Transport Problem\nThe complete model can then be written as:\n\\[\n\\begin{aligned}\n\\text{Minimize} \\quad F &= \\sum_{i \\in \\mathcal{I}} \\sum_{j \\in \\mathcal{J}} c_{i,j} \\times X_{ij} \\\\\n\\text{subject to:} \\quad\n&\\sum_{j \\in \\mathcal{J}} X_{i,j} \\leq a_i \\quad &&\\forall i \\in \\mathcal{I} \\\\\n&\\sum_{i \\in \\mathcal{I}} X_{i,j} = b_j \\quad &&\\forall j \\in \\mathcal{J} \\\\\n&X_{i,j} \\geq 0 \\quad &&\\forall i \\in \\mathcal{I}, \\forall j \\in \\mathcal{J}\n\\end{aligned}\n\\]"
+    "text": "Transport Problem\nThe complete model can then be written as:\n\\[\n\\begin{aligned}\n\\text{Minimize} \\quad F &= \\sum_{i \\in \\mathcal{I}} \\sum_{j \\in \\mathcal{J}} c_{i,j} X_{ij} \\\\\n\\text{subject to:} \\quad\n&\\sum_{j \\in \\mathcal{J}} X_{i,j} \\leq a_i \\quad &&\\forall i \\in \\mathcal{I} \\\\\n&\\sum_{i \\in \\mathcal{I}} X_{i,j} = b_j \\quad &&\\forall j \\in \\mathcal{J} \\\\\n&X_{i,j} \\geq 0 \\quad &&\\forall i \\in \\mathcal{I}, \\forall j \\in \\mathcal{J}\n\\end{aligned}\n\\]"
   },
   {
     "objectID": "part-01/lecture-presentation.html#inequality-constraints",
@@ -1512,14 +1512,14 @@
     "href": "part-01/lecture-presentation.html#former-model",
     "title": "Lecture I - Welcome and Introduction",
     "section": "Former Model",
-    "text": "Former Model\n\\[\n\\begin{aligned}\n\\text{Minimize} \\quad F &= \\sum_{i \\in \\mathcal{I}} \\sum_{j \\in \\mathcal{J}} c_{i,j} \\times X_{i,j} \\\\\n\\text{subject to:} \\quad\n&\\sum_{j \\in \\mathcal{J}} X_{i,j} \\leq a_i \\quad &&\\forall i \\in \\mathcal{I} \\\\\n&\\sum_{i \\in \\mathcal{I}} X_{i,j} \\geq b_j \\quad &&\\forall j \\in \\mathcal{J} \\\\\n&X_{i,j} \\geq 0 \\quad &&\\forall i \\in \\mathcal{I}, \\forall j \\in \\mathcal{J}\n\\end{aligned}\n\\]"
+    "text": "Former Model\n\\[\n\\begin{aligned}\n\\text{Minimize} \\quad F &= \\sum_{i \\in \\mathcal{I}} \\sum_{j \\in \\mathcal{J}} c_{i,j} X_{i,j} \\\\\n\\text{subject to:} \\quad\n&\\sum_{j \\in \\mathcal{J}} X_{i,j} \\leq a_i \\quad &&\\forall i \\in \\mathcal{I} \\\\\n&\\sum_{i \\in \\mathcal{I}} X_{i,j} \\geq b_j \\quad &&\\forall j \\in \\mathcal{J} \\\\\n&X_{i,j} \\geq 0 \\quad &&\\forall i \\in \\mathcal{I}, \\forall j \\in \\mathcal{J}\n\\end{aligned}\n\\]"
   },
   {
     "objectID": "part-01/lecture-presentation.html#new-model",
     "href": "part-01/lecture-presentation.html#new-model",
     "title": "Lecture I - Welcome and Introduction",
     "section": "New Model",
-    "text": "New Model\n\\[\n\\begin{aligned}\n\\text{Maximize} \\quad F &= \\sum_{i \\in \\mathcal{I}} \\sum_{j \\in \\mathcal{J}} (p-c-c_{i,j}) \\times X_{i,j} \\\\\n\\text{subject to:} \\quad\n&\\sum_{j \\in \\mathcal{J}} X_{i,j} \\leq a_i \\quad &&\\forall i \\in \\mathcal{I} \\\\\n&\\sum_{i \\in \\mathcal{I}} X_{i,j} \\leq b_j \\quad &&\\forall j \\in \\mathcal{J} \\\\\n&X_{i,j} \\geq 0 \\quad &&\\forall i \\in \\mathcal{I}, \\forall j \\in \\mathcal{J}\n\\end{aligned}\n\\]"
+    "text": "New Model\n\\[\n\\begin{aligned}\n\\text{Maximize} \\quad F &= \\sum_{i \\in \\mathcal{I}} \\sum_{j \\in \\mathcal{J}} (p-c-c_{i,j}) X_{i,j} \\\\\n\\text{subject to:} \\quad\n&\\sum_{j \\in \\mathcal{J}} X_{i,j} \\leq a_i \\quad &&\\forall i \\in \\mathcal{I} \\\\\n&\\sum_{i \\in \\mathcal{I}} X_{i,j} \\leq b_j \\quad &&\\forall j \\in \\mathcal{J} \\\\\n&X_{i,j} \\geq 0 \\quad &&\\forall i \\in \\mathcal{I}, \\forall j \\in \\mathcal{J}\n\\end{aligned}\n\\]"
   },
   {
     "objectID": "part-01/lecture-presentation.html#section-4",

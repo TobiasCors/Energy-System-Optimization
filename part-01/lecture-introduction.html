@@ -874,13 +874,13 @@ Note
 <h4 class="anchored" data-anchor-id="basic-model-formulation">Basic Model Formulation</h4>
 <p><span class="math display">\[
 \begin{aligned}
-&amp;\text{maximize} \quad F = \sum_{j\in \mathcal{J}} c_j \times X_j
+&amp;\text{maximize} \quad F = \sum_{j\in \mathcal{J}} c_j X_j
 \end{aligned}
 \]</span></p>
 <p>subject to</p>
 <p><span class="math display">\[
 \begin{aligned}
-&amp;\sum_{j\in \mathcal{J}} a_{i,j} \times X_j  \le b_i &amp;&amp; \forall i \in \mathcal{I} \\
+&amp;\sum_{j\in \mathcal{J}} a_{i,j} X_j  \le b_i &amp;&amp; \forall i \in \mathcal{I} \\
 &amp;X_j \ge 0 &amp;&amp;  \forall  j \in \mathcal{J}
 \end{aligned}
 \]</span></p>
@@ -1092,7 +1092,7 @@ Tip
 <p><span class="question">Question:</span> How can we write this down?</p>
 <p>. . .</p>
 <p><span class="math display">\[
-\text{Minimize} \quad \sum_{i \in \mathcal{I}} \sum_{j \in \mathcal{J}} c_{i,j} \times X_{i,j}
+\text{Minimize} \quad \sum_{i \in \mathcal{I}} \sum_{j \in \mathcal{J}} c_{i,j} X_{i,j}
 \]</span></p>
 </section>
 <section id="constraints" class="level2">
@@ -1145,7 +1145,7 @@ X_{i,j} \geq 0 \quad \forall i \in \mathcal{I}, \forall j \in \mathcal{J}
 <p>The complete model can then be written as:</p>
 <p><span class="math display">\[
 \begin{aligned}
-\text{Minimize} \quad F &amp;= \sum_{i \in \mathcal{I}} \sum_{j \in \mathcal{J}} c_{i,j} \times X_{ij} \\
+\text{Minimize} \quad F &amp;= \sum_{i \in \mathcal{I}} \sum_{j \in \mathcal{J}} c_{i,j} X_{ij} \\
 \text{subject to:} \quad
 &amp;\sum_{j \in \mathcal{J}} X_{i,j} \leq a_i \quad &amp;&amp;\forall i \in \mathcal{I} \\
 &amp;\sum_{i \in \mathcal{I}} X_{i,j} = b_j \quad &amp;&amp;\forall j \in \mathcal{J} \\
@@ -1218,7 +1218,7 @@ p - c
 <h2 class="anchored" data-anchor-id="former-model">Former Model</h2>
 <p><span class="math display">\[
 \begin{aligned}
-\text{Minimize} \quad F &amp;= \sum_{i \in \mathcal{I}} \sum_{j \in \mathcal{J}} c_{i,j} \times X_{i,j} \\
+\text{Minimize} \quad F &amp;= \sum_{i \in \mathcal{I}} \sum_{j \in \mathcal{J}} c_{i,j} X_{i,j} \\
 \text{subject to:} \quad
 &amp;\sum_{j \in \mathcal{J}} X_{i,j} \leq a_i \quad &amp;&amp;\forall i \in \mathcal{I} \\
 &amp;\sum_{i \in \mathcal{I}} X_{i,j} \geq b_j \quad &amp;&amp;\forall j \in \mathcal{J} \\
@@ -1230,7 +1230,7 @@ p - c
 <h2 class="anchored" data-anchor-id="new-model">New Model</h2>
 <p><span class="math display">\[
 \begin{aligned}
-\text{Maximize} \quad F &amp;= \sum_{i \in \mathcal{I}} \sum_{j \in \mathcal{J}} (p-c-c_{i,j}) \times X_{i,j} \\
+\text{Maximize} \quad F &amp;= \sum_{i \in \mathcal{I}} \sum_{j \in \mathcal{J}} (p-c-c_{i,j}) X_{i,j} \\
 \text{subject to:} \quad
 &amp;\sum_{j \in \mathcal{J}} X_{i,j} \leq a_i \quad &amp;&amp;\forall i \in \mathcal{I} \\
 &amp;\sum_{i \in \mathcal{I}} X_{i,j} \leq b_j \quad &amp;&amp;\forall j \in \mathcal{J} \\
