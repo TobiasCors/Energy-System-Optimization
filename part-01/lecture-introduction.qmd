@@ -35,7 +35,7 @@ engine: julia
 
 # [About this Course]{.flow} {.title}
 
-## About me
+## About me 
 - **Field:** Design and Planning of Complex Systems
 - **Languages:** Julia, Python and R
 - **Interest:** Modelling, Stochastic Optimization, Simulations, Machine Learning, and Energy

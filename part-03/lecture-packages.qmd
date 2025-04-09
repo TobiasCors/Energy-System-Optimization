@@ -32,7 +32,7 @@ execute:
 
 # [Quick Recap from last Week]{.flow} {.title}
 
-## Variables and Data Types
+## Variables and Data Types 
 
 - Variables are used to store values
 - Assign a value to a variable using the `=` operator

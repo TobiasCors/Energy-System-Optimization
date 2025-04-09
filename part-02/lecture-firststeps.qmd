@@ -34,7 +34,7 @@ execute:
 
 # [Quick Recap on the Technical Setup]{.flow} {.title}
 
-## Download and Install Julia
+## Download and Install Julia 
 
 ![](https://images.beyondsimulations.com/ao/ao_julia-programming-language.png)
 

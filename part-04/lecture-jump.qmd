@@ -34,7 +34,7 @@ execute:
 
 # [Quick Recap from last Week]{.flow} {.title}
 
-## Functions
+## Functions 
 
 - Functions are reusable blocks of code
 - Define functions using the `function` keyword
