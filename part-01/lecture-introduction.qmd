@@ -313,7 +313,7 @@ We will go through these components step by step in each lecture!
 
 $$
 \begin{aligned}
-&\text{maximize} \quad F = \sum_{j\in \mathcal{J}} c_j \times X_j
+&\text{maximize} \quad F = \sum_{j\in \mathcal{J}} c_j X_j
 \end{aligned}
 $$
 
@@ -321,7 +321,7 @@ subject to
 
 $$
 \begin{aligned}
-&\sum_{j\in \mathcal{J}} a_{i,j} \times X_j  \le b_i && \forall i \in \mathcal{I} \\
+&\sum_{j\in \mathcal{J}} a_{i,j} X_j  \le b_i && \forall i \in \mathcal{I} \\
 &X_j \ge 0 &&  \forall  j \in \mathcal{J} 
 \end{aligned}
 $$
@@ -501,7 +501,7 @@ building blocks!
 . . .
 
 $$
-\text{Minimize} \quad \sum_{i \in \mathcal{I}} \sum_{j \in \mathcal{J}} c_{i,j} \times X_{i,j}
+\text{Minimize} \quad \sum_{i \in \mathcal{I}} \sum_{j \in \mathcal{J}} c_{i,j} X_{i,j}
 $$
 
 ## Constraints
@@ -568,7 +568,7 @@ The complete model can then be written as:
 
 $$
 \begin{aligned}
-\text{Minimize} \quad F &= \sum_{i \in \mathcal{I}} \sum_{j \in \mathcal{J}} c_{i,j} \times X_{ij} \\
+\text{Minimize} \quad F &= \sum_{i \in \mathcal{I}} \sum_{j \in \mathcal{J}} c_{i,j} X_{ij} \\
 \text{subject to:} \quad
 &\sum_{j \in \mathcal{J}} X_{i,j} \leq a_i \quad &&\forall i \in \mathcal{I} \\
 &\sum_{i \in \mathcal{I}} X_{i,j} = b_j \quad &&\forall j \in \mathcal{J} \\
@@ -648,7 +648,7 @@ $$
 
 $$
 \begin{aligned}
-\text{Minimize} \quad F &= \sum_{i \in \mathcal{I}} \sum_{j \in \mathcal{J}} c_{i,j} \times X_{i,j} \\
+\text{Minimize} \quad F &= \sum_{i \in \mathcal{I}} \sum_{j \in \mathcal{J}} c_{i,j} X_{i,j} \\
 \text{subject to:} \quad
 &\sum_{j \in \mathcal{J}} X_{i,j} \leq a_i \quad &&\forall i \in \mathcal{I} \\
 &\sum_{i \in \mathcal{I}} X_{i,j} \geq b_j \quad &&\forall j \in \mathcal{J} \\
@@ -660,7 +660,7 @@ $$
 
 $$
 \begin{aligned}
-\text{Maximize} \quad F &= \sum_{i \in \mathcal{I}} \sum_{j \in \mathcal{J}} (p-c-c_{i,j}) \times X_{i,j} \\
+\text{Maximize} \quad F &= \sum_{i \in \mathcal{I}} \sum_{j \in \mathcal{J}} (p-c-c_{i,j}) X_{i,j} \\
 \text{subject to:} \quad
 &\sum_{j \in \mathcal{J}} X_{i,j} \leq a_i \quad &&\forall i \in \mathcal{I} \\
 &\sum_{i \in \mathcal{I}} X_{i,j} \leq b_j \quad &&\forall j \in \mathcal{J} \\
