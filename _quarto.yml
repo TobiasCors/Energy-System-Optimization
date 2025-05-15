@@ -78,10 +78,10 @@ website:
             href: part-04/tutorial-04-04-advanced.qmd
           - text: "05 - Transport"
             href: part-04/tutorial-04-05-transport.qmd
-      # - section: "05 Production"
-      #   contents:
-      #     - text: "Lecture"
-      #       href: part-05/lecture-production.qmd
+      - section: "05 Production"
+        contents:
+          - text: "Lecture"
+            href: part-05/lecture-production.qmd
       #     - text: "Tutorial"
       #       href: part-05/tutorial-production.qmd
       # - section: "06 Warehouse"
