@@ -101,14 +101,20 @@ Always check the solution status before using the results to ensure the model so
 ## Power System Basic Models: Economic Dispatch
 
 ::: {.columns}
-::: {.column width="40%"} 
+::: {.column width="30%"} 
 [![](https://images.unsplash.com/photo-1503427315916-2ba435dee667?q=80&w=2727&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D){width="90%"}](https://unsplash.com/){width="85%"}
 :::
 
-::: {.column width="60%"}
-- **Power system system with generators and an aggregated demand**
-    - Generators have to be dispatched to meet the demand at an infinitesimal moment
-    - Generators have different costs and operational constraints
+::: {.column width="70%"}
+**Power system system with generators and an aggregated demand**
+
+- Generators have to be dispatched to meet the demand at an infinitesimal moment
+- Generators have different costs and operational constraints
+:::
+:::
+
+## Economic Dispatch Problem
+
 - **Objective**: Minimize the cost of producing electricity
 - **Constraints** in the simplest case: 
     - Demand must be met
@@ -117,9 +123,6 @@ Always check the solution status before using the results to ensure the model so
 - **Decision variables**: 
     - Power output of thermal generators
     - Power output of renewables, e.g. wind
-:::
-:::
-
 
 ## {.loud-slide}
 ::: {.r-fit-text}
@@ -137,7 +140,7 @@ How does the mathematical model look like?
 ::: {.columns}
 ::: {.column width="40%"}
 
-[![](https://images.unsplash.com/photo-1587127831640-7423ae037873?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D){width="40%"}](https://unsplash.com/)
+[![](https://images.unsplash.com/photo-1587127831640-7423ae037873?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D){width="90%"}](https://unsplash.com/)
 
 :::
 
@@ -174,8 +177,8 @@ Sets are [collections of objects]{.highlight}.
 
 . . .
 
-- $c^{var}_g$ - Cost of thermal generator $g\in\mathcal{G}$ in [\€/\text{MWh}]
-- $c^{var}_w$ - Cost of wind turbine $w\in\mathcal{W}$ in [\€/\text{MWh}]
+- $c^{var}_g$ - Cost of thermal generator $g\in\mathcal{G}$ in [$EUR/\text{MWh}$]
+- $c^{var}_w$ - Cost of wind turbine $w\in\mathcal{W}$ in [$EUR/\text{MWh}$]
 - $p^{\min}_g$ - Minimum power output of thermal generator $g\in\mathcal{G}$ in [MW]
 - $p^{\max}_g$ - Maximum power output of thermal generator $g\in\mathcal{G}$ in [MW]
 - $p^{f}_w$ - Forecasted power output of wind turbine $w\in\mathcal{W}$ in [MW]
@@ -242,7 +245,7 @@ Minimize the electricity supply cost while satisfying the demand and adhering to
 
 . . .
 
-$$\text{Minimize} \quad \sum_{g=1}^{\mathcal{G}} (c^{var}_g p_g) + \sum_{w=1}^{\mathcal{W}} (c^{var}_w p_w)$$
+$\text{Minimize} \quad \sum_{g=1}^{\mathcal{G}} (c^{var}_g p_g) + \sum_{w=1}^{\mathcal{W}} (c^{var}_w p_w)$
 
 
 ## Constraints
@@ -250,7 +253,7 @@ $$\text{Minimize} \quad \sum_{g=1}^{\mathcal{G}} (c^{var}_g p_g) + \sum_{w=1}^{\
 ::: {.columns}
 ::: {.column width="40%"}
 
-[![](https://images.unsplash.com/photo-1587127831640-7423ae037873?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D){width="40%"}](https://unsplash.com/)
+[![](https://images.unsplash.com/photo-1587127831640-7423ae037873?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D){width="90%"}](https://unsplash.com/)
 
 :::
 
@@ -290,7 +293,7 @@ Minimum and maximum power limits the power output of generators.
 
 ## Generator Limits Constraints
 
-$$p^{\min}_g \leq p_g \leq p^{\max}_g \quad \forall g\in\mathcal{G}$$
+$p^{\min}_g \leq p_g \leq p^{\max}_g \quad \forall g\in\mathcal{G}$
 
 . . .
 
@@ -331,7 +334,7 @@ Renewable power injection into the grid or power balance is limited by the renew
 
 ## Wind Power Injection Constraints
 
-$0 \leq p_w \leq p^f_w \quad \forall w\in\mathcal{W}$$
+$0 \leq p_w \leq p^f_w \quad \forall w\in\mathcal{W}$
 
 :::
 
@@ -368,7 +371,7 @@ $$\sum_{g=1}^{\mathcal{G}} p_g + \sum_{w=1}^{\mathcal{W}} p_w = d^f$$
 
 ## Economic Dispatch: Objective Function
 
-$\text{Minimize} \quad \sum_{g=1}^{\mathcal{G}} (c^{var}_g p_g) + \sum_{w=1}^{\mathcal{W}} (c^{var}_w p_w)$$
+$\text{Minimize} \quad \sum_{g=1}^{\mathcal{G}} (c^{var}_g p_g) + \sum_{w=1}^{\mathcal{W}} (c^{var}_w p_w)$
 
 ::: {.callout-important}
 ## The goal of the objective function and model is to:
@@ -394,9 +397,9 @@ Generator limits are respected, wind power is bounded by forecast, and power bal
 
 ## Economic Dispatch: Variable Domains
 
-$$p_g \geq 0 \quad \forall g\in\mathcal{G}$$
+$p_g \geq 0 \quad \forall g\in\mathcal{G}$
 
-$$p_w \geq 0 \quad \forall w\in\mathcal{W}$$
+$p_w \geq 0 \quad \forall w\in\mathcal{W}$
 
 ::: {.callout-important}
 ## The variable domains make sure that:

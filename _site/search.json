@@ -4,7 +4,7 @@
     "href": "part-04/tutorial-04-05-transport.html",
     "title": "Tutorial IV.V - Modelling the Transportation Problem with JuMP",
     "section": "",
-    "text": "Welcome to this tutorial on the transportation problem using JuMP! As always, don’t worry if you’re new to optimization - we’ll walk through everything step by step using a real-world example.\nImagine you’re running a solar panel distribution company. You have several warehouses (suppliers) and need to ship solar panels to various solar farms (customers). Your goal is to minimize the total cost of transportation while meeting all customer demands.\nBy the end of this tutorial, you’ll be able to:\n\nUnderstand what a transportation problem is\nSet up a transportation problem using JuMP\nSolve the problem and interpret the results\n\nLet’s start by loading the necessary packages:\n\nusing JuMP, HiGHS\nusing DataFrames, CSV\n\nPrecompiling JuMP...\n    532.6 ms  ✓ BenchmarkTools\n  25357.2 ms  ✓ MathOptInterface\n   7068.9 ms  ✓ JuMP\n  3 dependencies successfully precompiled in 33 seconds. 53 already precompiled.\nPrecompiling HiGHS...\n   5244.1 ms  ✓ HiGHS\n  1 dependency successfully precompiled in 5 seconds. 56 already precompiled.\nPrecompiling DataFrames...\n  12573.2 ms  ✓ DataFrames\n  1 dependency successfully precompiled in 13 seconds. 32 already precompiled.\nPrecompiling QuartoNotebookWorkerDataFramesTablesExt...\n    879.0 ms  ✓ QuartoNotebookWorker → QuartoNotebookWorkerDataFramesTablesExt\n  1 dependency successfully precompiled in 1 seconds. 54 already precompiled.",
+    "text": "Welcome to this tutorial on the transportation problem using JuMP! As always, don’t worry if you’re new to optimization - we’ll walk through everything step by step using a real-world example.\nImagine you’re running a solar panel distribution company. You have several warehouses (suppliers) and need to ship solar panels to various solar farms (customers). Your goal is to minimize the total cost of transportation while meeting all customer demands.\nBy the end of this tutorial, you’ll be able to:\n\nUnderstand what a transportation problem is\nSet up a transportation problem using JuMP\nSolve the problem and interpret the results\n\nLet’s start by loading the necessary packages:\n\nusing JuMP, HiGHS\nusing DataFrames, CSV\n\nPrecompiling JuMP...\n    548.1 ms  ✓ BenchmarkTools\n  14741.9 ms  ✓ MathOptInterface\n   6864.6 ms  ✓ JuMP\n  3 dependencies successfully precompiled in 22 seconds. 48 already precompiled.\nPrecompiling HiGHS...\n   5181.6 ms  ✓ HiGHS\n  1 dependency successfully precompiled in 5 seconds. 51 already precompiled.\nPrecompiling DataFrames...\n  12877.0 ms  ✓ DataFrames\n  1 dependency successfully precompiled in 13 seconds. 32 already precompiled.\nPrecompiling QuartoNotebookWorkerDataFramesTablesExt...\n    944.0 ms  ✓ QuartoNotebookWorker → QuartoNotebookWorkerDataFramesTablesExt\n  1 dependency successfully precompiled in 1 seconds. 54 already precompiled.",
     "crumbs": [
       "04 Optimization",
       "05 - Transport"
@@ -81,7 +81,7 @@
     "href": "part-04/tutorial-04-03-constraints.html",
     "title": "Tutorial IV.III - Constraints in JuMP",
     "section": "",
-    "text": "Welcome to this tutorial on constraints in JuMP! In this lesson, we’ll explore how to add rules (constraints) to our optimization problems.\nBy the end of this tutorial, you’ll be able to: 1. Create simple constraints for your optimization problems 2. Use containers (like arrays) to manage multiple similar constraints 3. Create more complex constraints based on conditions\nLet’s start by loading the necessary packages:\n\nusing JuMP, HiGHS\n\nPrecompiling JuMP...\n    533.6 ms  ✓ BenchmarkTools\n  25922.9 ms  ✓ MathOptInterface\n   7058.9 ms  ✓ JuMP\n  3 dependencies successfully precompiled in 34 seconds. 53 already precompiled.\nPrecompiling HiGHS...\n   5253.3 ms  ✓ HiGHS\n  1 dependency successfully precompiled in 5 seconds. 56 already precompiled.\n\n\nNow, let’s create a model that we’ll use throughout this tutorial:\n\nanother_model = Model(HiGHS.Optimizer)\nprintln(\"Great! We've created a new optimization model.\")",
+    "text": "Welcome to this tutorial on constraints in JuMP! In this lesson, we’ll explore how to add rules (constraints) to our optimization problems.\nBy the end of this tutorial, you’ll be able to: 1. Create simple constraints for your optimization problems 2. Use containers (like arrays) to manage multiple similar constraints 3. Create more complex constraints based on conditions\nLet’s start by loading the necessary packages:\n\nusing JuMP, HiGHS\n\nPrecompiling JuMP...\n    542.8 ms  ✓ BenchmarkTools\n  14798.0 ms  ✓ MathOptInterface\n   6949.2 ms  ✓ JuMP\n  3 dependencies successfully precompiled in 22 seconds. 48 already precompiled.\nPrecompiling HiGHS...\n   5119.9 ms  ✓ HiGHS\n  1 dependency successfully precompiled in 5 seconds. 51 already precompiled.\n\n\nNow, let’s create a model that we’ll use throughout this tutorial:\n\nanother_model = Model(HiGHS.Optimizer)\nprintln(\"Great! We've created a new optimization model.\")",
     "crumbs": [
       "04 Optimization",
       "03 - Constraints"
@@ -114,7 +114,7 @@
     "href": "part-04/tutorial-04-01-jump.html",
     "title": "Tutorial IV.I - Introduction to Mathematical Optimization with JuMP and HiGHS",
     "section": "",
-    "text": "Welcome to this beginner-friendly tutorial on mathematical optimization using JuMP and the HiGHS solver in Julia! Don’t worry if these terms sound unfamiliar – we’ll explain everything step by step.\nIn this tutorial, you’ll learn how to:\n\nSet up a simple optimization problem\nDefine variables and constraints\nCreate an objective function\nSolve the problem and interpret the results\n\nWe’ll use a real-world example to make these concepts more relatable. Imagine you’re managing a small factory that produces two types of products. Your goal is to maximize profit while working within certain limitations. This is exactly the kind of problem that mathematical optimization can solve!\n\n\nJuMP (Julia for Mathematical Programming) is a powerful tool that helps us describe optimization problems in a way that computers can understand and solve. Think of it as a translator between your business problem and the mathematical solver.\n\n\n\nHiGHS is an open-source solver that can find solutions to the optimization problems we describe using JuMP. It’s like a very smart calculator that can handle complex problems quickly and efficiently.\n\n\n\nLet’s break down our factory management problem:\n\nYou produce two products: Product A and Product B\nEach product gives you a different profit:\n\nProduct A: 100 profit per unit\nProduct B: 150 profit per unit\n\nYou have two departments: Cutting and Finishing\nEach product requires different amounts of time in each department:\n\nProduct A: 2 hours in Cutting, 4 hours in Finishing\nProduct B: 4 hours in Cutting, 3 hours in Finishing\n\nYou have limited time available in each department:\n\nCutting: 40 hours total\nFinishing: 60 hours total\n\n\nYour goal is to decide how many of each product to make to maximize your total profit, while not exceeding the available time in each department.\n\n\n\nFirst, we need to install and load the necessary packages. If you haven’t already installed JuMP and HiGHS, run the following code:\n\nimport Pkg; Pkg.add([\"JuMP\",\"HiGHS\"])\n\nNow, let’s load these packages:\n\nusing JuMP, HiGHS\n\nPrecompiling JuMP...\n  14348.5 ms  ✓ MathOptInterface\n   6851.1 ms  ✓ JuMP\n  2 dependencies successfully precompiled in 21 seconds. 49 already precompiled.\nPrecompiling HiGHS...\n   5062.5 ms  ✓ HiGHS\n  1 dependency successfully precompiled in 5 seconds. 51 already precompiled.\n\n\nGreat! We’re now ready to start building our optimization model.",
+    "text": "Welcome to this beginner-friendly tutorial on mathematical optimization using JuMP and the HiGHS solver in Julia! Don’t worry if these terms sound unfamiliar – we’ll explain everything step by step.\nIn this tutorial, you’ll learn how to:\n\nSet up a simple optimization problem\nDefine variables and constraints\nCreate an objective function\nSolve the problem and interpret the results\n\nWe’ll use a real-world example to make these concepts more relatable. Imagine you’re managing a small factory that produces two types of products. Your goal is to maximize profit while working within certain limitations. This is exactly the kind of problem that mathematical optimization can solve!\n\n\nJuMP (Julia for Mathematical Programming) is a powerful tool that helps us describe optimization problems in a way that computers can understand and solve. Think of it as a translator between your business problem and the mathematical solver.\n\n\n\nHiGHS is an open-source solver that can find solutions to the optimization problems we describe using JuMP. It’s like a very smart calculator that can handle complex problems quickly and efficiently.\n\n\n\nLet’s break down our factory management problem:\n\nYou produce two products: Product A and Product B\nEach product gives you a different profit:\n\nProduct A: 100 profit per unit\nProduct B: 150 profit per unit\n\nYou have two departments: Cutting and Finishing\nEach product requires different amounts of time in each department:\n\nProduct A: 2 hours in Cutting, 4 hours in Finishing\nProduct B: 4 hours in Cutting, 3 hours in Finishing\n\nYou have limited time available in each department:\n\nCutting: 40 hours total\nFinishing: 60 hours total\n\n\nYour goal is to decide how many of each product to make to maximize your total profit, while not exceeding the available time in each department.\n\n\n\nFirst, we need to install and load the necessary packages. If you haven’t already installed JuMP and HiGHS, run the following code:\n\nimport Pkg; Pkg.add([\"JuMP\",\"HiGHS\"])\n\nNow, let’s load these packages:\n\nusing JuMP, HiGHS\n\nPrecompiling JuMP...\n    542.2 ms  ✓ BenchmarkTools\n  14780.9 ms  ✓ MathOptInterface\n   6875.2 ms  ✓ JuMP\n  3 dependencies successfully precompiled in 22 seconds. 48 already precompiled.\nPrecompiling HiGHS...\n   5148.9 ms  ✓ HiGHS\n  1 dependency successfully precompiled in 5 seconds. 51 already precompiled.\n\n\nGreat! We’re now ready to start building our optimization model.",
     "crumbs": [
       "04 Optimization",
       "01 - JuMP"
@@ -158,7 +158,7 @@
     "href": "part-04/tutorial-04-01-jump.html#setting-up",
     "title": "Tutorial IV.I - Introduction to Mathematical Optimization with JuMP and HiGHS",
     "section": "",
-    "text": "First, we need to install and load the necessary packages. If you haven’t already installed JuMP and HiGHS, run the following code:\n\nimport Pkg; Pkg.add([\"JuMP\",\"HiGHS\"])\n\nNow, let’s load these packages:\n\nusing JuMP, HiGHS\n\nPrecompiling JuMP...\n  14348.5 ms  ✓ MathOptInterface\n   6851.1 ms  ✓ JuMP\n  2 dependencies successfully precompiled in 21 seconds. 49 already precompiled.\nPrecompiling HiGHS...\n   5062.5 ms  ✓ HiGHS\n  1 dependency successfully precompiled in 5 seconds. 51 already precompiled.\n\n\nGreat! We’re now ready to start building our optimization model.",
+    "text": "First, we need to install and load the necessary packages. If you haven’t already installed JuMP and HiGHS, run the following code:\n\nimport Pkg; Pkg.add([\"JuMP\",\"HiGHS\"])\n\nNow, let’s load these packages:\n\nusing JuMP, HiGHS\n\nPrecompiling JuMP...\n    542.2 ms  ✓ BenchmarkTools\n  14780.9 ms  ✓ MathOptInterface\n   6875.2 ms  ✓ JuMP\n  3 dependencies successfully precompiled in 22 seconds. 48 already precompiled.\nPrecompiling HiGHS...\n   5148.9 ms  ✓ HiGHS\n  1 dependency successfully precompiled in 5 seconds. 51 already precompiled.\n\n\nGreat! We’re now ready to start building our optimization model.",
     "crumbs": [
       "04 Optimization",
       "01 - JuMP"
@@ -290,7 +290,7 @@
     "href": "part-03/tutorial-03-03-DataFrames.html",
     "title": "Tutorial III.III - DataFrames in Julia",
     "section": "",
-    "text": "Imagine a DataFrame as a digital spreadsheet. It’s a way to organize and work with data in rows and columns. Each column can hold different types of information, like names, ages, or salaries. In this tutorial, we’ll learn how to create DataFrames, add and change data, and perform simple operations on our data.\n\n\n\n\n\n\nNote\n\n\n\nBefore we start, make sure you have the DataFrames package installed. If you’re not sure how to do this, check the previous tutorial on package management!\n\n\nLet’s begin by importing the DataFrames package:\n\n# Import the DataFrames package\nusing DataFrames\n\nPrecompiling DataFrames...\n  12277.9 ms  ✓ DataFrames\n  1 dependency successfully precompiled in 12 seconds. 32 already precompiled.\nPrecompiling QuartoNotebookWorkerDataFramesTablesExt...\n    857.7 ms  ✓ QuartoNotebookWorker → QuartoNotebookWorkerDataFramesTablesExt\n  1 dependency successfully precompiled in 1 seconds. 54 already precompiled.",
+    "text": "Imagine a DataFrame as a digital spreadsheet. It’s a way to organize and work with data in rows and columns. Each column can hold different types of information, like names, ages, or salaries. In this tutorial, we’ll learn how to create DataFrames, add and change data, and perform simple operations on our data.\n\n\n\n\n\n\nNote\n\n\n\nBefore we start, make sure you have the DataFrames package installed. If you’re not sure how to do this, check the previous tutorial on package management!\n\n\nLet’s begin by importing the DataFrames package:\n\n# Import the DataFrames package\nusing DataFrames\n\nPrecompiling DataFrames...\n  12683.4 ms  ✓ DataFrames\n  1 dependency successfully precompiled in 13 seconds. 32 already precompiled.\nPrecompiling QuartoNotebookWorkerDataFramesTablesExt...\n    921.0 ms  ✓ QuartoNotebookWorker → QuartoNotebookWorkerDataFramesTablesExt\n  1 dependency successfully precompiled in 1 seconds. 54 already precompiled.",
     "crumbs": [
       "03 Data",
       "03 - DataFrames"
@@ -3320,7 +3320,7 @@
     "href": "part-04/tutorial-04-04-advanced.html",
     "title": "Tutorial IV.IV - Advanced Solver Options with HiGHS in JuMP",
     "section": "",
-    "text": "Welcome to this tutorial on advanced solver options in JuMP using the HiGHS solver! Don’t worry if “advanced solver options” sounds intimidating - we’ll break everything down into simple, easy-to-understand concepts.\nImagine you’re using a GPS app to find the best route to a new restaurant. Just like how you can adjust settings in your GPS (like avoiding toll roads or preferring highways), we can adjust settings in our optimization solver to help it find solutions more efficiently or to meet specific requirements.\nBy the end of this tutorial, you’ll be able to: 1. Understand what solver options are and why they’re useful 2. Set basic solver options like time limits and solution tolerances 3. Interpret solver output to understand how well your problem was solved\nLet’s start by loading the necessary packages:\n\nusing JuMP, HiGHS\n\nPrecompiling JuMP...\n    530.6 ms  ✓ BenchmarkTools\n  25152.4 ms  ✓ MathOptInterface\n   7077.6 ms  ✓ JuMP\n  3 dependencies successfully precompiled in 33 seconds. 53 already precompiled.\nPrecompiling HiGHS...\n   5245.4 ms  ✓ HiGHS\n  1 dependency successfully precompiled in 5 seconds. 56 already precompiled.",
+    "text": "Welcome to this tutorial on advanced solver options in JuMP using the HiGHS solver! Don’t worry if “advanced solver options” sounds intimidating - we’ll break everything down into simple, easy-to-understand concepts.\nImagine you’re using a GPS app to find the best route to a new restaurant. Just like how you can adjust settings in your GPS (like avoiding toll roads or preferring highways), we can adjust settings in our optimization solver to help it find solutions more efficiently or to meet specific requirements.\nBy the end of this tutorial, you’ll be able to: 1. Understand what solver options are and why they’re useful 2. Set basic solver options like time limits and solution tolerances 3. Interpret solver output to understand how well your problem was solved\nLet’s start by loading the necessary packages:\n\nusing JuMP, HiGHS\n\nPrecompiling JuMP...\n    545.5 ms  ✓ BenchmarkTools\n  14866.8 ms  ✓ MathOptInterface\n   6940.5 ms  ✓ JuMP\n  3 dependencies successfully precompiled in 22 seconds. 48 already precompiled.\nPrecompiling HiGHS...\n   5222.9 ms  ✓ HiGHS\n  1 dependency successfully precompiled in 5 seconds. 51 already precompiled.",
     "crumbs": [
       "04 Optimization",
       "04 - Advanced"
@@ -3401,5 +3401,711 @@
     "title": "Lecture I - Welcome and Introduction",
     "section": "Part III (preliminary)",
     "text": "Part III (preliminary)\n\nMulti-energy systems\nIntermission: Exam Preparation\nUncertainty Modelling and Renewable Energy Integration\nElectricity Market and Carbon Pricing\nRecap and Discussion"
+  },
+  {
+    "objectID": "part-05/lecture-dispatch.html",
+    "href": "part-05/lecture-dispatch.html",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "",
+    "text": "JuMP is a package for modeling optimization problems in Julia\nIt allows you to describe optimization problems in a way that is easy to understand and solve\nIt is a powerful tool for modeling and solving optimization problems\n\n. . .\n\n\n\n\n\n\nTip\n\n\n\nUse meaningful variable names and comments to make your model easier to understand.\n\n\n\n\n\n\nVariables in optimization models often need upper and lower bounds\nBounds can be set when declaring variables or added later as constraints\nCommon bounds include non-negativity (\\(\\leq 0\\)) and capacity limits\n\n\n\n\n\nConstraints define the feasible region of the optimization problem\nCan be equality (\\(=\\)) or inequality (\\(\\geq, \\leq\\)) constraints\nMultiple constraints can be added using loops or array comprehensions\n\n. . .\n\n\n\n\n\n\nTip\n\n\n\nConditional constraints allow flexible and dynamic model formulations reflecting conditions and dependencies in the constraint application.\n\n\n\n\n\n\nJuMP supports many different solvers like HiGHS, GLPK, Gurobi\nSolvers are specialized for different problem types (LP, MIP, NLP)\nCan set solver parameters to control solution process\n\n\n\n\n\nStart by creating a model with Model()\nAdd variables, objective function, and constraints\nCall optimize!() to solve the model\nAccess results through solution queries\n\n. . .\n\n\n\n\n\n\nTip\n\n\n\nAlways check the solution status before using the results to ensure the model solved successfully.\n\n\n\n\n\n\nThe tutorials from last week will again be available on Friday\nYou can access them in the project folder on Github\nClick on the little cat icon on the bottom right\n\n. . .\n\n\n\n\n\n\nTip\n\n\n\nYou can ask questions anytime in class or via email!",
+    "crumbs": [
+      "05 Dispatch",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-05/lecture-dispatch.html#jump",
+    "href": "part-05/lecture-dispatch.html#jump",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "",
+    "text": "JuMP is a package for modeling optimization problems in Julia\nIt allows you to describe optimization problems in a way that is easy to understand and solve\nIt is a powerful tool for modeling and solving optimization problems\n\n. . .\n\n\n\n\n\n\nTip\n\n\n\nUse meaningful variable names and comments to make your model easier to understand.",
+    "crumbs": [
+      "05 Dispatch",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-05/lecture-dispatch.html#bounds",
+    "href": "part-05/lecture-dispatch.html#bounds",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "",
+    "text": "Variables in optimization models often need upper and lower bounds\nBounds can be set when declaring variables or added later as constraints\nCommon bounds include non-negativity (\\(\\leq 0\\)) and capacity limits",
+    "crumbs": [
+      "05 Dispatch",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-05/lecture-dispatch.html#constraints",
+    "href": "part-05/lecture-dispatch.html#constraints",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "",
+    "text": "Constraints define the feasible region of the optimization problem\nCan be equality (\\(=\\)) or inequality (\\(\\geq, \\leq\\)) constraints\nMultiple constraints can be added using loops or array comprehensions\n\n. . .\n\n\n\n\n\n\nTip\n\n\n\nConditional constraints allow flexible and dynamic model formulations reflecting conditions and dependencies in the constraint application.",
+    "crumbs": [
+      "05 Dispatch",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-05/lecture-dispatch.html#solver",
+    "href": "part-05/lecture-dispatch.html#solver",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "",
+    "text": "JuMP supports many different solvers like HiGHS, GLPK, Gurobi\nSolvers are specialized for different problem types (LP, MIP, NLP)\nCan set solver parameters to control solution process",
+    "crumbs": [
+      "05 Dispatch",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-05/lecture-dispatch.html#model-setup",
+    "href": "part-05/lecture-dispatch.html#model-setup",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "",
+    "text": "Start by creating a model with Model()\nAdd variables, objective function, and constraints\nCall optimize!() to solve the model\nAccess results through solution queries\n\n. . .\n\n\n\n\n\n\nTip\n\n\n\nAlways check the solution status before using the results to ensure the model solved successfully.",
+    "crumbs": [
+      "05 Dispatch",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-05/lecture-dispatch.html#solutions-from-last-week",
+    "href": "part-05/lecture-dispatch.html#solutions-from-last-week",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "",
+    "text": "The tutorials from last week will again be available on Friday\nYou can access them in the project folder on Github\nClick on the little cat icon on the bottom right\n\n. . .\n\n\n\n\n\n\nTip\n\n\n\nYou can ask questions anytime in class or via email!",
+    "crumbs": [
+      "05 Dispatch",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-05/lecture-dispatch.html#power-system-basic-models-economic-dispatch",
+    "href": "part-05/lecture-dispatch.html#power-system-basic-models-economic-dispatch",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Power System Basic Models: Economic Dispatch",
+    "text": "Power System Basic Models: Economic Dispatch\n\n\n\n\nPower system system with generators and an aggregated demand\n\nGenerators have to be dispatched to meet the demand at an infinitesimal moment\nGenerators have different costs and operational constraints",
+    "crumbs": [
+      "05 Dispatch",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-05/lecture-dispatch.html#section",
+    "href": "part-05/lecture-dispatch.html#section",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "",
+    "text": "How does the mathematical model look like?",
+    "crumbs": [
+      "05 Dispatch",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-05/lecture-dispatch.html#objective",
+    "href": "part-05/lecture-dispatch.html#objective",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Objective",
+    "text": "Objective\n\n\n\n\nQuestion: What could be the objective?\nMinimize the electricity supply cost while satisfying the demand and adhering to the production capacity.",
+    "crumbs": [
+      "05 Dispatch",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-05/lecture-dispatch.html#available-sets",
+    "href": "part-05/lecture-dispatch.html#available-sets",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Available Sets",
+    "text": "Available Sets\nQuestion: What are sets again?\n. . .\nSets are collections of objects.\n. . .\nQuestion: What could be the sets here?\n. . .\n\n\\(\\mathcal{G}\\) - Set of thermal generators indexed by \\(g \\in \\{1,2,...,|\\mathcal{G}|\\}\\)\n\\(\\mathcal{W}\\) - Set of wind turbines indexed by \\(w \\in \\{1,2,...,|\\mathcal{W}|\\}\\)",
+    "crumbs": [
+      "05 Dispatch",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-05/lecture-dispatch.html#available-parameters",
+    "href": "part-05/lecture-dispatch.html#available-parameters",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Available Parameters",
+    "text": "Available Parameters\nQuestion: What are possible parameters?\n. . .\n\n\\(c^{var}_g\\) - Cost of thermal generator \\(g\\in\\mathcal{G}\\) in [\\(EUR/\\text{MWh}\\)]\n\\(c^{var}_w\\) - Cost of wind turbine \\(w\\in\\mathcal{W}\\) in [\\(EUR/\\text{MWh}\\)]\n\\(p^{\\min}_g\\) - Minimum power output of thermal generator \\(g\\in\\mathcal{G}\\) in [MW]\n\\(p^{\\max}_g\\) - Maximum power output of thermal generator \\(g\\in\\mathcal{G}\\) in [MW]\n\\(p^{f}_w\\) - Forecasted power output of wind turbine \\(w\\in\\mathcal{W}\\) in [MW]\n\\(d^f\\) - Forecasted demand in [MW]",
+    "crumbs": [
+      "05 Dispatch",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-05/lecture-dispatch.html#decision-variables",
+    "href": "part-05/lecture-dispatch.html#decision-variables",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Decision Variables?",
+    "text": "Decision Variables?\n\n\n\n\n\n\nWe have the following sets:\n\n\n\n\nThermal generators indexed by \\(g \\in \\{1,2,...,|\\mathcal{G}|\\}\\)\nWind turbines indexed by \\(w \\in \\{1,2,...,|\\mathcal{W}|\\}\\)\n\n\n\n. . .\n\n\n\n\n\n\nOur objective is to:\n\n\n\nMinimize the electricity supply cost while satisfying the demand and adhering to the production capacity.\n\n\n. . .\nQuestion: What could be our decision variable/s?",
+    "crumbs": [
+      "05 Dispatch",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-05/lecture-dispatch.html#decision-variables-1",
+    "href": "part-05/lecture-dispatch.html#decision-variables-1",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Decision Variables",
+    "text": "Decision Variables\n\n\\(p_g\\) - Power output of thermal generator \\(g\\in\\mathcal{G}\\)\n\\(p_w\\) - Power injection of wind turbine \\(w\\in\\mathcal{W}\\)",
+    "crumbs": [
+      "05 Dispatch",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-05/lecture-dispatch.html#objective-function",
+    "href": "part-05/lecture-dispatch.html#objective-function",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Objective Function?",
+    "text": "Objective Function?\n\n\n\n\n\n\nOur objective is to:\n\n\n\nMinimize the electricity supply cost while satisfying the demand and adhering to the production capacity.\n\n\n. . .\nQuestion: What could be our objective function?\n. . .\n\n\n\n\n\n\nWe need the following variables:\n\n\n\n\n\\(p_g\\) - Power output of thermal generator \\(g\\in\\mathcal{G}\\)\n\\(p_w\\) - Power injection of wind turbine \\(w\\in\\mathcal{W}\\)",
+    "crumbs": [
+      "05 Dispatch",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-05/lecture-dispatch.html#objective-function-1",
+    "href": "part-05/lecture-dispatch.html#objective-function-1",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Objective Function",
+    "text": "Objective Function\n\n\n\n\n\n\nWe need the following parameters:\n\n\n\n\n\\(c^{var}_g\\) - Cost of thermal generator \\(g\\in\\mathcal{G}\\) in [€/]\n\\(c^{var}_w\\) - Cost of wind turbine \\(w\\in\\mathcal{W}\\) in [€/]\n\n\n\n. . .\n\\(\\text{Minimize} \\quad \\sum_{g=1}^{\\mathcal{G}} (c^{var}_g p_g) + \\sum_{w=1}^{\\mathcal{W}} (c^{var}_w p_w)\\)",
+    "crumbs": [
+      "05 Dispatch",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-05/lecture-dispatch.html#constraints-1",
+    "href": "part-05/lecture-dispatch.html#constraints-1",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Constraints",
+    "text": "Constraints\n\n\n\n\nQuestion: What constraints?\n\n\ngenerator limits\nrenewable power injection\nFulfill the power demand while maintaining power balance",
+    "crumbs": [
+      "05 Dispatch",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-05/lecture-dispatch.html#generator-limits-constraints",
+    "href": "part-05/lecture-dispatch.html#generator-limits-constraints",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Generator Limits Constraints?",
+    "text": "Generator Limits Constraints?\n\n\n\n\n\n\nThe goal of these constraints is to:\n\n\n\nMinimum and maximum power limits the power output of generators.\n\n\n. . .\n\n\n\n\n\n\nWe need the following variables and parameters:\n\n\n\n\n\\(p_g\\) - Power output of thermal generator \\(g\\in\\mathcal{G}\\)\n\\(p^{\\min}_g\\) - Minimum power output of thermal generator \\(g\\in\\mathcal{G}\\) in [MW]\n\\(p^{\\max}_g\\) - Maximum power output of thermal generator \\(g\\in\\mathcal{G}\\) in [MW]\n\n\n\n. . .\nQuestion: What could the constraint look like?",
+    "crumbs": [
+      "05 Dispatch",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-05/lecture-dispatch.html#generator-limits-constraints-1",
+    "href": "part-05/lecture-dispatch.html#generator-limits-constraints-1",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Generator Limits Constraints",
+    "text": "Generator Limits Constraints\n\\(p^{\\min}_g \\leq p_g \\leq p^{\\max}_g \\quad \\forall g\\in\\mathcal{G}\\)\n. . .\n\n\n\n\n\n\nRemember, these are the variables and parameters:\n\n\n\n\n\\(p_g\\) - Power output of thermal generator \\(g\\in\\mathcal{G}\\)\n\\(p^{\\min}_g\\) - Minimum power output of thermal generator \\(g\\in\\mathcal{G}\\) in [MW]\n\\(p^{\\max}_g\\) - Maximum power output of thermal generator \\(g\\in\\mathcal{G}\\) in [MW]\n\n\n\n. . .\nQuestion: What does \\(\\forall g\\in\\mathcal{G}\\) mean?",
+    "crumbs": [
+      "05 Dispatch",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-05/lecture-dispatch.html#renewable-power-injection-constraints",
+    "href": "part-05/lecture-dispatch.html#renewable-power-injection-constraints",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Renewable Power Injection Constraints?",
+    "text": "Renewable Power Injection Constraints?\n\n\n\n\n\n\nThe goal of these constraints is to:\n\n\n\nRenewable power injection into the grid or power balance is limited by the renewable power forecast, e.g. wind power.\n\n\n. . .\n\n\n\n\n\n\nWe need the following variables and parameters:\n\n\n\n\n\\(p_w\\) - Power injection of wind turbine \\(w\\in\\mathcal{W}\\)\n\\(p^{f}_w\\) - Forecasted power output of wind turbine \\(w\\in\\mathcal{W}\\) in [MW]\n\n\n\n. . .\nQuestion: What could the second constraint be?",
+    "crumbs": [
+      "05 Dispatch",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-05/lecture-dispatch.html#wind-power-injection-constraints",
+    "href": "part-05/lecture-dispatch.html#wind-power-injection-constraints",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Wind Power Injection Constraints",
+    "text": "Wind Power Injection Constraints\n\\(0 \\leq p_w \\leq p^f_w \\quad \\forall w\\in\\mathcal{W}\\)\n:::\n. . .\nQuestion: What kind of constraint is this? Think about what is limited.",
+    "crumbs": [
+      "05 Dispatch",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-05/lecture-dispatch.html#power-balance-constraints",
+    "href": "part-05/lecture-dispatch.html#power-balance-constraints",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Power Balance Constraints?",
+    "text": "Power Balance Constraints?\n\n\n\n\n\n\nThe goal of these constraints is to:\n\n\n\nMaintain that produced and consumed power in the system is equal.\n\n\n. . .\n\n\n\n\n\n\nWe need the following variables and parameters:\n\n\n\n\n\\(p_g\\) - Power output of thermal generator \\(g\\in\\mathcal{G}\\)\n\\(p_w\\) - Power injection of wind turbine \\(w\\in\\mathcal{W}\\)\n\\(d^f\\) - Forecasted demand in [MW]",
+    "crumbs": [
+      "05 Dispatch",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-05/lecture-dispatch.html#power-balance-constraints-1",
+    "href": "part-05/lecture-dispatch.html#power-balance-constraints-1",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Power Balance Constraints",
+    "text": "Power Balance Constraints\n\\[\\sum_{g=1}^{\\mathcal{G}} p_g + \\sum_{w=1}^{\\mathcal{W}} p_w = d^f\\]\n. . .\nAnd that’s basically it!",
+    "crumbs": [
+      "05 Dispatch",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-05/lecture-dispatch.html#economic-dispatch-objective-function",
+    "href": "part-05/lecture-dispatch.html#economic-dispatch-objective-function",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Economic Dispatch: Objective Function",
+    "text": "Economic Dispatch: Objective Function\n\\(\\text{Minimize} \\quad \\sum_{g=1}^{\\mathcal{G}} (c^{var}_g p_g) + \\sum_{w=1}^{\\mathcal{W}} (c^{var}_w p_w)\\)\n\n\n\n\n\n\nThe goal of the objective function and model is to:\n\n\n\nMinimize the electricity supply cost while satisfying the demand and adhering to the production capacity.",
+    "crumbs": [
+      "05 Dispatch",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-05/lecture-dispatch.html#economic-dispatch-constraints",
+    "href": "part-05/lecture-dispatch.html#economic-dispatch-constraints",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Economic Dispatch: Constraints",
+    "text": "Economic Dispatch: Constraints\n\\(p^{\\min}_g \\leq p_g \\leq p^{\\max}_g \\quad \\forall g\\in\\mathcal{G}\\)$\n\\(0 \\leq p_w \\leq p^f_w \\quad \\forall w\\in\\mathcal{W}\\)$\n\\(\\sum_{g=1}^{\\mathcal{G}} p_g + \\sum_{w=1}^{\\mathcal{W}} p_w = d^f\\)$\n\n\n\n\n\n\nOur constraints ensure:\n\n\n\nGenerator limits are respected, wind power is bounded by forecast, and power balance is maintained.",
+    "crumbs": [
+      "05 Dispatch",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-05/lecture-dispatch.html#economic-dispatch-variable-domains",
+    "href": "part-05/lecture-dispatch.html#economic-dispatch-variable-domains",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Economic Dispatch: Variable Domains",
+    "text": "Economic Dispatch: Variable Domains\n\\(p_g \\geq 0 \\quad \\forall g\\in\\mathcal{G}\\)\n\\(p_w \\geq 0 \\quad \\forall w\\in\\mathcal{W}\\)\n\n\n\n\n\n\nThe variable domains make sure that:\n\n\n\nAll power outputs are non-negative.\n\n\n. . .\nQuestion: Are these necessary?",
+    "crumbs": [
+      "05 Dispatch",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-05/lecture-dispatch.html#economic-dispatch-complete-model",
+    "href": "part-05/lecture-dispatch.html#economic-dispatch-complete-model",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Economic Dispatch: Complete Model",
+    "text": "Economic Dispatch: Complete Model\n\\(\\text{Minimize} \\quad \\sum_{g=1}^{\\mathcal{G}} (c^{var}_g p_g) + \\sum_{w=1}^{\\mathcal{W}} (c^{var}_w p_w)\\)\nsubject to\n\\(\\sum_{g=1}^{\\mathcal{G}} p_g + \\sum_{w=1}^{\\mathcal{W}} p_w = d^f\\)\n\\(p^{\\min}_g \\leq p_g \\leq p^{\\max}_g \\quad \\forall g\\in\\mathcal{G}\\)\n\\(0 \\leq p_w \\leq p^f_w \\quad \\forall w\\in\\mathcal{W}\\)",
+    "crumbs": [
+      "05 Dispatch",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-05/lecture-dispatch.html#some-basics",
+    "href": "part-05/lecture-dispatch.html#some-basics",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Some Basics",
+    "text": "Some Basics\nThere exist several types of optimization problems:\n\n\nLinear (LP): Linear constraints and objective function\nMixed-integer (MIP): Linear constraints and objective function, but discrete variable domains\nQuadratic (QP): Quadratic constraints and/or objective\nNon-linear (NLP): Non-linear constraints and/or objective\nAnd more!",
+    "crumbs": [
+      "05 Dispatch",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-05/lecture-dispatch.html#solution-algorithms",
+    "href": "part-05/lecture-dispatch.html#solution-algorithms",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Solution Algorithms",
+    "text": "Solution Algorithms\n\n\nSimplex algorithm to solve LPs\nBranch & Bound to solve MIPs\nOuter-Approximation for mixed-integer NLPs\nMath-Heuristics (e.g., Fix-and-Optimize, Tabu-Search, …)\nDecomposition methods (Lagrange, Benders, …)\nHeuristics (greedy, construction method, n-opt, …)\nGraph theoretical methods (network flow, shortest path)",
+    "crumbs": [
+      "05 Dispatch",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-05/lecture-dispatch.html#model-characteristics-1",
+    "href": "part-05/lecture-dispatch.html#model-characteristics-1",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Model Characteristics",
+    "text": "Model Characteristics\nQuestions: On model characteristics\n\n\nIs the model formulation linear/ non-linear?\nWhat kind of variable domains do we have?\nWhat kind of solution algorithm could we use?",
+    "crumbs": [
+      "05 Dispatch",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-05/lecture-dispatch.html#model-assumptions",
+    "href": "part-05/lecture-dispatch.html#model-assumptions",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Model Assumptions",
+    "text": "Model Assumptions\nQuestions: On model assumptions\n\n\nWhat assumptions have we made?\nWhat is the problem with the generator production and power balance?\nAny idea how to solve it?",
+    "crumbs": [
+      "05 Dispatch",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-05/lecture-dispatch.html#section-1",
+    "href": "part-05/lecture-dispatch.html#section-1",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "",
+    "text": "Can this be applied?",
+    "crumbs": [
+      "05 Dispatch",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-05/lecture-dispatch.html#utility-companies",
+    "href": "part-05/lecture-dispatch.html#utility-companies",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Utility companies",
+    "text": "Utility companies\nThe ED problem is the smallest and simplest form of operational planning every utility company has to perform.",
+    "crumbs": [
+      "05 Dispatch",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-05/lecture-dispatch.html#what-are-further-considerations-to-make",
+    "href": "part-05/lecture-dispatch.html#what-are-further-considerations-to-make",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "What are further considerations to make?",
+    "text": "What are further considerations to make?\n\non/off status of system components -&gt; unit commitment (UC) problem\nefficiency losses\nramp rates\nminimum up- and downtimes\nstorages -&gt; multiple timesteps\nuncertainty in forecasts",
+    "crumbs": [
+      "05 Dispatch",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-05/lecture-dispatch.html#section-2",
+    "href": "part-05/lecture-dispatch.html#section-2",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "",
+    "text": "Any idea how to\nadapt the ED to UC?",
+    "crumbs": [
+      "05 Dispatch",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-05/lecture-dispatch.html#power-system-basic-models-unit-commitment",
+    "href": "part-05/lecture-dispatch.html#power-system-basic-models-unit-commitment",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Power System Basic Models: Unit Commitment",
+    "text": "Power System Basic Models: Unit Commitment\n\nconsiders binary decisions if a unit, e.g., thermal generator, in the power system is switched on or off\ndecision are made over a time horizon, which means that variables are also indexed by timesteps.\n\nWe will cover the unit commitment problem in the next lecture.\n. . .\n\n\n\n\n\n\nAnd that’s it for todays lecture!\n\n\n\nWe now have covered the basics of the ED and are ready to start solving some tasks in the upcoming tutorial.",
+    "crumbs": [
+      "05 Dispatch",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-05/lecture-dispatch.html#section-3",
+    "href": "part-05/lecture-dispatch.html#section-3",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "",
+    "text": "Questions?",
+    "crumbs": [
+      "05 Dispatch",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-05/lecture-dispatch.html#literature-i",
+    "href": "part-05/lecture-dispatch.html#literature-i",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Literature I",
+    "text": "Literature I\nFor more interesting literature to learn more about Julia, take a look at the literature list of this course.",
+    "crumbs": [
+      "05 Dispatch",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-05/lecture-dispatch.html#literature-ii",
+    "href": "part-05/lecture-dispatch.html#literature-ii",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Literature II",
+    "text": "Literature II",
+    "crumbs": [
+      "05 Dispatch",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-05/lecture-presentation.html#jump",
+    "href": "part-05/lecture-presentation.html#jump",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "JuMP",
+    "text": "JuMP\n\nJuMP is a package for modeling optimization problems in Julia\nIt allows you to describe optimization problems in a way that is easy to understand and solve\nIt is a powerful tool for modeling and solving optimization problems\n\n\n\n\n\n\n\n\nTip\n\n\nUse meaningful variable names and comments to make your model easier to understand."
+  },
+  {
+    "objectID": "part-05/lecture-presentation.html#bounds",
+    "href": "part-05/lecture-presentation.html#bounds",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Bounds",
+    "text": "Bounds\n\nVariables in optimization models often need upper and lower bounds\nBounds can be set when declaring variables or added later as constraints\nCommon bounds include non-negativity (\\(\\leq 0\\)) and capacity limits"
+  },
+  {
+    "objectID": "part-05/lecture-presentation.html#constraints",
+    "href": "part-05/lecture-presentation.html#constraints",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Constraints",
+    "text": "Constraints\n\nConstraints define the feasible region of the optimization problem\nCan be equality (\\(=\\)) or inequality (\\(\\geq, \\leq\\)) constraints\nMultiple constraints can be added using loops or array comprehensions\n\n\n\n\n\n\n\n\nTip\n\n\nConditional constraints allow flexible and dynamic model formulations reflecting conditions and dependencies in the constraint application."
+  },
+  {
+    "objectID": "part-05/lecture-presentation.html#solver",
+    "href": "part-05/lecture-presentation.html#solver",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Solver",
+    "text": "Solver\n\nJuMP supports many different solvers like HiGHS, GLPK, Gurobi\nSolvers are specialized for different problem types (LP, MIP, NLP)\nCan set solver parameters to control solution process"
+  },
+  {
+    "objectID": "part-05/lecture-presentation.html#model-setup",
+    "href": "part-05/lecture-presentation.html#model-setup",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Model Setup",
+    "text": "Model Setup\n\nStart by creating a model with Model()\nAdd variables, objective function, and constraints\nCall optimize!() to solve the model\nAccess results through solution queries\n\n\n\n\n\n\n\n\nTip\n\n\nAlways check the solution status before using the results to ensure the model solved successfully."
+  },
+  {
+    "objectID": "part-05/lecture-presentation.html#solutions-from-last-week",
+    "href": "part-05/lecture-presentation.html#solutions-from-last-week",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Solutions from last Week",
+    "text": "Solutions from last Week\n\nThe tutorials from last week will again be available on Friday\nYou can access them in the project folder on Github\nClick on the little cat icon on the bottom right\n\n\n\n\n\n\n\n\nTip\n\n\nYou can ask questions anytime in class or via email!"
+  },
+  {
+    "objectID": "part-05/lecture-presentation.html#power-system-basic-models-economic-dispatch",
+    "href": "part-05/lecture-presentation.html#power-system-basic-models-economic-dispatch",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Power System Basic Models: Economic Dispatch",
+    "text": "Power System Basic Models: Economic Dispatch\n\n\n\n\n\nPower system system with generators and an aggregated demand\n\nGenerators have to be dispatched to meet the demand at an infinitesimal moment\nGenerators have different costs and operational constraints\n\nObjective: Minimize the cost of producing electricity\nConstraints in the simplest case:\n\nDemand must be met\nGenerators have limits on their power output\nRenewable power injection\n\nDecision variables:\n\nPower output of thermal generators\nPower output of renewables, e.g. wind"
+  },
+  {
+    "objectID": "part-05/lecture-presentation.html#section",
+    "href": "part-05/lecture-presentation.html#section",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "",
+    "text": "How does the mathematical model look like?"
+  },
+  {
+    "objectID": "part-05/lecture-presentation.html#objective",
+    "href": "part-05/lecture-presentation.html#objective",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Objective",
+    "text": "Objective\n\n\n\n\nQuestion: What could be the objective?\nMinimize the electricity supply cost while satisfying the demand and adhering to the production capacity."
+  },
+  {
+    "objectID": "part-05/lecture-presentation.html#available-sets",
+    "href": "part-05/lecture-presentation.html#available-sets",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Available Sets",
+    "text": "Available Sets\nQuestion: What are sets again?\n\nSets are collections of objects.\n\n\nQuestion: What could be the sets here?\n\n\n\n\\(\\mathcal{G}\\) - Set of thermal generators indexed by \\(g \\in \\{1,2,...,|\\mathcal{G}|\\}\\)\n\\(\\mathcal{W}\\) - Set of wind turbines indexed by \\(w \\in \\{1,2,...,|\\mathcal{W}|\\}\\)"
+  },
+  {
+    "objectID": "part-05/lecture-presentation.html#available-parameters",
+    "href": "part-05/lecture-presentation.html#available-parameters",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Available Parameters",
+    "text": "Available Parameters\nQuestion: What are possible parameters?\n\n\n\\(c^{var}_g\\) - Cost of thermal generator \\(g\\in\\mathcal{G}\\) in [\\(EUR/\\text{MWh}\\)]\n\\(c^{var}_w\\) - Cost of wind turbine \\(w\\in\\mathcal{W}\\) in [\\(EUR/\\text{MWh}\\)]\n\\(p^{\\min}_g\\) - Minimum power output of thermal generator \\(g\\in\\mathcal{G}\\) in [MW]\n\\(p^{\\max}_g\\) - Maximum power output of thermal generator \\(g\\in\\mathcal{G}\\) in [MW]\n\\(p^{f}_w\\) - Forecasted power output of wind turbine \\(w\\in\\mathcal{W}\\) in [MW]\n\\(d^f\\) - Forecasted demand in [MW]"
+  },
+  {
+    "objectID": "part-05/lecture-presentation.html#decision-variables",
+    "href": "part-05/lecture-presentation.html#decision-variables",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Decision Variables?",
+    "text": "Decision Variables?\n\n\n\n\n\n\nWe have the following sets:\n\n\n\nThermal generators indexed by \\(g \\in \\{1,2,...,|\\mathcal{G}|\\}\\)\nWind turbines indexed by \\(w \\in \\{1,2,...,|\\mathcal{W}|\\}\\)\n\n\n\n\n\n\n\n\n\n\n\nOur objective is to:\n\n\nMinimize the electricity supply cost while satisfying the demand and adhering to the production capacity.\n\n\n\n\n\nQuestion: What could be our decision variable/s?"
+  },
+  {
+    "objectID": "part-05/lecture-presentation.html#decision-variables-1",
+    "href": "part-05/lecture-presentation.html#decision-variables-1",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Decision Variables",
+    "text": "Decision Variables\n\n\\(p_g\\) - Power output of thermal generator \\(g\\in\\mathcal{G}\\)\n\\(p_w\\) - Power injection of wind turbine \\(w\\in\\mathcal{W}\\)"
+  },
+  {
+    "objectID": "part-05/lecture-presentation.html#objective-function",
+    "href": "part-05/lecture-presentation.html#objective-function",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Objective Function?",
+    "text": "Objective Function?\n\n\n\n\n\n\nOur objective is to:\n\n\nMinimize the electricity supply cost while satisfying the demand and adhering to the production capacity.\n\n\n\n\nQuestion: What could be our objective function?\n\n\n\n\n\n\n\n\nWe need the following variables:\n\n\n\n\\(p_g\\) - Power output of thermal generator \\(g\\in\\mathcal{G}\\)\n\\(p_w\\) - Power injection of wind turbine \\(w\\in\\mathcal{W}\\)"
+  },
+  {
+    "objectID": "part-05/lecture-presentation.html#objective-function-1",
+    "href": "part-05/lecture-presentation.html#objective-function-1",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Objective Function",
+    "text": "Objective Function\n\n\n\n\n\n\nWe need the following parameters:\n\n\n\n\\(c^{var}_g\\) - Cost of thermal generator \\(g\\in\\mathcal{G}\\) in [€/]\n\\(c^{var}_w\\) - Cost of wind turbine \\(w\\in\\mathcal{W}\\) in [€/]\n\n\n\n\n\n\\(\\text{Minimize} \\quad \\sum_{g=1}^{\\mathcal{G}} (c^{var}_g p_g) + \\sum_{w=1}^{\\mathcal{W}} (c^{var}_w p_w)\\)"
+  },
+  {
+    "objectID": "part-05/lecture-presentation.html#constraints-1",
+    "href": "part-05/lecture-presentation.html#constraints-1",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Constraints",
+    "text": "Constraints\n\n\n\n\nQuestion: What constraints?\n\n\ngenerator limits\nrenewable power injection\nFulfill the power demand while maintaining power balance"
+  },
+  {
+    "objectID": "part-05/lecture-presentation.html#generator-limits-constraints",
+    "href": "part-05/lecture-presentation.html#generator-limits-constraints",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Generator Limits Constraints?",
+    "text": "Generator Limits Constraints?\n\n\n\n\n\n\nThe goal of these constraints is to:\n\n\nMinimum and maximum power limits the power output of generators.\n\n\n\n\n\n\n\n\n\n\nWe need the following variables and parameters:\n\n\n\n\\(p_g\\) - Power output of thermal generator \\(g\\in\\mathcal{G}\\)\n\\(p^{\\min}_g\\) - Minimum power output of thermal generator \\(g\\in\\mathcal{G}\\) in [MW]\n\\(p^{\\max}_g\\) - Maximum power output of thermal generator \\(g\\in\\mathcal{G}\\) in [MW]\n\n\n\n\n\n\nQuestion: What could the constraint look like?"
+  },
+  {
+    "objectID": "part-05/lecture-presentation.html#generator-limits-constraints-1",
+    "href": "part-05/lecture-presentation.html#generator-limits-constraints-1",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Generator Limits Constraints",
+    "text": "Generator Limits Constraints\n\\(p^{\\min}_g \\leq p_g \\leq p^{\\max}_g \\quad \\forall g\\in\\mathcal{G}\\)\n\n\n\n\n\n\n\nRemember, these are the variables and parameters:\n\n\n\n\\(p_g\\) - Power output of thermal generator \\(g\\in\\mathcal{G}\\)\n\\(p^{\\min}_g\\) - Minimum power output of thermal generator \\(g\\in\\mathcal{G}\\) in [MW]\n\\(p^{\\max}_g\\) - Maximum power output of thermal generator \\(g\\in\\mathcal{G}\\) in [MW]\n\n\n\n\n\n\nQuestion: What does \\(\\forall g\\in\\mathcal{G}\\) mean?"
+  },
+  {
+    "objectID": "part-05/lecture-presentation.html#renewable-power-injection-constraints",
+    "href": "part-05/lecture-presentation.html#renewable-power-injection-constraints",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Renewable Power Injection Constraints?",
+    "text": "Renewable Power Injection Constraints?\n\n\n\n\n\n\nThe goal of these constraints is to:\n\n\nRenewable power injection into the grid or power balance is limited by the renewable power forecast, e.g. wind power.\n\n\n\n\n\n\n\n\n\n\nWe need the following variables and parameters:\n\n\n\n\\(p_w\\) - Power injection of wind turbine \\(w\\in\\mathcal{W}\\)\n\\(p^{f}_w\\) - Forecasted power output of wind turbine \\(w\\in\\mathcal{W}\\) in [MW]\n\n\n\n\n\n\nQuestion: What could the second constraint be?"
+  },
+  {
+    "objectID": "part-05/lecture-presentation.html#wind-power-injection-constraints",
+    "href": "part-05/lecture-presentation.html#wind-power-injection-constraints",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Wind Power Injection Constraints",
+    "text": "Wind Power Injection Constraints\n\\(0 \\leq p_w \\leq p^f_w \\quad \\forall w\\in\\mathcal{W}\\)\n:::\n\nQuestion: What kind of constraint is this? Think about what is limited."
+  },
+  {
+    "objectID": "part-05/lecture-presentation.html#power-balance-constraints",
+    "href": "part-05/lecture-presentation.html#power-balance-constraints",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Power Balance Constraints?",
+    "text": "Power Balance Constraints?\n\n\n\n\n\n\nThe goal of these constraints is to:\n\n\nMaintain that produced and consumed power in the system is equal.\n\n\n\n\n\n\n\n\n\n\nWe need the following variables and parameters:\n\n\n\n\\(p_g\\) - Power output of thermal generator \\(g\\in\\mathcal{G}\\)\n\\(p_w\\) - Power injection of wind turbine \\(w\\in\\mathcal{W}\\)\n\\(d^f\\) - Forecasted demand in [MW]"
+  },
+  {
+    "objectID": "part-05/lecture-presentation.html#power-balance-constraints-1",
+    "href": "part-05/lecture-presentation.html#power-balance-constraints-1",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Power Balance Constraints",
+    "text": "Power Balance Constraints\n\\[\\sum_{g=1}^{\\mathcal{G}} p_g + \\sum_{w=1}^{\\mathcal{W}} p_w = d^f\\]\n\nAnd that’s basically it!"
+  },
+  {
+    "objectID": "part-05/lecture-presentation.html#economic-dispatch-objective-function",
+    "href": "part-05/lecture-presentation.html#economic-dispatch-objective-function",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Economic Dispatch: Objective Function",
+    "text": "Economic Dispatch: Objective Function\n\\(\\text{Minimize} \\quad \\sum_{g=1}^{\\mathcal{G}} (c^{var}_g p_g) + \\sum_{w=1}^{\\mathcal{W}} (c^{var}_w p_w)\\)\n\n\n\n\n\n\nThe goal of the objective function and model is to:\n\n\nMinimize the electricity supply cost while satisfying the demand and adhering to the production capacity."
+  },
+  {
+    "objectID": "part-05/lecture-presentation.html#economic-dispatch-constraints",
+    "href": "part-05/lecture-presentation.html#economic-dispatch-constraints",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Economic Dispatch: Constraints",
+    "text": "Economic Dispatch: Constraints\n\\(p^{\\min}_g \\leq p_g \\leq p^{\\max}_g \\quad \\forall g\\in\\mathcal{G}\\)$\n\\(0 \\leq p_w \\leq p^f_w \\quad \\forall w\\in\\mathcal{W}\\)$\n\\(\\sum_{g=1}^{\\mathcal{G}} p_g + \\sum_{w=1}^{\\mathcal{W}} p_w = d^f\\)$\n\n\n\n\n\n\nOur constraints ensure:\n\n\nGenerator limits are respected, wind power is bounded by forecast, and power balance is maintained."
+  },
+  {
+    "objectID": "part-05/lecture-presentation.html#economic-dispatch-variable-domains",
+    "href": "part-05/lecture-presentation.html#economic-dispatch-variable-domains",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Economic Dispatch: Variable Domains",
+    "text": "Economic Dispatch: Variable Domains\n\\(p_g \\geq 0 \\quad \\forall g\\in\\mathcal{G}\\)\n\\(p_w \\geq 0 \\quad \\forall w\\in\\mathcal{W}\\)\n\n\n\n\n\n\nThe variable domains make sure that:\n\n\nAll power outputs are non-negative.\n\n\n\n\nQuestion: Are these necessary?"
+  },
+  {
+    "objectID": "part-05/lecture-presentation.html#economic-dispatch-complete-model",
+    "href": "part-05/lecture-presentation.html#economic-dispatch-complete-model",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Economic Dispatch: Complete Model",
+    "text": "Economic Dispatch: Complete Model\n\\(\\text{Minimize} \\quad \\sum_{g=1}^{\\mathcal{G}} (c^{var}_g p_g) + \\sum_{w=1}^{\\mathcal{W}} (c^{var}_w p_w)\\)\nsubject to\n\\(\\sum_{g=1}^{\\mathcal{G}} p_g + \\sum_{w=1}^{\\mathcal{W}} p_w = d^f\\)\n\\(p^{\\min}_g \\leq p_g \\leq p^{\\max}_g \\quad \\forall g\\in\\mathcal{G}\\)\n\\(0 \\leq p_w \\leq p^f_w \\quad \\forall w\\in\\mathcal{W}\\)"
+  },
+  {
+    "objectID": "part-05/lecture-presentation.html#some-basics",
+    "href": "part-05/lecture-presentation.html#some-basics",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Some Basics",
+    "text": "Some Basics\nThere exist several types of optimization problems:\n\n\nLinear (LP): Linear constraints and objective function\nMixed-integer (MIP): Linear constraints and objective function, but discrete variable domains\nQuadratic (QP): Quadratic constraints and/or objective\nNon-linear (NLP): Non-linear constraints and/or objective\nAnd more!"
+  },
+  {
+    "objectID": "part-05/lecture-presentation.html#solution-algorithms",
+    "href": "part-05/lecture-presentation.html#solution-algorithms",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Solution Algorithms",
+    "text": "Solution Algorithms\n\n\nSimplex algorithm to solve LPs\nBranch & Bound to solve MIPs\nOuter-Approximation for mixed-integer NLPs\nMath-Heuristics (e.g., Fix-and-Optimize, Tabu-Search, …)\nDecomposition methods (Lagrange, Benders, …)\nHeuristics (greedy, construction method, n-opt, …)\nGraph theoretical methods (network flow, shortest path)"
+  },
+  {
+    "objectID": "part-05/lecture-presentation.html#model-characteristics-1",
+    "href": "part-05/lecture-presentation.html#model-characteristics-1",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Model Characteristics",
+    "text": "Model Characteristics\nQuestions: On model characteristics\n\n\nIs the model formulation linear/ non-linear?\nWhat kind of variable domains do we have?\nWhat kind of solution algorithm could we use?"
+  },
+  {
+    "objectID": "part-05/lecture-presentation.html#model-assumptions",
+    "href": "part-05/lecture-presentation.html#model-assumptions",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Model Assumptions",
+    "text": "Model Assumptions\nQuestions: On model assumptions\n\n\nWhat assumptions have we made?\nWhat is the problem with the generator production and power balance?\nAny idea how to solve it?"
+  },
+  {
+    "objectID": "part-05/lecture-presentation.html#section-1",
+    "href": "part-05/lecture-presentation.html#section-1",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "",
+    "text": "Can this be applied?"
+  },
+  {
+    "objectID": "part-05/lecture-presentation.html#utility-companies",
+    "href": "part-05/lecture-presentation.html#utility-companies",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Utility companies",
+    "text": "Utility companies\nThe ED problem is the smallest and simplest form of operational planning every utility company has to perform."
+  },
+  {
+    "objectID": "part-05/lecture-presentation.html#what-are-further-considerations-to-make",
+    "href": "part-05/lecture-presentation.html#what-are-further-considerations-to-make",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "What are further considerations to make?",
+    "text": "What are further considerations to make?\n\non/off status of system components -&gt; unit commitment (UC) problem\nefficiency losses\nramp rates\nminimum up- and downtimes\nstorages -&gt; multiple timesteps\nuncertainty in forecasts"
+  },
+  {
+    "objectID": "part-05/lecture-presentation.html#section-2",
+    "href": "part-05/lecture-presentation.html#section-2",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "",
+    "text": "Any idea how to\nadapt the ED to UC?"
+  },
+  {
+    "objectID": "part-05/lecture-presentation.html#power-system-basic-models-unit-commitment",
+    "href": "part-05/lecture-presentation.html#power-system-basic-models-unit-commitment",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Power System Basic Models: Unit Commitment",
+    "text": "Power System Basic Models: Unit Commitment\n\nconsiders binary decisions if a unit, e.g., thermal generator, in the power system is switched on or off\ndecision are made over a time horizon, which means that variables are also indexed by timesteps.\n\nWe will cover the unit commitment problem in the next lecture.\n\n\n\n\n\n\n\nAnd that’s it for todays lecture!\n\n\nWe now have covered the basics of the ED and are ready to start solving some tasks in the upcoming tutorial."
+  },
+  {
+    "objectID": "part-05/lecture-presentation.html#section-3",
+    "href": "part-05/lecture-presentation.html#section-3",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "",
+    "text": "Questions?"
+  },
+  {
+    "objectID": "part-05/lecture-presentation.html#literature-i",
+    "href": "part-05/lecture-presentation.html#literature-i",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Literature I",
+    "text": "Literature I\nFor more interesting literature to learn more about Julia, take a look at the literature list of this course."
+  },
+  {
+    "objectID": "part-05/lecture-presentation.html#literature-ii",
+    "href": "part-05/lecture-presentation.html#literature-ii",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Literature II",
+    "text": "Literature II"
+  },
+  {
+    "objectID": "part-05/lecture-dispatch.html#economic-dispatch-problem",
+    "href": "part-05/lecture-dispatch.html#economic-dispatch-problem",
+    "title": "Lecture V - Economic Dispatch Problem",
+    "section": "Economic Dispatch Problem",
+    "text": "Economic Dispatch Problem\n\nObjective: Minimize the cost of producing electricity\nConstraints in the simplest case:\n\nDemand must be met\nGenerators have limits on their power output\nRenewable power injection\n\nDecision variables:\n\nPower output of thermal generators\nPower output of renewables, e.g. wind",
+    "crumbs": [
+      "05 Dispatch",
+      "Lecture"
+    ]
   }
 ]

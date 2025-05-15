@@ -305,18 +305,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
       </ul>
   </li>
-        <li class="sidebar-item">
- <span class="menu-text">***</span>
-  </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
- <span class="menu-text">Cheatsheets</span></a>
+ <span class="menu-text">05 Production</span></a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../part-05/lecture-production.qmd" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+ <span class="menu-text">***</span>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
+ <span class="menu-text">Cheatsheets</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../general/cheatsheet-julia.html" class="sidebar-item-text sidebar-link">
@@ -384,7 +401,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../part-04/lecture-jump.html">04 Optimization</a></li><li class="breadcrumb-item"><a href="../part-04/tutorial-04-05-transport.html">05 - Transport</a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title">Tutorial IV.V - Modelling the Transportation Problem with JuMP</h1>
-<p class="subtitle lead">Applied Optimization with Julia</p>
+<p class="subtitle lead">Energy System Optimization with Julia</p>
 </div>
 
 
@@ -417,18 +434,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrames</span>, <span class="bu">CSV</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Precompiling JuMP...
-    532.6 ms  ✓ BenchmarkTools
-  25357.2 ms  ✓ MathOptInterface
-   7068.9 ms  ✓ JuMP
-  3 dependencies successfully precompiled in 33 seconds. 53 already precompiled.
+    548.1 ms  ✓ BenchmarkTools
+  14741.9 ms  ✓ MathOptInterface
+   6864.6 ms  ✓ JuMP
+  3 dependencies successfully precompiled in 22 seconds. 48 already precompiled.
 Precompiling HiGHS...
-   5244.1 ms  ✓ HiGHS
-  1 dependency successfully precompiled in 5 seconds. 56 already precompiled.
+   5181.6 ms  ✓ HiGHS
+  1 dependency successfully precompiled in 5 seconds. 51 already precompiled.
 Precompiling DataFrames...
-  12573.2 ms  ✓ DataFrames
+  12877.0 ms  ✓ DataFrames
   1 dependency successfully precompiled in 13 seconds. 32 already precompiled.
 Precompiling QuartoNotebookWorkerDataFramesTablesExt...
-    879.0 ms  ✓ QuartoNotebookWorker → QuartoNotebookWorkerDataFramesTablesExt
+    944.0 ms  ✓ QuartoNotebookWorker → QuartoNotebookWorkerDataFramesTablesExt
   1 dependency successfully precompiled in 1 seconds. 54 already precompiled.</code></pre>
 </div>
 </div>
