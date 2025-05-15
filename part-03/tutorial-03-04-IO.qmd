@@ -1,6 +1,6 @@
 ---
 title: "Tutorial III.IV - Input and Output"
-subtitle: "Applied Optimization with Julia"
+subtitle: "Energy System Optimization with Julia"
 
 format:
     html:

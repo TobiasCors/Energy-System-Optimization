@@ -1,6 +1,6 @@
 ---
 title: "Tutorial II.I - Variables and Types"
-subtitle: "Applied Optimization with Julia"
+subtitle: "Energy System Optimization with Julia"
 
 format:
     html:

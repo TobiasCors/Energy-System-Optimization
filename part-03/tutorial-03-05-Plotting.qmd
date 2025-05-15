@@ -1,6 +1,6 @@
 ---
 title: "Tutorial III.III - DataFrames in Julia"
-subtitle: "Applied Optimization with Julia"
+subtitle: "Energy System Optimization with Julia"
 
 format:
     html:

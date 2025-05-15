@@ -1,6 +1,6 @@
 ---
 title: "Tutorial IV.I - Introduction to Mathematical Optimization with JuMP and HiGHS"
-subtitle: "Applied Optimization with Julia"
+subtitle: "Energy System Optimization with Julia"
 
 format:
     html:

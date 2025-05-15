@@ -1,6 +1,6 @@
 ---
 title: "Tutorial II.III - Comparison Operators"
-subtitle: "Applied Optimization with Julia"
+subtitle: "Energy System Optimization with Julia"
 
 format:
     html:

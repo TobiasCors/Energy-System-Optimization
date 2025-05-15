@@ -1,6 +1,6 @@
 ---
 title: "Tutorial IV.II - Variables and Bounds in JuMP"
-subtitle: "Applied Optimization with Julia"
+subtitle: "Energy System Optimization with Julia"
 
 format:
     html:
