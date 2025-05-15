@@ -1,0 +1,553 @@
+---
+title: "Lecture V - Economic Dispatch Problem"
+subtitle: "Energy System Optimization with Julia"
+author: "Dr. Tobias Cors"
+institute: "Hamburg University of Applied Science - Summer 2025"
+title-slide-attributes:
+    data-background-color: "#025259"
+html-math-method:
+  method: mathjax
+  url: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+
+format:
+    html:
+        theme: [litera, ../styles.scss]
+    revealjs:
+        theme: [default, ../styles.scss]
+        transition: slide
+        transition-speed: fast
+        highlight-style: arrow
+        slide-number: true
+        code-copy: true
+        code-link: true
+        preview-links: auto
+        footer: " {{< meta title >}} | {{< meta author >}} | [Home](lecture-jump.qmd)"
+        output-file: lecture-presentation.html
+
+bibliography: ../ESO-bib.bib
+
+engine: julia
+
+execute:
+    echo: true
+---
+
+# [Quick Recap from last Week]{.flow} {.title}
+
+## JuMP
+
+- JuMP is a package for modeling optimization problems in Julia
+- It allows you to describe optimization problems in a way that is easy to understand and solve
+- It is a powerful tool for modeling and solving optimization problems
+
+. . .
+
+::: {.callout-tip}
+Use meaningful variable names and comments to make your model easier to understand.
+:::
+
+## Bounds
+
+- Variables in optimization models often need upper and lower bounds
+- Bounds can be set when declaring variables or added later as constraints
+- Common bounds include non-negativity ($\leq 0$) and capacity limits
+
+## Constraints
+
+- Constraints define the feasible region of the optimization problem
+- Can be equality ($=$) or inequality ($\geq, \leq$) constraints
+- Multiple constraints can be added using loops or array comprehensions
+
+. . .
+
+::: {.callout-tip}
+Conditional constraints allow flexible and dynamic model formulations reflecting conditions and dependencies in the constraint application.
+:::
+
+## Solver
+
+- JuMP supports many different solvers like HiGHS, GLPK, Gurobi
+- Solvers are specialized for different problem types (LP, MIP, NLP)
+- Can set solver parameters to control solution process
+
+## Model Setup
+
+- Start by creating a model with `Model()`
+- Add variables, objective function, and constraints
+- Call `optimize!()` to solve the model
+- Access results through solution queries
+
+. . .
+
+::: {.callout-tip}
+Always check the solution status before using the results to ensure the model solved successfully.
+:::
+
+## Solutions from last Week
+
+- The tutorials from last week will again be [available on Friday]{.highlight}
+- You can access them in the project folder on Github
+- Click on the little cat icon on the bottom right
+
+. . .
+
+::: {.callout-tip}
+[You can ask questions anytime in class or via email!]{.highlight}
+:::
+
+
+# [Introduction]{.flow} {.title}
+
+## Power System Basic Models: Economic Dispatch
+
+::: {.columns}
+::: {.column width="40%"} 
+[![](https://images.unsplash.com/photo-1503427315916-2ba435dee667?q=80&w=2727&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D){width="90%"}](https://unsplash.com/){width="85%"}
+:::
+
+::: {.column width="60%"}
+- **Power system system with generators and an aggregated demand**
+    - Generators have to be dispatched to meet the demand at an infinitesimal moment
+    - Generators have different costs and operational constraints
+- **Objective**: Minimize the cost of producing electricity
+- **Constraints** in the simplest case: 
+    - Demand must be met
+    - Generators have limits on their power output
+    - Renewable power injection
+- **Decision variables**: 
+    - Power output of thermal generators
+    - Power output of renewables, e.g. wind
+:::
+:::
+
+
+## {.loud-slide}
+::: {.r-fit-text}
+How does the mathematical model look like?
+:::
+
+::: footer
+:::
+
+
+# [Problem Structure]{.flow} {.title}
+
+## Objective
+
+::: {.columns}
+::: {.column width="40%"}
+
+[![](https://images.unsplash.com/photo-1587127831640-7423ae037873?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D){width="40%"}](https://unsplash.com/)
+
+:::
+
+::: {.column width="60%"}
+[Question:]{.question} **What could be the objective?**
+
+[Minimize the electricity supply cost while satisfying the demand and adhering to the production capacity.]{.fragment}
+
+:::
+:::
+
+
+## Available Sets
+
+[Question:]{.question} **What are sets again?**
+
+. . .
+
+Sets are [collections of objects]{.highlight}.
+
+. . .
+
+[Question:]{.question} **What could be the sets here?**
+
+. . .
+
+- $\mathcal{G}$ - Set of thermal generators indexed by $g \in \{1,2,...,|\mathcal{G}|\}$
+- $\mathcal{W}$ - Set of wind turbines indexed by $w \in \{1,2,...,|\mathcal{W}|\}$
+
+
+## Available Parameters
+
+[Question:]{.question} **What are possible parameters?**
+
+. . .
+
+- $c^{var}_g$ - Cost of thermal generator $g\in\mathcal{G}$ in [\€/\text{MWh}]
+- $c^{var}_w$ - Cost of wind turbine $w\in\mathcal{W}$ in [\€/\text{MWh}]
+- $p^{\min}_g$ - Minimum power output of thermal generator $g\in\mathcal{G}$ in [MW]
+- $p^{\max}_g$ - Maximum power output of thermal generator $g\in\mathcal{G}$ in [MW]
+- $p^{f}_w$ - Forecasted power output of wind turbine $w\in\mathcal{W}$ in [MW]
+- $d^f$ - Forecasted demand in [MW]
+
+## Decision Variables?
+
+::: {.callout-note}
+## We have the following sets:
+- Thermal generators indexed by $g \in \{1,2,...,|\mathcal{G}|\}$
+- Wind turbines indexed by $w \in \{1,2,...,|\mathcal{W}|\}$
+:::
+
+. . .
+
+::: {.callout-important}
+## Our objective is to:
+Minimize the electricity supply cost while satisfying the demand and adhering to the production capacity.
+:::
+
+. . .
+
+[Question:]{.question} **What could be our decision variable/s?**
+
+## Decision Variables
+
+- $p_g$ - Power output of thermal generator $g\in\mathcal{G}$
+- $p_w$ - Power injection of wind turbine $w\in\mathcal{W}$
+
+# [Model Formulation]{.flow} {.title}
+
+## Objective Function?
+
+::: {.callout-important}
+## Our objective is to:
+
+Minimize the electricity supply cost while satisfying the demand and adhering to the production capacity.
+:::
+
+. . .
+
+[Question:]{.question} **What could be our objective function?**
+
+. . .
+
+::: {.callout-note}
+## We need the following variables:
+
+- $p_g$ - Power output of thermal generator $g\in\mathcal{G}$
+- $p_w$ - Power injection of wind turbine $w\in\mathcal{W}$
+
+:::
+
+
+## Objective Function
+
+::: {.callout-note}
+## We need the following parameters:
+
+- $c^{var}_g$ - Cost of thermal generator $g\in\mathcal{G}$ in [\€/\text{MWh}]
+- $c^{var}_w$ - Cost of wind turbine $w\in\mathcal{W}$ in [\€/\text{MWh}]
+
+:::
+
+. . .
+
+$$\text{Minimize} \quad \sum_{g=1}^{\mathcal{G}} (c^{var}_g p_g) + \sum_{w=1}^{\mathcal{W}} (c^{var}_w p_w)$$
+
+
+## Constraints
+
+::: {.columns}
+::: {.column width="40%"}
+
+[![](https://images.unsplash.com/photo-1587127831640-7423ae037873?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D){width="40%"}](https://unsplash.com/)
+
+:::
+
+::: {.column width="60%"}
+[Question:]{.question} **What constraints?**
+
+::: {.fragment}
+- generator **limits** 
+- renewable power **injection** 
+- **Fulfill** the power demand while maintaining **power balance**
+
+:::
+:::
+:::
+
+## Generator Limits Constraints?
+
+::: {.callout-important}
+## The goal of these constraints is to:
+Minimum and maximum power limits the power output of generators.
+:::
+
+. . .
+
+::: {.callout-note}
+## We need the following variables and parameters:
+
+- $p_g$ - Power output of thermal generator $g\in\mathcal{G}$
+- $p^{\min}_g$ - Minimum power output of thermal generator $g\in\mathcal{G}$ in [MW]
+- $p^{\max}_g$ - Maximum power output of thermal generator $g\in\mathcal{G}$ in [MW]
+
+:::
+
+. . .
+
+[Question:]{.question} **What could the constraint look like?**
+
+## Generator Limits Constraints
+
+$$p^{\min}_g \leq p_g \leq p^{\max}_g \quad \forall g\in\mathcal{G}$$
+
+. . .
+
+::: {.callout-note}
+## Remember, these are the variables and parameters:
+
+- $p_g$ - Power output of thermal generator $g\in\mathcal{G}$
+- $p^{\min}_g$ - Minimum power output of thermal generator $g\in\mathcal{G}$ in [MW]
+- $p^{\max}_g$ - Maximum power output of thermal generator $g\in\mathcal{G}$ in [MW]
+
+
+:::
+
+. . .
+
+[Question:]{.question} **What does $\forall g\in\mathcal{G}$ mean?**
+
+## Renewable Power Injection Constraints?
+
+::: {.callout-important}
+## The goal of these constraints is to:
+Renewable power injection into the grid or power balance is limited by the renewable power forecast, e.g. wind power.
+::: 
+
+. . .
+
+::: {.callout-note}
+## We need the following variables and parameters:
+
+- $p_w$ - Power injection of wind turbine $w\in\mathcal{W}$
+- $p^{f}_w$ - Forecasted power output of wind turbine $w\in\mathcal{W}$ in [MW]
+
+:::
+
+. . .
+
+[Question:]{.question} **What could the second constraint be?**
+
+## Wind Power Injection Constraints
+
+$0 \leq p_w \leq p^f_w \quad \forall w\in\mathcal{W}$$
+
+:::
+
+. . .
+
+[Question:]{.question} **What kind of constraint is this? Think about what is limited.**
+
+## Power Balance Constraints?
+
+::: {.callout-important}
+## The goal of these constraints is to:
+Maintain that produced and consumed power in the system is equal.
+:::
+
+. . .
+
+::: {.callout-note}
+## We need the following variables and parameters:
+
+- $p_g$ - Power output of thermal generator $g\in\mathcal{G}$
+- $p_w$ - Power injection of wind turbine $w\in\mathcal{W}$
+- $d^f$ - Forecasted demand in [MW]
+
+:::
+
+## Power Balance Constraints
+
+
+$$\sum_{g=1}^{\mathcal{G}} p_g + \sum_{w=1}^{\mathcal{W}} p_w = d^f$$
+
+. . .
+
+[And that's basically it!]{.highlight}
+
+## Economic Dispatch: Objective Function
+
+$\text{Minimize} \quad \sum_{g=1}^{\mathcal{G}} (c^{var}_g p_g) + \sum_{w=1}^{\mathcal{W}} (c^{var}_w p_w)$$
+
+::: {.callout-important}
+## The goal of the objective function and model is to:
+
+Minimize the electricity supply cost while satisfying the demand and adhering to the production capacity.
+
+:::
+
+## Economic Dispatch: Constraints
+
+$p^{\min}_g \leq p_g \leq p^{\max}_g \quad \forall g\in\mathcal{G}$$
+
+$0 \leq p_w \leq p^f_w \quad \forall w\in\mathcal{W}$$
+
+$\sum_{g=1}^{\mathcal{G}} p_g + \sum_{w=1}^{\mathcal{W}} p_w = d^f$$
+
+::: {.callout-important}
+## Our constraints ensure:
+
+Generator limits are respected, wind power is bounded by forecast, and power balance is maintained.
+
+:::
+
+## Economic Dispatch: Variable Domains
+
+$$p_g \geq 0 \quad \forall g\in\mathcal{G}$$
+
+$$p_w \geq 0 \quad \forall w\in\mathcal{W}$$
+
+::: {.callout-important}
+## The variable domains make sure that:
+
+All power outputs are non-negative.
+
+:::
+
+. . .
+
+[Question:]{.question} **Are these necessary?**
+
+## Economic Dispatch: Complete Model
+
+$\text{Minimize} \quad \sum_{g=1}^{\mathcal{G}} (c^{var}_g p_g) + \sum_{w=1}^{\mathcal{W}} (c^{var}_w p_w)$
+
+subject to
+
+$\sum_{g=1}^{\mathcal{G}} p_g + \sum_{w=1}^{\mathcal{W}} p_w = d^f$
+
+$p^{\min}_g \leq p_g \leq p^{\max}_g \quad \forall g\in\mathcal{G}$
+
+$0 \leq p_w \leq p^f_w \quad \forall w\in\mathcal{W}$
+
+
+# [Model Characteristics]{.flow} {.title}
+
+## Some Basics
+
+There exist several types of optimization problems:
+
+::: {.incremental}
+
+- **Linear (LP):** Linear constraints and objective function
+- **Mixed-integer (MIP):** Linear constraints and objective function, but discrete variable domains
+- **Quadratic (QP):** Quadratic constraints and/or objective
+- **Non-linear (NLP):** Non-linear constraints and/or objective
+- [And more!]{.highlight}
+
+:::
+
+## Solution Algorithms
+
+::: {.incremental}
+
+- **Simplex algorithm** to solve LPs
+- **Branch & Bound** to solve MIPs
+- **Outer-Approximation** for mixed-integer NLPs
+- **Math-Heuristics** (e.g., Fix-and-Optimize, Tabu-Search, ...)
+- **Decomposition** methods (Lagrange, Benders, ...)
+- **Heuristics** (greedy, construction method, n-opt, ...)
+- **Graph theoretical methods** (network flow, shortest path)
+
+:::
+
+## Model Characteristics
+
+[Questions:]{.question} **On model characteristics**
+
+::: {.incremental}
+
+- Is the model formulation linear/ non-linear?
+- What kind of variable domains do we have?
+- What kind of solution algorithm could we use?
+
+:::
+
+## Model Assumptions
+
+[Questions:]{.question} **On model assumptions**
+
+::: {.incremental}
+
+- What assumptions have we made?
+- What is the problem with the generator production and power balance?
+- Any idea how to solve it?
+
+:::
+
+
+# [Impact]{.flow} {.title}
+
+## {.loud-slide}
+::: {.r-fit-text}
+Can this be applied?
+:::
+
+::: footer
+:::
+
+## [Utility companies]{.invert-font} {background-color="#000000" background-image="https://images.unsplash.com/photo-1587127831640-7423ae037873?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" background-size="cover" background-position="center"}
+
+[The ED problem is the smallest and simplest form of operational planning every utility company has to perform.]{.invert-font .fragment}
+
+::: footer
+:::
+
+## What are further considerations to make?
+
+- on/off status of system components 
+-> unit commitment (UC) problem
+- efficiency losses
+- ramp rates
+- minimum up- and downtimes
+- storages
+-> multiple timesteps
+- uncertainty in forecasts
+
+## {.loud-slide}
+::: {.r-fit-text}
+Any idea how to 
+
+adapt the ED to UC?
+:::
+
+::: footer
+:::
+
+
+## Power System Basic Models: Unit Commitment
+
+- considers binary decisions if a unit, e.g., thermal generator, in the power system is switched on or off
+- decision are made over a time horizon, which means that variables are also indexed by timesteps.
+
+We will cover the unit commitment problem in the next lecture.
+
+. . .
+
+
+::: {.callout-note}
+## And that's it for todays lecture!
+
+We now have covered the basics of the ED and are ready to start solving some tasks in the upcoming tutorial.
+:::
+
+[^1]: @wood2013power
+
+## {.loud-slide}
+::: {.r-fit-text}
+Questions?
+:::
+
+::: footer
+:::
+
+# [Literature]{.flow} {.title}
+
+
+## Literature I
+
+For more interesting literature to learn more about Julia, take a look at the [literature list](../general/literature.qmd) of this course.
+
+## Literature II
+
