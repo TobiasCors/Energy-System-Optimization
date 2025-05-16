@@ -334,6 +334,8 @@ Renewable power injection into the grid or power balance is limited by the renew
 
 ## Wind Power Injection Constraints
 
+:::
+
 $0 \leq p_w \leq p^f_w \quad \forall w\in\mathcal{W}$
 
 :::

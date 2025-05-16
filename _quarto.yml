@@ -82,8 +82,8 @@ website:
         contents:
           - text: "Lecture"
             href: part-05/lecture-dispatch.qmd
-      #     - text: "Tutorial"
-      #       href: part-05/tutorial-production.qmd
+          - text: "Tutorial"
+            href: part-05/tutorial-dispatch.qmd
       # - section: "06 Warehouse"
       #   contents:
       #     - text: "Lecture"

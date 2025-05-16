@@ -1,4 +1,5 @@
-/.DS_Store
+**/.DS_Store
 /.venv
 /notes_not_published
 /.quarto/
+part-05/solution/tutorial-dispatch.ipynb
