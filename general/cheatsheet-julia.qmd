@@ -24,6 +24,8 @@ pdf:
             \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
             \usepackage{unicode-math}
             \setmathfont{latinmodern-math.otf}
+            \usepackage{fontspec}
+            \setmonofont{JuliaMono}[Scale=0.9]
 
 execute:
     eval: false
