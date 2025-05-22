@@ -26,7 +26,17 @@ format:
           \setmonofont{DejaVu Sans Mono}[Scale=0.9]
           \usepackage{unicode-math}
           \setmathfont{latinmodern-math.otf}
-          \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\},numbers=left,numbersep=2pt,frame=single}
+          \lstset{
+            basicstyle=\ttfamily\small,
+            breaklines=true,
+            frame=single,
+            numbers=left,
+            numbersep=2pt,
+            showstringspaces=false,
+            commentstyle=\color{gray},
+            keywordstyle=\color{blue},
+            stringstyle=\color{red}
+          }
 
 execute:
   eval: false
