@@ -176,6 +176,9 @@ format:
     colorlinks: true
     include-in-header: 
       text: |
+        \usepackage{unicode-math}
+        \usepackage{listings}
+        \usepackage{xcolor}
         \usepackage{fvextra}
         \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
 execute:
