@@ -50,10 +50,20 @@ jobs:
       - name: Install TinyTeX
         run: |
           quarto install tinytex
-
+          tlmgr install collection-latexrecommended collection-fontsrecommended collection-latexextra
+        
+      - name: Update LaTeX Packages
+        run: |
+          tlmgr update --self
+          tlmgr update --all
+          
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
         with:
+          version: 'latest'
           target: gh-pages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Debug Logs
+        run: cat general/cheatsheet-julia.log
