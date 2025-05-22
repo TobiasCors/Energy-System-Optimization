@@ -1841,7 +1841,7 @@
     "href": "general/cheatsheet-julia.html",
     "title": "Julia Syntax Cheatsheet",
     "section": "",
-    "text": "This cheatsheet provides a quick reference for Julia programming language syntax and common operations. Julia is a high-level, high-performance programming language designed for numerical and scientific computing. It combines the ease of use of Python or R with the speed of C. For comprehensive documentation, visit:",
+    "text": "# Basic variable declaration\nx = 1                  # Implicit typing\ny::Int64 = 5          # Explicit type annotation\n\n# Common types\nnum_int = 42          # Integer\nnum_float = 19.99     # Float\nis_student = true     # Boolean\nname = \"Julia\"        # String\n\n# Check type\ntypeof(num_int)       # Returns Int64\ntypeof(num_float)     # Returns Float64\n\n\n\n\n\nname = \"Julia\"\nage = 30\n# Basic interpolation\nmessage = \"I am $age years old\"\n# Complex interpolation\ngreeting = \"Hello, my name is $name and I am $age years old\"\n\n\n\n\n\n# Convert between types\nfloat_num = Float64(42)    # Int to Float\nint_num = Int64(3.14)      # Float to Int\nstr_num = string(42)       # Number to String",
     "crumbs": [
       "Cheatsheets",
       "Julia"
@@ -1851,8 +1851,8 @@
     "objectID": "general/cheatsheet-julia.html#variable-declaration-and-types",
     "href": "general/cheatsheet-julia.html#variable-declaration-and-types",
     "title": "Julia Syntax Cheatsheet",
-    "section": "Variable Declaration and Types",
-    "text": "Variable Declaration and Types\n\n# Basic variable declaration\nx = 1                  # Implicit typing\ny::Int64 = 5          # Explicit type annotation\n\n# Common types\nnum_int = 42          # Integer (Int64)\nnum_float = 19.99     # Float (Float64)\nis_student = true     # Boolean\nname = \"Julia\"        # String\nc = 3 + 4im           # Complex number\nsym = :symbol         # Symbol\n\n# Check type\ntypeof(num_int)       # Returns Int64\ntypeof(num_float)     # Returns Float64",
+    "section": "",
+    "text": "# Basic variable declaration\nx = 1                  # Implicit typing\ny::Int64 = 5          # Explicit type annotation\n\n# Common types\nnum_int = 42          # Integer\nnum_float = 19.99     # Float\nis_student = true     # Boolean\nname = \"Julia\"        # String\n\n# Check type\ntypeof(num_int)       # Returns Int64\ntypeof(num_float)     # Returns Float64",
     "crumbs": [
       "Cheatsheets",
       "Julia"
@@ -1873,8 +1873,8 @@
     "objectID": "general/cheatsheet-julia.html#string-interpolation",
     "href": "general/cheatsheet-julia.html#string-interpolation",
     "title": "Julia Syntax Cheatsheet",
-    "section": "String Interpolation",
-    "text": "String Interpolation\n\nname = \"Julia\"\nage = 30\n# Basic interpolation\nmsg1 = \"I am $age years old\"\n# Expression interpolation\nmsg2 = \"In 5 years, I'll be $(age + 5)\"\n# Complex interpolation\ngreeting = \"Hello, my name is $name and I am $age years old\"",
+    "section": "",
+    "text": "name = \"Julia\"\nage = 30\n# Basic interpolation\nmessage = \"I am $age years old\"\n# Complex interpolation\ngreeting = \"Hello, my name is $name and I am $age years old\"",
     "crumbs": [
       "Cheatsheets",
       "Julia"
@@ -1884,8 +1884,8 @@
     "objectID": "general/cheatsheet-julia.html#type-conversion",
     "href": "general/cheatsheet-julia.html#type-conversion",
     "title": "Julia Syntax Cheatsheet",
-    "section": "Type Conversion",
-    "text": "Type Conversion\n\n# Convert between types\nfloat_num = Float64(42)    # Int to Float\nint_num = Int64(3.14)      # Float to Int\nstr_num = string(42)       # Number to String",
+    "section": "",
+    "text": "# Convert between types\nfloat_num = Float64(42)    # Int to Float\nint_num = Int64(3.14)      # Float to Int\nstr_num = string(42)       # Number to String",
     "crumbs": [
       "Cheatsheets",
       "Julia"
@@ -4659,5 +4659,203 @@
     "title": "Lecture VI - Economic Dispatch Problem",
     "section": "Literature II",
     "text": "Literature II\nFor a detailed mathematical formulation of the Unit Commitment problem, see Morales-Espana, Latorre, and Ramos (2013) and Zimmermann and Kather (2019).\n\n\n\n\nMorales-Espana, G., J. M. Latorre, and A. Ramos. 2013. “Tight and Compact MILP Formulation for the Thermal Unit Commitment Problem.” IEEE Transactions on Power Systems 28 (4): 4897–4908.\n\n\nZimmermann, Cors, T., and A. Kather. 2019. “Increasing Tightness by Introduction of Intertemporal Constraints in MILP Unit Commitment.” In NEIS 2019; Conference on Sustainable Energy Supply and Energy Storage Systems, edited by Detlef Schulz, 209–14. VDE Verl."
+  },
+  {
+    "objectID": "general/cheatsheet-julia.html#package-usage",
+    "href": "general/cheatsheet-julia.html#package-usage",
+    "title": "Julia Syntax Cheatsheet",
+    "section": "Package Usage",
+    "text": "Package Usage\n\n# Import packages\nimport DataFrames     # Access as DataFrames.function()\nusing DataFrames     # Import all exported names\n\n# Check installed packages\nPkg.status()         # List all installed packages",
+    "crumbs": [
+      "Cheatsheets",
+      "Julia"
+    ]
+  },
+  {
+    "objectID": "general/cheatsheet-julia.html#environment-management",
+    "href": "general/cheatsheet-julia.html#environment-management",
+    "title": "Julia Syntax Cheatsheet",
+    "section": "Environment Management",
+    "text": "Environment Management\n\n# Environment operations\nPkg.activate(\"new_environment\")    # Create/activate environment\nPkg.activate()                     # Activate default environment\n\n# Project files\n# Project.toml    - Lists direct dependencies\n# Manifest.toml   - Complete dependency graph",
+    "crumbs": [
+      "Cheatsheets",
+      "Julia"
+    ]
+  },
+  {
+    "objectID": "general/cheatsheet-julia.html#key-points-5",
+    "href": "general/cheatsheet-julia.html#key-points-5",
+    "title": "Julia Syntax Cheatsheet",
+    "section": "Key Points",
+    "text": "Key Points\n\nUse import for namespace control, using for direct access\nAlways update packages regularly with Pkg.update()\nCreate separate environments for different projects\nProject.toml and Manifest.toml track dependencies\nPackage manager commands typically run in REPL",
+    "crumbs": [
+      "Cheatsheets",
+      "Julia"
+    ]
+  },
+  {
+    "objectID": "general/cheatsheet-julia.html#creating-dataframes",
+    "href": "general/cheatsheet-julia.html#creating-dataframes",
+    "title": "Julia Syntax Cheatsheet",
+    "section": "Creating DataFrames",
+    "text": "Creating DataFrames\n\nusing DataFrames\n\n# Basic DataFrame creation\ndf = DataFrame(\n    Name = [\"John\", \"Mike\", \"Frank\"],\n    Age = [28, 23, 37],\n    Salary = [50000, 62000, 90000]\n)\n\n# Empty DataFrame with specified columns\ndf_empty = DataFrame(\n    Name = String[],\n    Age = Int[]\n)",
+    "crumbs": [
+      "Cheatsheets",
+      "Julia"
+    ]
+  },
+  {
+    "objectID": "general/cheatsheet-julia.html#accessing-and-modifying-data",
+    "href": "general/cheatsheet-julia.html#accessing-and-modifying-data",
+    "title": "Julia Syntax Cheatsheet",
+    "section": "Accessing and Modifying Data",
+    "text": "Accessing and Modifying Data\n\n# Access columns\nages = df.Age                # Get Age column\nfirst_name = df.Name[1]      # First name in Name column\n\n# Modify values\ndf.Salary[1] = 59000        # Update John's salary\ndf.NewColumn = zeros(3)     # Add new column\n\n# Access multiple columns\nsubset = df[:, [:Name, :Age]]  # Select specific columns\nrow = df[1, :]                 # Select first row",
+    "crumbs": [
+      "Cheatsheets",
+      "Julia"
+    ]
+  },
+  {
+    "objectID": "general/cheatsheet-julia.html#filtering-data",
+    "href": "general/cheatsheet-julia.html#filtering-data",
+    "title": "Julia Syntax Cheatsheet",
+    "section": "Filtering Data",
+    "text": "Filtering Data\n\n# Filter with boolean indexing\nhigh_earners = df[df.Salary .&gt; 60000, :]\n\n# Using filter function\nhigh_earners = filter(row -&gt; row.Salary &gt; 60000, df)\n\n# Multiple conditions\nsenior_high_earners = df[(df.Age .&gt; 30) .& (df.Salary .&gt; 60000), :]",
+    "crumbs": [
+      "Cheatsheets",
+      "Julia"
+    ]
+  },
+  {
+    "objectID": "general/cheatsheet-julia.html#data-manipulation",
+    "href": "general/cheatsheet-julia.html#data-manipulation",
+    "title": "Julia Syntax Cheatsheet",
+    "section": "Data Manipulation",
+    "text": "Data Manipulation\n\n# Sort DataFrame\nsorted_df = sort(df, :Age)               # Sort by Age\nsorted_df = sort(df, [:Age, :Salary])    # Sort by multiple columns\n\n# Add calculated column\ndf.Bonus = [row.Age &gt; 30 ? row.Salary * 0.1 : row.Salary * 0.05 for row in eachrow(df)]\n\n# Iterate over rows\nfor row in eachrow(df)\n    println(\"$(row.Name): $(row.Age) years old\")\nend",
+    "crumbs": [
+      "Cheatsheets",
+      "Julia"
+    ]
+  },
+  {
+    "objectID": "general/cheatsheet-julia.html#key-functions",
+    "href": "general/cheatsheet-julia.html#key-functions",
+    "title": "Julia Syntax Cheatsheet",
+    "section": "Key Functions",
+    "text": "Key Functions\n\nnrow(df)              # Number of rows\nncol(df)              # Number of columns\nnames(df)             # Column names\ndescribe(df)          # Summary statistics\npush!(df, row)        # Add new row\nselect(df, :Name)     # Select columns",
+    "crumbs": [
+      "Cheatsheets",
+      "Julia"
+    ]
+  },
+  {
+    "objectID": "general/cheatsheet-julia.html#key-points-6",
+    "href": "general/cheatsheet-julia.html#key-points-6",
+    "title": "Julia Syntax Cheatsheet",
+    "section": "Key Points",
+    "text": "Key Points\n\nColumn access with dot notation (df.column)\nUse eachrow() for row iteration\nBoolean indexing for filtering\npush! to add new rows\nBroadcasting with dot operators (.&gt;, .+, etc.)",
+    "crumbs": [
+      "Cheatsheets",
+      "Julia"
+    ]
+  },
+  {
+    "objectID": "general/cheatsheet-julia.html#delimitedfiles-operations",
+    "href": "general/cheatsheet-julia.html#delimitedfiles-operations",
+    "title": "Julia Syntax Cheatsheet",
+    "section": "DelimitedFiles Operations",
+    "text": "DelimitedFiles Operations\n\nusing DelimitedFiles\n\n# Write matrix to CSV\ndata = [1 2 3; 4 5 6]\nwritedlm(\"data.csv\", data, ',')      # Write with comma delimiter\nwritedlm(\"data.txt\", data, '\\t')     # Write with tab delimiter\n\n# Read delimited files\nmatrix = readdlm(\"data.csv\", ',')    # Read CSV file\nmatrix = readdlm(\"data.txt\", '\\t')   # Read tab-delimited file",
+    "crumbs": [
+      "Cheatsheets",
+      "Julia"
+    ]
+  },
+  {
+    "objectID": "general/cheatsheet-julia.html#csv-and-dataframe-operations",
+    "href": "general/cheatsheet-julia.html#csv-and-dataframe-operations",
+    "title": "Julia Syntax Cheatsheet",
+    "section": "CSV and DataFrame Operations",
+    "text": "CSV and DataFrame Operations\n\nusing CSV, DataFrames\n\n# Write DataFrame to CSV\ndf = DataFrame(\n    Name = [\"John\", \"Alice\"],\n    Age = [25, 30]\n)\nCSV.write(\"data.csv\", df)            # Basic write\nCSV.write(\"data.csv\", df,            # Write with options\n    delim = ';',                     # Custom delimiter\n    header = false                   # No header\n)\n\n# Read CSV to DataFrame\ndf = CSV.read(\"data.csv\", DataFrame)           # Basic read\ndf = CSV.read(\"data.csv\", DataFrame,           # Read with options\n    delim = ';',                               # Custom delimiter\n    header = [\"Col1\", \"Col2\"]                  # Custom headers\n)",
+    "crumbs": [
+      "Cheatsheets",
+      "Julia"
+    ]
+  },
+  {
+    "objectID": "general/cheatsheet-julia.html#file-path-management",
+    "href": "general/cheatsheet-julia.html#file-path-management",
+    "title": "Julia Syntax Cheatsheet",
+    "section": "File Path Management",
+    "text": "File Path Management\n\n# Get current directory\n@__DIR__                             # Directory of current file\npwd()                                # Current working directory\n\n# Path operations\npath = joinpath(@__DIR__, \"data\")    # Join path components\nmkdir(path)                          # Create directory\nisfile(path)                         # Check if file exists",
+    "crumbs": [
+      "Cheatsheets",
+      "Julia"
+    ]
+  },
+  {
+    "objectID": "general/cheatsheet-julia.html#key-points-7",
+    "href": "general/cheatsheet-julia.html#key-points-7",
+    "title": "Julia Syntax Cheatsheet",
+    "section": "Key Points",
+    "text": "Key Points\n\nUse DelimitedFiles for simple matrix I/O\nCSV package for advanced DataFrame I/O\nAlways use @__DIR__ for relative paths\nCheck file existence before operations\nConsider using try-catch for file operations",
+    "crumbs": [
+      "Cheatsheets",
+      "Julia"
+    ]
+  },
+  {
+    "objectID": "general/cheatsheet-julia.html#basic-plots",
+    "href": "general/cheatsheet-julia.html#basic-plots",
+    "title": "Julia Syntax Cheatsheet",
+    "section": "Basic Plots",
+    "text": "Basic Plots\n\nusing Plots, StatsPlots\n\n# Line plot\nplot(x, y,\n    title=\"Line Plot\",\n    xlabel=\"X Label\",\n    ylabel=\"Y Label\",\n    legend=false\n)\n\n# Scatter plot\nscatter(x, y,\n    title=\"Scatter Plot\",\n    marker=(:circle, 8)\n)\n\n# Bar plot\nbar(categories, values,\n    title=\"Bar Plot\"\n)\n\n# Histogram\nhistogram(data,\n    bins=30,\n    title=\"Histogram\"\n)\n\n# Box plot\nboxplot(group, values,\n    title=\"Box Plot\"\n)",
+    "crumbs": [
+      "Cheatsheets",
+      "Julia"
+    ]
+  },
+  {
+    "objectID": "general/cheatsheet-julia.html#plot-customization",
+    "href": "general/cheatsheet-julia.html#plot-customization",
+    "title": "Julia Syntax Cheatsheet",
+    "section": "Plot Customization",
+    "text": "Plot Customization\n\n# Customize plot appearance\nplot(x, y,\n    title=\"Custom Plot\",\n    line=(:dash, 2),      # Line style and width\n    color=:red,           # Line color\n    marker=(:circle, 8),  # Marker style and size\n    label=\"Data Series\"   # Legend label\n)\n\n# Multiple series\nplot(x, y1, label=\"Series 1\")\nplot!(x, y2, label=\"Series 2\")  # Add to existing plot",
+    "crumbs": [
+      "Cheatsheets",
+      "Julia"
+    ]
+  },
+  {
+    "objectID": "general/cheatsheet-julia.html#saving-plots",
+    "href": "general/cheatsheet-julia.html#saving-plots",
+    "title": "Julia Syntax Cheatsheet",
+    "section": "Saving Plots",
+    "text": "Saving Plots\n\n# Save plot to file\nsavefig(plot_name, \"path/plot.png\")  # Save as PNG\nsavefig(plot_name, \"path/plot.pdf\")  # Save as PDF\nsavefig(plot_name, \"path/plot.svg\")  # Save as SVG",
+    "crumbs": [
+      "Cheatsheets",
+      "Julia"
+    ]
+  },
+  {
+    "objectID": "general/cheatsheet-julia.html#common-options",
+    "href": "general/cheatsheet-julia.html#common-options",
+    "title": "Julia Syntax Cheatsheet",
+    "section": "Common Options",
+    "text": "Common Options\n\n# Plot options\nplot(\n    legend=true/false,    # Show/hide legend\n    grid=true/false,      # Show/hide grid\n    size=(width,height),  # Plot dimensions\n    dpi=300              # Resolution\n)\n\n# Line styles\n:solid, :dash, :dot\n\n# Colors\n:red, :blue, :green\n\n# Markers\n:circle, :square, :diamond",
+    "crumbs": [
+      "Cheatsheets",
+      "Julia"
+    ]
+  },
+  {
+    "objectID": "general/cheatsheet-julia.html#key-points-8",
+    "href": "general/cheatsheet-julia.html#key-points-8",
+    "title": "Julia Syntax Cheatsheet",
+    "section": "Key Points",
+    "text": "Key Points\n\nUse plot() for new plots, plot!() to add to existing\nCustomize with named arguments\nSave plots in various formats\nStatsPlots extends plotting capabilities\nMultiple series can share one plot",
+    "crumbs": [
+      "Cheatsheets",
+      "Julia"
+    ]
   }
 ]

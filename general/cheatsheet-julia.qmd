@@ -2,52 +2,44 @@
 title: "Julia Syntax Cheatsheet"
 subtitle: "Optimization with Julia"
 
-format:
-  html:
+html:
     theme: [default, ../styles.scss]
     highlight-style: breezedark
     linkcolor: "#a60000"
     code-copy: true
     code-link: true
     toc: true
-  pdf:
+pdf: 
     documentclass: report
     geometry:
-      - margin=1in
+        - margin=1in
     fontfamily: roboto
     fontfamilyoptions: sfdefault
     colorlinks: true
-    include-in-header:
-      - text: |
-          \usepackage{listings}
-          \usepackage{xcolor}
-          \usepackage{fvextra}
-          \usepackage{fontspec}
-          \setmonofont{DejaVu Sans Mono}[Scale=0.9]
-          \usepackage{unicode-math}
-          \setmathfont{latinmodern-math.otf}
-          \lstset{
-            basicstyle=\ttfamily\small,
-            breaklines=true,
-            frame=single,
-            numbers=left,
-            numbersep=2pt,
-            showstringspaces=false,
-            commentstyle=\color{gray},
-            keywordstyle=\color{blue},
-            stringstyle=\color{red}
-          }
 
 execute:
-  eval: false
+    eval: false
 ---
 
-This cheatsheet provides a quick reference for Julia programming language syntax and common operations. Julia is a high-level, high-performance programming language designed for numerical and scientific computing. It combines the ease of use of Python or R with the speed of C. For comprehensive documentation, visit:
-
-- [Julia Documentation](https://docs.julialang.org/en/v1/)
-- [Getting Started with Julia](https://docs.julialang.org/en/v1/manual/getting-started/)
-
 # Variables and Basic Types
+
+```{julia}
+#| echo: false
+#| output: false
+#| eval: true
+
+using Pkg
+Pkg.activate("../applied-optimization")
+Pkg.add("IJulia")
+Pkg.add("DataFrames")
+Pkg.add("CSV")
+Pkg.add("Plots")
+Pkg.add("DelimitedFiles")
+Pkg.add("JuMP")
+Pkg.add("HiGHS")
+Pkg.add("SCIP")
+Pkg.add("StatsPlots")
+```
 
 ## Variable Declaration and Types
 
@@ -57,27 +49,14 @@ x = 1                  # Implicit typing
 y::Int64 = 5          # Explicit type annotation
 
 # Common types
-num_int = 42          # Integer (Int64)
-num_float = 19.99     # Float (Float64)
+num_int = 42          # Integer
+num_float = 19.99     # Float
 is_student = true     # Boolean
 name = "Julia"        # String
-c = 3 + 4im           # Complex number
-sym = :symbol         # Symbol
 
 # Check type
 typeof(num_int)       # Returns Int64
 typeof(num_float)     # Returns Float64
-```
-
-## String Operations
-
-```{julia}
-# String manipulation
-str = "Hello, World!"
-length(str)           # String length
-lowercase(str)        # Convert to lowercase
-uppercase(str)        # Convert to uppercase
-strip(" text ")       # Remove leading/trailing whitespace
 ```
 
 ## String Interpolation
@@ -86,9 +65,7 @@ strip(" text ")       # Remove leading/trailing whitespace
 name = "Julia"
 age = 30
 # Basic interpolation
-msg1 = "I am $age years old"
-# Expression interpolation
-msg2 = "In 5 years, I'll be $(age + 5)"
+message = "I am $age years old"
 # Complex interpolation
 greeting = "Hello, my name is $name and I am $age years old"
 ```
@@ -107,6 +84,8 @@ str_num = string(42)       # Number to String
 - Variables are dynamic, types are not
 - Use `typeof()` to check variable type
 - String interpolation is powerful for formatted output
+
+---
 
 # Vectors, Matrices, and Tuples
 
@@ -164,6 +143,8 @@ age, city = person[2:3]    # Multiple assignment
 - Matrices: Mutable, 2-dimensional, good for linear algebra
 - Tuples: Immutable, fixed-size, good for grouping related constants
 
+---
+
 # Comparison and Logical Operators
 
 ## Basic Comparisons
@@ -217,6 +198,8 @@ work_hours = 9 <= current_hour < 17
 - `||` requires at least one condition to be true
 - `!` inverts a boolean value
 - Chained comparisons make range checks more readable
+
+---
 
 # Loops and Iterations
 
@@ -319,6 +302,8 @@ matrix = [i*j for i in 1:3, j in 1:3]    # 3x3 multiplication table
 - List comprehensions offer concise array creation
 - Nested loops are useful for multi-dimensional iteration
 
+---
+
 # Dictionaries
 
 ## Basic Dictionary Operations
@@ -381,6 +366,8 @@ copy(dict)             # Create shallow copy
 - Dictionaries are mutable (can be changed)
 - Keys are accessed with square brackets `dict["key"]`
 
+---
+
 # Functions
 
 ## Basic Function Definition
@@ -404,27 +391,6 @@ function do_something(a, b)
         return a + b
     end
 end
-```
-
-## Advanced Function Features
-
-```{julia}
-# Optional arguments
-function greet(name="Guest", greeting="Hello")
-    "$greeting, $name!"
-end
-
-# Multiple return values
-function stats(numbers)
-    avg = sum(numbers) / length(numbers)
-    min_val = minimum(numbers)
-    max_val = maximum(numbers)
-    return avg, min_val, max_val
-end
-
-# Anonymous functions
-numbers = 1:10
-map(x -> x^2, numbers)  # Square each number
 ```
 
 ## Function Scope
@@ -470,6 +436,8 @@ operation("Hi", 42)        # Uses generic operation
 - Multiple dispatch allows different behavior based on argument types
 - Use `return` for early exits or conditional 
 
+---
+
 # Package Management
 
 ## Basic Package Operations
@@ -490,3 +458,280 @@ Pkg.update("DataFrames")  # Update specific package
 # Remove packages
 Pkg.rm("DataFrames")   # Remove package
 ```
+
+## Package Usage
+
+```{julia}
+# Import packages
+import DataFrames     # Access as DataFrames.function()
+using DataFrames     # Import all exported names
+
+# Check installed packages
+Pkg.status()         # List all installed packages
+```
+
+## Environment Management
+
+```{julia}
+# Environment operations
+Pkg.activate("new_environment")    # Create/activate environment
+Pkg.activate()                     # Activate default environment
+
+# Project files
+# Project.toml    - Lists direct dependencies
+# Manifest.toml   - Complete dependency graph
+```
+
+## Key Points
+
+- Use `import` for namespace control, `using` for direct access
+- Always update packages regularly with `Pkg.update()`
+- Create separate environments for different projects
+- Project.toml and Manifest.toml track dependencies
+- Package manager commands typically run in REPL
+
+---
+
+# DataFrames
+
+## Creating DataFrames
+
+```{julia}
+using DataFrames
+
+# Basic DataFrame creation
+df = DataFrame(
+    Name = ["John", "Mike", "Frank"],
+    Age = [28, 23, 37],
+    Salary = [50000, 62000, 90000]
+)
+
+# Empty DataFrame with specified columns
+df_empty = DataFrame(
+    Name = String[],
+    Age = Int[]
+)
+```
+
+## Accessing and Modifying Data
+
+```{julia}
+# Access columns
+ages = df.Age                # Get Age column
+first_name = df.Name[1]      # First name in Name column
+
+# Modify values
+df.Salary[1] = 59000        # Update John's salary
+df.NewColumn = zeros(3)     # Add new column
+
+# Access multiple columns
+subset = df[:, [:Name, :Age]]  # Select specific columns
+row = df[1, :]                 # Select first row
+```
+
+## Filtering Data
+
+```{julia}
+# Filter with boolean indexing
+high_earners = df[df.Salary .> 60000, :]
+
+# Using filter function
+high_earners = filter(row -> row.Salary > 60000, df)
+
+# Multiple conditions
+senior_high_earners = df[(df.Age .> 30) .& (df.Salary .> 60000), :]
+```
+
+## Data Manipulation
+
+```{julia}
+# Sort DataFrame
+sorted_df = sort(df, :Age)               # Sort by Age
+sorted_df = sort(df, [:Age, :Salary])    # Sort by multiple columns
+
+# Add calculated column
+df.Bonus = [row.Age > 30 ? row.Salary * 0.1 : row.Salary * 0.05 for row in eachrow(df)]
+
+# Iterate over rows
+for row in eachrow(df)
+    println("$(row.Name): $(row.Age) years old")
+end
+```
+
+## Key Functions
+
+```{julia}
+nrow(df)              # Number of rows
+ncol(df)              # Number of columns
+names(df)             # Column names
+describe(df)          # Summary statistics
+push!(df, row)        # Add new row
+select(df, :Name)     # Select columns
+```
+
+## Key Points
+
+- Column access with dot notation (df.column)
+- Use eachrow() for row iteration
+- Boolean indexing for filtering
+- push! to add new rows
+- Broadcasting with dot operators (.>, .+, etc.)
+
+---
+
+# File Input/Output
+
+## DelimitedFiles Operations
+
+```{julia}
+using DelimitedFiles
+
+# Write matrix to CSV
+data = [1 2 3; 4 5 6]
+writedlm("data.csv", data, ',')      # Write with comma delimiter
+writedlm("data.txt", data, '\t')     # Write with tab delimiter
+
+# Read delimited files
+matrix = readdlm("data.csv", ',')    # Read CSV file
+matrix = readdlm("data.txt", '\t')   # Read tab-delimited file
+```
+
+## CSV and DataFrame Operations
+
+```{julia}
+using CSV, DataFrames
+
+# Write DataFrame to CSV
+df = DataFrame(
+    Name = ["John", "Alice"],
+    Age = [25, 30]
+)
+CSV.write("data.csv", df)            # Basic write
+CSV.write("data.csv", df,            # Write with options
+    delim = ';',                     # Custom delimiter
+    header = false                   # No header
+)
+
+# Read CSV to DataFrame
+df = CSV.read("data.csv", DataFrame)           # Basic read
+df = CSV.read("data.csv", DataFrame,           # Read with options
+    delim = ';',                               # Custom delimiter
+    header = ["Col1", "Col2"]                  # Custom headers
+)
+```
+
+## File Path Management
+
+```{julia}
+# Get current directory
+@__DIR__                             # Directory of current file
+pwd()                                # Current working directory
+
+# Path operations
+path = joinpath(@__DIR__, "data")    # Join path components
+mkdir(path)                          # Create directory
+isfile(path)                         # Check if file exists
+```
+
+## Key Points
+
+- Use DelimitedFiles for simple matrix I/O
+- CSV package for advanced DataFrame I/O
+- Always use @__DIR__ for relative paths
+- Check file existence before operations
+- Consider using try-catch for file operations
+
+---
+
+# Plotting with Plots.jl
+
+## Basic Plots
+
+```{julia}
+using Plots, StatsPlots
+
+# Line plot
+plot(x, y,
+    title="Line Plot",
+    xlabel="X Label",
+    ylabel="Y Label",
+    legend=false
+)
+
+# Scatter plot
+scatter(x, y,
+    title="Scatter Plot",
+    marker=(:circle, 8)
+)
+
+# Bar plot
+bar(categories, values,
+    title="Bar Plot"
+)
+
+# Histogram
+histogram(data,
+    bins=30,
+    title="Histogram"
+)
+
+# Box plot
+boxplot(group, values,
+    title="Box Plot"
+)
+```
+
+## Plot Customization
+
+```{julia}
+# Customize plot appearance
+plot(x, y,
+    title="Custom Plot",
+    line=(:dash, 2),      # Line style and width
+    color=:red,           # Line color
+    marker=(:circle, 8),  # Marker style and size
+    label="Data Series"   # Legend label
+)
+
+# Multiple series
+plot(x, y1, label="Series 1")
+plot!(x, y2, label="Series 2")  # Add to existing plot
+```
+
+## Saving Plots
+
+```{julia}
+# Save plot to file
+savefig(plot_name, "path/plot.png")  # Save as PNG
+savefig(plot_name, "path/plot.pdf")  # Save as PDF
+savefig(plot_name, "path/plot.svg")  # Save as SVG
+```
+
+## Common Options
+
+```{julia}
+# Plot options
+plot(
+    legend=true/false,    # Show/hide legend
+    grid=true/false,      # Show/hide grid
+    size=(width,height),  # Plot dimensions
+    dpi=300              # Resolution
+)
+
+# Line styles
+:solid, :dash, :dot
+
+# Colors
+:red, :blue, :green
+
+# Markers
+:circle, :square, :diamond
+```
+
+## Key Points
+
+- Use plot() for new plots, plot!() to add to existing
+- Customize with named arguments
+- Save plots in various formats
+- StatsPlots extends plotting capabilities
+- Multiple series can share one plot
