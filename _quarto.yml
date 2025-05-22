@@ -135,8 +135,8 @@ website:
       - text: "***"
       - section: "Cheatsheets"
         contents:
-          - text: "Julia"
-            href: general/cheatsheet-julia.qmd
+          # - text: "Julia"
+          #   href: general/cheatsheet-julia.qmd
           - text: "JuMP"
             href: general/cheatsheet-jump.qmd
       - text: "FAQs"
