@@ -16,6 +16,14 @@ pdf:
     fontfamily: roboto
     fontfamilyoptions: sfdefault
     colorlinks: true
+    include-in-header:
+        - text: |
+            \usepackage{listings}
+            \usepackage{xcolor}
+            \usepackage{fvextra}
+            \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
+            \usepackage{unicode-math}
+            \setmathfont{latinmodern-math.otf}
 
 execute:
     eval: false
