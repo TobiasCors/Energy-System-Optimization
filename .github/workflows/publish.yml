@@ -52,10 +52,20 @@ jobs:
           quarto install tinytex
         # tlmgr install collection-latexrecommended collection-fontsrecommended collection-latexextra
         
-      - name: Update LaTeX Packages
-        run: |
-          tlmgr update --self
-          tlmgr update --all
+      # - name: Install TinyTeX
+      # run: |
+      #   quarto install tinytex
+      #   export PATH=$PATH:$HOME/.TinyTeX/bin/* # Ensure tlmgr is in the PATH
+      #   sudo chmod -R a+rx $HOME/.TinyTeX # Fix permissions if necessary
+      
+      # - name: Verify TinyTeX Installation
+      #   run: |
+      #     tlmgr --version # Check if tlmgr is available
+      
+      # - name: Update LaTeX Packages
+      #   run: |
+      #     tlmgr update --self
+      #     tlmgr update --all
           
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
