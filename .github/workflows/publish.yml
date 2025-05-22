@@ -76,3 +76,10 @@ jobs:
 
       - name: Debug Logs
         run: cat general/cheatsheet-julia.log
+
+      - name: Upload cheatsheet log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cheatsheet-julia-log
+          path: general/cheatsheet-julia.log
