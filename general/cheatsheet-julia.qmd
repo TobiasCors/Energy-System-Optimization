@@ -21,11 +21,11 @@ pdf:
             \usepackage{listings}
             \usepackage{xcolor}
             \usepackage{fvextra}
-            \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
-            \usepackage{unicode-math}
-            \setmathfont{latinmodern-math.otf}
             \usepackage{fontspec}
             \setmonofont{JuliaMono}[Scale=0.9]
+            \usepackage{unicode-math}
+            \setmathfont{latinmodern-math.otf}
+            \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\},numbers=left,numbersep=2pt,frame=single}
 
 execute:
     eval: false
