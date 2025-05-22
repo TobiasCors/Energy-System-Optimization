@@ -2,47 +2,23 @@
 title: "Julia Syntax Cheatsheet"
 subtitle: "Optimization with Julia"
 
-format:
-  html:
-    theme: [litera, ../styles.scss]
+html:
+    theme: [default, ../styles.scss]
     highlight-style: breezedark
     linkcolor: "#a60000"
     code-copy: true
     code-link: true
     toc: true
-  pdf:
+pdf: 
     documentclass: report
     geometry:
-      - margin=1in
+        - margin=1in
     fontfamily: roboto
     fontfamilyoptions: sfdefault
     colorlinks: true
-    include-in-header:
-      - text: |
-          \usepackage{listings}
-          \usepackage{xcolor}
-          \usepackage{fvextra}
-          \usepackage{fontspec}
-          \setmonofont{DejaVu Sans Mono}[Scale=0.9]
-          \usepackage{unicode-math}
-          \setmathfont{latinmodern-math.otf}
-          \lstset{
-            basicstyle=\ttfamily\small,
-            breaklines=true,
-            frame=single,
-            numbers=left,
-            numbersep=2pt,
-            showstringspaces=false,
-            commentstyle=\color{gray},
-            keywordstyle=\color{blue},
-            stringstyle=\color{red}
-          }
-          \renewcommand{\lstlistingname}{Code}
-
-engine: julia
 
 execute:
-  eval: false
+    eval: false
 ---
 
 # Variables and Basic Types
