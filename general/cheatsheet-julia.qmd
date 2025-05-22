@@ -2,33 +2,34 @@
 title: "Julia Syntax Cheatsheet"
 subtitle: "Optimization with Julia"
 
-html:
+format:
+  html:
     theme: [default, ../styles.scss]
     highlight-style: breezedark
     linkcolor: "#a60000"
     code-copy: true
     code-link: true
     toc: true
-pdf: 
+  pdf:
     documentclass: report
     geometry:
-        - margin=1in
+      - margin=1in
     fontfamily: roboto
     fontfamilyoptions: sfdefault
     colorlinks: true
     include-in-header:
-        - text: |
-            \usepackage{listings}
-            \usepackage{xcolor}
-            \usepackage{fvextra}
-            \usepackage{fontspec}
-            \setmonofont{JuliaMono}[Scale=0.9]
-            \usepackage{unicode-math}
-            \setmathfont{latinmodern-math.otf}
-            \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\},numbers=left,numbersep=2pt,frame=single}
+      - text: |
+          \usepackage{listings}
+          \usepackage{xcolor}
+          \usepackage{fvextra}
+          \usepackage{fontspec}
+          \setmonofont{JuliaMono}[Scale=0.9]
+          \usepackage{unicode-math}
+          \setmathfont{latinmodern-math.otf}
+          \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\},numbers=left,numbersep=2pt,frame=single}
 
 execute:
-    eval: false
+  eval: false
 ---
 
 This cheatsheet provides a quick reference for Julia programming language syntax and common operations. Julia is a high-level, high-performance programming language designed for numerical and scientific computing. It combines the ease of use of Python or R with the speed of C. For comprehensive documentation, visit:
