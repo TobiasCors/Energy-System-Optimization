@@ -1,0 +1,378 @@
+---
+title: "Lecture VI - Economic Dispatch Problem"
+subtitle: "Energy System Optimization with Julia"
+author: "Dr. Tobias Cors"
+institute: "Hamburg University of Applied Science - Summer 2025"
+title-slide-attributes:
+    data-background-color: "#025259"
+html-math-method:
+  method: mathjax
+  url: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+
+format:
+    html:
+        theme: [litera, ../styles.scss]
+    revealjs:
+        theme: [default, ../styles.scss]
+        transition: slide
+        transition-speed: fast
+        highlight-style: arrow
+        slide-number: true
+        code-copy: true
+        code-link: true
+        preview-links: auto
+        footer: " {{< meta title >}} | {{< meta author >}} | [Home](lecture-jump.qmd)"
+        output-file: lecture-presentation.html
+
+bibliography: ../ESO-bib.bib
+
+engine: julia
+
+execute:
+    echo: true
+---
+
+# [Quick Recap from last Week]{.flow} {.title}
+
+
+## NamedTuples in Julia
+
+- NamedTuples are immutable collections of key-value pairs
+- They provide a convenient way to group related data
+- Can be created using a function that returns a tuple with named fields
+
+```julia
+# Example: Creating a NamedTuple for a student
+function Student(name::String, age::Int, grade::Float64)
+    return (name = name, age = age, grade = grade)
+end
+
+# Create a dictionary of students
+students = Dict(
+    "Alice" => Student("Alice", 20, 3.7),
+    "Bob" => Student("Bob", 21, 3.5)
+)
+
+# Access data using dot notation
+println(students["Alice"].grade)  # Output: 3.7
+```
+
+## Model-Solving Function Pattern
+
+- Encapsulate optimization models in functions for reusability
+- Return results as NamedTuples for easy access
+- Store results in DataFrames for analysis
+
+```julia
+# Example data for different scenarios
+data = Dict(
+    "base" => Dict(
+        "cost" => 10.0,
+        "limit" => 100.0
+    ),
+    "high_cost" => Dict(
+        "cost" => 15.0,
+        "limit" => 100.0
+    ),
+    "low_limit" => Dict(
+        "cost" => 10.0,
+        "limit" => 50.0
+    )
+)
+
+# Example: Function to solve a simple optimization problem
+function solve_optimization(data::Dict)
+    model = Model(HiGHS.Optimizer)
+    set_silent(model)
+    
+    # Define variables and solve model
+    @variable(model, x >= 0)
+    @objective(model, Min, data["cost"] * x)
+    @constraint(model, x <= data["limit"])
+    optimize!(model)
+    
+    # Return results as NamedTuple
+    return (
+        solution = value(x),
+        objective = objective_value(model)
+    )
+end
+
+# Store results in DataFrame
+results = DataFrame(
+    scenario = String[],
+    solution = Float64[],
+    objective = Float64[]
+)
+
+# Solve multiple scenarios
+for (name, scenario_data) in data
+    solution = solve_optimization(scenario_data)
+    push!(results, (name, solution.solution, solution.objective))
+end
+```
+
+## Economic Dispatch Problem Recap
+
+- **Objective**: Minimize total generation cost
+- **Decision Variables**: 
+  - Power output of thermal generators ($p_g$)
+  - Power output of wind turbines ($p_w$)
+- **Key Constraints**:
+  - Power balance: $\sum_g p_g + \sum_w p_w = d^f$
+  - Generator limits: $p^{\min}_g \leq p_g \leq p^{\max}_g$
+  - Wind limits: $0 \leq p_w \leq p^f_w$
+
+::: {.callout-note}
+The Economic Dispatch problem optimizes power generation for a single time step, assuming all generators are already committed to operation.
+:::
+
+## From Economic Dispatch to Unit Commitment
+
+**Limitations of Economic Dispatch**:
+- Assumes generators are already running
+- Ignores start-up and shut-down costs
+- Doesn't consider minimum up/down times
+- Single time step optimization
+
+**Unit Commitment Solution**:
+- Adds binary variables for generator on/off status
+- Considers multiple time steps
+- Includes start-up/shut-down costs
+- Enforces minimum up/down time, ramping, etc. constraints
+- More realistic but computationally more complex
+
+::: {.callout-tip}
+Unit Commitment extends Economic Dispatch by adding operational constraints and time-dependent decisions.
+:::
+
+## Solutions from last Week
+
+- The tutorials from last week will again be [available on Friday]{.highlight}
+- You can access them in the project folder on Github
+- Click on the little cat icon on the bottom right
+
+. . .
+
+::: {.callout-tip}
+[You can ask questions anytime in class or via email!]{.highlight}
+:::
+
+
+# [Introduction]{.flow} {.title}
+
+## Power System Basic Models: Unit Commitment
+
+::: {.columns}
+::: {.column width="30%"} 
+[![](https://images.unsplash.com/photo-1503427315916-2ba435dee667?q=80&w=2727&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D){width="90%"}](https://unsplash.com/){width="85%"}
+:::
+
+::: {.column width="70%"}
+**Power system with generators and an aggregated demand**
+
+- Generators can be switched on/off to meet the demand
+- Generators have different costs and operational constraints
+- Decisions are made over multiple time steps
+:::
+:::
+
+## Unit Commitment Problem
+
+- **Objective**: Minimize the total cost of producing electricity
+- **Constraints**:
+    - Demand must be met
+    - Generators have limits on their power output
+    - Renewable power injection
+    - Generator on/off status
+    - Minimum up/down times
+    - Ramp rate limits
+- **Decision variables**: 
+    - Power output of thermal generators
+    - Power output of renewables
+    - Binary variables for generator status
+
+## {.loud-slide}
+::: {.r-fit-text}
+How does the mathematical model look like?
+:::
+
+::: footer
+:::
+
+
+# [Problem Structure]{.flow} {.title}
+
+## Available Sets
+
+[Question:]{.question} **What are the sets we need?**
+
+. . .
+
+- $\mathcal{G}$ - Set of thermal generators indexed by $g \in \{1,2,...,|\mathcal{G}|\}$
+- $\mathcal{W}$ - Set of wind turbines indexed by $w \in \{1,2,...,|\mathcal{W}|\}$
+- $\mathcal{T}$ - Set of time periods indexed by $t \in \{1,2,...,|\mathcal{T}|\}$
+
+## Available Parameters
+
+[Question:]{.question} **What are possible parameters?**
+
+. . .
+
+- $c^{var}_g$ - Variable cost of thermal generator $g\in\mathcal{G}$ in [$EUR/\text{MWh}$]
+- $c^{fix}_g$ - Fixed cost of thermal generator $g\in\mathcal{G}$ in [$EUR$]
+- $c^{var}_w$ - Cost of wind turbine $w\in\mathcal{W}$ in [$EUR/\text{MWh}$]
+- $p^{\min}_g$ - Minimum power output of thermal generator $g\in\mathcal{G}$ in [MW]
+- $p^{\max}_g$ - Maximum power output of thermal generator $g\in\mathcal{G}$ in [MW]
+- $p^{f}_{w,t}$ - Forecasted power output of wind turbine $w\in\mathcal{W}$ at time $t$ in [MW]
+- $d^f_t$ - Forecasted demand at time $t$ in [MW]
+- $T^{up}_g$ - Minimum up time of generator $g\in\mathcal{G}$ in [h]
+- $T^{down}_g$ - Minimum down time of generator $g\in\mathcal{G}$ in [h]
+- $R^{up}_g$ - Maximum ramp-up rate of generator $g\in\mathcal{G}$ in [MW/h]
+- $R^{down}_g$ - Maximum ramp-down rate of generator $g\in\mathcal{G}$ in [MW/h]
+
+## Decision Variables
+
+- $p_{g,t}$ - Power output of thermal generator $g\in\mathcal{G}$ at time $t$
+- $p_{w,t}$ - Power injection of wind turbine $w\in\mathcal{W}$ at time $t$
+- $u_{g,t}$ - Binary variable indicating if generator $g\in\mathcal{G}$ is on at time $t$
+
+# [Model Formulation]{.flow} {.title}
+
+## Objective Function
+
+$\text{Minimize} \quad \sum_{t \in \mathcal{T}} \left( \sum_{g \in \mathcal{G}} (c^{var}_g p_{g,t} + c^{fix}_g u_{g,t}) + \sum_{w \in \mathcal{W}} c^{var}_w p_{w,t} \right)$
+
+::: {.callout-note}
+## The objective includes:
+- Variable costs for power generation
+- Fixed costs for keeping generators on
+- Wind power costs
+:::
+
+## Power Balance Constraints
+
+$\sum_{g \in \mathcal{G}} p_{g,t} + \sum_{w \in \mathcal{W}} p_{w,t} = d^f_t \quad \forall t \in \mathcal{T}$
+
+## Generator Limits Constraints
+
+$p^{\min}_g u_{g,t} \leq p_{g,t} \leq p^{\max}_g u_{g,t} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}$
+
+## Wind Power Injection Constraints
+
+$0 \leq p_{w,t} \leq p^f_{w,t} \quad \forall w \in \mathcal{W}, t \in \mathcal{T}$
+
+## Minimum Up/Down Time Constraints
+
+$u_{g,t} - u_{g,t-1} \leq u_{g,\tau} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}, \tau \in [t+1, \min(t+T^{up}_g-1,|\mathcal{T}|)]$
+
+$u_{g,t-1} - u_{g,t} \leq 1 - u_{g,\tau} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}, \tau \in [t+1, \min(t+T^{down}_g-1,|\mathcal{T}|)]$
+
+## Ramp Rate Constraints
+
+$p_{g,t} - p_{g,t-1} \leq R^{up}_g \quad \forall g \in \mathcal{G}, t \in \mathcal{T}$
+
+$p_{g,t-1} - p_{g,t} \leq R^{down}_g \quad \forall g \in \mathcal{G}, t \in \mathcal{T}$
+
+## Complete Unit Commitment Model
+
+$\text{Minimize} \quad \sum_{t \in \mathcal{T}} \left( \sum_{g \in \mathcal{G}} (c^{var}_g p_{g,t} + c^{fix}_g u_{g,t}) + \sum_{w \in \mathcal{W}} c^{var}_w p_{w,t} \right)$
+
+subject to
+
+$\sum_{g \in \mathcal{G}} p_{g,t} + \sum_{w \in \mathcal{W}} p_{w,t} = d^f_t \quad \forall t \in \mathcal{T}$
+
+$p^{\min}_g u_{g,t} \leq p_{g,t} \leq p^{\max}_g u_{g,t} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}$
+
+$0 \leq p_{w,t} \leq p^f_{w,t} \quad \forall w \in \mathcal{W}, t \in \mathcal{T}$
+
+$u_{g,t} - u_{g,t-1} \leq u_{g,\tau} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}, \tau \in [t+1, \min(t+T^{up}_g-1,|\mathcal{T}|)]$
+
+$u_{g,t-1} - u_{g,t} \leq 1 - u_{g,\tau} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}, \tau \in [t+1, \min(t+T^{down}_g-1,|\mathcal{T}|)]$
+
+$p_{g,t} - p_{g,t-1} \leq R^{up}_g \quad \forall g \in \mathcal{G}, t \in \mathcal{T}$
+
+$p_{g,t-1} - p_{g,t} \leq R^{down}_g \quad \forall g \in \mathcal{G}, t \in \mathcal{T}$
+
+$u_{g,t} \in \{0,1\} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}$
+
+# [Model Characteristics]{.flow} {.title}
+
+## Model Type
+
+[Question:]{.question} **What type of optimization problem is this?**
+
+. . .
+
+- Mixed-Integer Linear Programming (MILP)
+- Binary variables for generator status
+- Linear constraints and objective
+- Time-dependent decisions
+
+## Solution Methods
+
+[Question:]{.question} **How can we solve this problem?**
+
+. . .
+
+- Branch and Bound algorithm
+- Commercial solvers (Gurobi, CPLEX)
+- Open-source solvers (HiGHS)
+- Decomposition methods for large problems
+
+## Computational Challenges
+
+[Question:]{.question} **What makes this problem challenging?**
+
+. . .
+
+- Large number of binary variables
+- Time-dependent inter-temporal constraints
+- Minimum up/down time constraints
+- Ramp rate constraints
+- Multiple time periods
+
+# [Impact]{.flow} {.title}
+
+## Real-World Applications
+
+- Generation scheduling
+- Day-ahead market clearing
+- Ancillary services
+- Reserve capacity planning
+
+## Further Extensions
+
+- Battery storage
+- Demand response
+- Network constraints
+- Reserve requirements
+- Multiple fuel types
+- Emission constraints
+- Uncertainty in forecasts
+
+::: {.callout-note}
+## And that's it for today's lecture!
+
+We have covered the Unit Commitment problem and its mathematical formulation. The tutorial will help you implement and solve this problem using Julia and JuMP.
+:::
+
+
+## {.loud-slide}
+::: {.r-fit-text}
+Questions?
+:::
+
+::: footer
+:::
+
+# [Literature]{.flow} {.title}
+
+## Literature I
+
+For more interesting literature to learn more about Julia, take a look at the [literature list](../general/literature.qmd) of this course.
+
+## Literature II
+
+For a detailed mathematical formulation of the Unit Commitment problem, see @morales2013tight and @zimmermann2019increasing.
+

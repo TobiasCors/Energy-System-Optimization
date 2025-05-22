@@ -127,7 +127,7 @@ Analogously create a dictionary for the wind turbines and scenarios. Call them `
 # Validate your solution
 @assert length(dictThermalGeneartors) == nrow(generators) "Available time dictionary should have same length as input data"
 @assert length(dictWindTurbines) == nrow(windTurbines) "Available time dictionary should have same length as input data"
-@assert length(dictScenarios) == nrow(scenarios) "Bottling time dictionary should have same length as input data"
+@assert length(dictScenarios) == nrow(scenarios) "Scenario dictionary should have same length as input data"
 
 # Check that all values are positive
 @assert all(v -> all(x -> x >= 0, [v.min, v.max, v.fixed_cost, v.variable_cost]), values(dictThermalGeneartors)) "All thermal generator values must be positive"
