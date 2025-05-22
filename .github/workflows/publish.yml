@@ -50,7 +50,7 @@ jobs:
       - name: Install TinyTeX
         run: |
           quarto install tinytex
-          tlmgr install collection-latexrecommended collection-fontsrecommended collection-latexextra
+        # tlmgr install collection-latexrecommended collection-fontsrecommended collection-latexextra
         
       - name: Update LaTeX Packages
         run: |
