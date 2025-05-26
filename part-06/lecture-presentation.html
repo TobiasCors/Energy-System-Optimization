@@ -489,9 +489,9 @@ Dr.&nbsp;Tobias Cors
 </div>
 <div class="callout-content">
 <ul>
-<li>Variable costs for power generation</li>
-<li>Fixed costs for keeping generators on</li>
-<li>Wind power costs</li>
+<li>Variable costs for power generation (<span class="math inline">\(c^{var}_g p_{g,t}\)</span>): Cost per hour of electricity produced</li>
+<li>Fixed costs for keeping generators on (<span class="math inline">\(c^{fix}_g u_{g,t}\)</span>): Cost of maintaining a generator in operation</li>
+<li>Wind power costs (<span class="math inline">\(c^{var}_w p_{w,t}\)</span>): Variable costs per hourfor wind power production</li>
 </ul>
 </div>
 </div>
@@ -500,24 +500,89 @@ Dr.&nbsp;Tobias Cors
 <section id="power-balance-constraints" class="slide level2">
 <h2>Power Balance Constraints</h2>
 <p><span class="math inline">\(\sum_{g \in \mathcal{G}} p_{g,t} + \sum_{w \in \mathcal{W}} p_{w,t} = d^f_t \quad \forall t \in \mathcal{T}\)</span></p>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>This constraint ensures that at each time step <span class="math inline">\(t\)</span>: - The sum of all thermal generator outputs (<span class="math inline">\(\sum_{g \in \mathcal{G}} p_{g,t}\)</span>) - Plus all wind power outputs (<span class="math inline">\(\sum_{w \in \mathcal{W}} p_{w,t}\)</span>) - Must exactly match the forecasted demand (<span class="math inline">\(d^f_t\)</span>)</p>
+</div>
+</div>
+</div>
 </section>
 <section id="generator-limits-constraints" class="slide level2">
 <h2>Generator Limits Constraints</h2>
 <p><span class="math inline">\(p^{\min}_g u_{g,t} \leq p_{g,t} \leq p^{\max}_g u_{g,t} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}\)</span></p>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>For each generator <span class="math inline">\(g\)</span> at time <span class="math inline">\(t\)</span>: - If the generator is on (<span class="math inline">\(u_{g,t} = 1\)</span>), its output must be between minimum (<span class="math inline">\(p^{\min}_g\)</span>) and maximum (<span class="math inline">\(p^{\max}_g\)</span>) power - If the generator is off (<span class="math inline">\(u_{g,t} = 0\)</span>), its output must be zero - The binary variable <span class="math inline">\(u_{g,t}\)</span> ensures these limits are enforced</p>
+</div>
+</div>
+</div>
 </section>
 <section id="wind-power-injection-constraints" class="slide level2">
 <h2>Wind Power Injection Constraints</h2>
 <p><span class="math inline">\(0 \leq p_{w,t} \leq p^f_{w,t} \quad \forall w \in \mathcal{W}, t \in \mathcal{T}\)</span></p>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>For each wind turbine <span class="math inline">\(w\)</span> at time <span class="math inline">\(t\)</span>: - Power output must be non-negative - Cannot exceed the forecasted available wind power (<span class="math inline">\(p^f_{w,t}\)</span>) - Unlike thermal generators, wind turbines don’t have binary variables as the power injection is controllable between 0 and the forecasted available wind power</p>
+</div>
+</div>
+</div>
 </section>
 <section id="minimum-updown-time-constraints" class="slide level2">
 <h2>Minimum Up/Down Time Constraints</h2>
 <p><span class="math inline">\(u_{g,t} - u_{g,t-1} \leq u_{g,\tau} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}, \tau \in [t+1, \min(t+T^{up}_g-1,|\mathcal{T}|)]\)</span></p>
 <p><span class="math inline">\(u_{g,t-1} - u_{g,t} \leq 1 - u_{g,\tau} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}, \tau \in [t+1, \min(t+T^{down}_g-1,|\mathcal{T}|)]\)</span></p>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>These constraints enforce minimum operating times: - First equation: If a generator starts up at time <span class="math inline">\(t\)</span>, it must stay on for at least <span class="math inline">\(T^{up}_g\)</span> time periods - Second equation: If a generator shuts down at time <span class="math inline">\(t\)</span>, it must stay off for at least <span class="math inline">\(T^{down}_g\)</span> time periods - <span class="math inline">\(\tau\)</span> represents the time periods during which these constraints must be enforced</p>
+</div>
+</div>
+</div>
 </section>
 <section id="ramp-rate-constraints" class="slide level2">
 <h2>Ramp Rate Constraints</h2>
 <p><span class="math inline">\(p_{g,t} - p_{g,t-1} \leq R^{up}_g \quad \forall g \in \mathcal{G}, t \in \mathcal{T}\)</span></p>
 <p><span class="math inline">\(p_{g,t-1} - p_{g,t} \leq R^{down}_g \quad \forall g \in \mathcal{G}, t \in \mathcal{T}\)</span></p>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>These constraints limit how quickly generators can change their output: - First equation: Power increase between consecutive time steps cannot exceed ramp-up rate <span class="math inline">\(R^{up}_g\)</span> - Second equation: Power decrease between consecutive time steps cannot exceed ramp-down rate <span class="math inline">\(R^{down}_g\)</span> - Prevents sudden changes in generator output that could damage equipment</p>
+</div>
+</div>
+</div>
 </section>
 <section id="complete-unit-commitment-model" class="slide level2">
 <h2>Complete Unit Commitment Model</h2>
