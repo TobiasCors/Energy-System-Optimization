@@ -90,8 +90,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Debug Logs
-        run: cat general/cheatsheet-julia.log
+      # - name: Debug Logs
+      #   run: cat general/cheatsheet-julia.log
 
       # - name: Upload cheatsheet log
       #   if: always()
