@@ -73,6 +73,11 @@ jobs:
 
       - name: Update LaTeX Packages
         run: |
+          export PATH=$HOME/.TinyTeX/bin/x86_64-linux:$PATH # Ensure PATH is updated
+          if ! command -v tlmgr &> /dev/null; then
+            echo "tlmgr could not be found"
+            exit 1
+          fi
           tlmgr update --self
           tlmgr update --all
 
