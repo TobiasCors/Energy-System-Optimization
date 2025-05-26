@@ -56,7 +56,6 @@ jobs:
             echo "TinyTeX installation failed or tlmgr is not in PATH"
             exit 1
           fi
-          tlmgr install collection-latexrecommended collection-fontsrecommended collection-latexextra
       
       - name: Verify TinyTeX Installation
         run: |
@@ -76,6 +75,7 @@ jobs:
           fi
           tlmgr update --self
           tlmgr update --all
+          tlmgr install collection-latexrecommended collection-fontsrecommended collection-latexextra
 
       # - name: Install TinyTeX
       # run: |
