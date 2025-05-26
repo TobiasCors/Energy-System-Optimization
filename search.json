@@ -1,10 +1,65 @@
 [
   {
+    "objectID": "part-06/tutorial-commitment.html",
+    "href": "part-06/tutorial-commitment.html",
+    "title": "Tutorial VI - Unit Commitment Problem",
+    "section": "",
+    "text": "Implement the Unit Commitment problem from the lecture in Julia. Before we start, let’s load the necessary packages and data.\n\nusing JuMP, HiGHS\nusing CSV\nusing DataFrames\nusing Plots\nusing Dates\n\nNow, let’s load the data. The generator data includes additional parameters for UC, and the scenario data now includes timestamps and hourly values.\n\n# Get the directory of the current file\nfile_directory = \"$(@__DIR__)/data\"\n\n# Load the data of the thermal generators\ngenerators = CSV.read(\"$file_directory/generator.csv\", DataFrame)\nprintln(\"Number of generators: $(nrow(generators))\")\nprintln(\"First 5 rows of available generators:\")\nprintln(generators[1:5, :])\n\nNumber of generators: 6\nFirst 5 rows of available generators:\n5×10 DataFrame\n Row │ name     min_power  max_power  variable_cost  fix_cost  min_up_time  mi ⋯\n     │ String3  Int64      Int64      Int64          Int64     Int64        In ⋯\n─────┼──────────────────────────────────────────────────────────────────────────\n   1 │ G1             100        500             50      1000            4     ⋯\n   2 │ G2              50        350             60      1200            2\n   3 │ G3              40        250             55      1300            1\n   4 │ G4              30        200             70      1500            4\n   5 │ G5              30        200             60      1500            4     ⋯\n                                                               4 columns omitted\n\n\n\n# Load the data of the wind turbines\nwindTurbines = CSV.read(\"$file_directory/windTurbine.csv\", DataFrame)\nprintln(\"Number of wind turbines: $(nrow(windTurbines))\")\nprintln(\"Variable cost per wind turbine:\")\nprintln(windTurbines)\n\nNumber of wind turbines: 1\nVariable cost per wind turbine:\n1×2 DataFrame\n Row │ name     variable_cost \n     │ String3  Int64         \n─────┼────────────────────────\n   1 │ T1                  50\n\n\n\n# Load the scenario data about the demand and wind forecast\nscenarios = CSV.read(\"$file_directory/scenario.csv\", DataFrame)\nprintln(\"First 5 rows of scenarios:\")\nprintln(scenarios[1:5, :])\nprintln(\"Loaded scenarios:\")\nprintln(Vector{String}(unique(scenarios.scenario)))\n\nFirst 5 rows of scenarios:\n5×4 DataFrame\n Row │ scenario  datetime             demand_forecast  wind_forecast \n     │ String3   String31             Int64            Int64         \n─────┼───────────────────────────────────────────────────────────────\n   1 │ S1        2024-01-01 00:00:00              800            200\n   2 │ S1        2024-01-01 01:00:00              750            180\n   3 │ S1        2024-01-01 02:00:00              700            150\n   4 │ S1        2024-01-01 03:00:00              650            120\n   5 │ S1        2024-01-01 04:00:00              600            100\nLoaded scenarios:\n[\"S1\"]\n\n\nNext, prepare the data structures for the model. We’ll create NamedTuples for generators, wind turbines, and scenarios:\n\n# This function creates the Named Tuple ThermalGenerator\n# It stores all parameters needed for a thermal generator in the UC problem:\n# - min/max: minimum and maximum power output\n# - fixed_cost: cost per hour when the generator is running\n# - variable_cost: cost per MWh of power produced\n# - min_up_time: minimum number of hours the generator must stay on once started\n# - min_down_time: minimum number of hours the generator must stay off once shut down\n# - ramp_up/down: maximum power change between consecutive hours\n# - startup_cost: one-time cost when starting the generator\nfunction ThermalGenerator(\n    min::Int64,\n    max::Int64,\n    fixed_cost::Int64,\n    variable_cost::Int64,\n    min_up_time::Int64,\n    min_down_time::Int64,\n    ramp_up::Int64,\n    ramp_down::Int64,\n    startup_cost::Int64\n)\n    return (\n        min = min,\n        max = max,\n        fixed_cost = fixed_cost,\n        variable_cost = variable_cost,\n        min_up_time = min_up_time,\n        min_down_time = min_down_time,\n        ramp_up = ramp_up,\n        ramp_down = ramp_down,\n        startup_cost = startup_cost\n    )\nend\n\n# Create dictionaries for the data\n# Each generator's parameters are stored in a NamedTuple for easy access\ndictThermalGenerators = Dict(row.name =&gt; ThermalGenerator(\n    row.min_power, row.max_power, row.fix_cost, row.variable_cost,\n    row.min_up_time, row.min_down_time, row.ramp_up, row.ramp_down,\n    row.startup_cost\n) for row in eachrow(generators))\n\n# Create dictionary for wind turbines\n# Wind turbines only have variable costs as they don't have startup/shutdown constraints\ndictWindTurbines = Dict(row.name =&gt; (variable_cost = row.variable_cost,) for row in eachrow(windTurbines))\n\n# Create dictionary for scenarios\n# Each scenario contains time series data for demand and wind forecasts\ndate_format = dateformat\"yyyy-mm-dd HH:MM:SS\"\ndictScenarios = Dict()\nfor scenario in unique(scenarios.scenario)\n    scenario_data = scenarios[scenarios.scenario .== scenario, :]\n    dictScenarios[scenario] = (\n        datetime = DateTime.(scenario_data.datetime, date_format),\n        demand_forecast = scenario_data.demand_forecast,\n        wind_forecast = scenario_data.wind_forecast\n    )\nend",
+    "crumbs": [
+      "06 Commitment",
+      "Tutorial"
+    ]
+  },
+  {
+    "objectID": "part-06/tutorial-commitment.html#task-implement-startup-variables-and-costs",
+    "href": "part-06/tutorial-commitment.html#task-implement-startup-variables-and-costs",
+    "title": "Tutorial VI - Unit Commitment Problem",
+    "section": "Task: Implement Startup Variables and Costs",
+    "text": "Task: Implement Startup Variables and Costs\n\nWe need to add a binary variable v_g[g,t] that equals 1 if generator g is started up at time t, and 0 otherwise.\nThe startup cost should be included in the objective function.\nWe need to link the startup variable to the generator status variable u_g[g,t].\n\nThe relationship between v_g and u_g is: If a generator is off at t-1 (u_g[g,t-1] = 0) and on at t (u_g[g,t] = 1), then it must have been started up (v_g[g,t] = 1).\nHow can this be expressed?\n\n## YOUR ANSWER HERE\n\n\nNow, let’s implement the Unit Commitment model in a function:\n\nfunction solve_unit_commitment(dictThermalGenerators::Dict, dictWindTurbines::Dict, scenario)\n    # Create the model\n    model = Model(HiGHS.Optimizer)\n    set_silent(model)\n    \n    # Define the time periods and sets\n    T = 1:length(scenario.datetime)  # Time periods (hours)\n    G = keys(dictThermalGenerators)  # Set of thermal generators\n    W = keys(dictWindTurbines)       # Set of wind turbines\n    \n    # Define variables\n    @variable(model, p_g[g in G, t in T] &gt;= 0)  # Power output of generators [MW]\n    @variable(model, p_w[w in W, t in T] &gt;= 0)  # Power output of wind turbines [MW]\n    @variable(model, u_g[g in G, t in T], Bin)  # Binary variable for generator status (1=on, 0=off)\n    @variable(model, v_g[g in G, t in T], Bin)  # Binary variable for startup (1=startup, 0=no startup)\n    \n    # Objective function: Minimize total costs\n    # Costs include:\n    # 1. Variable costs for power production\n    # 2. Fixed costs when generator is running\n    # 3. Startup costs when generator is started\n    # 4. Variable costs for wind power\n    ## YOUR CODE HERE\n\n    \n    # Power balance constraint: Total generation must equal demand\n    ## YOUR CODE HERE\n\n    \n    # Generator limits: Power output must be within min/max when running\n    ## YOUR CODE HERE\n\n    \n    # Wind limits: Wind power cannot exceed forecast\n    ## YOUR CODE HERE\n\n    \n    # Minimum up time: Generator must stay on for minimum duration after startup\n    ## YOUR CODE HERE\n\n    \n    # Minimum down time: Generator must stay off for minimum duration after shutdown\n    ## YOUR CODE HERE\n\n    \n    # Ramp rate limits: Power change between consecutive hours is limited\n    ## YOUR CODE HERE\n\n    \n    # Startup variable definition: v_g[g,t] = 1 if generator g is started at time t\n    ## YOUR CODE HERE\n\n    \n    # Solve the model\n    optimize!(model)\n    \n    # Return results\n    return (\n        p_g = value.(p_g),      # Generator power output\n        p_w = value.(p_w),      # Wind power output\n        u_g = value.(u_g),      # Generator status\n        v_g = value.(v_g),      # Startup events\n        total_cost = objective_value(model)\n    )\nend",
+    "crumbs": [
+      "06 Commitment",
+      "Tutorial"
+    ]
+  },
+  {
+    "objectID": "part-06/tutorial-commitment.html#now-lets-solve-the-model-for-all-scenarios-and-store-the-results",
+    "href": "part-06/tutorial-commitment.html#now-lets-solve-the-model-for-all-scenarios-and-store-the-results",
+    "title": "Tutorial VI - Unit Commitment Problem",
+    "section": "Now, let’s solve the model for all scenarios and store the results:",
+    "text": "Now, let’s solve the model for all scenarios and store the results:\n\n# Create a dataframe to store results\nresults_df = DataFrame(\n    scenario = String[],            # Scenario identifier\n    datetime = DateTime[],          # Timestamp\n    total_cost = Float64[],         # Total system cost\n    wind_curtailment = Float64[],   # Curtailed wind power\n    thermal_generation = Float64[], # Total thermal generation\n    wind_generation = Float64[]     # Total wind generation\n)\n\n# Loop over scenarios\nfor (scenario_name, scenario_data) in dictScenarios\n    solution = solve_unit_commitment(dictThermalGenerators, dictWindTurbines, scenario_data)\n    \n    # Store results for each time period\n    for t in 1:length(scenario_data.datetime)\n        push!(results_df, (\n            scenario_name,\n            scenario_data.datetime[t],\n            solution.total_cost,\n            sum(scenario_data.wind_forecast[t] - solution.p_w[w,t] for w in keys(dictWindTurbines)),\n            sum(solution.p_g[g,t] for g in keys(dictThermalGenerators)),\n            sum(solution.p_w[w,t] for w in keys(dictWindTurbines))\n        ))\n    end\nend",
+    "crumbs": [
+      "06 Commitment",
+      "Tutorial"
+    ]
+  },
+  {
+    "objectID": "part-06/tutorial-commitment.html#finally-lets-plot-the-results",
+    "href": "part-06/tutorial-commitment.html#finally-lets-plot-the-results",
+    "title": "Tutorial VI - Unit Commitment Problem",
+    "section": "Finally, let’s plot the results:",
+    "text": "Finally, let’s plot the results:\nWe only have one scenario, so we can plot the results for that scenario like this:\n\n# Plot generation over time\np1 = plot(results_df.datetime, results_df.thermal_generation, \n    label=\"Thermal Generation\", xlabel=\"Time\", ylabel=\"Power [MW]\")\nplot!(results_df.datetime, results_df.wind_generation, \n    label=\"Wind Generation\")\nplot!(results_df.datetime, results_df.wind_curtailment, \n    label=\"Wind Curtailment\")\ntitle!(\"Generation Profile\")\n\n# Plot costs\np2 = plot(results_df.datetime, results_df.total_cost, \n    label=\"Total Cost\", xlabel=\"Time\", ylabel=\"Cost [EUR]\")\ntitle!(\"Cost Profile\")\n\n# Display plots\nplot(p1, p2, layout=(2,1), size=(800,600))",
+    "crumbs": [
+      "06 Commitment",
+      "Tutorial"
+    ]
+  },
+  {
+    "objectID": "part-06/tutorial-commitment.html#assert-the-correct-objective-value",
+    "href": "part-06/tutorial-commitment.html#assert-the-correct-objective-value",
+    "title": "Tutorial VI - Unit Commitment Problem",
+    "section": "Assert the correct objective value",
+    "text": "Assert the correct objective value\n\n# Assert the correct objective value\nresult_cost = results_df[results_df.scenario .== \"S1\", :total_cost][1]\n@assert isapprox(result_cost, 1.1446e6; atol=1e-2) \"Objective value from results_df is not correct. Check your implementation.\"\nprintln(\"Test passed: The objective value from results_df is correct!\")",
+    "crumbs": [
+      "06 Commitment",
+      "Tutorial"
+    ]
+  },
+  {
     "objectID": "part-05/tutorial-dispatch.html",
     "href": "part-05/tutorial-dispatch.html",
     "title": "Tutorial V - Economic Dispatch Problem",
     "section": "",
-    "text": "1. Modelling the ED problem\nImplement the ED problem from the lecture in Julia. Before we start, let’s load the necessary packages and data.\n\nusing JuMP, HiGHS\nusing CSV\nusing DataFrames\nusing Plots\n\n\n\n\n\n\n\nTip\n\n\n\nIf you haven’t installed the packages yet, you can do so by running using Pkg first and then Pkg.add(\"JuMP\"), Pkg.add(\"HiGHS\"), Pkg.add(\"DataFrames\"), Pkg.add(\"Plots\"), and Pkg.add(\"StatsPlots\").\n\n\nNow, let’s load the data. The generator data (\\(p^{\\min}_g, p^{\\max}_g, c^{var}_g, c^{fix}_g\\)), \\(c^{fix}_g\\) being fixed cost not used in the ED, the wind data (\\(c^{var}_w\\)), and the scenario data (\\(p^f_w, d^f\\)) are provided as CSV files.\n\n# Get the directory of the current file\nfile_directory = \"$(@__DIR__)/data\"\n\n# Load the data of the thermal generators\ngenerators = CSV.read(\"$file_directory/generator.csv\", DataFrame)\nprintln(\"Number of generator: $(nrow(generators))\")\nprintln(\"First 5 rows of available genrator:\")\nprintln(generators[1:5, :])\n\nNumber of generator: 6\nFirst 5 rows of available genrator:\n5×5 DataFrame\n Row │ name     min_power  max_power  variable_cost  fix_cost \n     │ String3  Int64      Int64      Int64          Int64    \n─────┼────────────────────────────────────────────────────────\n   1 │ G1             100        500             50      1000\n   2 │ G2              50        350             60      1200\n   3 │ G3              40        250             55      1300\n   4 │ G4              30        200             70      1500\n   5 │ G5              30        200             60      1500\n\n\n\n# Load the data of the wind turbines\nwindTurbines = CSV.read(\"$file_directory/windTurbine.csv\", DataFrame)\nprintln(\"Number of wind turbines: $(nrow(windTurbines))\")\nprintln(\"Variable cost per wind turbine:\")\nprintln(windTurbines)\n\nNumber of wind turbines: 1\nVariable cost per wind turbine:\n1×2 DataFrame\n Row │ name     var_cost \n     │ String3  Int64    \n─────┼───────────────────\n   1 │ T1             50\n\n\n\n# Load the sceanrio data about the demand and wind forecast\nscenarios = CSV.read(\"$file_directory/scenario.csv\", DataFrame)\nprintln(\"First 5 rows of sceanios:\")\nprintln(scenarios[1:5, :])\n\nFirst 5 rows of sceanios:\n5×3 DataFrame\n Row │ name     wind_forecast  demand_forecast \n     │ String3  Int64          Int64           \n─────┼─────────────────────────────────────────\n   1 │ S1                1000             1500\n   2 │ S2                1000             1600\n   3 │ S3                1000             1400\n   4 │ S4                1000             1300\n   5 │ S5                1000             1000\n\n\nNext, you need to prepare the given data for the model. We will use ‘function’ to create a ‘Named Tuple’ which we can access with the dot notation:\n\n# This function creates the Named Tuple ThermalGenerator\nfunction ThermalGenerator(\n    min::Int64,\n    max::Int64,\n    fixed_cost::Int64,\n    variable_cost::Int64,\n)\n    return (\n        min = min,\n        max = max,\n        fixed_cost = fixed_cost,\n        variable_cost = variable_cost,\n    )\nend\n\n# Add generators of the data to a dictionary of the generators\ndictThermalGeneartors = Dict(row.name =&gt; ThermalGenerator(row.min_power, row.max_power, row.fix_cost, row.variable_cost) for row in eachrow(generators))\n\n# Now a generator propety can be accessed\nprintln(dictThermalGeneartors[\"G1\"].variable_cost)\n\nAnalogously create a dictionary for the wind turbines and scenarios. Call them dictWindTurbines and dictScenarios.\n\n# YOUR CODE BELOW\n\n\n\n\nCode\n# Validate your solution\n@assert length(dictThermalGeneartors) == nrow(generators) \"Available time dictionary should have same length as input data\"\n@assert length(dictWindTurbines) == nrow(windTurbines) \"Available time dictionary should have same length as input data\"\n@assert length(dictScenarios) == nrow(scenarios) \"Bottling time dictionary should have same length as input data\"\n\n# Check that all values are positive\n@assert all(v -&gt; all(x -&gt; x &gt;= 0, [v.min, v.max, v.fixed_cost, v.variable_cost]), values(dictThermalGeneartors)) \"All thermal generator values must be positive\"\n@assert all(v -&gt; v.variable_cost &gt;= 0, values(dictWindTurbines)) \"All wind turbine values must be positive\"\n@assert all(v -&gt; all(x -&gt; x &gt;= 0, [v.wind_forecast, v.demand_forecast]), values(dictScenarios)) \"All scenario values must be positive\"\n\n# Check that dictionaries contain all expected keys\n@assert all(p -&gt; haskey(dictThermalGeneartors, p), generators.name) \"Missing names in dictionary\"\n@assert all(b -&gt; haskey(dictWindTurbines, b), windTurbines.name) \"Missing names in dictionary\"\n@assert all(b -&gt; haskey(dictScenarios, b), scenarios.name) \"Missing names in dictionary\"\n\n\nNext, we define the model instance for the ED problem.\n\n# Prepare the model instance\ndispatchModel = Model(HiGHS.Optimizer)\n\nNow, create your variables. Please name them p_g for the power output of generators, p_w for the power injection of wind turbines.\n\n\n\n\n\n\nNote\n\n\n\nConsider the bounds for these variables. First, we only want to solve the model for sceanrio “S1”.\n\n\n\n# YOUR CODE BELOW\n\n\n\n\nCode\n# Validate your solution\n# Check variable dimensions\n@assert length(p_g) == length(dictThermalGeneartors) \"Incorrect dimensions for p_g\"\n@assert length(p_w) == length(dictWindTurbines) \"Incorrect dimensions for p_w\"\n\n# Check variable types\n@assert all(x -&gt; is_valid(dispatchModel, x), p_g) \"p_g must be valid variables\"\n@assert all(x -&gt; is_valid(dispatchModel, x), p_w) \"p_w must be valid variables\"\n\n\nNext, define the objective function.\n\n# YOUR CODE BELOW\n\n\n\n\nCode\n# Validate your solution\n# Check if the model has an objective\n@assert objective_function(dispatchModel) !== nothing \"Model must have an objective function\"\n\n# Check if it's a minimization problem\n@assert objective_sense(dispatchModel) == MOI.MIN_SENSE \"Objective should be minimization\"\n\n# Check if the objective function contains both cost components\nobj_expr = objective_function(dispatchModel)\n@assert contains(string(dispatchModel), \"p_g\") \"Objective must include variable costs (p_g)\"\n@assert contains(string(dispatchModel), \"p_w\") \"Objective must include variable costs (p_w)\"\n\n\nNow, we need to define all necessary constraints for the model, which is only the demand/production balance constraint as we considered min and max power limitations in the variable setup.\n\n# YOUR CODE BELOW\n\n\nFinally, implement the solve statement for your model instance and print the results.\n\n# YOUR CODE BELOW\n\n\n\n\nCode\n# Validate your solution\n@assert objective_value(dispatchModel) == 76600 \"Objective value should be 76600\"\n\n\n\n\n2. Solving scenarios of the ED problem\nWe now want to solve all sceanrios. To do so we wrap the model in a function that we then can call with different inputs.\n\n\n\n\n\n\nNote\n\n\n\nCopy your model into the function. The results should be stored in the dataframe.\n\n\n\n# Create a function `solve_economic_dispatch`, which solves the economic\n# dispatch problem for a given set of input parameters.\n\nfunction solve_economic_dispatch(dictThermalGeneartors::Dict, dictWindTurbines::Dict, scenario)\n    ## Define the economic dispatch (ED) model\n    dispatchModel = Model(HiGHS.Optimizer)\n    set_silent(dispatchModel)\n    ## Define decision variables\n    ## p_g power output of generators\n    # YOUR CODE BELOW\n    \n    ## p_w wind power injection\n    # YOUR CODE BELOW\n\n    ## Define the objective function\n    # YOUR CODE BELOW\n  \n    ## Define the power balance constraint\n    # YOUR CODE BELOW\n    \n    ## Solve statement\n    optimize!(dispatchModel)\n    assert_is_solved_and_feasible(dispatchModel)\n\n    ## return the optimal value of the objective function and variables\n    return (\n        p_g = value.(p_g),\n        p_w = value.(p_w),\n        wind_curtailment = scenario.wind_forecast - sum(value.(p_w)),\n        total_cost = objective_value(dispatchModel),\n    )\nend\n\n# Create a dataframe to store results\nresults_df = DataFrame(\n    scenario = String[],\n    total_cost = Float64[],\n    wind_curtailment = Float64[]\n)\n\n# Loop over the scenarios and save the results to a dataframe\nfor (scenario_name, scenario_data) in dictScenarios\n    solution = solve_economic_dispatch(dictThermalGeneartors, dictWindTurbines, scenario_data)\n    push!(results_df, (scenario_name, solution.total_cost, solution.wind_curtailment))\nend\n\n# Print the dataframe\nprintln(\"\\nResults for all scenarios:\")\nprintln(results_df)\n\nWhat is the problem in scenario “S5” with the assumptions made in the ED problem leading to an inefficient usage of wind turbines?\n\n# YOUR ANSWER HERE\n\n\n\n\nSolutions\nYou will likely find solutions to most exercises online. However, I strongly encourage you to work on these exercises independently without searching explicitly for the exact answers to the exercises. Understanding someone else’s solution is very different from developing your own. Use the lecture notes and try to solve the exercises on your own. This approach will significantly enhance your learning and problem-solving skills.\nRemember, the goal is not just to complete the exercises, but to understand the concepts and improve your programming abilities. If you encounter difficulties, review the lecture materials, experiment with different approaches, and don’t hesitate to ask for clarification during class discussions.\nLater, you will find the solutions to these exercises online in the associated GitHub repository, but we will also quickly go over them in next week’s tutorial. To access the solutions, click on the Github button on the lower right and search for the folder with today’s lecture and tutorial. Alternatively, you can ask ChatGPT or Claude to explain them to you. But please remember, the goal is not just to complete the exercises, but to understand the concepts and improve your programming abilities.",
+    "text": "1. Modelling the ED problem\nImplement the ED problem from the lecture in Julia. Before we start, let’s load the necessary packages and data.\n\nusing JuMP, HiGHS\nusing CSV\nusing DataFrames\nusing Plots\n\n\n\n\n\n\n\nTip\n\n\n\nIf you haven’t installed the packages yet, you can do so by running using Pkg first and then Pkg.add(\"JuMP\"), Pkg.add(\"HiGHS\"), Pkg.add(\"DataFrames\"), Pkg.add(\"Plots\"), and Pkg.add(\"StatsPlots\").\n\n\nNow, let’s load the data. The generator data (\\(p^{\\min}_g, p^{\\max}_g, c^{var}_g, c^{fix}_g\\)), \\(c^{fix}_g\\) being fixed cost not used in the ED, the wind data (\\(c^{var}_w\\)), and the scenario data (\\(p^f_w, d^f\\)) are provided as CSV files.\n\n# Get the directory of the current file\nfile_directory = \"$(@__DIR__)/data\"\n\n# Load the data of the thermal generators\ngenerators = CSV.read(\"$file_directory/generator.csv\", DataFrame)\nprintln(\"Number of generator: $(nrow(generators))\")\nprintln(\"First 5 rows of available genrator:\")\nprintln(generators[1:5, :])\n\nNumber of generator: 6\nFirst 5 rows of available genrator:\n5×5 DataFrame\n Row │ name     min_power  max_power  variable_cost  fix_cost \n     │ String3  Int64      Int64      Int64          Int64    \n─────┼────────────────────────────────────────────────────────\n   1 │ G1             100        500             50      1000\n   2 │ G2              50        350             60      1200\n   3 │ G3              40        250             55      1300\n   4 │ G4              30        200             70      1500\n   5 │ G5              30        200             60      1500\n\n\n\n# Load the data of the wind turbines\nwindTurbines = CSV.read(\"$file_directory/windTurbine.csv\", DataFrame)\nprintln(\"Number of wind turbines: $(nrow(windTurbines))\")\nprintln(\"Variable cost per wind turbine:\")\nprintln(windTurbines)\n\nNumber of wind turbines: 1\nVariable cost per wind turbine:\n1×2 DataFrame\n Row │ name     var_cost \n     │ String3  Int64    \n─────┼───────────────────\n   1 │ T1             50\n\n\n\n# Load the sceanrio data about the demand and wind forecast\nscenarios = CSV.read(\"$file_directory/scenario.csv\", DataFrame)\nprintln(\"First 5 rows of sceanios:\")\nprintln(scenarios[1:5, :])\n\nFirst 5 rows of sceanios:\n5×3 DataFrame\n Row │ name     wind_forecast  demand_forecast \n     │ String3  Int64          Int64           \n─────┼─────────────────────────────────────────\n   1 │ S1                1000             1500\n   2 │ S2                1000             1600\n   3 │ S3                1000             1400\n   4 │ S4                1000             1300\n   5 │ S5                1000             1000\n\n\nNext, you need to prepare the given data for the model. We will use ‘function’ to create a ‘Named Tuple’ which we can access with the dot notation:\n\n# This function creates the Named Tuple ThermalGenerator\nfunction ThermalGenerator(\n    min::Int64,\n    max::Int64,\n    fixed_cost::Int64,\n    variable_cost::Int64,\n)\n    return (\n        min = min,\n        max = max,\n        fixed_cost = fixed_cost,\n        variable_cost = variable_cost,\n    )\nend\n\n# Add generators of the data to a dictionary of the generators\ndictThermalGeneartors = Dict(row.name =&gt; ThermalGenerator(row.min_power, row.max_power, row.fix_cost, row.variable_cost) for row in eachrow(generators))\n\n# Now a generator propety can be accessed\nprintln(dictThermalGeneartors[\"G1\"].variable_cost)\n\nAnalogously create a dictionary for the wind turbines and scenarios. Call them dictWindTurbines and dictScenarios.\n\n# YOUR CODE BELOW\n\n\n\n\nCode\n# Validate your solution\n@assert length(dictThermalGeneartors) == nrow(generators) \"Available time dictionary should have same length as input data\"\n@assert length(dictWindTurbines) == nrow(windTurbines) \"Available time dictionary should have same length as input data\"\n@assert length(dictScenarios) == nrow(scenarios) \"Scenario dictionary should have same length as input data\"\n\n# Check that all values are positive\n@assert all(v -&gt; all(x -&gt; x &gt;= 0, [v.min, v.max, v.fixed_cost, v.variable_cost]), values(dictThermalGeneartors)) \"All thermal generator values must be positive\"\n@assert all(v -&gt; v.variable_cost &gt;= 0, values(dictWindTurbines)) \"All wind turbine values must be positive\"\n@assert all(v -&gt; all(x -&gt; x &gt;= 0, [v.wind_forecast, v.demand_forecast]), values(dictScenarios)) \"All scenario values must be positive\"\n\n# Check that dictionaries contain all expected keys\n@assert all(p -&gt; haskey(dictThermalGeneartors, p), generators.name) \"Missing names in dictionary\"\n@assert all(b -&gt; haskey(dictWindTurbines, b), windTurbines.name) \"Missing names in dictionary\"\n@assert all(b -&gt; haskey(dictScenarios, b), scenarios.name) \"Missing names in dictionary\"\n\n\nNext, we define the model instance for the ED problem.\n\n# Prepare the model instance\ndispatchModel = Model(HiGHS.Optimizer)\n\nNow, create your variables. Please name them p_g for the power output of generators, p_w for the power injection of wind turbines.\n\n\n\n\n\n\nNote\n\n\n\nConsider the bounds for these variables. First, we only want to solve the model for sceanrio “S1”.\n\n\n\n# YOUR CODE BELOW\n\n\n\n\nCode\n# Validate your solution\n# Check variable dimensions\n@assert length(p_g) == length(dictThermalGeneartors) \"Incorrect dimensions for p_g\"\n@assert length(p_w) == length(dictWindTurbines) \"Incorrect dimensions for p_w\"\n\n# Check variable types\n@assert all(x -&gt; is_valid(dispatchModel, x), p_g) \"p_g must be valid variables\"\n@assert all(x -&gt; is_valid(dispatchModel, x), p_w) \"p_w must be valid variables\"\n\n\nNext, define the objective function.\n\n# YOUR CODE BELOW\n\n\n\n\nCode\n# Validate your solution\n# Check if the model has an objective\n@assert objective_function(dispatchModel) !== nothing \"Model must have an objective function\"\n\n# Check if it's a minimization problem\n@assert objective_sense(dispatchModel) == MOI.MIN_SENSE \"Objective should be minimization\"\n\n# Check if the objective function contains both cost components\nobj_expr = objective_function(dispatchModel)\n@assert contains(string(dispatchModel), \"p_g\") \"Objective must include variable costs (p_g)\"\n@assert contains(string(dispatchModel), \"p_w\") \"Objective must include variable costs (p_w)\"\n\n\nNow, we need to define all necessary constraints for the model, which is only the demand/production balance constraint as we considered min and max power limitations in the variable setup.\n\n# YOUR CODE BELOW\n\n\nFinally, implement the solve statement for your model instance and print the results.\n\n# YOUR CODE BELOW\n\n\n\n\nCode\n# Validate your solution\n@assert objective_value(dispatchModel) == 76600 \"Objective value should be 76600\"\n\n\n\n\n2. Solving scenarios of the ED problem\nWe now want to solve all sceanrios. To do so we wrap the model in a function that we then can call with different inputs.\n\n\n\n\n\n\nNote\n\n\n\nCopy your model into the function. The results should be stored in the dataframe.\n\n\n\n# Create a function `solve_economic_dispatch`, which solves the economic\n# dispatch problem for a given set of input parameters.\n\nfunction solve_economic_dispatch(dictThermalGeneartors::Dict, dictWindTurbines::Dict, scenario)\n    ## Define the economic dispatch (ED) model\n    dispatchModel = Model(HiGHS.Optimizer)\n    set_silent(dispatchModel)\n    ## Define decision variables\n    ## p_g power output of generators\n    # YOUR CODE BELOW\n    \n    ## p_w wind power injection\n    # YOUR CODE BELOW\n\n    ## Define the objective function\n    # YOUR CODE BELOW\n  \n    ## Define the power balance constraint\n    # YOUR CODE BELOW\n    \n    ## Solve statement\n    optimize!(dispatchModel)\n    assert_is_solved_and_feasible(dispatchModel)\n\n    ## return the optimal value of the objective function and variables\n    return (\n        p_g = value.(p_g),\n        p_w = value.(p_w),\n        wind_curtailment = scenario.wind_forecast - sum(value.(p_w)),\n        total_cost = objective_value(dispatchModel),\n    )\nend\n\n# Create a dataframe to store results\nresults_df = DataFrame(\n    scenario = String[],\n    total_cost = Float64[],\n    wind_curtailment = Float64[]\n)\n\n# Loop over the scenarios and save the results to a dataframe\nfor (scenario_name, scenario_data) in dictScenarios\n    solution = solve_economic_dispatch(dictThermalGeneartors, dictWindTurbines, scenario_data)\n    push!(results_df, (scenario_name, solution.total_cost, solution.wind_curtailment))\nend\n\n# Print the dataframe\nprintln(\"\\nResults for all scenarios:\")\nprintln(results_df)\n\nWhat is the problem in scenario “S5” with the assumptions made in the ED problem leading to an inefficient usage of wind turbines?\n\n# YOUR ANSWER HERE\n\n\n\n\nSolutions\nYou will likely find solutions to most exercises online. However, I strongly encourage you to work on these exercises independently without searching explicitly for the exact answers to the exercises. Understanding someone else’s solution is very different from developing your own. Use the lecture notes and try to solve the exercises on your own. This approach will significantly enhance your learning and problem-solving skills.\nRemember, the goal is not just to complete the exercises, but to understand the concepts and improve your programming abilities. If you encounter difficulties, review the lecture materials, experiment with different approaches, and don’t hesitate to ask for clarification during class discussions.\nLater, you will find the solutions to these exercises online in the associated GitHub repository, but we will also quickly go over them in next week’s tutorial. To access the solutions, click on the Github button on the lower right and search for the folder with today’s lecture and tutorial. Alternatively, you can ask ChatGPT or Claude to explain them to you. But please remember, the goal is not just to complete the exercises, but to understand the concepts and improve your programming abilities.",
     "crumbs": [
       "05 Dispatch",
       "Tutorial"
@@ -1835,7 +1890,7 @@
     "href": "general/cheatsheet-julia.html",
     "title": "Julia Syntax Cheatsheet",
     "section": "",
-    "text": "This cheatsheet provides a quick reference for Julia programming language syntax and common operations. Julia is a high-level, high-performance programming language designed for numerical and scientific computing. It combines the ease of use of Python or R with the speed of C. For comprehensive documentation, visit:",
+    "text": "# Basic variable declaration\nx = 1                  # Implicit typing\ny::Int64 = 5          # Explicit type annotation\n\n# Common types\nnum_int = 42          # Integer\nnum_float = 19.99     # Float\nis_student = true     # Boolean\nname = \"Julia\"        # String\n\n# Check type\ntypeof(num_int)       # Returns Int64\ntypeof(num_float)     # Returns Float64\n\n\n\n\n\nname = \"Julia\"\nage = 30\n# Basic interpolation\nmessage = \"I am $age years old\"\n# Complex interpolation\ngreeting = \"Hello, my name is $name and I am $age years old\"\n\n\n\n\n\n# Convert between types\nfloat_num = Float64(42)    # Int to Float\nint_num = Int64(3.14)      # Float to Int\nstr_num = string(42)       # Number to String",
     "crumbs": [
       "Cheatsheets",
       "Julia"
@@ -1845,19 +1900,8 @@
     "objectID": "general/cheatsheet-julia.html#variable-declaration-and-types",
     "href": "general/cheatsheet-julia.html#variable-declaration-and-types",
     "title": "Julia Syntax Cheatsheet",
-    "section": "Variable Declaration and Types",
-    "text": "Variable Declaration and Types\n\n# Basic variable declaration\nx = 1                  # Implicit typing\ny::Int64 = 5          # Explicit type annotation\n\n# Common types\nnum_int = 42          # Integer (Int64)\nnum_float = 19.99     # Float (Float64)\nis_student = true     # Boolean\nname = \"Julia\"        # String\nc = 3 + 4im           # Complex number\nsym = :symbol         # Symbol\n\n# Check type\ntypeof(num_int)       # Returns Int64\ntypeof(num_float)     # Returns Float64",
-    "crumbs": [
-      "Cheatsheets",
-      "Julia"
-    ]
-  },
-  {
-    "objectID": "general/cheatsheet-julia.html#string-operations",
-    "href": "general/cheatsheet-julia.html#string-operations",
-    "title": "Julia Syntax Cheatsheet",
-    "section": "String Operations",
-    "text": "String Operations\n\n# String manipulation\nstr = \"Hello, World!\"\nlength(str)           # String length\nlowercase(str)        # Convert to lowercase\nuppercase(str)        # Convert to uppercase\nstrip(\" text \")       # Remove leading/trailing whitespace",
+    "section": "",
+    "text": "# Basic variable declaration\nx = 1                  # Implicit typing\ny::Int64 = 5          # Explicit type annotation\n\n# Common types\nnum_int = 42          # Integer\nnum_float = 19.99     # Float\nis_student = true     # Boolean\nname = \"Julia\"        # String\n\n# Check type\ntypeof(num_int)       # Returns Int64\ntypeof(num_float)     # Returns Float64",
     "crumbs": [
       "Cheatsheets",
       "Julia"
@@ -1867,8 +1911,8 @@
     "objectID": "general/cheatsheet-julia.html#string-interpolation",
     "href": "general/cheatsheet-julia.html#string-interpolation",
     "title": "Julia Syntax Cheatsheet",
-    "section": "String Interpolation",
-    "text": "String Interpolation\n\nname = \"Julia\"\nage = 30\n# Basic interpolation\nmsg1 = \"I am $age years old\"\n# Expression interpolation\nmsg2 = \"In 5 years, I'll be $(age + 5)\"\n# Complex interpolation\ngreeting = \"Hello, my name is $name and I am $age years old\"",
+    "section": "",
+    "text": "name = \"Julia\"\nage = 30\n# Basic interpolation\nmessage = \"I am $age years old\"\n# Complex interpolation\ngreeting = \"Hello, my name is $name and I am $age years old\"",
     "crumbs": [
       "Cheatsheets",
       "Julia"
@@ -1878,8 +1922,8 @@
     "objectID": "general/cheatsheet-julia.html#type-conversion",
     "href": "general/cheatsheet-julia.html#type-conversion",
     "title": "Julia Syntax Cheatsheet",
-    "section": "Type Conversion",
-    "text": "Type Conversion\n\n# Convert between types\nfloat_num = Float64(42)    # Int to Float\nint_num = Int64(3.14)      # Float to Int\nstr_num = string(42)       # Number to String",
+    "section": "",
+    "text": "# Convert between types\nfloat_num = Float64(42)    # Int to Float\nint_num = Int64(3.14)      # Float to Int\nstr_num = string(42)       # Number to String",
     "crumbs": [
       "Cheatsheets",
       "Julia"
@@ -2084,17 +2128,6 @@
     ]
   },
   {
-    "objectID": "general/cheatsheet-julia.html#advanced-function-features",
-    "href": "general/cheatsheet-julia.html#advanced-function-features",
-    "title": "Julia Syntax Cheatsheet",
-    "section": "Advanced Function Features",
-    "text": "Advanced Function Features\n\n# Optional arguments\nfunction greet(name=\"Guest\", greeting=\"Hello\")\n    \"$greeting, $name!\"\nend\n\n# Multiple return values\nfunction stats(numbers)\n    avg = sum(numbers) / length(numbers)\n    min_val = minimum(numbers)\n    max_val = maximum(numbers)\n    return avg, min_val, max_val\nend\n\n# Anonymous functions\nnumbers = 1:10\nmap(x -&gt; x^2, numbers)  # Square each number",
-    "crumbs": [
-      "Cheatsheets",
-      "Julia"
-    ]
-  },
-  {
     "objectID": "general/cheatsheet-julia.html#function-scope",
     "href": "general/cheatsheet-julia.html#function-scope",
     "title": "Julia Syntax Cheatsheet",
@@ -2133,6 +2166,204 @@
     "title": "Julia Syntax Cheatsheet",
     "section": "Basic Package Operations",
     "text": "Basic Package Operations\n\n# Import package manager\nimport Pkg              # Access as Pkg.function()\nusing Pkg              # Import all exported names\n\n# Add packages\nPkg.add(\"DataFrames\")  # Add single package\nPkg.add([\"Package1\", \"Package2\"])  # Add multiple packages\n\n# Update packages\nPkg.update()           # Update all packages\nPkg.update(\"DataFrames\")  # Update specific package\n\n# Remove packages\nPkg.rm(\"DataFrames\")   # Remove package",
+    "crumbs": [
+      "Cheatsheets",
+      "Julia"
+    ]
+  },
+  {
+    "objectID": "general/cheatsheet-julia.html#package-usage",
+    "href": "general/cheatsheet-julia.html#package-usage",
+    "title": "Julia Syntax Cheatsheet",
+    "section": "Package Usage",
+    "text": "Package Usage\n\n# Import packages\nimport DataFrames     # Access as DataFrames.function()\nusing DataFrames     # Import all exported names\n\n# Check installed packages\nPkg.status()         # List all installed packages",
+    "crumbs": [
+      "Cheatsheets",
+      "Julia"
+    ]
+  },
+  {
+    "objectID": "general/cheatsheet-julia.html#environment-management",
+    "href": "general/cheatsheet-julia.html#environment-management",
+    "title": "Julia Syntax Cheatsheet",
+    "section": "Environment Management",
+    "text": "Environment Management\n\n# Environment operations\nPkg.activate(\"new_environment\")    # Create/activate environment\nPkg.activate()                     # Activate default environment\n\n# Project files\n# Project.toml    - Lists direct dependencies\n# Manifest.toml   - Complete dependency graph",
+    "crumbs": [
+      "Cheatsheets",
+      "Julia"
+    ]
+  },
+  {
+    "objectID": "general/cheatsheet-julia.html#key-points-5",
+    "href": "general/cheatsheet-julia.html#key-points-5",
+    "title": "Julia Syntax Cheatsheet",
+    "section": "Key Points",
+    "text": "Key Points\n\nUse import for namespace control, using for direct access\nAlways update packages regularly with Pkg.update()\nCreate separate environments for different projects\nProject.toml and Manifest.toml track dependencies\nPackage manager commands typically run in REPL",
+    "crumbs": [
+      "Cheatsheets",
+      "Julia"
+    ]
+  },
+  {
+    "objectID": "general/cheatsheet-julia.html#creating-dataframes",
+    "href": "general/cheatsheet-julia.html#creating-dataframes",
+    "title": "Julia Syntax Cheatsheet",
+    "section": "Creating DataFrames",
+    "text": "Creating DataFrames\n\nusing DataFrames\n\n# Basic DataFrame creation\ndf = DataFrame(\n    Name = [\"John\", \"Mike\", \"Frank\"],\n    Age = [28, 23, 37],\n    Salary = [50000, 62000, 90000]\n)\n\n# Empty DataFrame with specified columns\ndf_empty = DataFrame(\n    Name = String[],\n    Age = Int[]\n)",
+    "crumbs": [
+      "Cheatsheets",
+      "Julia"
+    ]
+  },
+  {
+    "objectID": "general/cheatsheet-julia.html#accessing-and-modifying-data",
+    "href": "general/cheatsheet-julia.html#accessing-and-modifying-data",
+    "title": "Julia Syntax Cheatsheet",
+    "section": "Accessing and Modifying Data",
+    "text": "Accessing and Modifying Data\n\n# Access columns\nages = df.Age                # Get Age column\nfirst_name = df.Name[1]      # First name in Name column\n\n# Modify values\ndf.Salary[1] = 59000        # Update John's salary\ndf.NewColumn = zeros(3)     # Add new column\n\n# Access multiple columns\nsubset = df[:, [:Name, :Age]]  # Select specific columns\nrow = df[1, :]                 # Select first row",
+    "crumbs": [
+      "Cheatsheets",
+      "Julia"
+    ]
+  },
+  {
+    "objectID": "general/cheatsheet-julia.html#filtering-data",
+    "href": "general/cheatsheet-julia.html#filtering-data",
+    "title": "Julia Syntax Cheatsheet",
+    "section": "Filtering Data",
+    "text": "Filtering Data\n\n# Filter with boolean indexing\nhigh_earners = df[df.Salary .&gt; 60000, :]\n\n# Using filter function\nhigh_earners = filter(row -&gt; row.Salary &gt; 60000, df)\n\n# Multiple conditions\nsenior_high_earners = df[(df.Age .&gt; 30) .& (df.Salary .&gt; 60000), :]",
+    "crumbs": [
+      "Cheatsheets",
+      "Julia"
+    ]
+  },
+  {
+    "objectID": "general/cheatsheet-julia.html#data-manipulation",
+    "href": "general/cheatsheet-julia.html#data-manipulation",
+    "title": "Julia Syntax Cheatsheet",
+    "section": "Data Manipulation",
+    "text": "Data Manipulation\n\n# Sort DataFrame\nsorted_df = sort(df, :Age)               # Sort by Age\nsorted_df = sort(df, [:Age, :Salary])    # Sort by multiple columns\n\n# Add calculated column\ndf.Bonus = [row.Age &gt; 30 ? row.Salary * 0.1 : row.Salary * 0.05 for row in eachrow(df)]\n\n# Iterate over rows\nfor row in eachrow(df)\n    println(\"$(row.Name): $(row.Age) years old\")\nend",
+    "crumbs": [
+      "Cheatsheets",
+      "Julia"
+    ]
+  },
+  {
+    "objectID": "general/cheatsheet-julia.html#key-functions",
+    "href": "general/cheatsheet-julia.html#key-functions",
+    "title": "Julia Syntax Cheatsheet",
+    "section": "Key Functions",
+    "text": "Key Functions\n\nnrow(df)              # Number of rows\nncol(df)              # Number of columns\nnames(df)             # Column names\ndescribe(df)          # Summary statistics\npush!(df, row)        # Add new row\nselect(df, :Name)     # Select columns",
+    "crumbs": [
+      "Cheatsheets",
+      "Julia"
+    ]
+  },
+  {
+    "objectID": "general/cheatsheet-julia.html#key-points-6",
+    "href": "general/cheatsheet-julia.html#key-points-6",
+    "title": "Julia Syntax Cheatsheet",
+    "section": "Key Points",
+    "text": "Key Points\n\nColumn access with dot notation (df.column)\nUse eachrow() for row iteration\nBoolean indexing for filtering\npush! to add new rows\nBroadcasting with dot operators (.&gt;, .+, etc.)",
+    "crumbs": [
+      "Cheatsheets",
+      "Julia"
+    ]
+  },
+  {
+    "objectID": "general/cheatsheet-julia.html#delimitedfiles-operations",
+    "href": "general/cheatsheet-julia.html#delimitedfiles-operations",
+    "title": "Julia Syntax Cheatsheet",
+    "section": "DelimitedFiles Operations",
+    "text": "DelimitedFiles Operations\n\nusing DelimitedFiles\n\n# Write matrix to CSV\ndata = [1 2 3; 4 5 6]\nwritedlm(\"data.csv\", data, ',')      # Write with comma delimiter\nwritedlm(\"data.txt\", data, '\\t')     # Write with tab delimiter\n\n# Read delimited files\nmatrix = readdlm(\"data.csv\", ',')    # Read CSV file\nmatrix = readdlm(\"data.txt\", '\\t')   # Read tab-delimited file",
+    "crumbs": [
+      "Cheatsheets",
+      "Julia"
+    ]
+  },
+  {
+    "objectID": "general/cheatsheet-julia.html#csv-and-dataframe-operations",
+    "href": "general/cheatsheet-julia.html#csv-and-dataframe-operations",
+    "title": "Julia Syntax Cheatsheet",
+    "section": "CSV and DataFrame Operations",
+    "text": "CSV and DataFrame Operations\n\nusing CSV, DataFrames\n\n# Write DataFrame to CSV\ndf = DataFrame(\n    Name = [\"John\", \"Alice\"],\n    Age = [25, 30]\n)\nCSV.write(\"data.csv\", df)            # Basic write\nCSV.write(\"data.csv\", df,            # Write with options\n    delim = ';',                     # Custom delimiter\n    header = false                   # No header\n)\n\n# Read CSV to DataFrame\ndf = CSV.read(\"data.csv\", DataFrame)           # Basic read\ndf = CSV.read(\"data.csv\", DataFrame,           # Read with options\n    delim = ';',                               # Custom delimiter\n    header = [\"Col1\", \"Col2\"]                  # Custom headers\n)",
+    "crumbs": [
+      "Cheatsheets",
+      "Julia"
+    ]
+  },
+  {
+    "objectID": "general/cheatsheet-julia.html#file-path-management",
+    "href": "general/cheatsheet-julia.html#file-path-management",
+    "title": "Julia Syntax Cheatsheet",
+    "section": "File Path Management",
+    "text": "File Path Management\n\n# Get current directory\n@__DIR__                             # Directory of current file\npwd()                                # Current working directory\n\n# Path operations\npath = joinpath(@__DIR__, \"data\")    # Join path components\nmkdir(path)                          # Create directory\nisfile(path)                         # Check if file exists",
+    "crumbs": [
+      "Cheatsheets",
+      "Julia"
+    ]
+  },
+  {
+    "objectID": "general/cheatsheet-julia.html#key-points-7",
+    "href": "general/cheatsheet-julia.html#key-points-7",
+    "title": "Julia Syntax Cheatsheet",
+    "section": "Key Points",
+    "text": "Key Points\n\nUse DelimitedFiles for simple matrix I/O\nCSV package for advanced DataFrame I/O\nAlways use @__DIR__ for relative paths\nCheck file existence before operations\nConsider using try-catch for file operations",
+    "crumbs": [
+      "Cheatsheets",
+      "Julia"
+    ]
+  },
+  {
+    "objectID": "general/cheatsheet-julia.html#basic-plots",
+    "href": "general/cheatsheet-julia.html#basic-plots",
+    "title": "Julia Syntax Cheatsheet",
+    "section": "Basic Plots",
+    "text": "Basic Plots\n\nusing Plots, StatsPlots\n\n# Line plot\nplot(x, y,\n    title=\"Line Plot\",\n    xlabel=\"X Label\",\n    ylabel=\"Y Label\",\n    legend=false\n)\n\n# Scatter plot\nscatter(x, y,\n    title=\"Scatter Plot\",\n    marker=(:circle, 8)\n)\n\n# Bar plot\nbar(categories, values,\n    title=\"Bar Plot\"\n)\n\n# Histogram\nhistogram(data,\n    bins=30,\n    title=\"Histogram\"\n)\n\n# Box plot\nboxplot(group, values,\n    title=\"Box Plot\"\n)",
+    "crumbs": [
+      "Cheatsheets",
+      "Julia"
+    ]
+  },
+  {
+    "objectID": "general/cheatsheet-julia.html#plot-customization",
+    "href": "general/cheatsheet-julia.html#plot-customization",
+    "title": "Julia Syntax Cheatsheet",
+    "section": "Plot Customization",
+    "text": "Plot Customization\n\n# Customize plot appearance\nplot(x, y,\n    title=\"Custom Plot\",\n    line=(:dash, 2),      # Line style and width\n    color=:red,           # Line color\n    marker=(:circle, 8),  # Marker style and size\n    label=\"Data Series\"   # Legend label\n)\n\n# Multiple series\nplot(x, y1, label=\"Series 1\")\nplot!(x, y2, label=\"Series 2\")  # Add to existing plot",
+    "crumbs": [
+      "Cheatsheets",
+      "Julia"
+    ]
+  },
+  {
+    "objectID": "general/cheatsheet-julia.html#saving-plots",
+    "href": "general/cheatsheet-julia.html#saving-plots",
+    "title": "Julia Syntax Cheatsheet",
+    "section": "Saving Plots",
+    "text": "Saving Plots\n\n# Save plot to file\nsavefig(plot_name, \"path/plot.png\")  # Save as PNG\nsavefig(plot_name, \"path/plot.pdf\")  # Save as PDF\nsavefig(plot_name, \"path/plot.svg\")  # Save as SVG",
+    "crumbs": [
+      "Cheatsheets",
+      "Julia"
+    ]
+  },
+  {
+    "objectID": "general/cheatsheet-julia.html#common-options",
+    "href": "general/cheatsheet-julia.html#common-options",
+    "title": "Julia Syntax Cheatsheet",
+    "section": "Common Options",
+    "text": "Common Options\n\n# Plot options\nplot(\n    legend=true/false,    # Show/hide legend\n    grid=true/false,      # Show/hide grid\n    size=(width,height),  # Plot dimensions\n    dpi=300              # Resolution\n)\n\n# Line styles\n:solid, :dash, :dot\n\n# Colors\n:red, :blue, :green\n\n# Markers\n:circle, :square, :diamond",
+    "crumbs": [
+      "Cheatsheets",
+      "Julia"
+    ]
+  },
+  {
+    "objectID": "general/cheatsheet-julia.html#key-points-8",
+    "href": "general/cheatsheet-julia.html#key-points-8",
+    "title": "Julia Syntax Cheatsheet",
+    "section": "Key Points",
+    "text": "Key Points\n\nUse plot() for new plots, plot!() to add to existing\nCustomize with named arguments\nSave plots in various formats\nStatsPlots extends plotting capabilities\nMultiple series can share one plot",
     "crumbs": [
       "Cheatsheets",
       "Julia"
@@ -4052,6 +4283,485 @@
     "text": "Literature II",
     "crumbs": [
       "05 Dispatch",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-06/lecture-presentation.html#namedtuples-in-julia",
+    "href": "part-06/lecture-presentation.html#namedtuples-in-julia",
+    "title": "Lecture VI - Economic Dispatch Problem",
+    "section": "NamedTuples in Julia",
+    "text": "NamedTuples in Julia\n\nNamedTuples are immutable collections of key-value pairs\nThey provide a convenient way to group related data\nCan be created using a function that returns a tuple with named fields\n\n# Example: Creating a NamedTuple for a student\nfunction Student(name::String, age::Int, grade::Float64)\n    return (name = name, age = age, grade = grade)\nend\n\n# Create a dictionary of students\nstudents = Dict(\n    \"Alice\" =&gt; Student(\"Alice\", 20, 3.7),\n    \"Bob\" =&gt; Student(\"Bob\", 21, 3.5)\n)\n\n# Access data using dot notation\nprintln(students[\"Alice\"].grade)  # Output: 3.7"
+  },
+  {
+    "objectID": "part-06/lecture-presentation.html#model-solving-function-pattern",
+    "href": "part-06/lecture-presentation.html#model-solving-function-pattern",
+    "title": "Lecture VI - Economic Dispatch Problem",
+    "section": "Model-Solving Function Pattern",
+    "text": "Model-Solving Function Pattern\n\nEncapsulate optimization models in functions for reusability\nReturn results as NamedTuples for easy access\nStore results in DataFrames for analysis\n\n# Example data for different scenarios\ndata = Dict(\n    \"base\" =&gt; Dict(\n        \"cost\" =&gt; 10.0,\n        \"limit\" =&gt; 100.0\n    ),\n    \"high_cost\" =&gt; Dict(\n        \"cost\" =&gt; 15.0,\n        \"limit\" =&gt; 100.0\n    ),\n    \"low_limit\" =&gt; Dict(\n        \"cost\" =&gt; 10.0,\n        \"limit\" =&gt; 50.0\n    )\n)\n\n# Example: Function to solve a simple optimization problem\nfunction solve_optimization(data::Dict)\n    model = Model(HiGHS.Optimizer)\n    set_silent(model)\n    \n    # Define variables and solve model\n    @variable(model, x &gt;= 0)\n    @objective(model, Min, data[\"cost\"] * x)\n    @constraint(model, x &lt;= data[\"limit\"])\n    optimize!(model)\n    \n    # Return results as NamedTuple\n    return (\n        solution = value(x),\n        objective = objective_value(model)\n    )\nend\n\n# Store results in DataFrame\nresults = DataFrame(\n    scenario = String[],\n    solution = Float64[],\n    objective = Float64[]\n)\n\n# Solve multiple scenarios\nfor (name, scenario_data) in data\n    solution = solve_optimization(scenario_data)\n    push!(results, (name, solution.solution, solution.objective))\nend"
+  },
+  {
+    "objectID": "part-06/lecture-presentation.html#economic-dispatch-problem-recap",
+    "href": "part-06/lecture-presentation.html#economic-dispatch-problem-recap",
+    "title": "Lecture VI - Economic Dispatch Problem",
+    "section": "Economic Dispatch Problem Recap",
+    "text": "Economic Dispatch Problem Recap\n\nObjective: Minimize total generation cost\nDecision Variables:\n\nPower output of thermal generators (\\(p_g\\))\nPower output of wind turbines (\\(p_w\\))\n\nKey Constraints:\n\nPower balance: \\(\\sum_g p_g + \\sum_w p_w = d^f\\)\nGenerator limits: \\(p^{\\min}_g \\leq p_g \\leq p^{\\max}_g\\)\nWind limits: \\(0 \\leq p_w \\leq p^f_w\\)\n\n\n\n\n\n\n\n\nNote\n\n\nThe Economic Dispatch problem optimizes power generation for a single time step, assuming all generators are already committed to operation."
+  },
+  {
+    "objectID": "part-06/lecture-presentation.html#from-economic-dispatch-to-unit-commitment",
+    "href": "part-06/lecture-presentation.html#from-economic-dispatch-to-unit-commitment",
+    "title": "Lecture VI - Economic Dispatch Problem",
+    "section": "From Economic Dispatch to Unit Commitment",
+    "text": "From Economic Dispatch to Unit Commitment\nLimitations of Economic Dispatch: - Assumes generators are already running - Ignores start-up and shut-down costs - Doesn’t consider minimum up/down times - Single time step optimization\nUnit Commitment Solution: - Adds binary variables for generator on/off status - Considers multiple time steps - Includes start-up/shut-down costs - Enforces minimum up/down time, ramping, etc. constraints - More realistic but computationally more complex\n\n\n\n\n\n\nTip\n\n\nUnit Commitment extends Economic Dispatch by adding operational constraints and time-dependent decisions."
+  },
+  {
+    "objectID": "part-06/lecture-presentation.html#solutions-from-last-week",
+    "href": "part-06/lecture-presentation.html#solutions-from-last-week",
+    "title": "Lecture VI - Economic Dispatch Problem",
+    "section": "Solutions from last Week",
+    "text": "Solutions from last Week\n\nThe tutorials from last week will again be available on Friday\nYou can access them in the project folder on Github\nClick on the little cat icon on the bottom right\n\n\n\n\n\n\n\n\nTip\n\n\nYou can ask questions anytime in class or via email!"
+  },
+  {
+    "objectID": "part-06/lecture-presentation.html#power-system-basic-models-unit-commitment",
+    "href": "part-06/lecture-presentation.html#power-system-basic-models-unit-commitment",
+    "title": "Lecture VI - Economic Dispatch Problem",
+    "section": "Power System Basic Models: Unit Commitment",
+    "text": "Power System Basic Models: Unit Commitment\n\n\n\n\nPower system with generators and an aggregated demand\n\nGenerators can be switched on/off to meet the demand\nGenerators have different costs and operational constraints\nDecisions are made over multiple time steps"
+  },
+  {
+    "objectID": "part-06/lecture-presentation.html#unit-commitment-problem",
+    "href": "part-06/lecture-presentation.html#unit-commitment-problem",
+    "title": "Lecture VI - Economic Dispatch Problem",
+    "section": "Unit Commitment Problem",
+    "text": "Unit Commitment Problem\n\nObjective: Minimize the total cost of producing electricity\nConstraints:\n\nDemand must be met\nGenerators have limits on their power output\nRenewable power injection\nGenerator on/off status\nMinimum up/down times\nRamp rate limits\n\nDecision variables:\n\nPower output of thermal generators\nPower output of renewables\nBinary variables for generator status"
+  },
+  {
+    "objectID": "part-06/lecture-presentation.html#section",
+    "href": "part-06/lecture-presentation.html#section",
+    "title": "Lecture VI - Economic Dispatch Problem",
+    "section": "",
+    "text": "How does the mathematical model look like?"
+  },
+  {
+    "objectID": "part-06/lecture-presentation.html#available-sets",
+    "href": "part-06/lecture-presentation.html#available-sets",
+    "title": "Lecture VI - Economic Dispatch Problem",
+    "section": "Available Sets",
+    "text": "Available Sets\nQuestion: What are the sets we need?\n\n\n\\(\\mathcal{G}\\) - Set of thermal generators indexed by \\(g \\in \\{1,2,...,|\\mathcal{G}|\\}\\)\n\\(\\mathcal{W}\\) - Set of wind turbines indexed by \\(w \\in \\{1,2,...,|\\mathcal{W}|\\}\\)\n\\(\\mathcal{T}\\) - Set of time periods indexed by \\(t \\in \\{1,2,...,|\\mathcal{T}|\\}\\)"
+  },
+  {
+    "objectID": "part-06/lecture-presentation.html#available-parameters",
+    "href": "part-06/lecture-presentation.html#available-parameters",
+    "title": "Lecture VI - Economic Dispatch Problem",
+    "section": "Available Parameters",
+    "text": "Available Parameters\nQuestion: What are possible parameters?\n\n\n\\(c^{var}_g\\) - Variable cost of thermal generator \\(g\\in\\mathcal{G}\\) in [\\(EUR/\\text{MWh}\\)]\n\\(c^{fix}_g\\) - Fixed cost of thermal generator \\(g\\in\\mathcal{G}\\) in [\\(EUR\\)]\n\\(c^{var}_w\\) - Cost of wind turbine \\(w\\in\\mathcal{W}\\) in [\\(EUR/\\text{MWh}\\)]\n\\(p^{\\min}_g\\) - Minimum power output of thermal generator \\(g\\in\\mathcal{G}\\) in [MW]\n\\(p^{\\max}_g\\) - Maximum power output of thermal generator \\(g\\in\\mathcal{G}\\) in [MW]\n\\(p^{f}_{w,t}\\) - Forecasted power output of wind turbine \\(w\\in\\mathcal{W}\\) at time \\(t\\) in [MW]\n\\(d^f_t\\) - Forecasted demand at time \\(t\\) in [MW]\n\\(T^{up}_g\\) - Minimum up time of generator \\(g\\in\\mathcal{G}\\) in [h]\n\\(T^{down}_g\\) - Minimum down time of generator \\(g\\in\\mathcal{G}\\) in [h]\n\\(R^{up}_g\\) - Maximum ramp-up rate of generator \\(g\\in\\mathcal{G}\\) in [MW/h]\n\\(R^{down}_g\\) - Maximum ramp-down rate of generator \\(g\\in\\mathcal{G}\\) in [MW/h]"
+  },
+  {
+    "objectID": "part-06/lecture-presentation.html#decision-variables",
+    "href": "part-06/lecture-presentation.html#decision-variables",
+    "title": "Lecture VI - Economic Dispatch Problem",
+    "section": "Decision Variables",
+    "text": "Decision Variables\n\n\\(p_{g,t}\\) - Power output of thermal generator \\(g\\in\\mathcal{G}\\) at time \\(t\\)\n\\(p_{w,t}\\) - Power injection of wind turbine \\(w\\in\\mathcal{W}\\) at time \\(t\\)\n\\(u_{g,t}\\) - Binary variable indicating if generator \\(g\\in\\mathcal{G}\\) is on at time \\(t\\)"
+  },
+  {
+    "objectID": "part-06/lecture-presentation.html#objective-function",
+    "href": "part-06/lecture-presentation.html#objective-function",
+    "title": "Lecture VI - Economic Dispatch Problem",
+    "section": "Objective Function",
+    "text": "Objective Function\n\\(\\text{Minimize} \\quad \\sum_{t \\in \\mathcal{T}} \\left( \\sum_{g \\in \\mathcal{G}} (c^{var}_g p_{g,t} + c^{fix}_g u_{g,t}) + \\sum_{w \\in \\mathcal{W}} c^{var}_w p_{w,t} \\right)\\)\n\n\n\n\n\n\nThe objective includes:\n\n\n\nVariable costs for power generation\nFixed costs for keeping generators on\nWind power costs"
+  },
+  {
+    "objectID": "part-06/lecture-presentation.html#power-balance-constraints",
+    "href": "part-06/lecture-presentation.html#power-balance-constraints",
+    "title": "Lecture VI - Economic Dispatch Problem",
+    "section": "Power Balance Constraints",
+    "text": "Power Balance Constraints\n\\(\\sum_{g \\in \\mathcal{G}} p_{g,t} + \\sum_{w \\in \\mathcal{W}} p_{w,t} = d^f_t \\quad \\forall t \\in \\mathcal{T}\\)"
+  },
+  {
+    "objectID": "part-06/lecture-presentation.html#generator-limits-constraints",
+    "href": "part-06/lecture-presentation.html#generator-limits-constraints",
+    "title": "Lecture VI - Economic Dispatch Problem",
+    "section": "Generator Limits Constraints",
+    "text": "Generator Limits Constraints\n\\(p^{\\min}_g u_{g,t} \\leq p_{g,t} \\leq p^{\\max}_g u_{g,t} \\quad \\forall g \\in \\mathcal{G}, t \\in \\mathcal{T}\\)"
+  },
+  {
+    "objectID": "part-06/lecture-presentation.html#wind-power-injection-constraints",
+    "href": "part-06/lecture-presentation.html#wind-power-injection-constraints",
+    "title": "Lecture VI - Economic Dispatch Problem",
+    "section": "Wind Power Injection Constraints",
+    "text": "Wind Power Injection Constraints\n\\(0 \\leq p_{w,t} \\leq p^f_{w,t} \\quad \\forall w \\in \\mathcal{W}, t \\in \\mathcal{T}\\)"
+  },
+  {
+    "objectID": "part-06/lecture-presentation.html#minimum-updown-time-constraints",
+    "href": "part-06/lecture-presentation.html#minimum-updown-time-constraints",
+    "title": "Lecture VI - Economic Dispatch Problem",
+    "section": "Minimum Up/Down Time Constraints",
+    "text": "Minimum Up/Down Time Constraints\n\\(u_{g,t} - u_{g,t-1} \\leq u_{g,\\tau} \\quad \\forall g \\in \\mathcal{G}, t \\in \\mathcal{T}, \\tau \\in [t+1, \\min(t+T^{up}_g-1,|\\mathcal{T}|)]\\)\n\\(u_{g,t-1} - u_{g,t} \\leq 1 - u_{g,\\tau} \\quad \\forall g \\in \\mathcal{G}, t \\in \\mathcal{T}, \\tau \\in [t+1, \\min(t+T^{down}_g-1,|\\mathcal{T}|)]\\)"
+  },
+  {
+    "objectID": "part-06/lecture-presentation.html#ramp-rate-constraints",
+    "href": "part-06/lecture-presentation.html#ramp-rate-constraints",
+    "title": "Lecture VI - Economic Dispatch Problem",
+    "section": "Ramp Rate Constraints",
+    "text": "Ramp Rate Constraints\n\\(p_{g,t} - p_{g,t-1} \\leq R^{up}_g \\quad \\forall g \\in \\mathcal{G}, t \\in \\mathcal{T}\\)\n\\(p_{g,t-1} - p_{g,t} \\leq R^{down}_g \\quad \\forall g \\in \\mathcal{G}, t \\in \\mathcal{T}\\)"
+  },
+  {
+    "objectID": "part-06/lecture-presentation.html#complete-unit-commitment-model",
+    "href": "part-06/lecture-presentation.html#complete-unit-commitment-model",
+    "title": "Lecture VI - Economic Dispatch Problem",
+    "section": "Complete Unit Commitment Model",
+    "text": "Complete Unit Commitment Model\n\\(\\text{Minimize} \\quad \\sum_{t \\in \\mathcal{T}} \\left( \\sum_{g \\in \\mathcal{G}} (c^{var}_g p_{g,t} + c^{fix}_g u_{g,t}) + \\sum_{w \\in \\mathcal{W}} c^{var}_w p_{w,t} \\right)\\)\nsubject to\n\\(\\sum_{g \\in \\mathcal{G}} p_{g,t} + \\sum_{w \\in \\mathcal{W}} p_{w,t} = d^f_t \\quad \\forall t \\in \\mathcal{T}\\)\n\\(p^{\\min}_g u_{g,t} \\leq p_{g,t} \\leq p^{\\max}_g u_{g,t} \\quad \\forall g \\in \\mathcal{G}, t \\in \\mathcal{T}\\)\n\\(0 \\leq p_{w,t} \\leq p^f_{w,t} \\quad \\forall w \\in \\mathcal{W}, t \\in \\mathcal{T}\\)\n\\(u_{g,t} - u_{g,t-1} \\leq u_{g,\\tau} \\quad \\forall g \\in \\mathcal{G}, t \\in \\mathcal{T}, \\tau \\in [t+1, \\min(t+T^{up}_g-1,|\\mathcal{T}|)]\\)\n\\(u_{g,t-1} - u_{g,t} \\leq 1 - u_{g,\\tau} \\quad \\forall g \\in \\mathcal{G}, t \\in \\mathcal{T}, \\tau \\in [t+1, \\min(t+T^{down}_g-1,|\\mathcal{T}|)]\\)\n\\(p_{g,t} - p_{g,t-1} \\leq R^{up}_g \\quad \\forall g \\in \\mathcal{G}, t \\in \\mathcal{T}\\)\n\\(p_{g,t-1} - p_{g,t} \\leq R^{down}_g \\quad \\forall g \\in \\mathcal{G}, t \\in \\mathcal{T}\\)\n\\(u_{g,t} \\in \\{0,1\\} \\quad \\forall g \\in \\mathcal{G}, t \\in \\mathcal{T}\\)"
+  },
+  {
+    "objectID": "part-06/lecture-presentation.html#model-type",
+    "href": "part-06/lecture-presentation.html#model-type",
+    "title": "Lecture VI - Economic Dispatch Problem",
+    "section": "Model Type",
+    "text": "Model Type\nQuestion: What type of optimization problem is this?\n\n\nMixed-Integer Linear Programming (MILP)\nBinary variables for generator status\nLinear constraints and objective\nTime-dependent decisions"
+  },
+  {
+    "objectID": "part-06/lecture-presentation.html#solution-methods",
+    "href": "part-06/lecture-presentation.html#solution-methods",
+    "title": "Lecture VI - Economic Dispatch Problem",
+    "section": "Solution Methods",
+    "text": "Solution Methods\nQuestion: How can we solve this problem?\n\n\nBranch and Bound algorithm\nCommercial solvers (Gurobi, CPLEX)\nOpen-source solvers (HiGHS)\nDecomposition methods for large problems"
+  },
+  {
+    "objectID": "part-06/lecture-presentation.html#computational-challenges",
+    "href": "part-06/lecture-presentation.html#computational-challenges",
+    "title": "Lecture VI - Economic Dispatch Problem",
+    "section": "Computational Challenges",
+    "text": "Computational Challenges\nQuestion: What makes this problem challenging?\n\n\nLarge number of binary variables\nTime-dependent inter-temporal constraints\nMinimum up/down time constraints\nRamp rate constraints\nMultiple time periods"
+  },
+  {
+    "objectID": "part-06/lecture-presentation.html#real-world-applications",
+    "href": "part-06/lecture-presentation.html#real-world-applications",
+    "title": "Lecture VI - Economic Dispatch Problem",
+    "section": "Real-World Applications",
+    "text": "Real-World Applications\n\nGeneration scheduling\nDay-ahead market clearing\nAncillary services\nReserve capacity planning"
+  },
+  {
+    "objectID": "part-06/lecture-presentation.html#further-extensions",
+    "href": "part-06/lecture-presentation.html#further-extensions",
+    "title": "Lecture VI - Economic Dispatch Problem",
+    "section": "Further Extensions",
+    "text": "Further Extensions\n\nBattery storage\nDemand response\nNetwork constraints\nReserve requirements\nMultiple fuel types\nEmission constraints\nUncertainty in forecasts\n\n\n\n\n\n\n\nAnd that’s it for today’s lecture!\n\n\nWe have covered the Unit Commitment problem and its mathematical formulation. The tutorial will help you implement and solve this problem using Julia and JuMP."
+  },
+  {
+    "objectID": "part-06/lecture-presentation.html#section-1",
+    "href": "part-06/lecture-presentation.html#section-1",
+    "title": "Lecture VI - Economic Dispatch Problem",
+    "section": "",
+    "text": "Questions?"
+  },
+  {
+    "objectID": "part-06/lecture-presentation.html#literature-i",
+    "href": "part-06/lecture-presentation.html#literature-i",
+    "title": "Lecture VI - Economic Dispatch Problem",
+    "section": "Literature I",
+    "text": "Literature I\nFor more interesting literature to learn more about Julia, take a look at the literature list of this course."
+  },
+  {
+    "objectID": "part-06/lecture-presentation.html#literature-ii",
+    "href": "part-06/lecture-presentation.html#literature-ii",
+    "title": "Lecture VI - Economic Dispatch Problem",
+    "section": "Literature II",
+    "text": "Literature II\nFor a detailed mathematical formulation of the Unit Commitment problem, see Morales-Espana, Latorre, and Ramos (2013) and Zimmermann and Kather (2019).\n\n\n\n\nMorales-Espana, G., J. M. Latorre, and A. Ramos. 2013. “Tight and Compact MILP Formulation for the Thermal Unit Commitment Problem.” IEEE Transactions on Power Systems 28 (4): 4897–4908.\n\n\nZimmermann, Cors, T., and A. Kather. 2019. “Increasing Tightness by Introduction of Intertemporal Constraints in MILP Unit Commitment.” In NEIS 2019; Conference on Sustainable Energy Supply and Energy Storage Systems, edited by Detlef Schulz, 209–14. VDE Verl."
+  },
+  {
+    "objectID": "part-06/lecture-commitment.html",
+    "href": "part-06/lecture-commitment.html",
+    "title": "Lecture VI - Economic Dispatch Problem",
+    "section": "",
+    "text": "NamedTuples are immutable collections of key-value pairs\nThey provide a convenient way to group related data\nCan be created using a function that returns a tuple with named fields\n\n# Example: Creating a NamedTuple for a student\nfunction Student(name::String, age::Int, grade::Float64)\n    return (name = name, age = age, grade = grade)\nend\n\n# Create a dictionary of students\nstudents = Dict(\n    \"Alice\" =&gt; Student(\"Alice\", 20, 3.7),\n    \"Bob\" =&gt; Student(\"Bob\", 21, 3.5)\n)\n\n# Access data using dot notation\nprintln(students[\"Alice\"].grade)  # Output: 3.7\n\n\n\n\nEncapsulate optimization models in functions for reusability\nReturn results as NamedTuples for easy access\nStore results in DataFrames for analysis\n\n# Example data for different scenarios\ndata = Dict(\n    \"base\" =&gt; Dict(\n        \"cost\" =&gt; 10.0,\n        \"limit\" =&gt; 100.0\n    ),\n    \"high_cost\" =&gt; Dict(\n        \"cost\" =&gt; 15.0,\n        \"limit\" =&gt; 100.0\n    ),\n    \"low_limit\" =&gt; Dict(\n        \"cost\" =&gt; 10.0,\n        \"limit\" =&gt; 50.0\n    )\n)\n\n# Example: Function to solve a simple optimization problem\nfunction solve_optimization(data::Dict)\n    model = Model(HiGHS.Optimizer)\n    set_silent(model)\n    \n    # Define variables and solve model\n    @variable(model, x &gt;= 0)\n    @objective(model, Min, data[\"cost\"] * x)\n    @constraint(model, x &lt;= data[\"limit\"])\n    optimize!(model)\n    \n    # Return results as NamedTuple\n    return (\n        solution = value(x),\n        objective = objective_value(model)\n    )\nend\n\n# Store results in DataFrame\nresults = DataFrame(\n    scenario = String[],\n    solution = Float64[],\n    objective = Float64[]\n)\n\n# Solve multiple scenarios\nfor (name, scenario_data) in data\n    solution = solve_optimization(scenario_data)\n    push!(results, (name, solution.solution, solution.objective))\nend\n\n\n\n\nObjective: Minimize total generation cost\nDecision Variables:\n\nPower output of thermal generators (\\(p_g\\))\nPower output of wind turbines (\\(p_w\\))\n\nKey Constraints:\n\nPower balance: \\(\\sum_g p_g + \\sum_w p_w = d^f\\)\nGenerator limits: \\(p^{\\min}_g \\leq p_g \\leq p^{\\max}_g\\)\nWind limits: \\(0 \\leq p_w \\leq p^f_w\\)\n\n\n\n\n\n\n\n\nNote\n\n\n\nThe Economic Dispatch problem optimizes power generation for a single time step, assuming all generators are already committed to operation.\n\n\n\n\n\nLimitations of Economic Dispatch: - Assumes generators are already running - Ignores start-up and shut-down costs - Doesn’t consider minimum up/down times - Single time step optimization\nUnit Commitment Solution: - Adds binary variables for generator on/off status - Considers multiple time steps - Includes start-up/shut-down costs - Enforces minimum up/down time, ramping, etc. constraints - More realistic but computationally more complex\n\n\n\n\n\n\nTip\n\n\n\nUnit Commitment extends Economic Dispatch by adding operational constraints and time-dependent decisions.\n\n\n\n\n\n\nThe tutorials from last week will again be available on Friday\nYou can access them in the project folder on Github\nClick on the little cat icon on the bottom right\n\n. . .\n\n\n\n\n\n\nTip\n\n\n\nYou can ask questions anytime in class or via email!",
+    "crumbs": [
+      "06 Commitment",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-06/lecture-commitment.html#namedtuples-in-julia",
+    "href": "part-06/lecture-commitment.html#namedtuples-in-julia",
+    "title": "Lecture VI - Economic Dispatch Problem",
+    "section": "",
+    "text": "NamedTuples are immutable collections of key-value pairs\nThey provide a convenient way to group related data\nCan be created using a function that returns a tuple with named fields\n\n# Example: Creating a NamedTuple for a student\nfunction Student(name::String, age::Int, grade::Float64)\n    return (name = name, age = age, grade = grade)\nend\n\n# Create a dictionary of students\nstudents = Dict(\n    \"Alice\" =&gt; Student(\"Alice\", 20, 3.7),\n    \"Bob\" =&gt; Student(\"Bob\", 21, 3.5)\n)\n\n# Access data using dot notation\nprintln(students[\"Alice\"].grade)  # Output: 3.7",
+    "crumbs": [
+      "06 Commitment",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-06/lecture-commitment.html#model-solving-function-pattern",
+    "href": "part-06/lecture-commitment.html#model-solving-function-pattern",
+    "title": "Lecture VI - Economic Dispatch Problem",
+    "section": "",
+    "text": "Encapsulate optimization models in functions for reusability\nReturn results as NamedTuples for easy access\nStore results in DataFrames for analysis\n\n# Example data for different scenarios\ndata = Dict(\n    \"base\" =&gt; Dict(\n        \"cost\" =&gt; 10.0,\n        \"limit\" =&gt; 100.0\n    ),\n    \"high_cost\" =&gt; Dict(\n        \"cost\" =&gt; 15.0,\n        \"limit\" =&gt; 100.0\n    ),\n    \"low_limit\" =&gt; Dict(\n        \"cost\" =&gt; 10.0,\n        \"limit\" =&gt; 50.0\n    )\n)\n\n# Example: Function to solve a simple optimization problem\nfunction solve_optimization(data::Dict)\n    model = Model(HiGHS.Optimizer)\n    set_silent(model)\n    \n    # Define variables and solve model\n    @variable(model, x &gt;= 0)\n    @objective(model, Min, data[\"cost\"] * x)\n    @constraint(model, x &lt;= data[\"limit\"])\n    optimize!(model)\n    \n    # Return results as NamedTuple\n    return (\n        solution = value(x),\n        objective = objective_value(model)\n    )\nend\n\n# Store results in DataFrame\nresults = DataFrame(\n    scenario = String[],\n    solution = Float64[],\n    objective = Float64[]\n)\n\n# Solve multiple scenarios\nfor (name, scenario_data) in data\n    solution = solve_optimization(scenario_data)\n    push!(results, (name, solution.solution, solution.objective))\nend",
+    "crumbs": [
+      "06 Commitment",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-06/lecture-commitment.html#economic-dispatch-problem-recap",
+    "href": "part-06/lecture-commitment.html#economic-dispatch-problem-recap",
+    "title": "Lecture VI - Economic Dispatch Problem",
+    "section": "",
+    "text": "Objective: Minimize total generation cost\nDecision Variables:\n\nPower output of thermal generators (\\(p_g\\))\nPower output of wind turbines (\\(p_w\\))\n\nKey Constraints:\n\nPower balance: \\(\\sum_g p_g + \\sum_w p_w = d^f\\)\nGenerator limits: \\(p^{\\min}_g \\leq p_g \\leq p^{\\max}_g\\)\nWind limits: \\(0 \\leq p_w \\leq p^f_w\\)\n\n\n\n\n\n\n\n\nNote\n\n\n\nThe Economic Dispatch problem optimizes power generation for a single time step, assuming all generators are already committed to operation.",
+    "crumbs": [
+      "06 Commitment",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-06/lecture-commitment.html#from-economic-dispatch-to-unit-commitment",
+    "href": "part-06/lecture-commitment.html#from-economic-dispatch-to-unit-commitment",
+    "title": "Lecture VI - Economic Dispatch Problem",
+    "section": "",
+    "text": "Limitations of Economic Dispatch: - Assumes generators are already running - Ignores start-up and shut-down costs - Doesn’t consider minimum up/down times - Single time step optimization\nUnit Commitment Solution: - Adds binary variables for generator on/off status - Considers multiple time steps - Includes start-up/shut-down costs - Enforces minimum up/down time, ramping, etc. constraints - More realistic but computationally more complex\n\n\n\n\n\n\nTip\n\n\n\nUnit Commitment extends Economic Dispatch by adding operational constraints and time-dependent decisions.",
+    "crumbs": [
+      "06 Commitment",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-06/lecture-commitment.html#solutions-from-last-week",
+    "href": "part-06/lecture-commitment.html#solutions-from-last-week",
+    "title": "Lecture VI - Economic Dispatch Problem",
+    "section": "",
+    "text": "The tutorials from last week will again be available on Friday\nYou can access them in the project folder on Github\nClick on the little cat icon on the bottom right\n\n. . .\n\n\n\n\n\n\nTip\n\n\n\nYou can ask questions anytime in class or via email!",
+    "crumbs": [
+      "06 Commitment",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-06/lecture-commitment.html#power-system-basic-models-unit-commitment",
+    "href": "part-06/lecture-commitment.html#power-system-basic-models-unit-commitment",
+    "title": "Lecture VI - Economic Dispatch Problem",
+    "section": "Power System Basic Models: Unit Commitment",
+    "text": "Power System Basic Models: Unit Commitment\n\n\n\n\nPower system with generators and an aggregated demand\n\nGenerators can be switched on/off to meet the demand\nGenerators have different costs and operational constraints\nDecisions are made over multiple time steps",
+    "crumbs": [
+      "06 Commitment",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-06/lecture-commitment.html#unit-commitment-problem",
+    "href": "part-06/lecture-commitment.html#unit-commitment-problem",
+    "title": "Lecture VI - Economic Dispatch Problem",
+    "section": "Unit Commitment Problem",
+    "text": "Unit Commitment Problem\n\nObjective: Minimize the total cost of producing electricity\nConstraints:\n\nDemand must be met\nGenerators have limits on their power output\nRenewable power injection\nGenerator on/off status\nMinimum up/down times\nRamp rate limits\n\nDecision variables:\n\nPower output of thermal generators\nPower output of renewables\nBinary variables for generator status",
+    "crumbs": [
+      "06 Commitment",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-06/lecture-commitment.html#section",
+    "href": "part-06/lecture-commitment.html#section",
+    "title": "Lecture VI - Economic Dispatch Problem",
+    "section": "",
+    "text": "How does the mathematical model look like?",
+    "crumbs": [
+      "06 Commitment",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-06/lecture-commitment.html#available-sets",
+    "href": "part-06/lecture-commitment.html#available-sets",
+    "title": "Lecture VI - Economic Dispatch Problem",
+    "section": "Available Sets",
+    "text": "Available Sets\nQuestion: What are the sets we need?\n. . .\n\n\\(\\mathcal{G}\\) - Set of thermal generators indexed by \\(g \\in \\{1,2,...,|\\mathcal{G}|\\}\\)\n\\(\\mathcal{W}\\) - Set of wind turbines indexed by \\(w \\in \\{1,2,...,|\\mathcal{W}|\\}\\)\n\\(\\mathcal{T}\\) - Set of time periods indexed by \\(t \\in \\{1,2,...,|\\mathcal{T}|\\}\\)",
+    "crumbs": [
+      "06 Commitment",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-06/lecture-commitment.html#available-parameters",
+    "href": "part-06/lecture-commitment.html#available-parameters",
+    "title": "Lecture VI - Economic Dispatch Problem",
+    "section": "Available Parameters",
+    "text": "Available Parameters\nQuestion: What are possible parameters?\n. . .\n\n\\(c^{var}_g\\) - Variable cost of thermal generator \\(g\\in\\mathcal{G}\\) in [\\(EUR/\\text{MWh}\\)]\n\\(c^{fix}_g\\) - Fixed cost of thermal generator \\(g\\in\\mathcal{G}\\) in [\\(EUR\\)]\n\\(c^{var}_w\\) - Cost of wind turbine \\(w\\in\\mathcal{W}\\) in [\\(EUR/\\text{MWh}\\)]\n\\(p^{\\min}_g\\) - Minimum power output of thermal generator \\(g\\in\\mathcal{G}\\) in [MW]\n\\(p^{\\max}_g\\) - Maximum power output of thermal generator \\(g\\in\\mathcal{G}\\) in [MW]\n\\(p^{f}_{w,t}\\) - Forecasted power output of wind turbine \\(w\\in\\mathcal{W}\\) at time \\(t\\) in [MW]\n\\(d^f_t\\) - Forecasted demand at time \\(t\\) in [MW]\n\\(T^{up}_g\\) - Minimum up time of generator \\(g\\in\\mathcal{G}\\) in [h]\n\\(T^{down}_g\\) - Minimum down time of generator \\(g\\in\\mathcal{G}\\) in [h]\n\\(R^{up}_g\\) - Maximum ramp-up rate of generator \\(g\\in\\mathcal{G}\\) in [MW/h]\n\\(R^{down}_g\\) - Maximum ramp-down rate of generator \\(g\\in\\mathcal{G}\\) in [MW/h]",
+    "crumbs": [
+      "06 Commitment",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-06/lecture-commitment.html#decision-variables",
+    "href": "part-06/lecture-commitment.html#decision-variables",
+    "title": "Lecture VI - Economic Dispatch Problem",
+    "section": "Decision Variables",
+    "text": "Decision Variables\n\n\\(p_{g,t}\\) - Power output of thermal generator \\(g\\in\\mathcal{G}\\) at time \\(t\\)\n\\(p_{w,t}\\) - Power injection of wind turbine \\(w\\in\\mathcal{W}\\) at time \\(t\\)\n\\(u_{g,t}\\) - Binary variable indicating if generator \\(g\\in\\mathcal{G}\\) is on at time \\(t\\)",
+    "crumbs": [
+      "06 Commitment",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-06/lecture-commitment.html#objective-function",
+    "href": "part-06/lecture-commitment.html#objective-function",
+    "title": "Lecture VI - Economic Dispatch Problem",
+    "section": "Objective Function",
+    "text": "Objective Function\n\\(\\text{Minimize} \\quad \\sum_{t \\in \\mathcal{T}} \\left( \\sum_{g \\in \\mathcal{G}} (c^{var}_g p_{g,t} + c^{fix}_g u_{g,t}) + \\sum_{w \\in \\mathcal{W}} c^{var}_w p_{w,t} \\right)\\)\n\n\n\n\n\n\nThe objective includes:\n\n\n\n\nVariable costs for power generation\nFixed costs for keeping generators on\nWind power costs",
+    "crumbs": [
+      "06 Commitment",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-06/lecture-commitment.html#power-balance-constraints",
+    "href": "part-06/lecture-commitment.html#power-balance-constraints",
+    "title": "Lecture VI - Economic Dispatch Problem",
+    "section": "Power Balance Constraints",
+    "text": "Power Balance Constraints\n\\(\\sum_{g \\in \\mathcal{G}} p_{g,t} + \\sum_{w \\in \\mathcal{W}} p_{w,t} = d^f_t \\quad \\forall t \\in \\mathcal{T}\\)",
+    "crumbs": [
+      "06 Commitment",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-06/lecture-commitment.html#generator-limits-constraints",
+    "href": "part-06/lecture-commitment.html#generator-limits-constraints",
+    "title": "Lecture VI - Economic Dispatch Problem",
+    "section": "Generator Limits Constraints",
+    "text": "Generator Limits Constraints\n\\(p^{\\min}_g u_{g,t} \\leq p_{g,t} \\leq p^{\\max}_g u_{g,t} \\quad \\forall g \\in \\mathcal{G}, t \\in \\mathcal{T}\\)",
+    "crumbs": [
+      "06 Commitment",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-06/lecture-commitment.html#wind-power-injection-constraints",
+    "href": "part-06/lecture-commitment.html#wind-power-injection-constraints",
+    "title": "Lecture VI - Economic Dispatch Problem",
+    "section": "Wind Power Injection Constraints",
+    "text": "Wind Power Injection Constraints\n\\(0 \\leq p_{w,t} \\leq p^f_{w,t} \\quad \\forall w \\in \\mathcal{W}, t \\in \\mathcal{T}\\)",
+    "crumbs": [
+      "06 Commitment",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-06/lecture-commitment.html#minimum-updown-time-constraints",
+    "href": "part-06/lecture-commitment.html#minimum-updown-time-constraints",
+    "title": "Lecture VI - Economic Dispatch Problem",
+    "section": "Minimum Up/Down Time Constraints",
+    "text": "Minimum Up/Down Time Constraints\n\\(u_{g,t} - u_{g,t-1} \\leq u_{g,\\tau} \\quad \\forall g \\in \\mathcal{G}, t \\in \\mathcal{T}, \\tau \\in [t+1, \\min(t+T^{up}_g-1,|\\mathcal{T}|)]\\)\n\\(u_{g,t-1} - u_{g,t} \\leq 1 - u_{g,\\tau} \\quad \\forall g \\in \\mathcal{G}, t \\in \\mathcal{T}, \\tau \\in [t+1, \\min(t+T^{down}_g-1,|\\mathcal{T}|)]\\)",
+    "crumbs": [
+      "06 Commitment",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-06/lecture-commitment.html#ramp-rate-constraints",
+    "href": "part-06/lecture-commitment.html#ramp-rate-constraints",
+    "title": "Lecture VI - Economic Dispatch Problem",
+    "section": "Ramp Rate Constraints",
+    "text": "Ramp Rate Constraints\n\\(p_{g,t} - p_{g,t-1} \\leq R^{up}_g \\quad \\forall g \\in \\mathcal{G}, t \\in \\mathcal{T}\\)\n\\(p_{g,t-1} - p_{g,t} \\leq R^{down}_g \\quad \\forall g \\in \\mathcal{G}, t \\in \\mathcal{T}\\)",
+    "crumbs": [
+      "06 Commitment",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-06/lecture-commitment.html#complete-unit-commitment-model",
+    "href": "part-06/lecture-commitment.html#complete-unit-commitment-model",
+    "title": "Lecture VI - Economic Dispatch Problem",
+    "section": "Complete Unit Commitment Model",
+    "text": "Complete Unit Commitment Model\n\\(\\text{Minimize} \\quad \\sum_{t \\in \\mathcal{T}} \\left( \\sum_{g \\in \\mathcal{G}} (c^{var}_g p_{g,t} + c^{fix}_g u_{g,t}) + \\sum_{w \\in \\mathcal{W}} c^{var}_w p_{w,t} \\right)\\)\nsubject to\n\\(\\sum_{g \\in \\mathcal{G}} p_{g,t} + \\sum_{w \\in \\mathcal{W}} p_{w,t} = d^f_t \\quad \\forall t \\in \\mathcal{T}\\)\n\\(p^{\\min}_g u_{g,t} \\leq p_{g,t} \\leq p^{\\max}_g u_{g,t} \\quad \\forall g \\in \\mathcal{G}, t \\in \\mathcal{T}\\)\n\\(0 \\leq p_{w,t} \\leq p^f_{w,t} \\quad \\forall w \\in \\mathcal{W}, t \\in \\mathcal{T}\\)\n\\(u_{g,t} - u_{g,t-1} \\leq u_{g,\\tau} \\quad \\forall g \\in \\mathcal{G}, t \\in \\mathcal{T}, \\tau \\in [t+1, \\min(t+T^{up}_g-1,|\\mathcal{T}|)]\\)\n\\(u_{g,t-1} - u_{g,t} \\leq 1 - u_{g,\\tau} \\quad \\forall g \\in \\mathcal{G}, t \\in \\mathcal{T}, \\tau \\in [t+1, \\min(t+T^{down}_g-1,|\\mathcal{T}|)]\\)\n\\(p_{g,t} - p_{g,t-1} \\leq R^{up}_g \\quad \\forall g \\in \\mathcal{G}, t \\in \\mathcal{T}\\)\n\\(p_{g,t-1} - p_{g,t} \\leq R^{down}_g \\quad \\forall g \\in \\mathcal{G}, t \\in \\mathcal{T}\\)\n\\(u_{g,t} \\in \\{0,1\\} \\quad \\forall g \\in \\mathcal{G}, t \\in \\mathcal{T}\\)",
+    "crumbs": [
+      "06 Commitment",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-06/lecture-commitment.html#model-type",
+    "href": "part-06/lecture-commitment.html#model-type",
+    "title": "Lecture VI - Economic Dispatch Problem",
+    "section": "Model Type",
+    "text": "Model Type\nQuestion: What type of optimization problem is this?\n. . .\n\nMixed-Integer Linear Programming (MILP)\nBinary variables for generator status\nLinear constraints and objective\nTime-dependent decisions",
+    "crumbs": [
+      "06 Commitment",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-06/lecture-commitment.html#solution-methods",
+    "href": "part-06/lecture-commitment.html#solution-methods",
+    "title": "Lecture VI - Economic Dispatch Problem",
+    "section": "Solution Methods",
+    "text": "Solution Methods\nQuestion: How can we solve this problem?\n. . .\n\nBranch and Bound algorithm\nCommercial solvers (Gurobi, CPLEX)\nOpen-source solvers (HiGHS)\nDecomposition methods for large problems",
+    "crumbs": [
+      "06 Commitment",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-06/lecture-commitment.html#computational-challenges",
+    "href": "part-06/lecture-commitment.html#computational-challenges",
+    "title": "Lecture VI - Economic Dispatch Problem",
+    "section": "Computational Challenges",
+    "text": "Computational Challenges\nQuestion: What makes this problem challenging?\n. . .\n\nLarge number of binary variables\nTime-dependent inter-temporal constraints\nMinimum up/down time constraints\nRamp rate constraints\nMultiple time periods",
+    "crumbs": [
+      "06 Commitment",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-06/lecture-commitment.html#real-world-applications",
+    "href": "part-06/lecture-commitment.html#real-world-applications",
+    "title": "Lecture VI - Economic Dispatch Problem",
+    "section": "Real-World Applications",
+    "text": "Real-World Applications\n\nGeneration scheduling\nDay-ahead market clearing\nAncillary services\nReserve capacity planning",
+    "crumbs": [
+      "06 Commitment",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-06/lecture-commitment.html#further-extensions",
+    "href": "part-06/lecture-commitment.html#further-extensions",
+    "title": "Lecture VI - Economic Dispatch Problem",
+    "section": "Further Extensions",
+    "text": "Further Extensions\n\nBattery storage\nDemand response\nNetwork constraints\nReserve requirements\nMultiple fuel types\nEmission constraints\nUncertainty in forecasts\n\n\n\n\n\n\n\nAnd that’s it for today’s lecture!\n\n\n\nWe have covered the Unit Commitment problem and its mathematical formulation. The tutorial will help you implement and solve this problem using Julia and JuMP.",
+    "crumbs": [
+      "06 Commitment",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-06/lecture-commitment.html#section-1",
+    "href": "part-06/lecture-commitment.html#section-1",
+    "title": "Lecture VI - Economic Dispatch Problem",
+    "section": "",
+    "text": "Questions?",
+    "crumbs": [
+      "06 Commitment",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-06/lecture-commitment.html#literature-i",
+    "href": "part-06/lecture-commitment.html#literature-i",
+    "title": "Lecture VI - Economic Dispatch Problem",
+    "section": "Literature I",
+    "text": "Literature I\nFor more interesting literature to learn more about Julia, take a look at the literature list of this course.",
+    "crumbs": [
+      "06 Commitment",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-06/lecture-commitment.html#literature-ii",
+    "href": "part-06/lecture-commitment.html#literature-ii",
+    "title": "Lecture VI - Economic Dispatch Problem",
+    "section": "Literature II",
+    "text": "Literature II\nFor a detailed mathematical formulation of the Unit Commitment problem, see Morales-Espana, Latorre, and Ramos (2013) and Zimmermann and Kather (2019).",
+    "crumbs": [
+      "06 Commitment",
       "Lecture"
     ]
   }

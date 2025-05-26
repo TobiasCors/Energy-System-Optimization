@@ -8,7 +8,7 @@
 
 <meta name="author" content="Dr.&nbsp;Tobias Cors">
 
-<title>Lecture II - First Steps in Julia – Energy System Optimization with Julia</title>
+<title>Lecture VI - Economic Dispatch Problem – Energy System Optimization with Julia</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -56,7 +56,27 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -106,6 +126,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script defer="" data-domain="TobiasCors.github.io/energy-system-optimization" src="https://plausible.io/js/script.file-downloads.outbound-links.js"></script>
 <script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -118,7 +167,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../part-02/lecture-firststeps.html">02 First Steps</a></li><li class="breadcrumb-item"><a href="../part-02/lecture-firststeps.html">Lecture</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../part-06/lecture-commitment.html">06 Commitment</a></li><li class="breadcrumb-item"><a href="../part-06/lecture-commitment.html">Lecture</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -166,16 +215,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
  <span class="menu-text">02 First Steps</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../part-02/lecture-firststeps.html" class="sidebar-item-text sidebar-link active">
+  <a href="../part-02/lecture-firststeps.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Lecture</span></a>
   </div>
 </li>
@@ -330,16 +379,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
  <span class="menu-text">06 Commitment</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../part-06/lecture-commitment.html" class="sidebar-item-text sidebar-link">
+  <a href="../part-06/lecture-commitment.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Lecture</span></a>
   </div>
 </li>
@@ -399,55 +448,62 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#quick-recap-on-the-technical-setup" id="toc-quick-recap-on-the-technical-setup" class="nav-link active" data-scroll-target="#quick-recap-on-the-technical-setup"><span class="flow">Quick Recap on the Technical Setup</span></a>
+  <li><a href="#quick-recap-from-last-week" id="toc-quick-recap-from-last-week" class="nav-link active" data-scroll-target="#quick-recap-from-last-week"><span class="flow">Quick Recap from last Week</span></a>
   <ul class="collapse">
-  <li><a href="#download-and-install-julia" id="toc-download-and-install-julia" class="nav-link" data-scroll-target="#download-and-install-julia">Download and Install Julia</a></li>
-  <li><a href="#installaing-julia" id="toc-installaing-julia" class="nav-link" data-scroll-target="#installaing-julia">Installaing Julia</a></li>
-  <li><a href="#vs-code" id="toc-vs-code" class="nav-link" data-scroll-target="#vs-code">VS Code</a></li>
-  <li><a href="#installing-vs-code" id="toc-installing-vs-code" class="nav-link" data-scroll-target="#installing-vs-code">Installing VS Code</a></li>
-  <li><a href="#verify-the-installation" id="toc-verify-the-installation" class="nav-link" data-scroll-target="#verify-the-installation">Verify the Installation</a></li>
-  <li><a href="#create-a-new-file" id="toc-create-a-new-file" class="nav-link" data-scroll-target="#create-a-new-file">Create a new file</a></li>
-  <li><a href="#everything-working" id="toc-everything-working" class="nav-link" data-scroll-target="#everything-working">Everything working?</a></li>
+  <li><a href="#namedtuples-in-julia" id="toc-namedtuples-in-julia" class="nav-link" data-scroll-target="#namedtuples-in-julia">NamedTuples in Julia</a></li>
+  <li><a href="#model-solving-function-pattern" id="toc-model-solving-function-pattern" class="nav-link" data-scroll-target="#model-solving-function-pattern">Model-Solving Function Pattern</a></li>
+  <li><a href="#economic-dispatch-problem-recap" id="toc-economic-dispatch-problem-recap" class="nav-link" data-scroll-target="#economic-dispatch-problem-recap">Economic Dispatch Problem Recap</a></li>
+  <li><a href="#from-economic-dispatch-to-unit-commitment" id="toc-from-economic-dispatch-to-unit-commitment" class="nav-link" data-scroll-target="#from-economic-dispatch-to-unit-commitment">From Economic Dispatch to Unit Commitment</a></li>
+  <li><a href="#solutions-from-last-week" id="toc-solutions-from-last-week" class="nav-link" data-scroll-target="#solutions-from-last-week">Solutions from last Week</a></li>
   </ul></li>
-  <li><a href="#learning-julia" id="toc-learning-julia" class="nav-link" data-scroll-target="#learning-julia"><span class="flow">Learning Julia</span></a>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction"><span class="flow">Introduction</span></a>
   <ul class="collapse">
-  <li><a href="#julia-as-a-programming-language" id="toc-julia-as-a-programming-language" class="nav-link" data-scroll-target="#julia-as-a-programming-language">Julia as a Programming Language</a></li>
+  <li><a href="#power-system-basic-models-unit-commitment" id="toc-power-system-basic-models-unit-commitment" class="nav-link" data-scroll-target="#power-system-basic-models-unit-commitment">Power System Basic Models: Unit Commitment</a></li>
+  <li><a href="#unit-commitment-problem" id="toc-unit-commitment-problem" class="nav-link" data-scroll-target="#unit-commitment-problem">Unit Commitment Problem</a></li>
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"></a></li>
   </ul></li>
-  <li><a href="#working-with-vs-code" id="toc-working-with-vs-code" class="nav-link" data-scroll-target="#working-with-vs-code"><span class="flow">Working with VS Code</span></a>
+  <li><a href="#problem-structure" id="toc-problem-structure" class="nav-link" data-scroll-target="#problem-structure"><span class="flow">Problem Structure</span></a>
   <ul class="collapse">
-  <li><a href="#notebooks-in-vs-code" id="toc-notebooks-in-vs-code" class="nav-link" data-scroll-target="#notebooks-in-vs-code">Notebooks in VS Code</a></li>
-  <li><a href="#downloading-the-notebooks" id="toc-downloading-the-notebooks" class="nav-link" data-scroll-target="#downloading-the-notebooks">Downloading the Notebooks</a></li>
-  <li><a href="#learning-by-doing" id="toc-learning-by-doing" class="nav-link" data-scroll-target="#learning-by-doing">Learning by doing</a></li>
+  <li><a href="#available-sets" id="toc-available-sets" class="nav-link" data-scroll-target="#available-sets">Available Sets</a></li>
+  <li><a href="#available-parameters" id="toc-available-parameters" class="nav-link" data-scroll-target="#available-parameters">Available Parameters</a></li>
+  <li><a href="#decision-variables" id="toc-decision-variables" class="nav-link" data-scroll-target="#decision-variables">Decision Variables</a></li>
   </ul></li>
-  <li><a href="#working-with-ijulia" id="toc-working-with-ijulia" class="nav-link" data-scroll-target="#working-with-ijulia"><span class="flow">Working with IJulia</span></a>
+  <li><a href="#model-formulation" id="toc-model-formulation" class="nav-link" data-scroll-target="#model-formulation"><span class="flow">Model Formulation</span></a>
   <ul class="collapse">
-  <li><a href="#ijulia" id="toc-ijulia" class="nav-link" data-scroll-target="#ijulia">IJulia</a></li>
-  <li><a href="#installing-ijulia" id="toc-installing-ijulia" class="nav-link" data-scroll-target="#installing-ijulia">Installing IJulia</a></li>
-  <li><a href="#running-ijulia" id="toc-running-ijulia" class="nav-link" data-scroll-target="#running-ijulia">Running IJulia</a></li>
+  <li><a href="#objective-function" id="toc-objective-function" class="nav-link" data-scroll-target="#objective-function">Objective Function</a></li>
+  <li><a href="#power-balance-constraints" id="toc-power-balance-constraints" class="nav-link" data-scroll-target="#power-balance-constraints">Power Balance Constraints</a></li>
+  <li><a href="#generator-limits-constraints" id="toc-generator-limits-constraints" class="nav-link" data-scroll-target="#generator-limits-constraints">Generator Limits Constraints</a></li>
+  <li><a href="#wind-power-injection-constraints" id="toc-wind-power-injection-constraints" class="nav-link" data-scroll-target="#wind-power-injection-constraints">Wind Power Injection Constraints</a></li>
+  <li><a href="#minimum-updown-time-constraints" id="toc-minimum-updown-time-constraints" class="nav-link" data-scroll-target="#minimum-updown-time-constraints">Minimum Up/Down Time Constraints</a></li>
+  <li><a href="#ramp-rate-constraints" id="toc-ramp-rate-constraints" class="nav-link" data-scroll-target="#ramp-rate-constraints">Ramp Rate Constraints</a></li>
+  <li><a href="#complete-unit-commitment-model" id="toc-complete-unit-commitment-model" class="nav-link" data-scroll-target="#complete-unit-commitment-model">Complete Unit Commitment Model</a></li>
   </ul></li>
-  <li><a href="#submission-of-assignments" id="toc-submission-of-assignments" class="nav-link" data-scroll-target="#submission-of-assignments"><span class="flow">Submission of Assignments</span></a>
+  <li><a href="#model-characteristics" id="toc-model-characteristics" class="nav-link" data-scroll-target="#model-characteristics"><span class="flow">Model Characteristics</span></a>
   <ul class="collapse">
-  <li><a href="#submission-of-assignments-1" id="toc-submission-of-assignments-1" class="nav-link" data-scroll-target="#submission-of-assignments-1">Submission of Assignments</a></li>
-  <li><a href="#grading-of-assignments" id="toc-grading-of-assignments" class="nav-link" data-scroll-target="#grading-of-assignments">Grading of Assignments</a></li>
+  <li><a href="#model-type" id="toc-model-type" class="nav-link" data-scroll-target="#model-type">Model Type</a></li>
+  <li><a href="#solution-methods" id="toc-solution-methods" class="nav-link" data-scroll-target="#solution-methods">Solution Methods</a></li>
+  <li><a href="#computational-challenges" id="toc-computational-challenges" class="nav-link" data-scroll-target="#computational-challenges">Computational Challenges</a></li>
   </ul></li>
-  <li><a href="#five-tutorials-for-this-week" id="toc-five-tutorials-for-this-week" class="nav-link" data-scroll-target="#five-tutorials-for-this-week"><span class="flow">Five Tutorials for this Week</span></a>
+  <li><a href="#impact" id="toc-impact" class="nav-link" data-scroll-target="#impact"><span class="flow">Impact</span></a>
   <ul class="collapse">
-  <li><a href="#topics-of-the-tutorials" id="toc-topics-of-the-tutorials" class="nav-link" data-scroll-target="#topics-of-the-tutorials">Topics of the Tutorials</a></li>
-  <li><a href="#get-started-with-the-tutorials" id="toc-get-started-with-the-tutorials" class="nav-link" data-scroll-target="#get-started-with-the-tutorials">Get started with the tutorials</a></li>
+  <li><a href="#real-world-applications" id="toc-real-world-applications" class="nav-link" data-scroll-target="#real-world-applications">Real-World Applications</a></li>
+  <li><a href="#further-extensions" id="toc-further-extensions" class="nav-link" data-scroll-target="#further-extensions">Further Extensions</a></li>
+  <li><a href="#section-1" id="toc-section-1" class="nav-link" data-scroll-target="#section-1"></a></li>
   </ul></li>
   <li><a href="#literature" id="toc-literature" class="nav-link" data-scroll-target="#literature"><span class="flow">Literature</span></a>
   <ul class="collapse">
-  <li><a href="#literature-1" id="toc-literature-1" class="nav-link" data-scroll-target="#literature-1">Literature</a></li>
+  <li><a href="#literature-i" id="toc-literature-i" class="nav-link" data-scroll-target="#literature-i">Literature I</a></li>
+  <li><a href="#literature-ii" id="toc-literature-ii" class="nav-link" data-scroll-target="#literature-ii">Literature II</a></li>
   </ul></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/edit/main/part-02/lecture-firststeps.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/blob/main/part-02/lecture-firststeps.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="lecture-presentation.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/edit/main/part-06/lecture-commitment.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/blob/main/part-06/lecture-commitment.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="lecture-presentation.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../part-02/lecture-firststeps.html">02 First Steps</a></li><li class="breadcrumb-item"><a href="../part-02/lecture-firststeps.html">Lecture</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../part-06/lecture-commitment.html">06 Commitment</a></li><li class="breadcrumb-item"><a href="../part-06/lecture-commitment.html">Lecture</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Lecture II - First Steps in Julia</h1>
+<h1 class="title">Lecture VI - Economic Dispatch Problem</h1>
 <p class="subtitle lead">Energy System Optimization with Julia</p>
 </div>
 
@@ -478,236 +534,99 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="quick-recap-on-the-technical-setup" class="level1 title">
-<h1 class="title"><span class="flow">Quick Recap on the Technical Setup</span></h1>
-<section id="download-and-install-julia" class="level2">
-<h2 class="anchored" data-anchor-id="download-and-install-julia">Download and Install Julia</h2>
-<p><img src="https://images.beyondsimulations.com/ao/ao_julia-programming-language.png" class="img-fluid"></p>
-<p>To prepare for the upcoming lectures, we start by installing the Julia Programming Language and an Integrated Development Environment (IDE) to work with Julia.</p>
-</section>
-<section id="installaing-julia" class="level2">
-<h2 class="anchored" data-anchor-id="installaing-julia">Installaing Julia</h2>
-<p><img src="https://images.beyondsimulations.com/ao/ao_julia2.png" class="img-fluid" data-max-width="400px"></p>
+<section id="quick-recap-from-last-week" class="level1 title">
+<h1 class="title"><span class="flow">Quick Recap from last Week</span></h1>
+<section id="namedtuples-in-julia" class="level2">
+<h2 class="anchored" data-anchor-id="namedtuples-in-julia">NamedTuples in Julia</h2>
 <ul>
-<li>Head to <a href="https://julialang.org">julialang.org</a> and follow the instructions.</li>
+<li>NamedTuples are immutable collections of key-value pairs</li>
+<li>They provide a convenient way to group related data</li>
+<li>Can be created using a function that returns a tuple with named fields</li>
 </ul>
-<p>. . .</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Tip
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>If you are ever asked to add something to your “PATH”, do so!</p>
-</div>
-</div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example: Creating a NamedTuple for a student</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">Student</span>(name<span class="op">::</span><span class="dt">String</span>, age<span class="op">::</span><span class="dt">Int</span>, grade<span class="op">::</span><span class="dt">Float64</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (name <span class="op">=</span> name, age <span class="op">=</span> age, grade <span class="op">=</span> grade)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a dictionary of students</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>students <span class="op">=</span> <span class="fu">Dict</span>(</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Alice"</span> <span class="op">=&gt;</span> <span class="fu">Student</span>(<span class="st">"Alice"</span>, <span class="fl">20</span>, <span class="fl">3.7</span>),</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Bob"</span> <span class="op">=&gt;</span> <span class="fu">Student</span>(<span class="st">"Bob"</span>, <span class="fl">21</span>, <span class="fl">3.5</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Access data using dot notation</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(students[<span class="st">"Alice"</span>].grade)  <span class="co"># Output: 3.7</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="vs-code" class="level2">
-<h2 class="anchored" data-anchor-id="vs-code">VS Code</h2>
-<p><img src="https://images.beyondsimulations.com/ao/ao_codium_cnl.png" class="img-fluid" data-max-width="400px"></p>
+<section id="model-solving-function-pattern" class="level2">
+<h2 class="anchored" data-anchor-id="model-solving-function-pattern">Model-Solving Function Pattern</h2>
 <ul>
-<li>Next, we are going to install VS Code</li>
-<li>Alternatively, you can install VS Codium</li>
-<li>It is essentially VS Code but without any tracking by MS</li>
+<li>Encapsulate optimization models in functions for reusability</li>
+<li>Return results as NamedTuples for easy access</li>
+<li>Store results in DataFrames for analysis</li>
 </ul>
+<div class="sourceCode" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example data for different scenarios</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> <span class="fu">Dict</span>(</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"base"</span> <span class="op">=&gt;</span> <span class="fu">Dict</span>(</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">"cost"</span> <span class="op">=&gt;</span> <span class="fl">10.0</span>,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">"limit"</span> <span class="op">=&gt;</span> <span class="fl">100.0</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"high_cost"</span> <span class="op">=&gt;</span> <span class="fu">Dict</span>(</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"cost"</span> <span class="op">=&gt;</span> <span class="fl">15.0</span>,</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">"limit"</span> <span class="op">=&gt;</span> <span class="fl">100.0</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"low_limit"</span> <span class="op">=&gt;</span> <span class="fu">Dict</span>(</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>        <span class="st">"cost"</span> <span class="op">=&gt;</span> <span class="fl">10.0</span>,</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>        <span class="st">"limit"</span> <span class="op">=&gt;</span> <span class="fl">50.0</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Example: Function to solve a simple optimization problem</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">solve_optimization</span>(data<span class="op">::</span><span class="dt">Dict</span>)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> <span class="fu">Model</span>(HiGHS.Optimizer)</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">set_silent</span>(model)</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Define variables and solve model</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@variable</span>(model, x <span class="op">&gt;=</span> <span class="fl">0</span>)</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@objective</span>(model, Min, data[<span class="st">"cost"</span>] <span class="op">*</span> x)</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@constraint</span>(model, x <span class="op">&lt;=</span> data[<span class="st">"limit"</span>])</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">optimize!</span>(model)</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Return results as NamedTuple</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>        solution <span class="op">=</span> <span class="fu">value</span>(x),</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>        objective <span class="op">=</span> <span class="fu">objective_value</span>(model)</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="co"># Store results in DataFrame</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> <span class="fu">DataFrame</span>(</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>    scenario <span class="op">=</span> <span class="dt">String</span>[],</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>    solution <span class="op">=</span> <span class="dt">Float64</span>[],</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>    objective <span class="op">=</span> <span class="dt">Float64</span>[]</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a><span class="co"># Solve multiple scenarios</span></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (name, scenario_data) <span class="kw">in</span> data</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>    solution <span class="op">=</span> <span class="fu">solve_optimization</span>(scenario_data)</span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>    <span class="fu">push!</span>(results, (name, solution.solution, solution.objective))</span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="installing-vs-code" class="level2">
-<h2 class="anchored" data-anchor-id="installing-vs-code">Installing VS Code</h2>
+<section id="economic-dispatch-problem-recap" class="level2">
+<h2 class="anchored" data-anchor-id="economic-dispatch-problem-recap">Economic Dispatch Problem Recap</h2>
 <ul>
-<li>Head to the website <a href="https://code.visualstudio.com">code.visualstudio.com</a></li>
-<li>OR to the webside <a href="https://vscodium.com">vscodium.com</a></li>
-<li>Download and install the latest release</li>
-</ul>
-</section>
-<section id="verify-the-installation" class="level2">
-<h2 class="anchored" data-anchor-id="verify-the-installation">Verify the Installation</h2>
+<li><strong>Objective</strong>: Minimize total generation cost</li>
+<li><strong>Decision Variables</strong>:
 <ul>
-<li>Start the IDE and take a look around</li>
-<li>Search for the field “Extensions” on the left sidebar</li>
-<li>Click it and search for “Julia”</li>
-<li>Download and install “Julia (Julia Language Support)”</li>
-</ul>
-</section>
-<section id="create-a-new-file" class="level2">
-<h2 class="anchored" data-anchor-id="create-a-new-file">Create a new file</h2>
+<li>Power output of thermal generators (<span class="math inline">\(p_g\)</span>)</li>
+<li>Power output of wind turbines (<span class="math inline">\(p_w\)</span>)</li>
+</ul></li>
+<li><strong>Key Constraints</strong>:
 <ul>
-<li>Create a new file with a “.jl” ending</li>
-<li>Save it somewhere on your computer</li>
-<li>e.g., in a folder that you will use in the course</li>
+<li>Power balance: <span class="math inline">\(\sum_g p_g + \sum_w p_w = d^f\)</span></li>
+<li>Generator limits: <span class="math inline">\(p^{\min}_g \leq p_g \leq p^{\max}_g\)</span></li>
+<li>Wind limits: <span class="math inline">\(0 \leq p_w \leq p^f_w\)</span></li>
+</ul></li>
 </ul>
-<div id="2" class="cell" data-output-location="fragment" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"Hello World!"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Hello World!</code></pre>
-</div>
-</div>
-<ul>
-<li>Run the file by clicking “run” in the upper right corner</li>
-<li>OR by pressing “Control+Enter” or “STRG+Enter”</li>
-</ul>
-</section>
-<section id="everything-working" class="level2">
-<h2 class="anchored" data-anchor-id="everything-working">Everything working?</h2>
-<ul>
-<li>If the terminal opens with a <code>Hello World!</code> → perfect!</li>
-<li>If not, it is likely that the IDE <span class="highlight">cannot find the path</span> to Julia</li>
-<li>Try to determine the path and save it to VS Code</li>
-<li>After saving it, try to run the file again</li>
-</ul>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Tip
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Don’t worry if it is not running right away. We will fix this together!</p>
-</div>
-</div>
-</section>
-</section>
-<section id="learning-julia" class="level1 title">
-<h1 class="title"><span class="flow">Learning Julia</span></h1>
-<section id="julia-as-a-programming-language" class="level2">
-<h2 class="anchored" data-anchor-id="julia-as-a-programming-language">Julia as a Programming Language</h2>
-<ul>
-<li>Following three lectures are dedicated to learning the basics</li>
-<li>Start with the very basics and gradually move on</li>
-<li>Focus in the first two lectures on the programming language</li>
-<li>Third lecture dedicated to <span class="highlight">Mathematical Optimization</span></li>
-</ul>
-</section>
-</section>
-<section id="working-with-vs-code" class="level1 title">
-<h1 class="title"><span class="flow">Working with VS Code</span></h1>
-<section id="notebooks-in-vs-code" class="level2">
-<h2 class="anchored" data-anchor-id="notebooks-in-vs-code">Notebooks in VS Code</h2>
-<ul>
-<li>The easiest way is by using VS Code</li>
-<li>Install the Jupyter Extension</li>
-<li>Now, you can open <code>.ipynb</code> files</li>
-<li>Here you can run the code in the cells</li>
-</ul>
-</section>
-<section id="downloading-the-notebooks" class="level2">
-<h2 class="anchored" data-anchor-id="downloading-the-notebooks">Downloading the Notebooks</h2>
-<ul>
-<li>You will find the tutorial notebooks next to the tutorial pages</li>
-<li>On each page, you will find a button <code>Jupyter</code> on the right</li>
-<li>Click it to download the notebook and save it</li>
-<li>I’d recommend storing the notebooks <span class="highlight">in a separate directory for this course</span></li>
-</ul>
-</section>
-<section id="learning-by-doing" class="level2">
-<h2 class="anchored" data-anchor-id="learning-by-doing">Learning by doing</h2>
-<ul>
-<li>The best way to learn a programming language is <span class="highlight">by doing</span></li>
-<li>We will therefore solve problems the coming weeks</li>
-<li>The goal is to get you familiar with the language</li>
-<li>You can discuss the problems with your fellow students</li>
-<li>You can hand in your solutions to receive bonus points!</li>
-</ul>
-</section>
-</section>
-<section id="working-with-ijulia" class="level1 title">
-<h1 class="title"><span class="flow">Working with IJulia</span></h1>
-<section id="ijulia" class="level2">
-<h2 class="anchored" data-anchor-id="ijulia">IJulia</h2>
-<ul>
-<li>IJulia is an interface between Julia and Jupyter Notebooks</li>
-<li>Popular tool for data analysis and visualization</li>
-<li>You can use IJulia to run <span class="highlight">Julia code in the notebooks</span></li>
-</ul>
-<p>. . .</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Tip
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>You can also copy and paste code from the notebooks into your IDE!</p>
-</div>
-</div>
-</section>
-<section id="installing-ijulia" class="level2">
-<h2 class="anchored" data-anchor-id="installing-ijulia">Installing IJulia</h2>
-<ul>
-<li>Open the VS Code IDE and start a terminal</li>
-<li>Start Julia by typing <code>julia</code> in the terminal</li>
-<li>Install IJulia by typing <code>]</code> to open the package manager</li>
-<li>Install IJulia by typing <code>add IJulia</code></li>
-<li>Press <code>Enter</code></li>
-</ul>
-</section>
-<section id="running-ijulia" class="level2">
-<h2 class="anchored" data-anchor-id="running-ijulia">Running IJulia</h2>
-<div class="sourceCode" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">IJulia;</span> notebook()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ul>
-<li>Start IJulia by typing the above code in the Julia prompt</li>
-<li>This will open a new browser window</li>
-<li>You can now run code in the notebooks</li>
-</ul>
-<p>. . .</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Tip
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>You can also run the notebooks in VS Code, if you prefer!</p>
-</div>
-</div>
-</section>
-</section>
-<section id="submission-of-assignments" class="level1 title">
-<h1 class="title"><span class="flow">Submission of Assignments</span></h1>
-<section id="submission-of-assignments-1" class="level2">
-<h2 class="anchored" data-anchor-id="submission-of-assignments-1">Submission of Assignments</h2>
-<ul>
-<li>You can work in groups of up to three people</li>
-<li>Submit the assignment via Moodle</li>
-<li>You will submit your assignment by uploading a notebook</li>
-<li>The assignment is due <span class="highlight">the day before the next tutorial</span></li>
-</ul>
-<p>. . .</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Tip
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Don’t forget to save your notebook before uploading it to Moodle!</p>
-</div>
-</div>
-</section>
-<section id="grading-of-assignments" class="level2">
-<h2 class="anchored" data-anchor-id="grading-of-assignments">Grading of Assignments</h2>
-<ul>
-<li>Each assignment is worth 0.5 points</li>
-<li>You can get a maximum of 6.0 points from the assignments</li>
-<li>The points will be added to your exam points</li>
-<li>You need to pass the exam first, to receive any bonus points!</li>
-</ul>
-<p>. . .</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -718,62 +637,303 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>The assignments are mandatory!</p>
+<p>The Economic Dispatch problem optimizes power generation for a single time step, assuming all generators are already committed to operation.</p>
 </div>
 </div>
 </section>
+<section id="from-economic-dispatch-to-unit-commitment" class="level2">
+<h2 class="anchored" data-anchor-id="from-economic-dispatch-to-unit-commitment">From Economic Dispatch to Unit Commitment</h2>
+<p><strong>Limitations of Economic Dispatch</strong>: - Assumes generators are already running - Ignores start-up and shut-down costs - Doesn’t consider minimum up/down times - Single time step optimization</p>
+<p><strong>Unit Commitment Solution</strong>: - Adds binary variables for generator on/off status - Considers multiple time steps - Includes start-up/shut-down costs - Enforces minimum up/down time, ramping, etc. constraints - More realistic but computationally more complex</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Unit Commitment extends Economic Dispatch by adding operational constraints and time-dependent decisions.</p>
+</div>
+</div>
 </section>
-<section id="five-tutorials-for-this-week" class="level1 title">
-<h1 class="title"><span class="flow">Five Tutorials for this Week</span></h1>
-<section id="topics-of-the-tutorials" class="level2">
-<h2 class="anchored" data-anchor-id="topics-of-the-tutorials">Topics of the Tutorials</h2>
+<section id="solutions-from-last-week" class="level2">
+<h2 class="anchored" data-anchor-id="solutions-from-last-week">Solutions from last Week</h2>
 <ul>
-<li><strong>Variables</strong>: Learn how to assign values to variables</li>
-<li><strong>Vectors</strong>: Learn how to create and manipulate vectors</li>
-<li><strong>Comparisons</strong>: Learn how to compare values</li>
-<li><strong>Loops</strong>: Learn how to use loops to repeat code</li>
-<li><strong>Scope</strong>: Learn about the scope of variables</li>
-</ul>
-</section>
-<section id="get-started-with-the-tutorials" class="level2">
-<h2 class="anchored" data-anchor-id="get-started-with-the-tutorials">Get started with the tutorials</h2>
-<ul>
-<li>Download the first notebook and open it</li>
-<li>Start with the <span class="highlight">first problem and solve it step by step</span></li>
-<li>You can find the tutorials here on the website</li>
-<li><span class="highlight">You can ask questions anytime!</span></li>
+<li>The tutorials from last week will again be <span class="highlight">available on Friday</span></li>
+<li>You can access them in the project folder on Github</li>
+<li>Click on the little cat icon on the bottom right</li>
 </ul>
 <p>. . .</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="highlight">You can ask questions anytime in class or via email!</span></p>
+</div>
+</div>
+</section>
+</section>
+<section id="introduction" class="level1 title">
+<h1 class="title"><span class="flow">Introduction</span></h1>
+<section id="power-system-basic-models-unit-commitment" class="level2">
+<h2 class="anchored" data-anchor-id="power-system-basic-models-unit-commitment">Power System Basic Models: Unit Commitment</h2>
+<div class="columns">
+<div class="column" style="width:30%;">
+<p><a href="https://unsplash.com/" width="85%"><img src="https://images.unsplash.com/photo-1503427315916-2ba435dee667?q=80&amp;w=2727&amp;auto=format&amp;fit=crop&amp;ixlib=rb-4.1.0&amp;ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="img-fluid" style="width:90.0%"></a></p>
+</div><div class="column" style="width:70%;">
+<p><strong>Power system with generators and an aggregated demand</strong></p>
+<ul>
+<li>Generators can be switched on/off to meet the demand</li>
+<li>Generators have different costs and operational constraints</li>
+<li>Decisions are made over multiple time steps</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="unit-commitment-problem" class="level2">
+<h2 class="anchored" data-anchor-id="unit-commitment-problem">Unit Commitment Problem</h2>
+<ul>
+<li><strong>Objective</strong>: Minimize the total cost of producing electricity</li>
+<li><strong>Constraints</strong>:
+<ul>
+<li>Demand must be met</li>
+<li>Generators have limits on their power output</li>
+<li>Renewable power injection</li>
+<li>Generator on/off status</li>
+<li>Minimum up/down times</li>
+<li>Ramp rate limits</li>
+</ul></li>
+<li><strong>Decision variables</strong>:
+<ul>
+<li>Power output of thermal generators</li>
+<li>Power output of renewables</li>
+<li>Binary variables for generator status</li>
+</ul></li>
+</ul>
+</section>
+<section id="section" class="level2 loud-slide">
+<h2 class="loud-slide anchored" data-anchor-id="section"></h2>
+<div class="r-fit-text">
+<p>How does the mathematical model look like?</p>
+</div>
+<div class="footer">
+
+</div>
+</section>
+</section>
+<section id="problem-structure" class="level1 title">
+<h1 class="title"><span class="flow">Problem Structure</span></h1>
+<section id="available-sets" class="level2">
+<h2 class="anchored" data-anchor-id="available-sets">Available Sets</h2>
+<p><span class="question">Question:</span> <strong>What are the sets we need?</strong></p>
+<p>. . .</p>
+<ul>
+<li><span class="math inline">\(\mathcal{G}\)</span> - Set of thermal generators indexed by <span class="math inline">\(g \in \{1,2,...,|\mathcal{G}|\}\)</span></li>
+<li><span class="math inline">\(\mathcal{W}\)</span> - Set of wind turbines indexed by <span class="math inline">\(w \in \{1,2,...,|\mathcal{W}|\}\)</span></li>
+<li><span class="math inline">\(\mathcal{T}\)</span> - Set of time periods indexed by <span class="math inline">\(t \in \{1,2,...,|\mathcal{T}|\}\)</span></li>
+</ul>
+</section>
+<section id="available-parameters" class="level2">
+<h2 class="anchored" data-anchor-id="available-parameters">Available Parameters</h2>
+<p><span class="question">Question:</span> <strong>What are possible parameters?</strong></p>
+<p>. . .</p>
+<ul>
+<li><span class="math inline">\(c^{var}_g\)</span> - Variable cost of thermal generator <span class="math inline">\(g\in\mathcal{G}\)</span> in [<span class="math inline">\(EUR/\text{MWh}\)</span>]</li>
+<li><span class="math inline">\(c^{fix}_g\)</span> - Fixed cost of thermal generator <span class="math inline">\(g\in\mathcal{G}\)</span> in [<span class="math inline">\(EUR\)</span>]</li>
+<li><span class="math inline">\(c^{var}_w\)</span> - Cost of wind turbine <span class="math inline">\(w\in\mathcal{W}\)</span> in [<span class="math inline">\(EUR/\text{MWh}\)</span>]</li>
+<li><span class="math inline">\(p^{\min}_g\)</span> - Minimum power output of thermal generator <span class="math inline">\(g\in\mathcal{G}\)</span> in [MW]</li>
+<li><span class="math inline">\(p^{\max}_g\)</span> - Maximum power output of thermal generator <span class="math inline">\(g\in\mathcal{G}\)</span> in [MW]</li>
+<li><span class="math inline">\(p^{f}_{w,t}\)</span> - Forecasted power output of wind turbine <span class="math inline">\(w\in\mathcal{W}\)</span> at time <span class="math inline">\(t\)</span> in [MW]</li>
+<li><span class="math inline">\(d^f_t\)</span> - Forecasted demand at time <span class="math inline">\(t\)</span> in [MW]</li>
+<li><span class="math inline">\(T^{up}_g\)</span> - Minimum up time of generator <span class="math inline">\(g\in\mathcal{G}\)</span> in [h]</li>
+<li><span class="math inline">\(T^{down}_g\)</span> - Minimum down time of generator <span class="math inline">\(g\in\mathcal{G}\)</span> in [h]</li>
+<li><span class="math inline">\(R^{up}_g\)</span> - Maximum ramp-up rate of generator <span class="math inline">\(g\in\mathcal{G}\)</span> in [MW/h]</li>
+<li><span class="math inline">\(R^{down}_g\)</span> - Maximum ramp-down rate of generator <span class="math inline">\(g\in\mathcal{G}\)</span> in [MW/h]</li>
+</ul>
+</section>
+<section id="decision-variables" class="level2">
+<h2 class="anchored" data-anchor-id="decision-variables">Decision Variables</h2>
+<ul>
+<li><span class="math inline">\(p_{g,t}\)</span> - Power output of thermal generator <span class="math inline">\(g\in\mathcal{G}\)</span> at time <span class="math inline">\(t\)</span></li>
+<li><span class="math inline">\(p_{w,t}\)</span> - Power injection of wind turbine <span class="math inline">\(w\in\mathcal{W}\)</span> at time <span class="math inline">\(t\)</span></li>
+<li><span class="math inline">\(u_{g,t}\)</span> - Binary variable indicating if generator <span class="math inline">\(g\in\mathcal{G}\)</span> is on at time <span class="math inline">\(t\)</span></li>
+</ul>
+</section>
+</section>
+<section id="model-formulation" class="level1 title">
+<h1 class="title"><span class="flow">Model Formulation</span></h1>
+<section id="objective-function" class="level2">
+<h2 class="anchored" data-anchor-id="objective-function">Objective Function</h2>
+<p><span class="math inline">\(\text{Minimize} \quad \sum_{t \in \mathcal{T}} \left( \sum_{g \in \mathcal{G}} (c^{var}_g p_{g,t} + c^{fix}_g u_{g,t}) + \sum_{w \in \mathcal{W}} c^{var}_w p_{w,t} \right)\)</span></p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-And that’s it for this lecture!
+The objective includes:
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>The remaining time we will already start working on the first problems.</p>
+<ul>
+<li>Variable costs for power generation</li>
+<li>Fixed costs for keeping generators on</li>
+<li>Wind power costs</li>
+</ul>
 </div>
+</div>
+</section>
+<section id="power-balance-constraints" class="level2">
+<h2 class="anchored" data-anchor-id="power-balance-constraints">Power Balance Constraints</h2>
+<p><span class="math inline">\(\sum_{g \in \mathcal{G}} p_{g,t} + \sum_{w \in \mathcal{W}} p_{w,t} = d^f_t \quad \forall t \in \mathcal{T}\)</span></p>
+</section>
+<section id="generator-limits-constraints" class="level2">
+<h2 class="anchored" data-anchor-id="generator-limits-constraints">Generator Limits Constraints</h2>
+<p><span class="math inline">\(p^{\min}_g u_{g,t} \leq p_{g,t} \leq p^{\max}_g u_{g,t} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}\)</span></p>
+</section>
+<section id="wind-power-injection-constraints" class="level2">
+<h2 class="anchored" data-anchor-id="wind-power-injection-constraints">Wind Power Injection Constraints</h2>
+<p><span class="math inline">\(0 \leq p_{w,t} \leq p^f_{w,t} \quad \forall w \in \mathcal{W}, t \in \mathcal{T}\)</span></p>
+</section>
+<section id="minimum-updown-time-constraints" class="level2">
+<h2 class="anchored" data-anchor-id="minimum-updown-time-constraints">Minimum Up/Down Time Constraints</h2>
+<p><span class="math inline">\(u_{g,t} - u_{g,t-1} \leq u_{g,\tau} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}, \tau \in [t+1, \min(t+T^{up}_g-1,|\mathcal{T}|)]\)</span></p>
+<p><span class="math inline">\(u_{g,t-1} - u_{g,t} \leq 1 - u_{g,\tau} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}, \tau \in [t+1, \min(t+T^{down}_g-1,|\mathcal{T}|)]\)</span></p>
+</section>
+<section id="ramp-rate-constraints" class="level2">
+<h2 class="anchored" data-anchor-id="ramp-rate-constraints">Ramp Rate Constraints</h2>
+<p><span class="math inline">\(p_{g,t} - p_{g,t-1} \leq R^{up}_g \quad \forall g \in \mathcal{G}, t \in \mathcal{T}\)</span></p>
+<p><span class="math inline">\(p_{g,t-1} - p_{g,t} \leq R^{down}_g \quad \forall g \in \mathcal{G}, t \in \mathcal{T}\)</span></p>
+</section>
+<section id="complete-unit-commitment-model" class="level2">
+<h2 class="anchored" data-anchor-id="complete-unit-commitment-model">Complete Unit Commitment Model</h2>
+<p><span class="math inline">\(\text{Minimize} \quad \sum_{t \in \mathcal{T}} \left( \sum_{g \in \mathcal{G}} (c^{var}_g p_{g,t} + c^{fix}_g u_{g,t}) + \sum_{w \in \mathcal{W}} c^{var}_w p_{w,t} \right)\)</span></p>
+<p>subject to</p>
+<p><span class="math inline">\(\sum_{g \in \mathcal{G}} p_{g,t} + \sum_{w \in \mathcal{W}} p_{w,t} = d^f_t \quad \forall t \in \mathcal{T}\)</span></p>
+<p><span class="math inline">\(p^{\min}_g u_{g,t} \leq p_{g,t} \leq p^{\max}_g u_{g,t} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}\)</span></p>
+<p><span class="math inline">\(0 \leq p_{w,t} \leq p^f_{w,t} \quad \forall w \in \mathcal{W}, t \in \mathcal{T}\)</span></p>
+<p><span class="math inline">\(u_{g,t} - u_{g,t-1} \leq u_{g,\tau} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}, \tau \in [t+1, \min(t+T^{up}_g-1,|\mathcal{T}|)]\)</span></p>
+<p><span class="math inline">\(u_{g,t-1} - u_{g,t} \leq 1 - u_{g,\tau} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}, \tau \in [t+1, \min(t+T^{down}_g-1,|\mathcal{T}|)]\)</span></p>
+<p><span class="math inline">\(p_{g,t} - p_{g,t-1} \leq R^{up}_g \quad \forall g \in \mathcal{G}, t \in \mathcal{T}\)</span></p>
+<p><span class="math inline">\(p_{g,t-1} - p_{g,t} \leq R^{down}_g \quad \forall g \in \mathcal{G}, t \in \mathcal{T}\)</span></p>
+<p><span class="math inline">\(u_{g,t} \in \{0,1\} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}\)</span></p>
+</section>
+</section>
+<section id="model-characteristics" class="level1 title">
+<h1 class="title"><span class="flow">Model Characteristics</span></h1>
+<section id="model-type" class="level2">
+<h2 class="anchored" data-anchor-id="model-type">Model Type</h2>
+<p><span class="question">Question:</span> <strong>What type of optimization problem is this?</strong></p>
+<p>. . .</p>
+<ul>
+<li>Mixed-Integer Linear Programming (MILP)</li>
+<li>Binary variables for generator status</li>
+<li>Linear constraints and objective</li>
+<li>Time-dependent decisions</li>
+</ul>
+</section>
+<section id="solution-methods" class="level2">
+<h2 class="anchored" data-anchor-id="solution-methods">Solution Methods</h2>
+<p><span class="question">Question:</span> <strong>How can we solve this problem?</strong></p>
+<p>. . .</p>
+<ul>
+<li>Branch and Bound algorithm</li>
+<li>Commercial solvers (Gurobi, CPLEX)</li>
+<li>Open-source solvers (HiGHS)</li>
+<li>Decomposition methods for large problems</li>
+</ul>
+</section>
+<section id="computational-challenges" class="level2">
+<h2 class="anchored" data-anchor-id="computational-challenges">Computational Challenges</h2>
+<p><span class="question">Question:</span> <strong>What makes this problem challenging?</strong></p>
+<p>. . .</p>
+<ul>
+<li>Large number of binary variables</li>
+<li>Time-dependent inter-temporal constraints</li>
+<li>Minimum up/down time constraints</li>
+<li>Ramp rate constraints</li>
+<li>Multiple time periods</li>
+</ul>
+</section>
+</section>
+<section id="impact" class="level1 title">
+<h1 class="title"><span class="flow">Impact</span></h1>
+<section id="real-world-applications" class="level2">
+<h2 class="anchored" data-anchor-id="real-world-applications">Real-World Applications</h2>
+<ul>
+<li>Generation scheduling</li>
+<li>Day-ahead market clearing</li>
+<li>Ancillary services</li>
+<li>Reserve capacity planning</li>
+</ul>
+</section>
+<section id="further-extensions" class="level2">
+<h2 class="anchored" data-anchor-id="further-extensions">Further Extensions</h2>
+<ul>
+<li>Battery storage</li>
+<li>Demand response</li>
+<li>Network constraints</li>
+<li>Reserve requirements</li>
+<li>Multiple fuel types</li>
+<li>Emission constraints</li>
+<li>Uncertainty in forecasts</li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+And that’s it for today’s lecture!
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>We have covered the Unit Commitment problem and its mathematical formulation. The tutorial will help you implement and solve this problem using Julia and JuMP.</p>
+</div>
+</div>
+</section>
+<section id="section-1" class="level2 loud-slide">
+<h2 class="loud-slide anchored" data-anchor-id="section-1"></h2>
+<div class="r-fit-text">
+<p>Questions?</p>
+</div>
+<div class="footer">
+
 </div>
 </section>
 </section>
 <section id="literature" class="level1 title">
 <h1 class="title"><span class="flow">Literature</span></h1>
-<section id="literature-1" class="level2">
-<h2 class="anchored" data-anchor-id="literature-1">Literature</h2>
-<ul>
-<li><p>Lauwens, B., &amp; Downey, A. B. (2019). Think Julia: How to think like a computer scientist (First edition). O’Reilly®. <a href="https://benlauwens.github.io/ThinkJulia.jl/latest/book.html">Link to the free book website</a>.</p></li>
-<li><p><a href="https://docs.julialang.org/">Julia Documentation</a></p></li>
-</ul>
+<section id="literature-i" class="level2">
+<h2 class="anchored" data-anchor-id="literature-i">Literature I</h2>
 <p>For more interesting literature to learn more about Julia, take a look at the <a href="../general/literature.html">literature list</a> of this course.</p>
+</section>
+<section id="literature-ii" class="level2">
+<h2 class="anchored" data-anchor-id="literature-ii">Literature II</h2>
+<p>For a detailed mathematical formulation of the Unit Commitment problem, see <span class="citation" data-cites="morales2013tight">Morales-Espana, Latorre, and Ramos (<a href="#ref-morales2013tight" role="doc-biblioref">2013</a>)</span> and <span class="citation" data-cites="zimmermann2019increasing">Zimmermann and Kather (<a href="#ref-zimmermann2019increasing" role="doc-biblioref">2019</a>)</span>.</p>
+
 
 
 </section>
 </section>
 
-</main> <!-- /main -->
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-morales2013tight" class="csl-entry" role="listitem">
+Morales-Espana, G., J. M. Latorre, and A. Ramos. 2013. <span>“Tight and Compact MILP Formulation for the Thermal Unit Commitment Problem.”</span> <em>IEEE Transactions on Power Systems</em> 28 (4): 4897–4908.
+</div>
+<div id="ref-zimmermann2019increasing" class="csl-entry" role="listitem">
+Zimmermann, Cors, T., and A. Kather. 2019. <span>“Increasing Tightness by Introduction of Intertemporal Constraints in MILP Unit Commitment.”</span> In <em>NEIS 2019; Conference on Sustainable Energy Supply and Energy Storage Systems</em>, edited by Detlef Schulz, 209–14. VDE Verl.
+</div>
+</div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
@@ -1181,7 +1341,7 @@ And that’s it for this lecture!
     </div>   
     <div class="nav-footer-center">
 <p>Energy System Optimization with Julia, Tobias Cors<br>CC BY-NC-SA 4.0</p>
-<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/edit/main/part-02/lecture-firststeps.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/blob/main/part-02/lecture-firststeps.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/edit/main/part-06/lecture-commitment.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/blob/main/part-06/lecture-commitment.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">

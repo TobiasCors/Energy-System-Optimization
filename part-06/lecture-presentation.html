@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.7.31">
+
+  <meta name="author" content="Dr.&nbsp;Tobias Cors">
+  <title>Energy System Optimization with Julia – Lecture VI - Economic Dispatch Problem</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+    /* CSS for citations */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+      margin-bottom: 0em;
+    }
+    .hanging-indent div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }  </style>
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-3c901e439054d7a7a1dc51f2fc5d8a30.css">
+  <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" data-background-color="#025259" class="quarto-title-block center">
+  <h1 class="title">Lecture VI - Economic Dispatch Problem</h1>
+  <p class="subtitle">Energy System Optimization with Julia</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Dr.&nbsp;Tobias Cors 
+</div>
+        <p class="quarto-title-affiliation">
+            Hamburg University of Applied Science - Summer 2025
+          </p>
+    </div>
+</div>
+
+</section>
+<section>
+<section id="quick-recap-from-last-week" class="title-slide slide level1 title center">
+<h1><span class="flow">Quick Recap from last Week</span></h1>
+
+</section>
+<section id="namedtuples-in-julia" class="slide level2">
+<h2>NamedTuples in Julia</h2>
+<ul>
+<li>NamedTuples are immutable collections of key-value pairs</li>
+<li>They provide a convenient way to group related data</li>
+<li>Can be created using a function that returns a tuple with named fields</li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a></a><span class="co"># Example: Creating a NamedTuple for a student</span></span>
+<span id="cb1-2"><a></a><span class="kw">function</span> <span class="fu">Student</span>(name<span class="op">::</span><span class="dt">String</span>, age<span class="op">::</span><span class="dt">Int</span>, grade<span class="op">::</span><span class="dt">Float64</span>)</span>
+<span id="cb1-3"><a></a>    <span class="cf">return</span> (name <span class="op">=</span> name, age <span class="op">=</span> age, grade <span class="op">=</span> grade)</span>
+<span id="cb1-4"><a></a><span class="kw">end</span></span>
+<span id="cb1-5"><a></a></span>
+<span id="cb1-6"><a></a><span class="co"># Create a dictionary of students</span></span>
+<span id="cb1-7"><a></a>students <span class="op">=</span> <span class="fu">Dict</span>(</span>
+<span id="cb1-8"><a></a>    <span class="st">"Alice"</span> <span class="op">=&gt;</span> <span class="fu">Student</span>(<span class="st">"Alice"</span>, <span class="fl">20</span>, <span class="fl">3.7</span>),</span>
+<span id="cb1-9"><a></a>    <span class="st">"Bob"</span> <span class="op">=&gt;</span> <span class="fu">Student</span>(<span class="st">"Bob"</span>, <span class="fl">21</span>, <span class="fl">3.5</span>)</span>
+<span id="cb1-10"><a></a>)</span>
+<span id="cb1-11"><a></a></span>
+<span id="cb1-12"><a></a><span class="co"># Access data using dot notation</span></span>
+<span id="cb1-13"><a></a><span class="fu">println</span>(students[<span class="st">"Alice"</span>].grade)  <span class="co"># Output: 3.7</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="model-solving-function-pattern" class="slide level2">
+<h2>Model-Solving Function Pattern</h2>
+<ul>
+<li>Encapsulate optimization models in functions for reusability</li>
+<li>Return results as NamedTuples for easy access</li>
+<li>Store results in DataFrames for analysis</li>
+</ul>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a></a><span class="co"># Example data for different scenarios</span></span>
+<span id="cb2-2"><a></a>data <span class="op">=</span> <span class="fu">Dict</span>(</span>
+<span id="cb2-3"><a></a>    <span class="st">"base"</span> <span class="op">=&gt;</span> <span class="fu">Dict</span>(</span>
+<span id="cb2-4"><a></a>        <span class="st">"cost"</span> <span class="op">=&gt;</span> <span class="fl">10.0</span>,</span>
+<span id="cb2-5"><a></a>        <span class="st">"limit"</span> <span class="op">=&gt;</span> <span class="fl">100.0</span></span>
+<span id="cb2-6"><a></a>    ),</span>
+<span id="cb2-7"><a></a>    <span class="st">"high_cost"</span> <span class="op">=&gt;</span> <span class="fu">Dict</span>(</span>
+<span id="cb2-8"><a></a>        <span class="st">"cost"</span> <span class="op">=&gt;</span> <span class="fl">15.0</span>,</span>
+<span id="cb2-9"><a></a>        <span class="st">"limit"</span> <span class="op">=&gt;</span> <span class="fl">100.0</span></span>
+<span id="cb2-10"><a></a>    ),</span>
+<span id="cb2-11"><a></a>    <span class="st">"low_limit"</span> <span class="op">=&gt;</span> <span class="fu">Dict</span>(</span>
+<span id="cb2-12"><a></a>        <span class="st">"cost"</span> <span class="op">=&gt;</span> <span class="fl">10.0</span>,</span>
+<span id="cb2-13"><a></a>        <span class="st">"limit"</span> <span class="op">=&gt;</span> <span class="fl">50.0</span></span>
+<span id="cb2-14"><a></a>    )</span>
+<span id="cb2-15"><a></a>)</span>
+<span id="cb2-16"><a></a></span>
+<span id="cb2-17"><a></a><span class="co"># Example: Function to solve a simple optimization problem</span></span>
+<span id="cb2-18"><a></a><span class="kw">function</span> <span class="fu">solve_optimization</span>(data<span class="op">::</span><span class="dt">Dict</span>)</span>
+<span id="cb2-19"><a></a>    model <span class="op">=</span> <span class="fu">Model</span>(HiGHS.Optimizer)</span>
+<span id="cb2-20"><a></a>    <span class="fu">set_silent</span>(model)</span>
+<span id="cb2-21"><a></a>    </span>
+<span id="cb2-22"><a></a>    <span class="co"># Define variables and solve model</span></span>
+<span id="cb2-23"><a></a>    <span class="pp">@variable</span>(model, x <span class="op">&gt;=</span> <span class="fl">0</span>)</span>
+<span id="cb2-24"><a></a>    <span class="pp">@objective</span>(model, Min, data[<span class="st">"cost"</span>] <span class="op">*</span> x)</span>
+<span id="cb2-25"><a></a>    <span class="pp">@constraint</span>(model, x <span class="op">&lt;=</span> data[<span class="st">"limit"</span>])</span>
+<span id="cb2-26"><a></a>    <span class="fu">optimize!</span>(model)</span>
+<span id="cb2-27"><a></a>    </span>
+<span id="cb2-28"><a></a>    <span class="co"># Return results as NamedTuple</span></span>
+<span id="cb2-29"><a></a>    <span class="cf">return</span> (</span>
+<span id="cb2-30"><a></a>        solution <span class="op">=</span> <span class="fu">value</span>(x),</span>
+<span id="cb2-31"><a></a>        objective <span class="op">=</span> <span class="fu">objective_value</span>(model)</span>
+<span id="cb2-32"><a></a>    )</span>
+<span id="cb2-33"><a></a><span class="kw">end</span></span>
+<span id="cb2-34"><a></a></span>
+<span id="cb2-35"><a></a><span class="co"># Store results in DataFrame</span></span>
+<span id="cb2-36"><a></a>results <span class="op">=</span> <span class="fu">DataFrame</span>(</span>
+<span id="cb2-37"><a></a>    scenario <span class="op">=</span> <span class="dt">String</span>[],</span>
+<span id="cb2-38"><a></a>    solution <span class="op">=</span> <span class="dt">Float64</span>[],</span>
+<span id="cb2-39"><a></a>    objective <span class="op">=</span> <span class="dt">Float64</span>[]</span>
+<span id="cb2-40"><a></a>)</span>
+<span id="cb2-41"><a></a></span>
+<span id="cb2-42"><a></a><span class="co"># Solve multiple scenarios</span></span>
+<span id="cb2-43"><a></a><span class="cf">for</span> (name, scenario_data) <span class="kw">in</span> data</span>
+<span id="cb2-44"><a></a>    solution <span class="op">=</span> <span class="fu">solve_optimization</span>(scenario_data)</span>
+<span id="cb2-45"><a></a>    <span class="fu">push!</span>(results, (name, solution.solution, solution.objective))</span>
+<span id="cb2-46"><a></a><span class="cf">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="economic-dispatch-problem-recap" class="slide level2">
+<h2>Economic Dispatch Problem Recap</h2>
+<ul>
+<li><strong>Objective</strong>: Minimize total generation cost</li>
+<li><strong>Decision Variables</strong>:
+<ul>
+<li>Power output of thermal generators (<span class="math inline">\(p_g\)</span>)</li>
+<li>Power output of wind turbines (<span class="math inline">\(p_w\)</span>)</li>
+</ul></li>
+<li><strong>Key Constraints</strong>:
+<ul>
+<li>Power balance: <span class="math inline">\(\sum_g p_g + \sum_w p_w = d^f\)</span></li>
+<li>Generator limits: <span class="math inline">\(p^{\min}_g \leq p_g \leq p^{\max}_g\)</span></li>
+<li>Wind limits: <span class="math inline">\(0 \leq p_w \leq p^f_w\)</span></li>
+</ul></li>
+</ul>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>The Economic Dispatch problem optimizes power generation for a single time step, assuming all generators are already committed to operation.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="from-economic-dispatch-to-unit-commitment" class="slide level2">
+<h2>From Economic Dispatch to Unit Commitment</h2>
+<p><strong>Limitations of Economic Dispatch</strong>: - Assumes generators are already running - Ignores start-up and shut-down costs - Doesn’t consider minimum up/down times - Single time step optimization</p>
+<p><strong>Unit Commitment Solution</strong>: - Adds binary variables for generator on/off status - Considers multiple time steps - Includes start-up/shut-down costs - Enforces minimum up/down time, ramping, etc. constraints - More realistic but computationally more complex</p>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>Unit Commitment extends Economic Dispatch by adding operational constraints and time-dependent decisions.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="solutions-from-last-week" class="slide level2">
+<h2>Solutions from last Week</h2>
+<ul>
+<li>The tutorials from last week will again be <span class="highlight">available on Friday</span></li>
+<li>You can access them in the project folder on Github</li>
+<li>Click on the little cat icon on the bottom right</li>
+</ul>
+<div class="fragment">
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p><span class="highlight">You can ask questions anytime in class or via email!</span></p>
+</div>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="introduction" class="title-slide slide level1 title center">
+<h1><span class="flow">Introduction</span></h1>
+
+</section>
+<section id="power-system-basic-models-unit-commitment" class="slide level2">
+<h2>Power System Basic Models: Unit Commitment</h2>
+<div class="columns">
+<div class="column" style="width:30%;">
+<p><a href="https://unsplash.com/" width="85%"><img data-src="https://images.unsplash.com/photo-1503427315916-2ba435dee667?q=80&amp;w=2727&amp;auto=format&amp;fit=crop&amp;ixlib=rb-4.1.0&amp;ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" style="width:90.0%"></a></p>
+</div><div class="column" style="width:70%;">
+<p><strong>Power system with generators and an aggregated demand</strong></p>
+<ul>
+<li>Generators can be switched on/off to meet the demand</li>
+<li>Generators have different costs and operational constraints</li>
+<li>Decisions are made over multiple time steps</li>
+</ul>
+</div></div>
+</section>
+<section id="unit-commitment-problem" class="slide level2">
+<h2>Unit Commitment Problem</h2>
+<ul>
+<li><strong>Objective</strong>: Minimize the total cost of producing electricity</li>
+<li><strong>Constraints</strong>:
+<ul>
+<li>Demand must be met</li>
+<li>Generators have limits on their power output</li>
+<li>Renewable power injection</li>
+<li>Generator on/off status</li>
+<li>Minimum up/down times</li>
+<li>Ramp rate limits</li>
+</ul></li>
+<li><strong>Decision variables</strong>:
+<ul>
+<li>Power output of thermal generators</li>
+<li>Power output of renewables</li>
+<li>Binary variables for generator status</li>
+</ul></li>
+</ul>
+</section>
+<section id="section" class="slide level2 loud-slide">
+<h2></h2>
+<div class="r-fit-text">
+<p>How does the mathematical model look like?</p>
+</div>
+<div class="footer">
+
+</div>
+</section></section>
+<section>
+<section id="problem-structure" class="title-slide slide level1 title center">
+<h1><span class="flow">Problem Structure</span></h1>
+
+</section>
+<section id="available-sets" class="slide level2">
+<h2>Available Sets</h2>
+<p><span class="question">Question:</span> <strong>What are the sets we need?</strong></p>
+<div class="fragment">
+<ul>
+<li><span class="math inline">\(\mathcal{G}\)</span> - Set of thermal generators indexed by <span class="math inline">\(g \in \{1,2,...,|\mathcal{G}|\}\)</span></li>
+<li><span class="math inline">\(\mathcal{W}\)</span> - Set of wind turbines indexed by <span class="math inline">\(w \in \{1,2,...,|\mathcal{W}|\}\)</span></li>
+<li><span class="math inline">\(\mathcal{T}\)</span> - Set of time periods indexed by <span class="math inline">\(t \in \{1,2,...,|\mathcal{T}|\}\)</span></li>
+</ul>
+</div>
+</section>
+<section id="available-parameters" class="slide level2">
+<h2>Available Parameters</h2>
+<p><span class="question">Question:</span> <strong>What are possible parameters?</strong></p>
+<div class="fragment">
+<ul>
+<li><span class="math inline">\(c^{var}_g\)</span> - Variable cost of thermal generator <span class="math inline">\(g\in\mathcal{G}\)</span> in [<span class="math inline">\(EUR/\text{MWh}\)</span>]</li>
+<li><span class="math inline">\(c^{fix}_g\)</span> - Fixed cost of thermal generator <span class="math inline">\(g\in\mathcal{G}\)</span> in [<span class="math inline">\(EUR\)</span>]</li>
+<li><span class="math inline">\(c^{var}_w\)</span> - Cost of wind turbine <span class="math inline">\(w\in\mathcal{W}\)</span> in [<span class="math inline">\(EUR/\text{MWh}\)</span>]</li>
+<li><span class="math inline">\(p^{\min}_g\)</span> - Minimum power output of thermal generator <span class="math inline">\(g\in\mathcal{G}\)</span> in [MW]</li>
+<li><span class="math inline">\(p^{\max}_g\)</span> - Maximum power output of thermal generator <span class="math inline">\(g\in\mathcal{G}\)</span> in [MW]</li>
+<li><span class="math inline">\(p^{f}_{w,t}\)</span> - Forecasted power output of wind turbine <span class="math inline">\(w\in\mathcal{W}\)</span> at time <span class="math inline">\(t\)</span> in [MW]</li>
+<li><span class="math inline">\(d^f_t\)</span> - Forecasted demand at time <span class="math inline">\(t\)</span> in [MW]</li>
+<li><span class="math inline">\(T^{up}_g\)</span> - Minimum up time of generator <span class="math inline">\(g\in\mathcal{G}\)</span> in [h]</li>
+<li><span class="math inline">\(T^{down}_g\)</span> - Minimum down time of generator <span class="math inline">\(g\in\mathcal{G}\)</span> in [h]</li>
+<li><span class="math inline">\(R^{up}_g\)</span> - Maximum ramp-up rate of generator <span class="math inline">\(g\in\mathcal{G}\)</span> in [MW/h]</li>
+<li><span class="math inline">\(R^{down}_g\)</span> - Maximum ramp-down rate of generator <span class="math inline">\(g\in\mathcal{G}\)</span> in [MW/h]</li>
+</ul>
+</div>
+</section>
+<section id="decision-variables" class="slide level2">
+<h2>Decision Variables</h2>
+<ul>
+<li><span class="math inline">\(p_{g,t}\)</span> - Power output of thermal generator <span class="math inline">\(g\in\mathcal{G}\)</span> at time <span class="math inline">\(t\)</span></li>
+<li><span class="math inline">\(p_{w,t}\)</span> - Power injection of wind turbine <span class="math inline">\(w\in\mathcal{W}\)</span> at time <span class="math inline">\(t\)</span></li>
+<li><span class="math inline">\(u_{g,t}\)</span> - Binary variable indicating if generator <span class="math inline">\(g\in\mathcal{G}\)</span> is on at time <span class="math inline">\(t\)</span></li>
+</ul>
+</section></section>
+<section>
+<section id="model-formulation" class="title-slide slide level1 title center">
+<h1><span class="flow">Model Formulation</span></h1>
+
+</section>
+<section id="objective-function" class="slide level2">
+<h2>Objective Function</h2>
+<p><span class="math inline">\(\text{Minimize} \quad \sum_{t \in \mathcal{T}} \left( \sum_{g \in \mathcal{G}} (c^{var}_g p_{g,t} + c^{fix}_g u_{g,t}) + \sum_{w \in \mathcal{W}} c^{var}_w p_{w,t} \right)\)</span></p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>The objective includes:</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li>Variable costs for power generation</li>
+<li>Fixed costs for keeping generators on</li>
+<li>Wind power costs</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="power-balance-constraints" class="slide level2">
+<h2>Power Balance Constraints</h2>
+<p><span class="math inline">\(\sum_{g \in \mathcal{G}} p_{g,t} + \sum_{w \in \mathcal{W}} p_{w,t} = d^f_t \quad \forall t \in \mathcal{T}\)</span></p>
+</section>
+<section id="generator-limits-constraints" class="slide level2">
+<h2>Generator Limits Constraints</h2>
+<p><span class="math inline">\(p^{\min}_g u_{g,t} \leq p_{g,t} \leq p^{\max}_g u_{g,t} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}\)</span></p>
+</section>
+<section id="wind-power-injection-constraints" class="slide level2">
+<h2>Wind Power Injection Constraints</h2>
+<p><span class="math inline">\(0 \leq p_{w,t} \leq p^f_{w,t} \quad \forall w \in \mathcal{W}, t \in \mathcal{T}\)</span></p>
+</section>
+<section id="minimum-updown-time-constraints" class="slide level2">
+<h2>Minimum Up/Down Time Constraints</h2>
+<p><span class="math inline">\(u_{g,t} - u_{g,t-1} \leq u_{g,\tau} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}, \tau \in [t+1, \min(t+T^{up}_g-1,|\mathcal{T}|)]\)</span></p>
+<p><span class="math inline">\(u_{g,t-1} - u_{g,t} \leq 1 - u_{g,\tau} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}, \tau \in [t+1, \min(t+T^{down}_g-1,|\mathcal{T}|)]\)</span></p>
+</section>
+<section id="ramp-rate-constraints" class="slide level2">
+<h2>Ramp Rate Constraints</h2>
+<p><span class="math inline">\(p_{g,t} - p_{g,t-1} \leq R^{up}_g \quad \forall g \in \mathcal{G}, t \in \mathcal{T}\)</span></p>
+<p><span class="math inline">\(p_{g,t-1} - p_{g,t} \leq R^{down}_g \quad \forall g \in \mathcal{G}, t \in \mathcal{T}\)</span></p>
+</section>
+<section id="complete-unit-commitment-model" class="slide level2">
+<h2>Complete Unit Commitment Model</h2>
+<p><span class="math inline">\(\text{Minimize} \quad \sum_{t \in \mathcal{T}} \left( \sum_{g \in \mathcal{G}} (c^{var}_g p_{g,t} + c^{fix}_g u_{g,t}) + \sum_{w \in \mathcal{W}} c^{var}_w p_{w,t} \right)\)</span></p>
+<p>subject to</p>
+<p><span class="math inline">\(\sum_{g \in \mathcal{G}} p_{g,t} + \sum_{w \in \mathcal{W}} p_{w,t} = d^f_t \quad \forall t \in \mathcal{T}\)</span></p>
+<p><span class="math inline">\(p^{\min}_g u_{g,t} \leq p_{g,t} \leq p^{\max}_g u_{g,t} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}\)</span></p>
+<p><span class="math inline">\(0 \leq p_{w,t} \leq p^f_{w,t} \quad \forall w \in \mathcal{W}, t \in \mathcal{T}\)</span></p>
+<p><span class="math inline">\(u_{g,t} - u_{g,t-1} \leq u_{g,\tau} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}, \tau \in [t+1, \min(t+T^{up}_g-1,|\mathcal{T}|)]\)</span></p>
+<p><span class="math inline">\(u_{g,t-1} - u_{g,t} \leq 1 - u_{g,\tau} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}, \tau \in [t+1, \min(t+T^{down}_g-1,|\mathcal{T}|)]\)</span></p>
+<p><span class="math inline">\(p_{g,t} - p_{g,t-1} \leq R^{up}_g \quad \forall g \in \mathcal{G}, t \in \mathcal{T}\)</span></p>
+<p><span class="math inline">\(p_{g,t-1} - p_{g,t} \leq R^{down}_g \quad \forall g \in \mathcal{G}, t \in \mathcal{T}\)</span></p>
+<p><span class="math inline">\(u_{g,t} \in \{0,1\} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}\)</span></p>
+</section></section>
+<section>
+<section id="model-characteristics" class="title-slide slide level1 title center">
+<h1><span class="flow">Model Characteristics</span></h1>
+
+</section>
+<section id="model-type" class="slide level2">
+<h2>Model Type</h2>
+<p><span class="question">Question:</span> <strong>What type of optimization problem is this?</strong></p>
+<div class="fragment">
+<ul>
+<li>Mixed-Integer Linear Programming (MILP)</li>
+<li>Binary variables for generator status</li>
+<li>Linear constraints and objective</li>
+<li>Time-dependent decisions</li>
+</ul>
+</div>
+</section>
+<section id="solution-methods" class="slide level2">
+<h2>Solution Methods</h2>
+<p><span class="question">Question:</span> <strong>How can we solve this problem?</strong></p>
+<div class="fragment">
+<ul>
+<li>Branch and Bound algorithm</li>
+<li>Commercial solvers (Gurobi, CPLEX)</li>
+<li>Open-source solvers (HiGHS)</li>
+<li>Decomposition methods for large problems</li>
+</ul>
+</div>
+</section>
+<section id="computational-challenges" class="slide level2">
+<h2>Computational Challenges</h2>
+<p><span class="question">Question:</span> <strong>What makes this problem challenging?</strong></p>
+<div class="fragment">
+<ul>
+<li>Large number of binary variables</li>
+<li>Time-dependent inter-temporal constraints</li>
+<li>Minimum up/down time constraints</li>
+<li>Ramp rate constraints</li>
+<li>Multiple time periods</li>
+</ul>
+</div>
+</section></section>
+<section>
+<section id="impact" class="title-slide slide level1 title center">
+<h1><span class="flow">Impact</span></h1>
+
+</section>
+<section id="real-world-applications" class="slide level2">
+<h2>Real-World Applications</h2>
+<ul>
+<li>Generation scheduling</li>
+<li>Day-ahead market clearing</li>
+<li>Ancillary services</li>
+<li>Reserve capacity planning</li>
+</ul>
+</section>
+<section id="further-extensions" class="slide level2">
+<h2>Further Extensions</h2>
+<ul>
+<li>Battery storage</li>
+<li>Demand response</li>
+<li>Network constraints</li>
+<li>Reserve requirements</li>
+<li>Multiple fuel types</li>
+<li>Emission constraints</li>
+<li>Uncertainty in forecasts</li>
+</ul>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>And that’s it for today’s lecture!</strong></p>
+</div>
+<div class="callout-content">
+<p>We have covered the Unit Commitment problem and its mathematical formulation. The tutorial will help you implement and solve this problem using Julia and JuMP.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="section-1" class="slide level2 loud-slide">
+<h2></h2>
+<div class="r-fit-text">
+<p>Questions?</p>
+</div>
+<div class="footer">
+
+</div>
+</section></section>
+<section>
+<section id="literature" class="title-slide slide level1 title center">
+<h1><span class="flow">Literature</span></h1>
+
+</section>
+<section id="literature-i" class="slide level2">
+<h2>Literature I</h2>
+<p>For more interesting literature to learn more about Julia, take a look at the <a href="../general/literature.html">literature list</a> of this course.</p>
+</section>
+<section id="literature-ii" class="slide level2 smaller scrollable">
+<h2>Literature II</h2>
+<p>For a detailed mathematical formulation of the Unit Commitment problem, see <span class="citation" data-cites="morales2013tight">Morales-Espana, Latorre, and Ramos (<a href="#/literature-ii" role="doc-biblioref" onclick="">2013</a>)</span> and <span class="citation" data-cites="zimmermann2019increasing">Zimmermann and Kather (<a href="#/literature-ii" role="doc-biblioref" onclick="">2019</a>)</span>.</p>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-morales2013tight" class="csl-entry" role="listitem">
+Morales-Espana, G., J. M. Latorre, and A. Ramos. 2013. <span>“Tight and Compact MILP Formulation for the Thermal Unit Commitment Problem.”</span> <em>IEEE Transactions on Power Systems</em> 28 (4): 4897–4908.
+</div>
+<div id="ref-zimmermann2019increasing" class="csl-entry" role="listitem">
+Zimmermann, Cors, T., and A. Kather. 2019. <span>“Increasing Tightness by Introduction of Intertemporal Constraints in MILP Unit Commitment.”</span> In <em>NEIS 2019; Conference on Sustainable Energy Supply and Energy Storage Systems</em>, edited by Detlef Schulz, 209–14. VDE Verl.
+</div>
+</div>
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+<p>Lecture VI - Economic Dispatch Problem | Dr.&nbsp;Tobias Cors | <a href="lecture-jump.qmd">Home</a></p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': true,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'slide',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'fast',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+            const codeEl = trigger.previousElementSibling.cloneNode(true);
+            for (const childEl of codeEl.children) {
+              if (isCodeAnnotation(childEl)) {
+                childEl.remove();
+              }
+            }
+            return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp("https:\/\/TobiasCors\.github\.io\/Energy-System-Optimization");
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>
