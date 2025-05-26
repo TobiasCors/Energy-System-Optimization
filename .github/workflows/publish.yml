@@ -47,51 +47,42 @@ jobs:
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
       
-      - name: Install TinyTeX
-        run: |
-          quarto install tinytex
-          export PATH=$HOME/.TinyTeX/bin/x86_64-linux:$PATH
-          sudo chmod -R a+rx $HOME/.TinyTeX # Fix permissions if necessary
-          if ! command -v tlmgr &> /dev/null; then
-            echo "TinyTeX installation failed or tlmgr is not in PATH"
-            exit 1
-          fi
-      
-      - name: Verify TinyTeX Installation
-        run: |
-          export PATH=$HOME/.TinyTeX/bin/x86_64-linux:$PATH # Ensure PATH is updated
-          if ! command -v tlmgr &> /dev/null; then
-            echo "tlmgr could not be found"
-            exit 1
-          fi
-          tlmgr --version
-
-      - name: Update LaTeX Packages
-        run: |
-          export PATH=$HOME/.TinyTeX/bin/x86_64-linux:$PATH # Ensure PATH is updated
-          if ! command -v tlmgr &> /dev/null; then
-            echo "tlmgr could not be found"
-            exit 1
-          fi
-          tlmgr update --self
-          tlmgr update --all
-          tlmgr install collection-latexrecommended collection-fontsrecommended collection-latexextra
-
       # - name: Install TinyTeX
-      # run: |
-      #   quarto install tinytex
-      #   export PATH=$PATH:$HOME/.TinyTeX/bin/* # Ensure tlmgr is in the PATH
-      #   sudo chmod -R a+rx $HOME/.TinyTeX # Fix permissions if necessary
+      #   run: |
+      #     quarto install tinytex
+      #     export PATH=$HOME/.TinyTeX/bin/x86_64-linux:$PATH
+      #     sudo chmod -R a+rx $HOME/.TinyTeX # Fix permissions if necessary
+      #     if ! command -v tlmgr &> /dev/null; then
+      #       echo "TinyTeX installation failed or tlmgr is not in PATH"
+      #       exit 1
+      #     fi
       
       # - name: Verify TinyTeX Installation
       #   run: |
-      #     tlmgr --version # Check if tlmgr is available
-      
+      #     export PATH=$HOME/.TinyTeX/bin/x86_64-linux:$PATH # Ensure PATH is updated
+      #     if ! command -v tlmgr &> /dev/null; then
+      #       echo "tlmgr could not be found"
+      #       exit 1
+      #     fi
+      #     tlmgr --version
+
       # - name: Update LaTeX Packages
       #   run: |
+      #     export PATH=$HOME/.TinyTeX/bin/x86_64-linux:$PATH # Ensure PATH is updated
+      #     if ! command -v tlmgr &> /dev/null; then
+      #       echo "tlmgr could not be found"
+      #       exit 1
+      #     fi
       #     tlmgr update --self
       #     tlmgr update --all
-          
+      #     tlmgr install collection-latexrecommended collection-fontsrecommended collection-latexextra
+    
+      # New TeX Live step
+      - name: Install TeX Live
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y texlive-full
+
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
         with:
