@@ -47,17 +47,20 @@ jobs:
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
 
+      # - name: Install TinyTeX
+      #   run: |
+      #     quarto install tinytex
+        # tlmgr install collection-latexrecommended collection-fontsrecommended collection-latexextra
+      
       - name: Install TinyTeX
         run: |
           quarto install tinytex
-        # tlmgr install collection-latexrecommended collection-fontsrecommended collection-latexextra
-      
-      - name: Add TinyTeX to PATH
-        run: |
-          export PATH=$HOME/.TinyTeX/bin/x86_64-linux:$PATH # Add TinyTeX to PATH
+          export PATH=$HOME/.TinyTeX/bin/x86_64-linux:$PATH # Explicitly add TinyTeX to PATH
+          sudo chmod -R a+rx $HOME/.TinyTeX                 # Fix permissions if necessary
 
       - name: Verify TinyTeX Installation
         run: |
+          export PATH=$HOME/.TinyTeX/bin/x86_64-linux:$PATH # Ensure PATH is updated
           if ! command -v tlmgr &> /dev/null; then
             echo "tlmgr could not be found"
             exit 1
