@@ -46,11 +46,6 @@ jobs:
 
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
-
-      # - name: Install TinyTeX
-      #   run: |
-      #     quarto install tinytex
-        # tlmgr install collection-latexrecommended collection-fontsrecommended collection-latexextra
       
       - name: Install TinyTeX
         run: |
@@ -61,6 +56,7 @@ jobs:
             echo "TinyTeX installation failed or tlmgr is not in PATH"
             exit 1
           fi
+          tlmgr install collection-latexrecommended collection-fontsrecommended collection-latexextra
       
       - name: Verify TinyTeX Installation
         run: |
