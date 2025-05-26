@@ -52,15 +52,23 @@ jobs:
           quarto install tinytex
         # tlmgr install collection-latexrecommended collection-fontsrecommended collection-latexextra
       
+      - name: Add TinyTeX to PATH
+        run: |
+          export PATH=$HOME/.TinyTeX/bin/x86_64-linux:$PATH # Add TinyTeX to PATH
+
       - name: Verify TinyTeX Installation
         run: |
+          if ! command -v tlmgr &> /dev/null; then
+            echo "tlmgr could not be found"
+            exit 1
+          fi
           tlmgr --version
-      
+
       - name: Update LaTeX Packages
         run: |
           tlmgr update --self
           tlmgr update --all
-          
+
       # - name: Install TinyTeX
       # run: |
       #   quarto install tinytex
