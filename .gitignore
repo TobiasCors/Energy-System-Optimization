@@ -2,10 +2,6 @@
 /.venv
 /notes_not_published
 /.quarto/
-part-05/solution/tutorial-dispatch.ipynb
 power_systems.jl
-part-06/solution/tutorial-commitment.qmd
+part-06/not-pub
 part-06/solution/tutorial-commitment.ipynb
-part-06/test_commitment.jl
-part-06/solution/tutorial-commitment copy.qmd
-part-06/tutorial-commitment.ipynb

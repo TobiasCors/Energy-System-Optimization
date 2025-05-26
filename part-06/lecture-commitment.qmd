@@ -245,22 +245,43 @@ $\text{Minimize} \quad \sum_{t \in \mathcal{T}} \left( \sum_{g \in \mathcal{G}} 
 
 ::: {.callout-note}
 ## The objective includes:
-- Variable costs for power generation
-- Fixed costs for keeping generators on
-- Wind power costs
+- Variable costs for power generation ($c^{var}_g p_{g,t}$): Cost per hour of electricity produced
+- Fixed costs for keeping generators on ($c^{fix}_g u_{g,t}$): Cost of maintaining a generator in operation
+- Wind power costs ($c^{var}_w p_{w,t}$): Variable costs per hourfor wind power production
 :::
 
 ## Power Balance Constraints
 
 $\sum_{g \in \mathcal{G}} p_{g,t} + \sum_{w \in \mathcal{W}} p_{w,t} = d^f_t \quad \forall t \in \mathcal{T}$
 
+::: {.callout-tip}
+This constraint ensures that at each time step $t$:
+- The sum of all thermal generator outputs ($\sum_{g \in \mathcal{G}} p_{g,t}$)
+- Plus all wind power outputs ($\sum_{w \in \mathcal{W}} p_{w,t}$)
+- Must exactly match the forecasted demand ($d^f_t$)
+:::
+
 ## Generator Limits Constraints
 
 $p^{\min}_g u_{g,t} \leq p_{g,t} \leq p^{\max}_g u_{g,t} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}$
 
+::: {.callout-tip}
+For each generator $g$ at time $t$:
+- If the generator is on ($u_{g,t} = 1$), its output must be between minimum ($p^{\min}_g$) and maximum ($p^{\max}_g$) power
+- If the generator is off ($u_{g,t} = 0$), its output must be zero
+- The binary variable $u_{g,t}$ ensures these limits are enforced
+:::
+
 ## Wind Power Injection Constraints
 
 $0 \leq p_{w,t} \leq p^f_{w,t} \quad \forall w \in \mathcal{W}, t \in \mathcal{T}$
+
+::: {.callout-tip}
+For each wind turbine $w$ at time $t$:
+- Power output must be non-negative
+- Cannot exceed the forecasted available wind power ($p^f_{w,t}$)
+- Unlike thermal generators, wind turbines don't have binary variables as the power injection is controllable between 0 and the forecasted available wind power
+:::
 
 ## Minimum Up/Down Time Constraints
 
@@ -268,11 +289,25 @@ $u_{g,t} - u_{g,t-1} \leq u_{g,\tau} \quad \forall g \in \mathcal{G}, t \in \mat
 
 $u_{g,t-1} - u_{g,t} \leq 1 - u_{g,\tau} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}, \tau \in [t+1, \min(t+T^{down}_g-1,|\mathcal{T}|)]$
 
+::: {.callout-tip}
+These constraints enforce minimum operating times:
+- First equation: If a generator starts up at time $t$, it must stay on for at least $T^{up}_g$ time periods
+- Second equation: If a generator shuts down at time $t$, it must stay off for at least $T^{down}_g$ time periods
+- $\tau$ represents the time periods during which these constraints must be enforced
+:::
+
 ## Ramp Rate Constraints
 
 $p_{g,t} - p_{g,t-1} \leq R^{up}_g \quad \forall g \in \mathcal{G}, t \in \mathcal{T}$
 
 $p_{g,t-1} - p_{g,t} \leq R^{down}_g \quad \forall g \in \mathcal{G}, t \in \mathcal{T}$
+
+::: {.callout-tip}
+These constraints limit how quickly generators can change their output:
+- First equation: Power increase between consecutive time steps cannot exceed ramp-up rate $R^{up}_g$
+- Second equation: Power decrease between consecutive time steps cannot exceed ramp-down rate $R^{down}_g$
+- Prevents sudden changes in generator output that could damage equipment
+:::
 
 ## Complete Unit Commitment Model
 

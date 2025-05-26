@@ -211,10 +211,12 @@ function solve_unit_commitment(dictThermalGenerators::Dict, dictWindTurbines::Di
 
     
     # Minimum up time: Generator must stay on for minimum duration after startup
+    ## Tip: Use the startup variable v_g to enforce the minimum up time
     ## YOUR CODE HERE
 
     
     # Minimum down time: Generator must stay off for minimum duration after shutdown
+    ## Tip: Use the startup variable v_g to enforce the minimum down time
     ## YOUR CODE HERE
 
     
