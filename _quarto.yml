@@ -10,7 +10,7 @@ project:
     - part-04/*.qmd
     - part-05/*.qmd
     - part-06/*.qmd
-    # - part-07/*.qmd
+    - part-07/*.qmd
     # - part-08/*.qmd
     # - part-09/*.qmd
     # - part-10/*.qmd
@@ -90,12 +90,12 @@ website:
             href: part-06/lecture-commitment.qmd
           - text: "Tutorial"
             href: part-06/tutorial-commitment.qmd
-      # - section: "07 Routing"
-      #   contents:
-      #     - text: "Lecture"
-      #       href: part-07/lecture-routing.qmd
-      #     - text: "Tutorial"
-      #       href: part-07/tutorial-routing.qmd
+      - section: "07 Storage"
+        contents:
+          - text: "Lecture"
+            href: part-07/lecture-storage.qmd
+          # - text: "Tutorial"
+          #   href: part-07/tutorial-routing.qmd
       # - section: "08 Districting"
       #   contents:
       #     - text: "Lecture"
