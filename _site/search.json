@@ -4857,5 +4857,502 @@
       "Cheatsheets",
       "Julia"
     ]
+  },
+  {
+    "objectID": "part-07/lecture-storage.html",
+    "href": "part-07/lecture-storage.html",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "",
+    "text": "Objective: Minimize total generation cost over multiple time periods\nDecision Variables:\n\nPower output of thermal generators (\\(p_{g,t}\\))\nPower output of wind turbines (\\(p_{w,t}\\))\nBinary variables for generator status (\\(u_{g,t}\\))\nBinary variables for startup events (\\(v_{g,t}\\))\n\nKey Constraints:\n\nPower balance\nGenerator limits\nWind limits\nMinimum up/down times\nRamp rate limits\nStartup variable definition\n\n\n\n\n\n\n\n\nNote\n\n\n\nThe Unit Commitment problem extends Economic Dispatch by adding operational constraints and time-dependent unit commitment decisions.\n\n\n\n\n\n\n\n\\(\\text{Minimize} \\quad \\sum_{t \\in \\mathcal{T}} \\left( \\sum_{g \\in \\mathcal{G}} (c^{var}_g p_{g,t} + c^{fix}_g u_{g,t} + c^{start}_g v_{g,t}) + \\sum_{w \\in \\mathcal{W}} c^{var}_w p_{w,t} \\right)\\)\n\n\n\n\nPower Balance:\n\n\\(\\sum_{g \\in \\mathcal{G}} p_{g,t} + \\sum_{w \\in \\mathcal{W}} p_{w,t} = d^f_t \\quad \\forall t \\in \\mathcal{T}\\)\n\nGenerator Limits:\n\n\\(p^{\\min}_g u_{g,t} \\leq p_{g,t} \\leq p^{\\max}_g u_{g,t} \\quad \\forall g \\in \\mathcal{G}, t \\in \\mathcal{T}\\)\n\nWind Power:\n\n\\(0 \\leq p_{w,t} \\leq p^f_{w,t} \\quad \\forall w \\in \\mathcal{W}, t \\in \\mathcal{T}\\)\n\nMinimum Up/Down Times:\n\n\\(u_{g,t} - u_{g,t-1} \\leq u_{g,\\tau} \\quad \\forall g \\in \\mathcal{G}, t \\in \\mathcal{T}, \\tau \\in [t+1, \\min(t+T^{up}_g-1,|\\mathcal{T}|)]\\) \\(u_{g,t-1} - u_{g,t} \\leq 1 - u_{g,\\tau} \\quad \\forall g \\in \\mathcal{G}, t \\in \\mathcal{T}, \\tau \\in [t+1, \\min(t+T^{down}_g-1,|\\mathcal{T}|)]\\)\n\nRamp Rate Limits:\n\n\\(p_{g,t} - p_{g,t-1} \\leq R^{up}_g \\quad \\forall g \\in \\mathcal{G}, t \\in \\mathcal{T}\\) \\(p_{g,t-1} - p_{g,t} \\leq R^{down}_g \\quad \\forall g \\in \\mathcal{G}, t \\in \\mathcal{T}\\)\n\nStartup Variable Definition:\n\n\\(v_{g,t} \\geq u_{g,t} - u_{g,t-1} \\quad \\forall g \\in \\mathcal{G}, t \\in \\mathcal{T}\\)\n\n\n\n\n\nMixed-Integer Linear Programming (MILP) problem\nBinary variables for generator status and startup events\nTime-dependent decisions\nComputationally challenging due to:\n\nLarge number of binary variables\nLarge number of time steps\nLarge number of constraints (Challenge: finding formulations that are both computationally efficient and mathematically accurate)\nNeed for tight and compact formulations:\n\nTight: Small gap between LP relaxation and integer solution\nCompact: Fewer variables and constraints while maintaining accuracy\n\n\n\n\n\n\n\n\n\nTip\n\n\n\nThe Unit Commitment problem is fundamental for power system operation, providing a realistic model estimating generator operation over time.\n\n\n\n\n\n\nData structures use NamedTuples for efficient parameter storage\nResults are stored in DataFrames for easy analysis\nKey metrics tracked:\n\nTotal system cost\nWind curtailment\nThermal and wind generation\nGenerator status and startup events\n\n\n\n\n\n\n\n\nNote\n\n\n\nThe tutorial demonstrated how to implement and solve the UC problem using Julia and JuMP, including simple visualization of results over time.\n\n\n\n\n\n\nThe tutorials from last week will again be available on Friday\nYou can access them in the project folder on Github\nClick on the little cat icon on the bottom right\n\n. . .\n\n\n\n\n\n\nTip\n\n\n\nYou can ask questions anytime in class or via email!",
+    "crumbs": [
+      "07 Storage",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-07/lecture-storage.html#unit-commitment-problem-overview",
+    "href": "part-07/lecture-storage.html#unit-commitment-problem-overview",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "",
+    "text": "Objective: Minimize total generation cost over multiple time periods\nDecision Variables:\n\nPower output of thermal generators (\\(p_{g,t}\\))\nPower output of wind turbines (\\(p_{w,t}\\))\nBinary variables for generator status (\\(u_{g,t}\\))\nBinary variables for startup events (\\(v_{g,t}\\))\n\nKey Constraints:\n\nPower balance\nGenerator limits\nWind limits\nMinimum up/down times\nRamp rate limits\nStartup variable definition\n\n\n\n\n\n\n\n\nNote\n\n\n\nThe Unit Commitment problem extends Economic Dispatch by adding operational constraints and time-dependent unit commitment decisions.",
+    "crumbs": [
+      "07 Storage",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-07/lecture-storage.html#mathematical-formulation",
+    "href": "part-07/lecture-storage.html#mathematical-formulation",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "",
+    "text": "\\(\\text{Minimize} \\quad \\sum_{t \\in \\mathcal{T}} \\left( \\sum_{g \\in \\mathcal{G}} (c^{var}_g p_{g,t} + c^{fix}_g u_{g,t} + c^{start}_g v_{g,t}) + \\sum_{w \\in \\mathcal{W}} c^{var}_w p_{w,t} \\right)\\)\n\n\n\n\nPower Balance:\n\n\\(\\sum_{g \\in \\mathcal{G}} p_{g,t} + \\sum_{w \\in \\mathcal{W}} p_{w,t} = d^f_t \\quad \\forall t \\in \\mathcal{T}\\)\n\nGenerator Limits:\n\n\\(p^{\\min}_g u_{g,t} \\leq p_{g,t} \\leq p^{\\max}_g u_{g,t} \\quad \\forall g \\in \\mathcal{G}, t \\in \\mathcal{T}\\)\n\nWind Power:\n\n\\(0 \\leq p_{w,t} \\leq p^f_{w,t} \\quad \\forall w \\in \\mathcal{W}, t \\in \\mathcal{T}\\)\n\nMinimum Up/Down Times:\n\n\\(u_{g,t} - u_{g,t-1} \\leq u_{g,\\tau} \\quad \\forall g \\in \\mathcal{G}, t \\in \\mathcal{T}, \\tau \\in [t+1, \\min(t+T^{up}_g-1,|\\mathcal{T}|)]\\) \\(u_{g,t-1} - u_{g,t} \\leq 1 - u_{g,\\tau} \\quad \\forall g \\in \\mathcal{G}, t \\in \\mathcal{T}, \\tau \\in [t+1, \\min(t+T^{down}_g-1,|\\mathcal{T}|)]\\)\n\nRamp Rate Limits:\n\n\\(p_{g,t} - p_{g,t-1} \\leq R^{up}_g \\quad \\forall g \\in \\mathcal{G}, t \\in \\mathcal{T}\\) \\(p_{g,t-1} - p_{g,t} \\leq R^{down}_g \\quad \\forall g \\in \\mathcal{G}, t \\in \\mathcal{T}\\)\n\nStartup Variable Definition:\n\n\\(v_{g,t} \\geq u_{g,t} - u_{g,t-1} \\quad \\forall g \\in \\mathcal{G}, t \\in \\mathcal{T}\\)",
+    "crumbs": [
+      "07 Storage",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-07/lecture-storage.html#model-characteristics",
+    "href": "part-07/lecture-storage.html#model-characteristics",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "",
+    "text": "Mixed-Integer Linear Programming (MILP) problem\nBinary variables for generator status and startup events\nTime-dependent decisions\nComputationally challenging due to:\n\nLarge number of binary variables\nLarge number of time steps\nLarge number of constraints (Challenge: finding formulations that are both computationally efficient and mathematically accurate)\nNeed for tight and compact formulations:\n\nTight: Small gap between LP relaxation and integer solution\nCompact: Fewer variables and constraints while maintaining accuracy\n\n\n\n\n\n\n\n\n\nTip\n\n\n\nThe Unit Commitment problem is fundamental for power system operation, providing a realistic model estimating generator operation over time.",
+    "crumbs": [
+      "07 Storage",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-07/lecture-storage.html#implementation-insights",
+    "href": "part-07/lecture-storage.html#implementation-insights",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "",
+    "text": "Data structures use NamedTuples for efficient parameter storage\nResults are stored in DataFrames for easy analysis\nKey metrics tracked:\n\nTotal system cost\nWind curtailment\nThermal and wind generation\nGenerator status and startup events\n\n\n\n\n\n\n\n\nNote\n\n\n\nThe tutorial demonstrated how to implement and solve the UC problem using Julia and JuMP, including simple visualization of results over time.",
+    "crumbs": [
+      "07 Storage",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-07/lecture-storage.html#solutions-from-last-week",
+    "href": "part-07/lecture-storage.html#solutions-from-last-week",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "",
+    "text": "The tutorials from last week will again be available on Friday\nYou can access them in the project folder on Github\nClick on the little cat icon on the bottom right\n\n. . .\n\n\n\n\n\n\nTip\n\n\n\nYou can ask questions anytime in class or via email!",
+    "crumbs": [
+      "07 Storage",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-07/lecture-storage.html#extending-the-unit-commitment-problem",
+    "href": "part-07/lecture-storage.html#extending-the-unit-commitment-problem",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "Extending the Unit Commitment Problem",
+    "text": "Extending the Unit Commitment Problem\nIn this lecture, we will extend the Unit Commitment problem by adding:\n1. Generator efficiency modeling\n2. Storage system modeling\n3. Storage capacity optimization\nThese extensions make the model more realistic and allow for more sophisticated analysis of power systems.",
+    "crumbs": [
+      "07 Storage",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-07/lecture-storage.html#constant-efficiency",
+    "href": "part-07/lecture-storage.html#constant-efficiency",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "Constant Efficiency",
+    "text": "Constant Efficiency\nThe simplest approach is to assume constant efficiency:\n\\(\\eta_g = \\text{constant} \\quad \\forall g \\in \\mathcal{G}\\)\n\nFuel consumption: \\(f_{g,t} = \\frac{p_{g,t}}{\\eta_g}\\)\nVariable cost: \\(c^{var}_g = c^{fuel}_g \\sum_{t \\in \\mathcal{T}} f_{g,t}\\)\n\n\n\n\n\n\n\nNote\n\n\n\nConstant efficiency is a simplification that works well for generators operating near their optimal point.",
+    "crumbs": [
+      "07 Storage",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-07/lecture-storage.html#linear-efficiency-function",
+    "href": "part-07/lecture-storage.html#linear-efficiency-function",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "Linear Efficiency Function",
+    "text": "Linear Efficiency Function\nWhile efficiency can be modeled as a linear function of power output:\n\\(\\eta_g(p_{g,t}) = \\alpha_g + \\beta_g p_{g,t}\\)\nThis leads to a non-linear fuel consumption function:\n\\(f_{g,t} = \\frac{p_{g,t}}{\\alpha_g + \\beta_g p_{g,t}}\\)\n\n\n\n\n\n\nNote\n\n\n\nDirect linear approximation of efficiency is not possible in MILP because:\n\nFuel consumption \\(f_{g,t} = \\frac{p_{g,t}}{\\eta_g(p_{g,t})}\\) involves variable multiplication\nThis would make the problem non-linear\nInstead, we directly approximate the fuel consumption curve \\(f_{g,t}\\) as a linear function of power output \\(p_{g,t}\\)",
+    "crumbs": [
+      "07 Storage",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-07/lecture-storage.html#piecewise-linear-approximation",
+    "href": "part-07/lecture-storage.html#piecewise-linear-approximation",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "Piecewise Linear Approximation",
+    "text": "Piecewise Linear Approximation\nFor non-linear fuel consumption curves, we use piecewise linear approximation:\n\nDivide the power range into segments\nApproximate each segment with a linear function\nUse binary variables to select the active segment\n\n\nMathematical Formulation\n\\(f_{g,t} = \\sum_{k \\in \\mathcal{K}} \\lambda_{g,t,k} F_{g,k}\\)\nwhere:\n\n\\(\\mathcal{K}\\) is the set of segments\n\\(\\lambda_{g,t,k}\\) are the weights for each segment\n\\(F_{g,k}\\) is the fuel consumption in segment \\(k\\)\n\n\n\nBinary Variables for Segment Selection\nTo ensure that only one segment is active at a time, we introduce binary variables \\(\\delta_{g,t,k}\\):\n\n\\(\\delta_{g,t,k} = 1\\) if segment \\(k\\) is active for generator \\(g\\) at time \\(t\\)\n\\(\\delta_{g,t,k} = 0\\) otherwise\n\nThese binary variables are used to:\n\nSelect which segment is active\nEnsure the weights \\(\\lambda_{g,t,k}\\) are only non-zero for the active segment\nMaintain the convexity of the piecewise linear approximation\n\n\n\nConstraints\nSegment Selection:\n\\(\\sum_{k \\in \\mathcal{K}} \\delta_{g,t,k} = 1 \\quad \\forall g \\in \\mathcal{G}, t \\in \\mathcal{T}\\)\nPower Output:\n\\(p_{g,t} = \\sum_{k \\in \\mathcal{K}} \\lambda_{g,t,k} P_{g,k} \\quad \\forall g \\in \\mathcal{G}, t \\in \\mathcal{T}\\)\nSegment Limits:\n\\(\\lambda_{g,t,k} \\leq \\delta_{g,t,k} \\quad \\forall g \\in \\mathcal{G}, t \\in \\mathcal{T}, k \\in \\mathcal{K}\\)\n\n\n\n\n\n\nNote\n\n\n\nThe binary variables \\(\\delta_{g,t,k}\\) ensure that only one segment is active at a time, while the weights \\(\\lambda_{g,t,k}\\) determine the exact position within that segment. This approach maintains linearity while accurately approximating non-linear efficiency curves.\n\n\n\n\nVisual Explanation\n\n    \n    \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n    \n    \n    \n    \n        \\(p_{g,t}\\)\n    \n    \n        \\(f_{g,t}\\)\n    \n    \n        \\(\\text{Original curve}\\)\n    \n    \n        \\(\\text{Piecewise linear}\\)\n    \n    \n    \n    \n        \\(\\delta_{g,t,1}=0\\)\n    \n    \n        \\(\\delta_{g,t,2}=1\\)\n    \n    \n        \\(\\delta_{g,t,3}=0\\)\n    \n    \n        \\(\\delta_{g,t,4}=0\\)\n    \n    \n    \n    \n        \\(\\lambda_{g,t,1}\\)\n    \n    \n        \\(\\lambda_{g,t,2}\\)\n    \n    \n    \n    \n        \\(F_{g,1}\\)\n    \n    \n        \\(F_{g,2}\\)\n    \n    \n        \\(F_{g,3}\\)\n    \n    \n        \\(F_{g,4}\\)\n    \n    \n    \n    \n        \\(\\text{Fuel Consumption }[MWh]\\)\n    \n    \n    \n    \n        \\(\\text{Power Output }[MW]\\)\n    \n\n\n\n\n\n\n\nDiagram Explanation\n\n\n\nThe diagram shows:\n\nOriginal convex fuel consumption curve (blue) and its piecewise linear approximation (red)\nExample point (green) at (\\(p_{g,t}\\), \\(f_{g,t}\\))\nWeights (\\(\\lambda\\)) determining position within segments\nBinary variables (\\(\\delta\\)) selecting active segment\n\nThe point lies in segment 2, with:\n\n\\(\\delta_{g,t,2}=1\\) selects this segment\n\\(\\lambda_{g,t,1}\\) and \\(\\lambda_{g,t,2}\\) determine the exact position within the segment\nOther segments are inactive (\\(\\delta_{g,t,k}=0\\) for \\(k \\neq 2\\))\n\n\n\n\n\nConvexity and Binary Variables\nThe piecewise linear approximation must be convex to ensure:\n\nThe fuel consumption curve is monotonically increasing\nThe optimization problem remains linear\nThe solution is unique and globally optimal\n\nThe binary variables \\(\\delta_{g,t,k}\\) enforce convexity by:\n\nEnsuring only one segment is active at a time\nPreventing interpolation between non-adjacent segments\nMaintaining the proper order of segments\n\nIn the example above:\n\nThe point (\\(p_{g,t}\\), \\(f_{g,t}\\)) lies in segment 2\n\\(\\delta_{g,t,2}=1\\) selects this segment\n\\(\\lambda_{g,t,1}\\) and \\(\\lambda_{g,t,2}\\) determine the exact position within the segment\nOther segments are inactive (\\(\\delta_{g,t,k}=0\\) for \\(k \\neq 2\\))\n\n\n\n\n\n\n\nTip\n\n\n\nWhile the efficiency curve of a thermal generator typically is concave, we model the fuel consumption curve (\\(f = p/\\eta\\)) which is convex. This allows us to use piecewise linear approximation in our MILP formulation while maintaining mathematical properties needed for optimization. The convexity of the fuel consumption curve allows us to use piecewise linear approximation in our MILP formulation while maintaining mathematical properties needed for optimization.",
+    "crumbs": [
+      "07 Storage",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-07/lecture-storage.html#battery-storage-system",
+    "href": "part-07/lecture-storage.html#battery-storage-system",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "Battery Storage System",
+    "text": "Battery Storage System\nWe model a battery storage system with the following characteristics:\n\nEnergy capacity (MWh)\nPower capacity (MW)\nCharge/discharge efficiency\nSelf-discharge rate\nDepth of discharge limit",
+    "crumbs": [
+      "07 Storage",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-07/lecture-storage.html#sets-and-indices",
+    "href": "part-07/lecture-storage.html#sets-and-indices",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "Sets and Indices",
+    "text": "Sets and Indices\n\n\\(\\mathcal{S}\\) - Set of storage units indexed by \\(s \\in \\{1,2,...,|\\mathcal{S}|\\}\\)\n\\(\\mathcal{T}\\) - Set of time periods indexed by \\(t \\in \\{1,2,...,|\\mathcal{T}|\\}\\)",
+    "crumbs": [
+      "07 Storage",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-07/lecture-storage.html#decision-variables",
+    "href": "part-07/lecture-storage.html#decision-variables",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "Decision Variables",
+    "text": "Decision Variables\n\n\\(e_{s,t}\\) - Energy level of storage \\(s\\) at time \\(t\\) [MWh]\n\\(p^{ch}_{s,t}\\) - Charging power of storage \\(s\\) at time \\(t\\) [MW]\n\\(p^{dis}_{s,t}\\) - Discharging power of storage \\(s\\) at time \\(t\\) [MW]\n\\(u^{ch}_{s,t}\\) - Binary variable for charging status of storage \\(s\\) at time \\(t\\)\n\\(u^{dis}_{s,t}\\) - Binary variable for discharging status of storage \\(s\\) at time \\(t\\)",
+    "crumbs": [
+      "07 Storage",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-07/lecture-storage.html#parameters",
+    "href": "part-07/lecture-storage.html#parameters",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "Parameters",
+    "text": "Parameters\n\n\\(E^{max}_s\\) - Maximum energy capacity of storage \\(s\\) [MWh]\n\\(E^{min}_s\\) - Minimum energy level of storage \\(s\\) [MWh]\n\\(P^{ch,max}_s\\) - Maximum charging power of storage \\(s\\) [MW]\n\\(P^{dis,max}_s\\) - Maximum discharging power of storage \\(s\\) [MW]\n\\(\\eta^{ch}_s\\) - Charging efficiency of storage \\(s\\)\n\\(\\eta^{dis}_s\\) - Discharging efficiency of storage \\(s\\)\n\\(sdr_s\\) - Self-discharge rate of storage \\(s\\) per time step\n\\(R^{ch}_s\\) - Maximum ramp-up rate for charging of storage \\(s\\) [MW/h]\n\\(R^{dis}_s\\) - Maximum ramp-up rate for discharging of storage \\(s\\) [MW/h]",
+    "crumbs": [
+      "07 Storage",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-07/lecture-storage.html#energy-balance-constraint",
+    "href": "part-07/lecture-storage.html#energy-balance-constraint",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "Energy Balance Constraint",
+    "text": "Energy Balance Constraint\n\\(e_{s,t} = (1-sdr_s)e_{s,t-1} + \\eta^{ch}_s p^{ch}_{s,t} - \\frac{p^{dis}_{s,t}}{\\eta^{dis}_s} \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}\\)\n\n\n\n\n\n\nTip\n\n\n\nThis constraint ensures that the energy level at time \\(t\\) equals:\n\nPrevious energy level minus self-discharge\nPlus energy from charging (accounting for efficiency)\nMinus energy from discharging (accounting for efficiency)\n\nFor batteries the energy level is often referred to as state of charge (SOC).",
+    "crumbs": [
+      "07 Storage",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-07/lecture-storage.html#energy-limits-constraint",
+    "href": "part-07/lecture-storage.html#energy-limits-constraint",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "Energy Limits Constraint",
+    "text": "Energy Limits Constraint\n\\(E^{min}_s \\leq e_{s,t} \\leq E^{max}_s \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}\\)\n\n\n\n\n\n\nTip\n\n\n\nThis constraint ensures that:\n\nThe energy level never falls below the minimum level (depth of discharge)\nThe energy level never exceeds the maximum capacity",
+    "crumbs": [
+      "07 Storage",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-07/lecture-storage.html#power-limits-and-mutual-exclusion",
+    "href": "part-07/lecture-storage.html#power-limits-and-mutual-exclusion",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "Power Limits and Mutual Exclusion",
+    "text": "Power Limits and Mutual Exclusion\n\\(0 \\leq p^{ch}_{s,t} \\leq P^{ch,max}_s u^{ch}_{s,t} \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}\\)\n\\(0 \\leq p^{dis}_{s,t} \\leq P^{dis,max}_s u^{dis}_{s,t} \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}\\)\n\\(u^{ch}_{s,t} + u^{dis}_{s,t} \\leq 1 \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}\\)\n\n\n\n\n\n\nTip\n\n\n\nThese constraints ensure that:\n\nCharging power is between zero and maximum when charging is active\nDischarging power is between zero and maximum when discharging is active\nThe storage cannot charge and discharge simultaneously",
+    "crumbs": [
+      "07 Storage",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-07/lecture-storage.html#when-is-mutual-exclusion-required-technical",
+    "href": "part-07/lecture-storage.html#when-is-mutual-exclusion-required-technical",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "When is Mutual Exclusion Required? (Technical)",
+    "text": "When is Mutual Exclusion Required? (Technical)\nQuestion: When do we need the mutual exclusion constraint from a technical perspective?\n. . .\n\nBattery Storage Systems:\n\nRequired due to physical limitations\nPrevents simultaneous charge/discharge\nProtects battery life and efficiency\nAvoids internal power circulation\n\nPumped Hydro Storage:\n\nNot required\nCan have separate pumps and turbines\nAllows simultaneous operation\nDifferent equipment for each direction\n\nThermal Storage:\n\nMay or may not be required\nDepends on system design\nConsider heat transfer limitations\nCan have separate charging/discharging circuits",
+    "crumbs": [
+      "07 Storage",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-07/lecture-storage.html#when-is-mutual-exclusion-required-economic",
+    "href": "part-07/lecture-storage.html#when-is-mutual-exclusion-required-economic",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "When is Mutual Exclusion Required? (Economic)",
+    "text": "When is Mutual Exclusion Required? (Economic)\nQuestion: When do we need the mutual exclusion constraint from an economic perspective?\n. . .\n\nEfficiency Losses:\n\nCharging and discharging both have efficiency losses\nSimultaneous operation would create unnecessary losses\nRound-trip efficiency is typically 70-90%\n\nWear and Tear:\n\nEach charge/discharge cycle causes wear\nSimultaneous operation increases wear\nReduces system lifetime\nMaintenance costs increase\n\nEconomic Optimization:\n\nPrevents unnecessary cycling\nAvoids situations where:\n\nCost of efficiency losses &lt;= cost of increasing power consumption\nCost of efficiency losses &lt;= cost of curtailing power production\nwhile actual costs of the cycling are not included in the model\n\n\n\n\n\n\n\n\n\nSummary: Mutual Exclusion Decision\n\n\n\nThe mutual exclusion constraint should be included when:\n\nTechnically Required: Physical limitations prevent simultaneous operation\nEconomically Beneficial: Efficiency losses and wear costs exceed benefits but are not included in the model\nOperationally Sensible: System design favors separate charging/discharging\n\nThe decision depends on both the storage technology and the specific economic context of the application.",
+    "crumbs": [
+      "07 Storage",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-07/lecture-storage.html#ramp-rate-constraints",
+    "href": "part-07/lecture-storage.html#ramp-rate-constraints",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "Ramp Rate Constraints",
+    "text": "Ramp Rate Constraints\n\\(p^{ch}_{s,t} - p^{ch}_{s,t-1} \\leq R^{ch}_s \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}\\) \\(p^{dis}_{s,t} - p^{dis}_{s,t-1} \\leq R^{dis}_s \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}\\)\n\n\n\n\n\n\nTip\n\n\n\nThese constraints limit how quickly the storage can change its charging or discharging power:\n\nPrevents sudden changes that could damage equipment\nAccounts for physical limitations of the storage system\nMay be different for charging and discharging",
+    "crumbs": [
+      "07 Storage",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-07/lecture-storage.html#extended-model",
+    "href": "part-07/lecture-storage.html#extended-model",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "Extended Model",
+    "text": "Extended Model\nWe now optimize both energy and power capacity:\n\nAdditional Decision Variables\nNew Decision Variables:\n\n\\(e^{nom}_s\\) - Nominal energy capacity of storage \\(s\\) [MWh]\n\\(p^{ch,nom}_s\\) - Nominal charging power of storage \\(s\\) [MW]\n\\(p^{dis,nom}_s\\) - Nominal discharging power of storage \\(s\\) [MW]\n\nVariables (previously parameters):\n\n\\(e^{max}_s\\) - Maximum energy capacity of storage \\(s\\) [MWh]\n\\(e^{min}_s\\) - Minimum energy level of storage \\(s\\) [MWh]\n\\(p^{ch,max}_s\\) - Maximum charging power of storage \\(s\\) [MW]\n\\(p^{dis,max}_s\\) - Maximum discharging power of storage \\(s\\) [MW]\n\n\n\nAdditional Parameters\n\n\\(C^{E}_s\\) - Cost per MWh of energy capacity for storage \\(s\\) [EUR/MWh]\n\\(C^{P,ch}_s\\) - Cost per MW of charging power capacity for storage \\(s\\) [EUR/MW]\n\\(C^{P,dis}_s\\) - Cost per MW of discharging power capacity for storage \\(s\\) [EUR/MW]\n\\(DoD_s\\) - Depth of discharge limit for storage \\(s\\) [%]\n\\(F^{PVAF}\\) - Present value annuity factor for the investment costs\n\n\n\nModified Constraints\nEnergy Capacity:\n\\(e^{min}_s = DoD_s e^{nom}_s \\quad \\forall s \\in \\mathcal{S}\\)\n\\(e^{max}_s = e^{nom}_s \\quad \\forall s \\in \\mathcal{S}\\)\nPower Capacity:\n\\(p^{ch,max}_s = p^{ch,nom}_s \\quad \\forall s \\in \\mathcal{S}\\)\n\\(p^{dis,max}_s = p^{dis,nom}_s \\quad \\forall s \\in \\mathcal{S}\\)\n\n\nExtended Objective Function\nAdd to the original objective:\n\\(\\text{Minimize} \\quad ... + \\sum_{s \\in \\mathcal{S}} (C^{E}_s / F^{PVAF} e^{nom}_s + C^{P,ch}_s p^{ch,nom}_s + C^{P,dis}_s p^{dis,nom}_s)\\)\n\n\n\n\n\n\nNote\n\n\n\nThis extension allows us to find the optimal storage capacity that balances investment costs with operational benefits. The objective function includes both energy and power capacity costs.\nThe investment costs and operational costs need to be calculated on the same time basis to be comparable. While operational costs are calculated for a specific time horizon (e.g. one year), investment costs are typically one-time fixed costs. Therefore, the investment costs need to be converted to an equivalent annual cost using the present value annuity factor (PVAF). This ensures we compare annual operational benefits with annualized investment costs.",
+    "crumbs": [
+      "07 Storage",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-07/lecture-storage.html#key-insights",
+    "href": "part-07/lecture-storage.html#key-insights",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "Key Insights",
+    "text": "Key Insights\n\nTrade-off Analysis:\n\nHigher capacity reduces operational costs\nHigher capacity increases investment costs\nOptimal capacity depends on usage patterns, technical and economic parameters\n\nEconomic Considerations:\n\nInvestment costs are fixed\nOperational benefits are time-dependent\nNeed to consider lifetime of the system\nSeparate costs for energy and power capacity\n\nTechnical Constraints:\n\nDepth of discharge affects usable capacity\nEfficiency losses impact economic viability\nPower capacity affects flexibility\nDifferent power ratings for charging and discharging\n\n\n\n\n\n\n\n\nTip\n\n\n\nThe optimal storage capacity depends on the specific use case, electricity prices, and technical parameters of the storage system. The model now accounts for separate costs and capacities for energy storage and power handling equipment (charging/discharging infrastructure that converts between electrical energy and the storage medium’s form of energy, such as chemical energy in batteries or potential energy in pumped hydro).",
+    "crumbs": [
+      "07 Storage",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-07/lecture-storage.html#real-world-applications",
+    "href": "part-07/lecture-storage.html#real-world-applications",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "Real-World Applications",
+    "text": "Real-World Applications\n\nInvestment planning for new storage systems\nLocal energy system planning\nSystem operation planning",
+    "crumbs": [
+      "07 Storage",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-07/lecture-storage.html#further-extensions-for-battery-storage-use-cases",
+    "href": "part-07/lecture-storage.html#further-extensions-for-battery-storage-use-cases",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "Further Extensions for Battery Storage Use Cases",
+    "text": "Further Extensions for Battery Storage Use Cases\n\nMulti-market trading and operation\n\nEnergy services: PPA, EPEX Day-ahead (XETRA), EPEX Intraday Continuous, EPEX Intraday Auction, etc.\nAncillary services: Primary Control Reserve (FCR), Secondary Control Reserve (aFRR), Minute Reserve (mFRR), Reactive Power, etc.\n\nEmission constraints\nUncertainty in forecasts",
+    "crumbs": [
+      "07 Storage",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-07/lecture-storage.html#section",
+    "href": "part-07/lecture-storage.html#section",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "",
+    "text": "Questions?",
+    "crumbs": [
+      "07 Storage",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-07/lecture-storage.html#literature-i",
+    "href": "part-07/lecture-storage.html#literature-i",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "Literature I",
+    "text": "Literature I\nFor more interesting literature to learn more about Julia, take a look at the literature list of this course.",
+    "crumbs": [
+      "07 Storage",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-07/lecture-storage.html#literature-ii",
+    "href": "part-07/lecture-storage.html#literature-ii",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "Literature II",
+    "text": "Literature II\nFor a detailed mathematical formulation of the Unit Commitment problem, see Morales-Espana, Latorre, and Ramos (2013) and Zimmermann and Kather (2019).",
+    "crumbs": [
+      "07 Storage",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-07/lecture-presentation.html#unit-commitment-problem-overview",
+    "href": "part-07/lecture-presentation.html#unit-commitment-problem-overview",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "Unit Commitment Problem Overview",
+    "text": "Unit Commitment Problem Overview\n\nObjective: Minimize total generation cost over multiple time periods\nDecision Variables:\n\nPower output of thermal generators (\\(p_{g,t}\\))\nPower output of wind turbines (\\(p_{w,t}\\))\nBinary variables for generator status (\\(u_{g,t}\\))\nBinary variables for startup events (\\(v_{g,t}\\))\n\nKey Constraints:\n\nPower balance\nGenerator limits\nWind limits\nMinimum up/down times\nRamp rate limits\nStartup variable definition\n\n\n\n\n\n\n\n\nNote\n\n\nThe Unit Commitment problem extends Economic Dispatch by adding operational constraints and time-dependent unit commitment decisions."
+  },
+  {
+    "objectID": "part-07/lecture-presentation.html#mathematical-formulation",
+    "href": "part-07/lecture-presentation.html#mathematical-formulation",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "Mathematical Formulation",
+    "text": "Mathematical Formulation\nObjective Function\n\\(\\text{Minimize} \\quad \\sum_{t \\in \\mathcal{T}} \\left( \\sum_{g \\in \\mathcal{G}} (c^{var}_g p_{g,t} + c^{fix}_g u_{g,t} + c^{start}_g v_{g,t}) + \\sum_{w \\in \\mathcal{W}} c^{var}_w p_{w,t} \\right)\\)\nKey Constraints\n\nPower Balance:\n\n\\(\\sum_{g \\in \\mathcal{G}} p_{g,t} + \\sum_{w \\in \\mathcal{W}} p_{w,t} = d^f_t \\quad \\forall t \\in \\mathcal{T}\\)\n\nGenerator Limits:\n\n\\(p^{\\min}_g u_{g,t} \\leq p_{g,t} \\leq p^{\\max}_g u_{g,t} \\quad \\forall g \\in \\mathcal{G}, t \\in \\mathcal{T}\\)\n\nWind Power:\n\n\\(0 \\leq p_{w,t} \\leq p^f_{w,t} \\quad \\forall w \\in \\mathcal{W}, t \\in \\mathcal{T}\\)\n\nMinimum Up/Down Times:\n\n\\(u_{g,t} - u_{g,t-1} \\leq u_{g,\\tau} \\quad \\forall g \\in \\mathcal{G}, t \\in \\mathcal{T}, \\tau \\in [t+1, \\min(t+T^{up}_g-1,|\\mathcal{T}|)]\\) \\(u_{g,t-1} - u_{g,t} \\leq 1 - u_{g,\\tau} \\quad \\forall g \\in \\mathcal{G}, t \\in \\mathcal{T}, \\tau \\in [t+1, \\min(t+T^{down}_g-1,|\\mathcal{T}|)]\\)\n\nRamp Rate Limits:\n\n\\(p_{g,t} - p_{g,t-1} \\leq R^{up}_g \\quad \\forall g \\in \\mathcal{G}, t \\in \\mathcal{T}\\) \\(p_{g,t-1} - p_{g,t} \\leq R^{down}_g \\quad \\forall g \\in \\mathcal{G}, t \\in \\mathcal{T}\\)\n\nStartup Variable Definition:\n\n\\(v_{g,t} \\geq u_{g,t} - u_{g,t-1} \\quad \\forall g \\in \\mathcal{G}, t \\in \\mathcal{T}\\)"
+  },
+  {
+    "objectID": "part-07/lecture-presentation.html#model-characteristics",
+    "href": "part-07/lecture-presentation.html#model-characteristics",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "Model Characteristics",
+    "text": "Model Characteristics\n\nMixed-Integer Linear Programming (MILP) problem\nBinary variables for generator status and startup events\nTime-dependent decisions\nComputationally challenging due to:\n\nLarge number of binary variables\nLarge number of time steps\nLarge number of constraints (Challenge: finding formulations that are both computationally efficient and mathematically accurate)\nNeed for tight and compact formulations:\n\nTight: Small gap between LP relaxation and integer solution\nCompact: Fewer variables and constraints while maintaining accuracy\n\n\n\n\n\n\n\n\n\nTip\n\n\nThe Unit Commitment problem is fundamental for power system operation, providing a realistic model estimating generator operation over time."
+  },
+  {
+    "objectID": "part-07/lecture-presentation.html#implementation-insights",
+    "href": "part-07/lecture-presentation.html#implementation-insights",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "Implementation Insights",
+    "text": "Implementation Insights\n\nData structures use NamedTuples for efficient parameter storage\nResults are stored in DataFrames for easy analysis\nKey metrics tracked:\n\nTotal system cost\nWind curtailment\nThermal and wind generation\nGenerator status and startup events\n\n\n\n\n\n\n\n\nNote\n\n\nThe tutorial demonstrated how to implement and solve the UC problem using Julia and JuMP, including simple visualization of results over time."
+  },
+  {
+    "objectID": "part-07/lecture-presentation.html#solutions-from-last-week",
+    "href": "part-07/lecture-presentation.html#solutions-from-last-week",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "Solutions from last Week",
+    "text": "Solutions from last Week\n\nThe tutorials from last week will again be available on Friday\nYou can access them in the project folder on Github\nClick on the little cat icon on the bottom right\n\n\n\n\n\n\n\n\nTip\n\n\nYou can ask questions anytime in class or via email!"
+  },
+  {
+    "objectID": "part-07/lecture-presentation.html#extending-the-unit-commitment-problem",
+    "href": "part-07/lecture-presentation.html#extending-the-unit-commitment-problem",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "Extending the Unit Commitment Problem",
+    "text": "Extending the Unit Commitment Problem\nIn this lecture, we will extend the Unit Commitment problem by adding:\n1. Generator efficiency modeling\n2. Storage system modeling\n3. Storage capacity optimization\nThese extensions make the model more realistic and allow for more sophisticated analysis of power systems."
+  },
+  {
+    "objectID": "part-07/lecture-presentation.html#constant-efficiency",
+    "href": "part-07/lecture-presentation.html#constant-efficiency",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "Constant Efficiency",
+    "text": "Constant Efficiency\nThe simplest approach is to assume constant efficiency:\n\\(\\eta_g = \\text{constant} \\quad \\forall g \\in \\mathcal{G}\\)\n\nFuel consumption: \\(f_{g,t} = \\frac{p_{g,t}}{\\eta_g}\\)\nVariable cost: \\(c^{var}_g = c^{fuel}_g \\sum_{t \\in \\mathcal{T}} f_{g,t}\\)\n\n\n\n\n\n\n\nNote\n\n\nConstant efficiency is a simplification that works well for generators operating near their optimal point."
+  },
+  {
+    "objectID": "part-07/lecture-presentation.html#linear-efficiency-function",
+    "href": "part-07/lecture-presentation.html#linear-efficiency-function",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "Linear Efficiency Function",
+    "text": "Linear Efficiency Function\nWhile efficiency can be modeled as a linear function of power output:\n\\(\\eta_g(p_{g,t}) = \\alpha_g + \\beta_g p_{g,t}\\)\nThis leads to a non-linear fuel consumption function:\n\\(f_{g,t} = \\frac{p_{g,t}}{\\alpha_g + \\beta_g p_{g,t}}\\)\n\n\n\n\n\n\nNote\n\n\nDirect linear approximation of efficiency is not possible in MILP because:\n\nFuel consumption \\(f_{g,t} = \\frac{p_{g,t}}{\\eta_g(p_{g,t})}\\) involves variable multiplication\nThis would make the problem non-linear\nInstead, we directly approximate the fuel consumption curve \\(f_{g,t}\\) as a linear function of power output \\(p_{g,t}\\)"
+  },
+  {
+    "objectID": "part-07/lecture-presentation.html#piecewise-linear-approximation",
+    "href": "part-07/lecture-presentation.html#piecewise-linear-approximation",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "Piecewise Linear Approximation",
+    "text": "Piecewise Linear Approximation\nFor non-linear fuel consumption curves, we use piecewise linear approximation:\n\nDivide the power range into segments\nApproximate each segment with a linear function\nUse binary variables to select the active segment\n\nMathematical Formulation\n\\(f_{g,t} = \\sum_{k \\in \\mathcal{K}} \\lambda_{g,t,k} F_{g,k}\\)\nwhere:\n\n\\(\\mathcal{K}\\) is the set of segments\n\\(\\lambda_{g,t,k}\\) are the weights for each segment\n\\(F_{g,k}\\) is the fuel consumption in segment \\(k\\)\n\nBinary Variables for Segment Selection\nTo ensure that only one segment is active at a time, we introduce binary variables \\(\\delta_{g,t,k}\\):\n\n\\(\\delta_{g,t,k} = 1\\) if segment \\(k\\) is active for generator \\(g\\) at time \\(t\\)\n\\(\\delta_{g,t,k} = 0\\) otherwise\n\nThese binary variables are used to:\n\nSelect which segment is active\nEnsure the weights \\(\\lambda_{g,t,k}\\) are only non-zero for the active segment\nMaintain the convexity of the piecewise linear approximation\n\nConstraints\nSegment Selection:\n\\(\\sum_{k \\in \\mathcal{K}} \\delta_{g,t,k} = 1 \\quad \\forall g \\in \\mathcal{G}, t \\in \\mathcal{T}\\)\nPower Output:\n\\(p_{g,t} = \\sum_{k \\in \\mathcal{K}} \\lambda_{g,t,k} P_{g,k} \\quad \\forall g \\in \\mathcal{G}, t \\in \\mathcal{T}\\)\nSegment Limits:\n\\(\\lambda_{g,t,k} \\leq \\delta_{g,t,k} \\quad \\forall g \\in \\mathcal{G}, t \\in \\mathcal{T}, k \\in \\mathcal{K}\\)\n\n\n\n\n\n\nNote\n\n\nThe binary variables \\(\\delta_{g,t,k}\\) ensure that only one segment is active at a time, while the weights \\(\\lambda_{g,t,k}\\) determine the exact position within that segment. This approach maintains linearity while accurately approximating non-linear efficiency curves.\n\n\n\nVisual Explanation\n\n    \n    \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n    \n    \n    \n    \n        \\(p_{g,t}\\)\n    \n    \n        \\(f_{g,t}\\)\n    \n    \n        \\(\\text{Original curve}\\)\n    \n    \n        \\(\\text{Piecewise linear}\\)\n    \n    \n    \n    \n        \\(\\delta_{g,t,1}=0\\)\n    \n    \n        \\(\\delta_{g,t,2}=1\\)\n    \n    \n        \\(\\delta_{g,t,3}=0\\)\n    \n    \n        \\(\\delta_{g,t,4}=0\\)\n    \n    \n    \n    \n        \\(\\lambda_{g,t,1}\\)\n    \n    \n        \\(\\lambda_{g,t,2}\\)\n    \n    \n    \n    \n        \\(F_{g,1}\\)\n    \n    \n        \\(F_{g,2}\\)\n    \n    \n        \\(F_{g,3}\\)\n    \n    \n        \\(F_{g,4}\\)\n    \n    \n    \n    \n        \\(\\text{Fuel Consumption }[MWh]\\)\n    \n    \n    \n    \n        \\(\\text{Power Output }[MW]\\)\n    \n\n\n\n\n\n\n\nDiagram Explanation\n\n\nThe diagram shows:\n\nOriginal convex fuel consumption curve (blue) and its piecewise linear approximation (red)\nExample point (green) at (\\(p_{g,t}\\), \\(f_{g,t}\\))\nWeights (\\(\\lambda\\)) determining position within segments\nBinary variables (\\(\\delta\\)) selecting active segment\n\nThe point lies in segment 2, with:\n\n\\(\\delta_{g,t,2}=1\\) selects this segment\n\\(\\lambda_{g,t,1}\\) and \\(\\lambda_{g,t,2}\\) determine the exact position within the segment\nOther segments are inactive (\\(\\delta_{g,t,k}=0\\) for \\(k \\neq 2\\))\n\n\n\n\nConvexity and Binary Variables\nThe piecewise linear approximation must be convex to ensure:\n\nThe fuel consumption curve is monotonically increasing\nThe optimization problem remains linear\nThe solution is unique and globally optimal\n\nThe binary variables \\(\\delta_{g,t,k}\\) enforce convexity by:\n\nEnsuring only one segment is active at a time\nPreventing interpolation between non-adjacent segments\nMaintaining the proper order of segments\n\nIn the example above:\n\nThe point (\\(p_{g,t}\\), \\(f_{g,t}\\)) lies in segment 2\n\\(\\delta_{g,t,2}=1\\) selects this segment\n\\(\\lambda_{g,t,1}\\) and \\(\\lambda_{g,t,2}\\) determine the exact position within the segment\nOther segments are inactive (\\(\\delta_{g,t,k}=0\\) for \\(k \\neq 2\\))\n\n\n\n\n\n\n\nTip\n\n\nWhile the efficiency curve of a thermal generator typically is concave, we model the fuel consumption curve (\\(f = p/\\eta\\)) which is convex. This allows us to use piecewise linear approximation in our MILP formulation while maintaining mathematical properties needed for optimization. The convexity of the fuel consumption curve allows us to use piecewise linear approximation in our MILP formulation while maintaining mathematical properties needed for optimization."
+  },
+  {
+    "objectID": "part-07/lecture-presentation.html#battery-storage-system",
+    "href": "part-07/lecture-presentation.html#battery-storage-system",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "Battery Storage System",
+    "text": "Battery Storage System\nWe model a battery storage system with the following characteristics:\n\nEnergy capacity (MWh)\nPower capacity (MW)\nCharge/discharge efficiency\nSelf-discharge rate\nDepth of discharge limit"
+  },
+  {
+    "objectID": "part-07/lecture-presentation.html#sets-and-indices",
+    "href": "part-07/lecture-presentation.html#sets-and-indices",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "Sets and Indices",
+    "text": "Sets and Indices\n\n\\(\\mathcal{S}\\) - Set of storage units indexed by \\(s \\in \\{1,2,...,|\\mathcal{S}|\\}\\)\n\\(\\mathcal{T}\\) - Set of time periods indexed by \\(t \\in \\{1,2,...,|\\mathcal{T}|\\}\\)"
+  },
+  {
+    "objectID": "part-07/lecture-presentation.html#decision-variables",
+    "href": "part-07/lecture-presentation.html#decision-variables",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "Decision Variables",
+    "text": "Decision Variables\n\n\\(e_{s,t}\\) - Energy level of storage \\(s\\) at time \\(t\\) [MWh]\n\\(p^{ch}_{s,t}\\) - Charging power of storage \\(s\\) at time \\(t\\) [MW]\n\\(p^{dis}_{s,t}\\) - Discharging power of storage \\(s\\) at time \\(t\\) [MW]\n\\(u^{ch}_{s,t}\\) - Binary variable for charging status of storage \\(s\\) at time \\(t\\)\n\\(u^{dis}_{s,t}\\) - Binary variable for discharging status of storage \\(s\\) at time \\(t\\)"
+  },
+  {
+    "objectID": "part-07/lecture-presentation.html#parameters",
+    "href": "part-07/lecture-presentation.html#parameters",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "Parameters",
+    "text": "Parameters\n\n\\(E^{max}_s\\) - Maximum energy capacity of storage \\(s\\) [MWh]\n\\(E^{min}_s\\) - Minimum energy level of storage \\(s\\) [MWh]\n\\(P^{ch,max}_s\\) - Maximum charging power of storage \\(s\\) [MW]\n\\(P^{dis,max}_s\\) - Maximum discharging power of storage \\(s\\) [MW]\n\\(\\eta^{ch}_s\\) - Charging efficiency of storage \\(s\\)\n\\(\\eta^{dis}_s\\) - Discharging efficiency of storage \\(s\\)\n\\(sdr_s\\) - Self-discharge rate of storage \\(s\\) per time step\n\\(R^{ch}_s\\) - Maximum ramp-up rate for charging of storage \\(s\\) [MW/h]\n\\(R^{dis}_s\\) - Maximum ramp-up rate for discharging of storage \\(s\\) [MW/h]"
+  },
+  {
+    "objectID": "part-07/lecture-presentation.html#energy-balance-constraint",
+    "href": "part-07/lecture-presentation.html#energy-balance-constraint",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "Energy Balance Constraint",
+    "text": "Energy Balance Constraint\n\\(e_{s,t} = (1-sdr_s)e_{s,t-1} + \\eta^{ch}_s p^{ch}_{s,t} - \\frac{p^{dis}_{s,t}}{\\eta^{dis}_s} \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}\\)\n\n\n\n\n\n\nTip\n\n\nThis constraint ensures that the energy level at time \\(t\\) equals:\n\nPrevious energy level minus self-discharge\nPlus energy from charging (accounting for efficiency)\nMinus energy from discharging (accounting for efficiency)\n\nFor batteries the energy level is often referred to as state of charge (SOC)."
+  },
+  {
+    "objectID": "part-07/lecture-presentation.html#energy-limits-constraint",
+    "href": "part-07/lecture-presentation.html#energy-limits-constraint",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "Energy Limits Constraint",
+    "text": "Energy Limits Constraint\n\\(E^{min}_s \\leq e_{s,t} \\leq E^{max}_s \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}\\)\n\n\n\n\n\n\nTip\n\n\nThis constraint ensures that:\n\nThe energy level never falls below the minimum level (depth of discharge)\nThe energy level never exceeds the maximum capacity"
+  },
+  {
+    "objectID": "part-07/lecture-presentation.html#power-limits-and-mutual-exclusion",
+    "href": "part-07/lecture-presentation.html#power-limits-and-mutual-exclusion",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "Power Limits and Mutual Exclusion",
+    "text": "Power Limits and Mutual Exclusion\n\\(0 \\leq p^{ch}_{s,t} \\leq P^{ch,max}_s u^{ch}_{s,t} \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}\\)\n\\(0 \\leq p^{dis}_{s,t} \\leq P^{dis,max}_s u^{dis}_{s,t} \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}\\)\n\\(u^{ch}_{s,t} + u^{dis}_{s,t} \\leq 1 \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}\\)\n\n\n\n\n\n\nTip\n\n\nThese constraints ensure that:\n\nCharging power is between zero and maximum when charging is active\nDischarging power is between zero and maximum when discharging is active\nThe storage cannot charge and discharge simultaneously"
+  },
+  {
+    "objectID": "part-07/lecture-presentation.html#when-is-mutual-exclusion-required-technical",
+    "href": "part-07/lecture-presentation.html#when-is-mutual-exclusion-required-technical",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "When is Mutual Exclusion Required? (Technical)",
+    "text": "When is Mutual Exclusion Required? (Technical)\nQuestion: When do we need the mutual exclusion constraint from a technical perspective?\n\n\nBattery Storage Systems:\n\nRequired due to physical limitations\nPrevents simultaneous charge/discharge\nProtects battery life and efficiency\nAvoids internal power circulation\n\nPumped Hydro Storage:\n\nNot required\nCan have separate pumps and turbines\nAllows simultaneous operation\nDifferent equipment for each direction\n\nThermal Storage:\n\nMay or may not be required\nDepends on system design\nConsider heat transfer limitations\nCan have separate charging/discharging circuits"
+  },
+  {
+    "objectID": "part-07/lecture-presentation.html#when-is-mutual-exclusion-required-economic",
+    "href": "part-07/lecture-presentation.html#when-is-mutual-exclusion-required-economic",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "When is Mutual Exclusion Required? (Economic)",
+    "text": "When is Mutual Exclusion Required? (Economic)\nQuestion: When do we need the mutual exclusion constraint from an economic perspective?\n\n\nEfficiency Losses:\n\nCharging and discharging both have efficiency losses\nSimultaneous operation would create unnecessary losses\nRound-trip efficiency is typically 70-90%\n\nWear and Tear:\n\nEach charge/discharge cycle causes wear\nSimultaneous operation increases wear\nReduces system lifetime\nMaintenance costs increase\n\nEconomic Optimization:\n\nPrevents unnecessary cycling\nAvoids situations where:\n\nCost of efficiency losses &lt;= cost of increasing power consumption\nCost of efficiency losses &lt;= cost of curtailing power production\nwhile actual costs of the cycling are not included in the model\n\n\n\n\n\n\n\n\n\nSummary: Mutual Exclusion Decision\n\n\nThe mutual exclusion constraint should be included when:\n\nTechnically Required: Physical limitations prevent simultaneous operation\nEconomically Beneficial: Efficiency losses and wear costs exceed benefits but are not included in the model\nOperationally Sensible: System design favors separate charging/discharging\n\nThe decision depends on both the storage technology and the specific economic context of the application."
+  },
+  {
+    "objectID": "part-07/lecture-presentation.html#ramp-rate-constraints",
+    "href": "part-07/lecture-presentation.html#ramp-rate-constraints",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "Ramp Rate Constraints",
+    "text": "Ramp Rate Constraints\n\\(p^{ch}_{s,t} - p^{ch}_{s,t-1} \\leq R^{ch}_s \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}\\) \\(p^{dis}_{s,t} - p^{dis}_{s,t-1} \\leq R^{dis}_s \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}\\)\n\n\n\n\n\n\nTip\n\n\nThese constraints limit how quickly the storage can change its charging or discharging power:\n\nPrevents sudden changes that could damage equipment\nAccounts for physical limitations of the storage system\nMay be different for charging and discharging"
+  },
+  {
+    "objectID": "part-07/lecture-presentation.html#extended-model",
+    "href": "part-07/lecture-presentation.html#extended-model",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "Extended Model",
+    "text": "Extended Model\nWe now optimize both energy and power capacity:\nAdditional Decision Variables\nNew Decision Variables:\n\n\\(e^{nom}_s\\) - Nominal energy capacity of storage \\(s\\) [MWh]\n\\(p^{ch,nom}_s\\) - Nominal charging power of storage \\(s\\) [MW]\n\\(p^{dis,nom}_s\\) - Nominal discharging power of storage \\(s\\) [MW]\n\nVariables (previously parameters):\n\n\\(e^{max}_s\\) - Maximum energy capacity of storage \\(s\\) [MWh]\n\\(e^{min}_s\\) - Minimum energy level of storage \\(s\\) [MWh]\n\\(p^{ch,max}_s\\) - Maximum charging power of storage \\(s\\) [MW]\n\\(p^{dis,max}_s\\) - Maximum discharging power of storage \\(s\\) [MW]\n\nAdditional Parameters\n\n\\(C^{E}_s\\) - Cost per MWh of energy capacity for storage \\(s\\) [EUR/MWh]\n\\(C^{P,ch}_s\\) - Cost per MW of charging power capacity for storage \\(s\\) [EUR/MW]\n\\(C^{P,dis}_s\\) - Cost per MW of discharging power capacity for storage \\(s\\) [EUR/MW]\n\\(DoD_s\\) - Depth of discharge limit for storage \\(s\\) [%]\n\\(F^{PVAF}\\) - Present value annuity factor for the investment costs\n\nModified Constraints\nEnergy Capacity:\n\\(e^{min}_s = DoD_s e^{nom}_s \\quad \\forall s \\in \\mathcal{S}\\)\n\\(e^{max}_s = e^{nom}_s \\quad \\forall s \\in \\mathcal{S}\\)\nPower Capacity:\n\\(p^{ch,max}_s = p^{ch,nom}_s \\quad \\forall s \\in \\mathcal{S}\\)\n\\(p^{dis,max}_s = p^{dis,nom}_s \\quad \\forall s \\in \\mathcal{S}\\)\nExtended Objective Function\nAdd to the original objective:\n\\(\\text{Minimize} \\quad ... + \\sum_{s \\in \\mathcal{S}} (C^{E}_s / F^{PVAF} e^{nom}_s + C^{P,ch}_s p^{ch,nom}_s + C^{P,dis}_s p^{dis,nom}_s)\\)\n\n\n\n\n\n\nNote\n\n\nThis extension allows us to find the optimal storage capacity that balances investment costs with operational benefits. The objective function includes both energy and power capacity costs.\nThe investment costs and operational costs need to be calculated on the same time basis to be comparable. While operational costs are calculated for a specific time horizon (e.g. one year), investment costs are typically one-time fixed costs. Therefore, the investment costs need to be converted to an equivalent annual cost using the present value annuity factor (PVAF). This ensures we compare annual operational benefits with annualized investment costs."
+  },
+  {
+    "objectID": "part-07/lecture-presentation.html#key-insights",
+    "href": "part-07/lecture-presentation.html#key-insights",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "Key Insights",
+    "text": "Key Insights\n\nTrade-off Analysis:\n\nHigher capacity reduces operational costs\nHigher capacity increases investment costs\nOptimal capacity depends on usage patterns, technical and economic parameters\n\nEconomic Considerations:\n\nInvestment costs are fixed\nOperational benefits are time-dependent\nNeed to consider lifetime of the system\nSeparate costs for energy and power capacity\n\nTechnical Constraints:\n\nDepth of discharge affects usable capacity\nEfficiency losses impact economic viability\nPower capacity affects flexibility\nDifferent power ratings for charging and discharging\n\n\n\n\n\n\n\n\nTip\n\n\nThe optimal storage capacity depends on the specific use case, electricity prices, and technical parameters of the storage system. The model now accounts for separate costs and capacities for energy storage and power handling equipment (charging/discharging infrastructure that converts between electrical energy and the storage medium’s form of energy, such as chemical energy in batteries or potential energy in pumped hydro)."
+  },
+  {
+    "objectID": "part-07/lecture-presentation.html#real-world-applications",
+    "href": "part-07/lecture-presentation.html#real-world-applications",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "Real-World Applications",
+    "text": "Real-World Applications\n\nInvestment planning for new storage systems\nLocal energy system planning\nSystem operation planning"
+  },
+  {
+    "objectID": "part-07/lecture-presentation.html#further-extensions-for-battery-storage-use-cases",
+    "href": "part-07/lecture-presentation.html#further-extensions-for-battery-storage-use-cases",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "Further Extensions for Battery Storage Use Cases",
+    "text": "Further Extensions for Battery Storage Use Cases\n\nMulti-market trading and operation\n\nEnergy services: PPA, EPEX Day-ahead (XETRA), EPEX Intraday Continuous, EPEX Intraday Auction, etc.\nAncillary services: Primary Control Reserve (FCR), Secondary Control Reserve (aFRR), Minute Reserve (mFRR), Reactive Power, etc.\n\nEmission constraints\nUncertainty in forecasts"
+  },
+  {
+    "objectID": "part-07/lecture-presentation.html#section",
+    "href": "part-07/lecture-presentation.html#section",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "",
+    "text": "Questions?"
+  },
+  {
+    "objectID": "part-07/lecture-presentation.html#literature-i",
+    "href": "part-07/lecture-presentation.html#literature-i",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "Literature I",
+    "text": "Literature I\nFor more interesting literature to learn more about Julia, take a look at the literature list of this course."
+  },
+  {
+    "objectID": "part-07/lecture-presentation.html#literature-ii",
+    "href": "part-07/lecture-presentation.html#literature-ii",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "Literature II",
+    "text": "Literature II\nFor a detailed mathematical formulation of the Unit Commitment problem, see Morales-Espana, Latorre, and Ramos (2013) and Zimmermann and Kather (2019).\n\n\n\n\nMorales-Espana, G., J. M. Latorre, and A. Ramos. 2013. “Tight and Compact MILP Formulation for the Thermal Unit Commitment Problem.” IEEE Transactions on Power Systems 28 (4): 4897–4908.\n\n\nZimmermann, Cors, T., and A. Kather. 2019. “Increasing Tightness by Introduction of Intertemporal Constraints in MILP Unit Commitment.” In NEIS 2019; Conference on Sustainable Energy Supply and Energy Storage Systems, edited by Detlef Schulz, 209–14. VDE Verl."
+  },
+  {
+    "objectID": "part-07/lecture-storage.html#excursion-energy-markets-overview",
+    "href": "part-07/lecture-storage.html#excursion-energy-markets-overview",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "Excursion: Energy Markets Overview",
+    "text": "Excursion: Energy Markets Overview\n\nPower Purchase Agreements (PPA):\n\nLong-term contracts (5-20 years)\nFixed or indexed prices\nBilateral agreements\nLow price volatility\nTypically monthly or quarterly settlements\nCan include minimum/maximum volume commitments\nOften includes price escalation clauses\n\n\n\nDay-ahead Market (XETRA):\n\nTrading for next day\nHourly products\nAuction-based\nModerate price volatility\nGate closure: 12:00 (noon) for next day\nResults published around 12:45\nMinimum bid size: 0.1 MW\nPrice range: -500 to 3000 EUR/MWh\n\n\n\nIntraday Continuous:\n\nTrading until 5 minutes before delivery\n15-minute products\nContinuous trading\nHigh price volatility\nMinimum bid size: 0.1 MW\nPrice range: -500 to 3000 EUR/MWh\nTrading hours: 24/7\nOrder book with best bid/ask prices\n\n\n\nIntraday Auction:\n\nAdditional trading opportunities\n15-minute products\nAuction-based\nHigh price volatility\nGate closure: 30 minutes before delivery\nMultiple auctions per day (e.g., 6:00, 12:00, 15:00, 18:00)\nMinimum bid size: 0.1 MW\nPrice range: -500 to 3000 EUR/MWh\n\n\n\nAncillary Services Markets\n\nPrimary Control Reserve (FCR):\n\nFastest response (30 seconds)\nSymmetric (up/down)\nWeekly auctions\nHigh capacity prices\nGate closure: Thursday 12:00\nDelivery period: Monday 00:00 to Sunday 23:59\nMinimum bid size: 1 MW\nMust be available 24/7\nEnergy prices when activated:\n\nUp-regulation: Price of last activated unit (marginal price)\nDown-regulation: Price of last activated unit (marginal price)\nTypically higher than day-ahead prices\n\n\n\n\nSecondary Control Reserve (aFRR):\n\nResponse within 5 minutes\nSymmetric (up/down)\nDaily auctions\nModerate capacity prices\nGate closure: 14:30 for next day\nDelivery period: 00:00 to 23:59\nMinimum bid size: 5 MW\nMust be available for full delivery period\nEnergy prices when activated:\n\nUp-regulation: Price of last activated unit (marginal price)\nDown-regulation: Price of last activated unit (marginal price)\nCan be significantly higher than day-ahead prices\nSeparate price zones for up/down regulation\n\n\n\n\nMinute Reserve (mFRR):\n\nResponse within 15 minutes\nAsymmetric (up/down)\nDaily auctions\nLower capacity prices\nGate closure: 14:30 for next day\nDelivery period: 00:00 to 23:59\nMinimum bid size: 5 MW\nSeparate auctions for up/down regulation\nEnergy prices when activated:\n\nUp-regulation: Price of last activated unit (marginal price)\nDown-regulation: Price of last activated unit (marginal price)\nHighest energy prices among ancillary services\nOften triggered during system stress\n\n\n\n\n\n\n\n\nEnergy Prices in Ancillary Services\n\n\n\nWhen ancillary services are activated:\n\nPrice Formation:\n\nBased on marginal pricing (price of last activated unit)\nCan be significantly higher than day-ahead prices\nSeparate prices for up/down regulation\n\nPrice Volatility:\n\nHighest for mFRR (emergency situations)\nModerate for aFRR (regular balancing)\nLowest for FCR (continuous small adjustments)\n\nRevenue Streams:\n\nCapacity payments (for being available)\nEnergy payments (when activated)\n\n\n\n\n\nReactive Power:\n\nVoltage control\nLocal markets\nContinuous operation\nVaries by region\nTypically monthly contracts\nBased on grid operator requirements\nCompensation for both capacity and energy\nLocation-specific pricing\n\n\n\n\n\n\n\n\nReactive Power and Battery Storage\n\n\n\nBattery storage systems with power electronic converters (inverters) can provide reactive power:\n\nCan provide reactive power independently of active power\nTypical capability: 0.9 leading to 0.9 lagging power factor\nNo additional hardware needed (uses existing inverter)\nCan provide reactive power even when battery is empty\nImportant for grid stability, especially in areas with high renewable penetration\n\n\n\n\n\n\n\n\n\nTip\n\n\n\nStorage systems can participate in multiple markets simultaneously, but need to consider:\n\nTechnical requirements for each market\nMarket timing and deadlines\nCapacity allocation across markets\nPrice volatility and risk\nMinimum bid sizes and price ranges\nContract durations and settlement periods\n\n\n\n\n\n\n\n\n\nAnd that’s it for today’s lecture!\n\n\n\nWe have covered a extended version of the Unit Commitment problem with operation and sizing of storage systems and its mathematical formulation. The tutorial will help you implement and solve this problem using Julia and JuMP.",
+    "crumbs": [
+      "07 Storage",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-07/lecture-presentation.html#excursion-energy-markets-overview",
+    "href": "part-07/lecture-presentation.html#excursion-energy-markets-overview",
+    "title": "Lecture VII - Storage Modeling",
+    "section": "Excursion: Energy Markets Overview",
+    "text": "Excursion: Energy Markets Overview\nPower Purchase Agreements (PPA):\n\nLong-term contracts (5-20 years)\nFixed or indexed prices\nBilateral agreements\nLow price volatility\nTypically monthly or quarterly settlements\nCan include minimum/maximum volume commitments\nOften includes price escalation clauses\n\nDay-ahead Market (XETRA):\n\nTrading for next day\nHourly products\nAuction-based\nModerate price volatility\nGate closure: 12:00 (noon) for next day\nResults published around 12:45\nMinimum bid size: 0.1 MW\nPrice range: -500 to 3000 EUR/MWh\n\nIntraday Continuous:\n\nTrading until 5 minutes before delivery\n15-minute products\nContinuous trading\nHigh price volatility\nMinimum bid size: 0.1 MW\nPrice range: -500 to 3000 EUR/MWh\nTrading hours: 24/7\nOrder book with best bid/ask prices\n\nIntraday Auction:\n\nAdditional trading opportunities\n15-minute products\nAuction-based\nHigh price volatility\nGate closure: 30 minutes before delivery\nMultiple auctions per day (e.g., 6:00, 12:00, 15:00, 18:00)\nMinimum bid size: 0.1 MW\nPrice range: -500 to 3000 EUR/MWh\n\nAncillary Services Markets\nPrimary Control Reserve (FCR):\n\nFastest response (30 seconds)\nSymmetric (up/down)\nWeekly auctions\nHigh capacity prices\nGate closure: Thursday 12:00\nDelivery period: Monday 00:00 to Sunday 23:59\nMinimum bid size: 1 MW\nMust be available 24/7\nEnergy prices when activated:\n\nUp-regulation: Price of last activated unit (marginal price)\nDown-regulation: Price of last activated unit (marginal price)\nTypically higher than day-ahead prices\n\n\nSecondary Control Reserve (aFRR):\n\nResponse within 5 minutes\nSymmetric (up/down)\nDaily auctions\nModerate capacity prices\nGate closure: 14:30 for next day\nDelivery period: 00:00 to 23:59\nMinimum bid size: 5 MW\nMust be available for full delivery period\nEnergy prices when activated:\n\nUp-regulation: Price of last activated unit (marginal price)\nDown-regulation: Price of last activated unit (marginal price)\nCan be significantly higher than day-ahead prices\nSeparate price zones for up/down regulation\n\n\nMinute Reserve (mFRR):\n\nResponse within 15 minutes\nAsymmetric (up/down)\nDaily auctions\nLower capacity prices\nGate closure: 14:30 for next day\nDelivery period: 00:00 to 23:59\nMinimum bid size: 5 MW\nSeparate auctions for up/down regulation\nEnergy prices when activated:\n\nUp-regulation: Price of last activated unit (marginal price)\nDown-regulation: Price of last activated unit (marginal price)\nHighest energy prices among ancillary services\nOften triggered during system stress\n\n\n\n\n\n\n\n\nEnergy Prices in Ancillary Services\n\n\nWhen ancillary services are activated:\n\nPrice Formation:\n\nBased on marginal pricing (price of last activated unit)\nCan be significantly higher than day-ahead prices\nSeparate prices for up/down regulation\n\nPrice Volatility:\n\nHighest for mFRR (emergency situations)\nModerate for aFRR (regular balancing)\nLowest for FCR (continuous small adjustments)\n\nRevenue Streams:\n\nCapacity payments (for being available)\nEnergy payments (when activated)\n\n\n\n\n\n\nReactive Power:\n\nVoltage control\nLocal markets\nContinuous operation\nVaries by region\nTypically monthly contracts\nBased on grid operator requirements\nCompensation for both capacity and energy\nLocation-specific pricing\n\n\n\n\n\n\n\n\nReactive Power and Battery Storage\n\n\nBattery storage systems with power electronic converters (inverters) can provide reactive power:\n\nCan provide reactive power independently of active power\nTypical capability: 0.9 leading to 0.9 lagging power factor\nNo additional hardware needed (uses existing inverter)\nCan provide reactive power even when battery is empty\nImportant for grid stability, especially in areas with high renewable penetration\n\n\n\n\n\n\n\n\n\n\nTip\n\n\nStorage systems can participate in multiple markets simultaneously, but need to consider:\n\nTechnical requirements for each market\nMarket timing and deadlines\nCapacity allocation across markets\nPrice volatility and risk\nMinimum bid sizes and price ranges\nContract durations and settlement periods\n\n\n\n\n\n\n\n\n\n\nAnd that’s it for today’s lecture!\n\n\nWe have covered a extended version of the Unit Commitment problem with operation and sizing of storage systems and its mathematical formulation. The tutorial will help you implement and solve this problem using Julia and JuMP."
   }
 ]

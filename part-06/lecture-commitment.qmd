@@ -219,13 +219,13 @@ How does the mathematical model look like?
 
 . . .
 
-- $c^{var}_g$ - Variable cost of thermal generator $g\in\mathcal{G}$ in [$EUR/\text{MWh}$]
-- $c^{fix}_g$ - Fixed cost of thermal generator $g\in\mathcal{G}$ in [$EUR$]
-- $c^{var}_w$ - Cost of wind turbine $w\in\mathcal{W}$ in [$EUR/\text{MWh}$]
-- $p^{\min}_g$ - Minimum power output of thermal generator $g\in\mathcal{G}$ in [MW]
-- $p^{\max}_g$ - Maximum power output of thermal generator $g\in\mathcal{G}$ in [MW]
-- $p^{f}_{w,t}$ - Forecasted power output of wind turbine $w\in\mathcal{W}$ at time $t$ in [MW]
-- $d^f_t$ - Forecasted demand at time $t$ in [MW]
+- $C^{var}_g$ - Variable cost of thermal generator $g\in\mathcal{G}$ in [$EUR/\text{MWh}$]
+- $C^{fix}_g$ - Fixed cost of thermal generator $g\in\mathcal{G}$ in [$EUR$]
+- $C^{var}_w$ - Cost of wind turbine $w\in\mathcal{W}$ in [$EUR/\text{MWh}$]
+- $P^{\min}_g$ - Minimum power output of thermal generator $g\in\mathcal{G}$ in [MW]
+- $P^{\max}_g$ - Maximum power output of thermal generator $g\in\mathcal{G}$ in [MW]
+- $P^{f}_{w,t}$ - Forecasted power output of wind turbine $w\in\mathcal{W}$ at time $t$ in [MW]
+- $D^f_t$ - Forecasted demand at time $t$ in [MW]
 - $T^{up}_g$ - Minimum up time of generator $g\in\mathcal{G}$ in [h]
 - $T^{down}_g$ - Minimum down time of generator $g\in\mathcal{G}$ in [h]
 - $R^{up}_g$ - Maximum ramp-up rate of generator $g\in\mathcal{G}$ in [MW/h]
@@ -241,45 +241,45 @@ How does the mathematical model look like?
 
 ## Objective Function
 
-$\text{Minimize} \quad \sum_{t \in \mathcal{T}} \left( \sum_{g \in \mathcal{G}} (c^{var}_g p_{g,t} + c^{fix}_g u_{g,t}) + \sum_{w \in \mathcal{W}} c^{var}_w p_{w,t} \right)$
+$\text{Minimize} \quad \sum_{t \in \mathcal{T}} \left( \sum_{g \in \mathcal{G}} (C^{var}_g p_{g,t} + C^{fix}_g u_{g,t}) + \sum_{w \in \mathcal{W}} C^{var}_w p_{w,t} \right)$
 
 ::: {.callout-note}
 ## The objective includes:
-- Variable costs for power generation ($c^{var}_g p_{g,t}$): Cost per hour of electricity produced
-- Fixed costs for keeping generators on ($c^{fix}_g u_{g,t}$): Cost of maintaining a generator in operation
-- Wind power costs ($c^{var}_w p_{w,t}$): Variable costs per hourfor wind power production
+- Variable costs for power generation ($C^{var}_g p_{g,t}$): Cost per hour of electricity produced
+- Fixed costs for keeping generators on ($C^{fix}_g u_{g,t}$): Cost of maintaining a generator in operation
+- Wind power costs ($C^{var}_w p_{w,t}$): Variable costs per hour for wind power production
 :::
 
 ## Power Balance Constraints
 
-$\sum_{g \in \mathcal{G}} p_{g,t} + \sum_{w \in \mathcal{W}} p_{w,t} = d^f_t \quad \forall t \in \mathcal{T}$
+$\sum_{g \in \mathcal{G}} p_{g,t} + \sum_{w \in \mathcal{W}} p_{w,t} = D^f_t \quad \forall t \in \mathcal{T}$
 
 ::: {.callout-tip}
 This constraint ensures that at each time step $t$:
 - The sum of all thermal generator outputs ($\sum_{g \in \mathcal{G}} p_{g,t}$)
 - Plus all wind power outputs ($\sum_{w \in \mathcal{W}} p_{w,t}$)
-- Must exactly match the forecasted demand ($d^f_t$)
+- Must exactly match the forecasted demand ($D^f_t$)
 :::
 
 ## Generator Limits Constraints
 
-$p^{\min}_g u_{g,t} \leq p_{g,t} \leq p^{\max}_g u_{g,t} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}$
+$P^{\min}_g u_{g,t} \leq p_{g,t} \leq P^{\max}_g u_{g,t} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}$
 
 ::: {.callout-tip}
 For each generator $g$ at time $t$:
-- If the generator is on ($u_{g,t} = 1$), its output must be between minimum ($p^{\min}_g$) and maximum ($p^{\max}_g$) power
+- If the generator is on ($u_{g,t} = 1$), its output must be between minimum ($P^{\min}_g$) and maximum ($P^{\max}_g$) power
 - If the generator is off ($u_{g,t} = 0$), its output must be zero
 - The binary variable $u_{g,t}$ ensures these limits are enforced
 :::
 
 ## Wind Power Injection Constraints
 
-$0 \leq p_{w,t} \leq p^f_{w,t} \quad \forall w \in \mathcal{W}, t \in \mathcal{T}$
+$0 \leq p_{w,t} \leq P^f_{w,t} \quad \forall w \in \mathcal{W}, t \in \mathcal{T}$
 
 ::: {.callout-tip}
 For each wind turbine $w$ at time $t$:
 - Power output must be non-negative
-- Cannot exceed the forecasted available wind power ($p^f_{w,t}$)
+- Cannot exceed the forecasted available wind power ($P^f_{w,t}$)
 - Unlike thermal generators, wind turbines don't have binary variables as the power injection is controllable between 0 and the forecasted available wind power
 :::
 
@@ -311,15 +311,15 @@ These constraints limit how quickly generators can change their output:
 
 ## Complete Unit Commitment Model
 
-$\text{Minimize} \quad \sum_{t \in \mathcal{T}} \left( \sum_{g \in \mathcal{G}} (c^{var}_g p_{g,t} + c^{fix}_g u_{g,t}) + \sum_{w \in \mathcal{W}} c^{var}_w p_{w,t} \right)$
+$\text{Minimize} \quad \sum_{t \in \mathcal{T}} \left( \sum_{g \in \mathcal{G}} (C^{var}_g p_{g,t} + C^{fix}_g u_{g,t}) + \sum_{w \in \mathcal{W}} C^{var}_w p_{w,t} \right)$
 
 subject to
 
-$\sum_{g \in \mathcal{G}} p_{g,t} + \sum_{w \in \mathcal{W}} p_{w,t} = d^f_t \quad \forall t \in \mathcal{T}$
+$\sum_{g \in \mathcal{G}} p_{g,t} + \sum_{w \in \mathcal{W}} p_{w,t} = D^f_t \quad \forall t \in \mathcal{T}$
 
-$p^{\min}_g u_{g,t} \leq p_{g,t} \leq p^{\max}_g u_{g,t} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}$
+$P^{\min}_g u_{g,t} \leq p_{g,t} \leq P^{\max}_g u_{g,t} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}$
 
-$0 \leq p_{w,t} \leq p^f_{w,t} \quad \forall w \in \mathcal{W}, t \in \mathcal{T}$
+$0 \leq p_{w,t} \leq P^f_{w,t} \quad \forall w \in \mathcal{W}, t \in \mathcal{T}$
 
 $u_{g,t} - u_{g,t-1} \leq u_{g,\tau} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}, \tau \in [t+1, \min(t+T^{up}_g-1,|\mathcal{T}|)]$
 
