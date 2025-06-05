@@ -4,4 +4,8 @@
 /.quarto/
 power_systems.jl
 part-06/not-pub
+part-07/not-pub
+part-07/solution
+part-07/data
+part-07/tutorial-storage.qmd
 part-06/solution/tutorial-commitment.ipynb

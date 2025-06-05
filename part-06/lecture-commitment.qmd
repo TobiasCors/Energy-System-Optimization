@@ -1,5 +1,5 @@
 ---
-title: "Lecture VI - Economic Dispatch Problem"
+title: "Lecture VI - Unit Commitment Problem"
 subtitle: "Energy System Optimization with Julia"
 author: "Dr. Tobias Cors"
 institute: "Hamburg University of Applied Science - Summer 2025"
