@@ -764,13 +764,13 @@ Tip
 <p><span class="question">Question:</span> <strong>What are possible parameters?</strong></p>
 <p>. . .</p>
 <ul>
-<li><span class="math inline">\(c^{var}_g\)</span> - Variable cost of thermal generator <span class="math inline">\(g\in\mathcal{G}\)</span> in [<span class="math inline">\(EUR/\text{MWh}\)</span>]</li>
-<li><span class="math inline">\(c^{fix}_g\)</span> - Fixed cost of thermal generator <span class="math inline">\(g\in\mathcal{G}\)</span> in [<span class="math inline">\(EUR\)</span>]</li>
-<li><span class="math inline">\(c^{var}_w\)</span> - Cost of wind turbine <span class="math inline">\(w\in\mathcal{W}\)</span> in [<span class="math inline">\(EUR/\text{MWh}\)</span>]</li>
-<li><span class="math inline">\(p^{\min}_g\)</span> - Minimum power output of thermal generator <span class="math inline">\(g\in\mathcal{G}\)</span> in [MW]</li>
-<li><span class="math inline">\(p^{\max}_g\)</span> - Maximum power output of thermal generator <span class="math inline">\(g\in\mathcal{G}\)</span> in [MW]</li>
-<li><span class="math inline">\(p^{f}_{w,t}\)</span> - Forecasted power output of wind turbine <span class="math inline">\(w\in\mathcal{W}\)</span> at time <span class="math inline">\(t\)</span> in [MW]</li>
-<li><span class="math inline">\(d^f_t\)</span> - Forecasted demand at time <span class="math inline">\(t\)</span> in [MW]</li>
+<li><span class="math inline">\(C^{var}_g\)</span> - Variable cost of thermal generator <span class="math inline">\(g\in\mathcal{G}\)</span> in [<span class="math inline">\(EUR/\text{MWh}\)</span>]</li>
+<li><span class="math inline">\(C^{fix}_g\)</span> - Fixed cost of thermal generator <span class="math inline">\(g\in\mathcal{G}\)</span> in [<span class="math inline">\(EUR\)</span>]</li>
+<li><span class="math inline">\(C^{var}_w\)</span> - Cost of wind turbine <span class="math inline">\(w\in\mathcal{W}\)</span> in [<span class="math inline">\(EUR/\text{MWh}\)</span>]</li>
+<li><span class="math inline">\(P^{\min}_g\)</span> - Minimum power output of thermal generator <span class="math inline">\(g\in\mathcal{G}\)</span> in [MW]</li>
+<li><span class="math inline">\(P^{\max}_g\)</span> - Maximum power output of thermal generator <span class="math inline">\(g\in\mathcal{G}\)</span> in [MW]</li>
+<li><span class="math inline">\(P^{f}_{w,t}\)</span> - Forecasted power output of wind turbine <span class="math inline">\(w\in\mathcal{W}\)</span> at time <span class="math inline">\(t\)</span> in [MW]</li>
+<li><span class="math inline">\(D^f_t\)</span> - Forecasted demand at time <span class="math inline">\(t\)</span> in [MW]</li>
 <li><span class="math inline">\(T^{up}_g\)</span> - Minimum up time of generator <span class="math inline">\(g\in\mathcal{G}\)</span> in [h]</li>
 <li><span class="math inline">\(T^{down}_g\)</span> - Minimum down time of generator <span class="math inline">\(g\in\mathcal{G}\)</span> in [h]</li>
 <li><span class="math inline">\(R^{up}_g\)</span> - Maximum ramp-up rate of generator <span class="math inline">\(g\in\mathcal{G}\)</span> in [MW/h]</li>
@@ -790,7 +790,7 @@ Tip
 <h1 class="title"><span class="flow">Model Formulation</span></h1>
 <section id="objective-function" class="level2">
 <h2 class="anchored" data-anchor-id="objective-function">Objective Function</h2>
-<p><span class="math inline">\(\text{Minimize} \quad \sum_{t \in \mathcal{T}} \left( \sum_{g \in \mathcal{G}} (c^{var}_g p_{g,t} + c^{fix}_g u_{g,t}) + \sum_{w \in \mathcal{W}} c^{var}_w p_{w,t} \right)\)</span></p>
+<p><span class="math inline">\(\text{Minimize} \quad \sum_{t \in \mathcal{T}} \left( \sum_{g \in \mathcal{G}} (C^{var}_g p_{g,t} + C^{fix}_g u_{g,t}) + \sum_{w \in \mathcal{W}} C^{var}_w p_{w,t} \right)\)</span></p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -802,16 +802,16 @@ The objective includes:
 </div>
 <div class="callout-body-container callout-body">
 <ul>
-<li>Variable costs for power generation (<span class="math inline">\(c^{var}_g p_{g,t}\)</span>): Cost per hour of electricity produced</li>
-<li>Fixed costs for keeping generators on (<span class="math inline">\(c^{fix}_g u_{g,t}\)</span>): Cost of maintaining a generator in operation</li>
-<li>Wind power costs (<span class="math inline">\(c^{var}_w p_{w,t}\)</span>): Variable costs per hourfor wind power production</li>
+<li>Variable costs for power generation (<span class="math inline">\(C^{var}_g p_{g,t}\)</span>): Cost per hour of electricity produced</li>
+<li>Fixed costs for keeping generators on (<span class="math inline">\(C^{fix}_g u_{g,t}\)</span>): Cost of maintaining a generator in operation</li>
+<li>Wind power costs (<span class="math inline">\(C^{var}_w p_{w,t}\)</span>): Variable costs per hour for wind power production</li>
 </ul>
 </div>
 </div>
 </section>
 <section id="power-balance-constraints" class="level2">
 <h2 class="anchored" data-anchor-id="power-balance-constraints">Power Balance Constraints</h2>
-<p><span class="math inline">\(\sum_{g \in \mathcal{G}} p_{g,t} + \sum_{w \in \mathcal{W}} p_{w,t} = d^f_t \quad \forall t \in \mathcal{T}\)</span></p>
+<p><span class="math inline">\(\sum_{g \in \mathcal{G}} p_{g,t} + \sum_{w \in \mathcal{W}} p_{w,t} = D^f_t \quad \forall t \in \mathcal{T}\)</span></p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -822,13 +822,13 @@ Tip
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>This constraint ensures that at each time step <span class="math inline">\(t\)</span>: - The sum of all thermal generator outputs (<span class="math inline">\(\sum_{g \in \mathcal{G}} p_{g,t}\)</span>) - Plus all wind power outputs (<span class="math inline">\(\sum_{w \in \mathcal{W}} p_{w,t}\)</span>) - Must exactly match the forecasted demand (<span class="math inline">\(d^f_t\)</span>)</p>
+<p>This constraint ensures that at each time step <span class="math inline">\(t\)</span>: - The sum of all thermal generator outputs (<span class="math inline">\(\sum_{g \in \mathcal{G}} p_{g,t}\)</span>) - Plus all wind power outputs (<span class="math inline">\(\sum_{w \in \mathcal{W}} p_{w,t}\)</span>) - Must exactly match the forecasted demand (<span class="math inline">\(D^f_t\)</span>)</p>
 </div>
 </div>
 </section>
 <section id="generator-limits-constraints" class="level2">
 <h2 class="anchored" data-anchor-id="generator-limits-constraints">Generator Limits Constraints</h2>
-<p><span class="math inline">\(p^{\min}_g u_{g,t} \leq p_{g,t} \leq p^{\max}_g u_{g,t} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}\)</span></p>
+<p><span class="math inline">\(P^{\min}_g u_{g,t} \leq p_{g,t} \leq P^{\max}_g u_{g,t} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}\)</span></p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -839,13 +839,13 @@ Tip
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>For each generator <span class="math inline">\(g\)</span> at time <span class="math inline">\(t\)</span>: - If the generator is on (<span class="math inline">\(u_{g,t} = 1\)</span>), its output must be between minimum (<span class="math inline">\(p^{\min}_g\)</span>) and maximum (<span class="math inline">\(p^{\max}_g\)</span>) power - If the generator is off (<span class="math inline">\(u_{g,t} = 0\)</span>), its output must be zero - The binary variable <span class="math inline">\(u_{g,t}\)</span> ensures these limits are enforced</p>
+<p>For each generator <span class="math inline">\(g\)</span> at time <span class="math inline">\(t\)</span>: - If the generator is on (<span class="math inline">\(u_{g,t} = 1\)</span>), its output must be between minimum (<span class="math inline">\(P^{\min}_g\)</span>) and maximum (<span class="math inline">\(P^{\max}_g\)</span>) power - If the generator is off (<span class="math inline">\(u_{g,t} = 0\)</span>), its output must be zero - The binary variable <span class="math inline">\(u_{g,t}\)</span> ensures these limits are enforced</p>
 </div>
 </div>
 </section>
 <section id="wind-power-injection-constraints" class="level2">
 <h2 class="anchored" data-anchor-id="wind-power-injection-constraints">Wind Power Injection Constraints</h2>
-<p><span class="math inline">\(0 \leq p_{w,t} \leq p^f_{w,t} \quad \forall w \in \mathcal{W}, t \in \mathcal{T}\)</span></p>
+<p><span class="math inline">\(0 \leq p_{w,t} \leq P^f_{w,t} \quad \forall w \in \mathcal{W}, t \in \mathcal{T}\)</span></p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -856,7 +856,7 @@ Tip
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>For each wind turbine <span class="math inline">\(w\)</span> at time <span class="math inline">\(t\)</span>: - Power output must be non-negative - Cannot exceed the forecasted available wind power (<span class="math inline">\(p^f_{w,t}\)</span>) - Unlike thermal generators, wind turbines don’t have binary variables as the power injection is controllable between 0 and the forecasted available wind power</p>
+<p>For each wind turbine <span class="math inline">\(w\)</span> at time <span class="math inline">\(t\)</span>: - Power output must be non-negative - Cannot exceed the forecasted available wind power (<span class="math inline">\(P^f_{w,t}\)</span>) - Unlike thermal generators, wind turbines don’t have binary variables as the power injection is controllable between 0 and the forecasted available wind power</p>
 </div>
 </div>
 </section>
@@ -898,11 +898,11 @@ Tip
 </section>
 <section id="complete-unit-commitment-model" class="level2">
 <h2 class="anchored" data-anchor-id="complete-unit-commitment-model">Complete Unit Commitment Model</h2>
-<p><span class="math inline">\(\text{Minimize} \quad \sum_{t \in \mathcal{T}} \left( \sum_{g \in \mathcal{G}} (c^{var}_g p_{g,t} + c^{fix}_g u_{g,t}) + \sum_{w \in \mathcal{W}} c^{var}_w p_{w,t} \right)\)</span></p>
+<p><span class="math inline">\(\text{Minimize} \quad \sum_{t \in \mathcal{T}} \left( \sum_{g \in \mathcal{G}} (C^{var}_g p_{g,t} + C^{fix}_g u_{g,t}) + \sum_{w \in \mathcal{W}} C^{var}_w p_{w,t} \right)\)</span></p>
 <p>subject to</p>
-<p><span class="math inline">\(\sum_{g \in \mathcal{G}} p_{g,t} + \sum_{w \in \mathcal{W}} p_{w,t} = d^f_t \quad \forall t \in \mathcal{T}\)</span></p>
-<p><span class="math inline">\(p^{\min}_g u_{g,t} \leq p_{g,t} \leq p^{\max}_g u_{g,t} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}\)</span></p>
-<p><span class="math inline">\(0 \leq p_{w,t} \leq p^f_{w,t} \quad \forall w \in \mathcal{W}, t \in \mathcal{T}\)</span></p>
+<p><span class="math inline">\(\sum_{g \in \mathcal{G}} p_{g,t} + \sum_{w \in \mathcal{W}} p_{w,t} = D^f_t \quad \forall t \in \mathcal{T}\)</span></p>
+<p><span class="math inline">\(P^{\min}_g u_{g,t} \leq p_{g,t} \leq P^{\max}_g u_{g,t} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}\)</span></p>
+<p><span class="math inline">\(0 \leq p_{w,t} \leq P^f_{w,t} \quad \forall w \in \mathcal{W}, t \in \mathcal{T}\)</span></p>
 <p><span class="math inline">\(u_{g,t} - u_{g,t-1} \leq u_{g,\tau} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}, \tau \in [t+1, \min(t+T^{up}_g-1,|\mathcal{T}|)]\)</span></p>
 <p><span class="math inline">\(u_{g,t-1} - u_{g,t} \leq 1 - u_{g,\tau} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}, \tau \in [t+1, \min(t+T^{down}_g-1,|\mathcal{T}|)]\)</span></p>
 <p><span class="math inline">\(p_{g,t} - p_{g,t-1} \leq R^{up}_g \quad \forall g \in \mathcal{G}, t \in \mathcal{T}\)</span></p>

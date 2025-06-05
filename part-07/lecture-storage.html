@@ -457,9 +457,9 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#mathematical-formulation-1" id="toc-mathematical-formulation-1" class="nav-link" data-scroll-target="#mathematical-formulation-1">Mathematical Formulation</a></li>
   <li><a href="#binary-variables-for-segment-selection" id="toc-binary-variables-for-segment-selection" class="nav-link" data-scroll-target="#binary-variables-for-segment-selection">Binary Variables for Segment Selection</a></li>
+  <li><a href="#constraints" id="toc-constraints" class="nav-link" data-scroll-target="#constraints">Constraints</a></li>
   <li><a href="#visual-explanation" id="toc-visual-explanation" class="nav-link" data-scroll-target="#visual-explanation">Visual Explanation</a></li>
   <li><a href="#convexity-and-binary-variables" id="toc-convexity-and-binary-variables" class="nav-link" data-scroll-target="#convexity-and-binary-variables">Convexity and Binary Variables</a></li>
-  <li><a href="#constraints" id="toc-constraints" class="nav-link" data-scroll-target="#constraints">Constraints</a></li>
   </ul></li>
   </ul></li>
   <li><a href="#storage-modeling" id="toc-storage-modeling" class="nav-link" data-scroll-target="#storage-modeling"><span class="flow">Storage Modeling</span></a>
@@ -489,9 +489,9 @@ window.Quarto = {
   <li><a href="#impact" id="toc-impact" class="nav-link" data-scroll-target="#impact"><span class="flow">Impact</span></a>
   <ul class="collapse">
   <li><a href="#real-world-applications" id="toc-real-world-applications" class="nav-link" data-scroll-target="#real-world-applications">Real-World Applications</a></li>
-  <li><a href="#further-extensions-for-battery-storage-use-cases" id="toc-further-extensions-for-battery-storage-use-cases" class="nav-link" data-scroll-target="#further-extensions-for-battery-storage-use-cases">Further Extensions for Battery Storage Use Cases</a>
+  <li><a href="#further-extensions-for-battery-storage-use-cases" id="toc-further-extensions-for-battery-storage-use-cases" class="nav-link" data-scroll-target="#further-extensions-for-battery-storage-use-cases">Further Extensions for Battery Storage Use Cases</a></li>
+  <li><a href="#excursion-energy-markets-overview" id="toc-excursion-energy-markets-overview" class="nav-link" data-scroll-target="#excursion-energy-markets-overview">Excursion: Energy Markets Overview</a>
   <ul class="collapse">
-  <li><a href="#energy-markets-overview" id="toc-energy-markets-overview" class="nav-link" data-scroll-target="#energy-markets-overview">Energy Markets Overview</a></li>
   <li><a href="#ancillary-services-markets" id="toc-ancillary-services-markets" class="nav-link" data-scroll-target="#ancillary-services-markets">Ancillary Services Markets</a></li>
   </ul></li>
   <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"></a></li>
@@ -763,22 +763,49 @@ Note
 </ol>
 <section id="mathematical-formulation-1" class="level3">
 <h3 class="anchored" data-anchor-id="mathematical-formulation-1">Mathematical Formulation</h3>
-<p><span class="math inline">\(f_{g,t} = \sum_{w \in \mathcal{W}} \lambda_{g,t,w} \cdot f_{g,w}\)</span></p>
-<p>where: - <span class="math inline">\(\mathcal{W}\)</span> is the set of segments - <span class="math inline">\(\lambda_{g,t,w}\)</span> are the weights for each segment - <span class="math inline">\(f_{g,w}\)</span> is the fuel consumption in segment <span class="math inline">\(w\)</span></p>
+<p><span class="math inline">\(f_{g,t} = \sum_{k \in \mathcal{K}} \lambda_{g,t,k} F_{g,k}\)</span></p>
+<p>where:</p>
+<ul>
+<li><span class="math inline">\(\mathcal{K}\)</span> is the set of segments</li>
+<li><span class="math inline">\(\lambda_{g,t,k}\)</span> are the weights for each segment</li>
+<li><span class="math inline">\(F_{g,k}\)</span> is the fuel consumption in segment <span class="math inline">\(k\)</span></li>
+</ul>
 </section>
 <section id="binary-variables-for-segment-selection" class="level3">
 <h3 class="anchored" data-anchor-id="binary-variables-for-segment-selection">Binary Variables for Segment Selection</h3>
-<p>To ensure that only one segment is active at a time, we introduce binary variables <span class="math inline">\(\delta_{g,t,w}\)</span>:</p>
+<p>To ensure that only one segment is active at a time, we introduce binary variables <span class="math inline">\(\delta_{g,t,k}\)</span>:</p>
 <ul>
-<li><span class="math inline">\(\delta_{g,t,w} = 1\)</span> if segment <span class="math inline">\(w\)</span> is active for generator <span class="math inline">\(g\)</span> at time <span class="math inline">\(t\)</span></li>
-<li><span class="math inline">\(\delta_{g,t,w} = 0\)</span> otherwise</li>
+<li><span class="math inline">\(\delta_{g,t,k} = 1\)</span> if segment <span class="math inline">\(k\)</span> is active for generator <span class="math inline">\(g\)</span> at time <span class="math inline">\(t\)</span></li>
+<li><span class="math inline">\(\delta_{g,t,k} = 0\)</span> otherwise</li>
 </ul>
 <p>These binary variables are used to:</p>
 <ol type="1">
 <li>Select which segment is active</li>
-<li>Ensure the weights <span class="math inline">\(\lambda_{g,t,w}\)</span> are only non-zero for the active segment</li>
+<li>Ensure the weights <span class="math inline">\(\lambda_{g,t,k}\)</span> are only non-zero for the active segment</li>
 <li>Maintain the convexity of the piecewise linear approximation</li>
 </ol>
+</section>
+<section id="constraints" class="level3">
+<h3 class="anchored" data-anchor-id="constraints">Constraints</h3>
+<p><strong>Segment Selection</strong>:</p>
+<p><span class="math inline">\(\sum_{k \in \mathcal{K}} \delta_{g,t,k} = 1 \quad \forall g \in \mathcal{G}, t \in \mathcal{T}\)</span></p>
+<p><strong>Power Output</strong>:</p>
+<p><span class="math inline">\(p_{g,t} = \sum_{k \in \mathcal{K}} \lambda_{g,t,k} P_{g,k} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}\)</span></p>
+<p><strong>Segment Limits</strong>:</p>
+<p><span class="math inline">\(\lambda_{g,t,k} \leq \delta_{g,t,k} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}, k \in \mathcal{K}\)</span></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The binary variables <span class="math inline">\(\delta_{g,t,k}\)</span> ensure that only one segment is active at a time, while the weights <span class="math inline">\(\lambda_{g,t,k}\)</span> determine the exact position within that segment. This approach maintains linearity while accurately approximating non-linear efficiency curves.</p>
+</div>
+</div>
 </section>
 <section id="visual-explanation" class="level3">
 <h3 class="anchored" data-anchor-id="visual-explanation">Visual Explanation</h3>
@@ -787,17 +814,8 @@ Note
     <svg style="position: absolute; width: 100%; height: 100%;">
         <!-- X-axis -->
         <line x1="50" y1="350" x2="550" y2="350" stroke="black" stroke-width="2"></line>
-        <text x="550" y="370" text-anchor="end">Power Output [MW]</text>
         <!-- Y-axis -->
         <line x1="50" y1="350" x2="50" y2="50" stroke="black" stroke-width="2"></line>
-        <text x="30" y="50" text-anchor="end" transform="rotate(-90, 30, 50)">Fuel Consumption [MWh]</text>
-        
-        <!-- Grid lines -->
-        <line x1="50" y1="300" x2="550" y2="300" stroke="gray" stroke-width="1" stroke-dasharray="5,5"></line>
-        <line x1="50" y1="250" x2="550" y2="250" stroke="gray" stroke-width="1" stroke-dasharray="5,5"></line>
-        <line x1="50" y1="200" x2="550" y2="200" stroke="gray" stroke-width="1" stroke-dasharray="5,5"></line>
-        <line x1="50" y1="150" x2="550" y2="150" stroke="gray" stroke-width="1" stroke-dasharray="5,5"></line>
-        <line x1="50" y1="100" x2="550" y2="100" stroke="gray" stroke-width="1" stroke-dasharray="5,5"></line>
         
         <!-- X-axis ticks -->
         <line x1="150" y1="350" x2="150" y2="355" stroke="black" stroke-width="2"></line>
@@ -819,39 +837,88 @@ Note
         
         <!-- Example point -->
         <circle cx="200" cy="340" r="6" fill="green"></circle>
+        
+        <!-- Solid green lines -->
+        <line x1="200" y1="340" x2="200" y2="350" stroke="green" stroke-width="2"></line>
+        <line x1="50" y1="340" x2="200" y2="340" stroke="green" stroke-width="2"></line>
+        
+        <!-- Fuel consumption intercepts -->
+        <line x1="45" y1="345" x2="55" y2="345" stroke="black" stroke-width="2"></line>
+        <line x1="45" y1="330" x2="55" y2="330" stroke="black" stroke-width="2"></line>
+        <line x1="45" y1="270" x2="55" y2="270" stroke="black" stroke-width="2"></line>
+        <line x1="45" y1="100" x2="55" y2="100" stroke="black" stroke-width="2"></line>
+        
+        <!-- Grey dashed lines to y-axis intercepts -->
+        <line x1="150" y1="345" x2="50" y2="345" stroke="gray" stroke-width="1" stroke-dasharray="5,5"></line>
+        <line x1="250" y1="330" x2="50" y2="330" stroke="gray" stroke-width="1" stroke-dasharray="5,5"></line>
+        <line x1="350" y1="270" x2="50" y2="270" stroke="gray" stroke-width="1" stroke-dasharray="5,5"></line>
+        <line x1="500" y1="100" x2="50" y2="100" stroke="gray" stroke-width="1" stroke-dasharray="5,5"></line>
+        
+        <!-- Grey dashed lines to x-axis intercepts -->
+        <line x1="150" y1="345" x2="150" y2="350" stroke="gray" stroke-width="1" stroke-dasharray="5,5"></line>
+        <line x1="250" y1="330" x2="250" y2="350" stroke="gray" stroke-width="1" stroke-dasharray="5,5"></line>
+        <line x1="350" y1="270" x2="350" y2="350" stroke="gray" stroke-width="1" stroke-dasharray="5,5"></line>
+        <line x1="500" y1="100" x2="500" y2="350" stroke="gray" stroke-width="1" stroke-dasharray="5,5"></line>
     </svg>
     
     <!-- Labels -->
-    <div style="position: absolute; left: 120px; top: 270px; color: green;">
-        (p_{g,t}, f_g(p_{g,t}))
+    <div style="position: absolute; left: 200px; bottom: -10px; color: green; z-index: 1;">
+        <span class="math inline">\(p_{g,t}\)</span>
     </div>
-    <div style="position: absolute; right: 50px; top: 60px; color: blue;">
-        Original curve
+    <div style="position: absolute; left: -30px; top: 324px; color: green; z-index: 1;">
+        <span class="math inline">\(f_{g,t}\)</span>
     </div>
-    <div style="position: absolute; right: 50px; top: 80px; color: red;">
-        Piecewise linear
+    <div style="position: absolute; right: 150px; top: 50px; color: blue;">
+        <span class="math inline">\(\text{Original curve}\)</span>
     </div>
-    
-    <!-- Lambda weights -->
-    <div style="position: absolute; left: 150px; top: 290px;">
-        λ_{g,t,1}
-    </div>
-    <div style="position: absolute; left: 225px; top: 290px;">
-        λ_{g,t,2}
+    <div style="position: absolute; right: 150px; top: 70px; color: red;">
+        <span class="math inline">\(\text{Piecewise linear}\)</span>
     </div>
     
     <!-- Delta variables -->
-    <div style="position: absolute; left: 150px; bottom: 5px;">
-        δ_{g,t,1}=0
+    <div style="position: absolute; left: 150px; bottom: 20px;">
+        <span class="math inline">\(\delta_{g,t,1}=0\)</span>
     </div>
-    <div style="position: absolute; left: 250px; bottom: 5px;">
-        δ_{g,t,2}=1
+    <div style="position: absolute; left: 250px; bottom: 20px;">
+        <span class="math inline">\(\delta_{g,t,2}=1\)</span>
     </div>
-    <div style="position: absolute; left: 350px; bottom: 5px;">
-        δ_{g,t,3}=0
+    <div style="position: absolute; left: 350px; bottom: 20px;">
+        <span class="math inline">\(\delta_{g,t,3}=0\)</span>
     </div>
-    <div style="position: absolute; left: 500px; bottom: 5px;">
-        δ_{g,t,4}=0
+    <div style="position: absolute; left: 500px; bottom: 20px;">
+        <span class="math inline">\(\delta_{g,t,4}=0\)</span>
+    </div>
+    
+    <!-- Lambda weights -->
+    <div style="position: absolute; left: 150px; bottom: 0px;">
+        <span class="math inline">\(\lambda_{g,t,1}\)</span>
+    </div>
+    <div style="position: absolute; left: 250px; bottom: 0px;">
+        <span class="math inline">\(\lambda_{g,t,2}\)</span>
+    </div>
+    
+    <!-- Fuel consumption labels -->
+    <div style="position: absolute; left: 5px; top: 340px;">
+        <span class="math inline">\(F_{g,1}\)</span>
+    </div>
+    <div style="position: absolute; left: 5px; top: 305px;">
+        <span class="math inline">\(F_{g,2}\)</span>
+    </div>
+    <div style="position: absolute; left: 5px; top: 250px;">
+        <span class="math inline">\(F_{g,3}\)</span>
+    </div>
+    <div style="position: absolute; left: 5px; top: 80px;">
+        <span class="math inline">\(F_{g,4}\)</span>
+    </div>
+    
+    <!-- Y-axis label -->
+    <div style="position: absolute; left: -10px; bottom: 100px; transform: rotate(-90deg); transform-origin: left;">
+        <span class="math inline">\(\text{Fuel Consumption }[MWh]\)</span>
+    </div>
+    
+    <!-- X-axis label -->
+    <div style="position: absolute; left: 400px; bottom: -10px;">
+        <span class="math inline">\(\text{Power Output }[MW]\)</span>
     </div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -867,15 +934,15 @@ Diagram Explanation
 <p>The diagram shows:</p>
 <ol type="1">
 <li>Original convex fuel consumption curve (blue) and its piecewise linear approximation (red)</li>
-<li>Example point (green) at (p_{g,t}, f_g(p_{g,t}))</li>
-<li>Weights (λ) determining position within segments</li>
-<li>Binary variables (δ) selecting active segment</li>
+<li>Example point (green) at (<span class="math inline">\(p_{g,t}\)</span>, <span class="math inline">\(f_{g,t}\)</span>)</li>
+<li>Weights (<span class="math inline">\(\lambda\)</span>) determining position within segments</li>
+<li>Binary variables (<span class="math inline">\(\delta\)</span>) selecting active segment</li>
 </ol>
 <p>The point lies in segment 2, with:</p>
 <ul>
-<li>δ₂ = 1 (active segment)</li>
-<li>λ₁ and λ₂ determining exact position</li>
-<li>Other segments inactive (δ₁ = δ₃ = δ₄ = 0)</li>
+<li><span class="math inline">\(\delta_{g,t,2}=1\)</span> selects this segment</li>
+<li><span class="math inline">\(\lambda_{g,t,1}\)</span> and <span class="math inline">\(\lambda_{g,t,2}\)</span> determine the exact position within the segment</li>
+<li>Other segments are inactive (<span class="math inline">\(\delta_{g,t,k}=0\)</span> for <span class="math inline">\(k \neq 2\)</span>)</li>
 </ul>
 </div>
 </div>
@@ -888,7 +955,7 @@ Diagram Explanation
 <li>The optimization problem remains linear</li>
 <li>The solution is unique and globally optimal</li>
 </ol>
-<p>The binary variables <span class="math inline">\(\delta_{g,t,w}\)</span> enforce convexity by:</p>
+<p>The binary variables <span class="math inline">\(\delta_{g,t,k}\)</span> enforce convexity by:</p>
 <ol type="1">
 <li>Ensuring only one segment is active at a time</li>
 <li>Preventing interpolation between non-adjacent segments</li>
@@ -896,10 +963,10 @@ Diagram Explanation
 </ol>
 <p>In the example above:</p>
 <ul>
-<li>The point <span class="math inline">\((p_{g,t}, f_g(p_{g,t}))\)</span> lies in segment 2</li>
+<li>The point (<span class="math inline">\(p_{g,t}\)</span>, <span class="math inline">\(f_{g,t}\)</span>) lies in segment 2</li>
 <li><span class="math inline">\(\delta_{g,t,2}=1\)</span> selects this segment</li>
 <li><span class="math inline">\(\lambda_{g,t,1}\)</span> and <span class="math inline">\(\lambda_{g,t,2}\)</span> determine the exact position within the segment</li>
-<li>Other segments are inactive (<span class="math inline">\(\delta_{g,t,w}=0\)</span> for <span class="math inline">\(w \neq 2\)</span>)</li>
+<li>Other segments are inactive (<span class="math inline">\(\delta_{g,t,k}=0\)</span> for <span class="math inline">\(k \neq 2\)</span>)</li>
 </ul>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -911,35 +978,7 @@ Tip
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>While the efficiency curve of a thermal generator typically is concave, we model the fuel consumption curve (f = p/η) which is convex. This allows us to use piecewise linear approximation in our MILP formulation while maintaining mathematical properties needed for optimization. The convexity of the fuel consumption curve allows us to use piecewise linear approximation in our MILP formulation while maintaining mathematical properties needed for optimization.</p>
-</div>
-</div>
-</section>
-<section id="constraints" class="level3">
-<h3 class="anchored" data-anchor-id="constraints">Constraints</h3>
-<ol type="1">
-<li><strong>Segment Selection</strong>:</li>
-</ol>
-<p><span class="math inline">\(\sum_{w \in \mathcal{W}} \lambda_{g,t,w} = 1 \quad \forall g \in \mathcal{G}, t \in \mathcal{T}\)</span></p>
-<ol start="2" type="1">
-<li><strong>Power Output</strong>:</li>
-</ol>
-<p><span class="math inline">\(p_{g,t} = \sum_{w \in \mathcal{W}} \lambda_{g,t,w} \cdot p_{g,w} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}\)</span></p>
-<ol start="3" type="1">
-<li><strong>Segment Limits</strong>:</li>
-</ol>
-<p><span class="math inline">\(\lambda_{g,t,w} \leq \delta_{g,t,w} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}, w \in \mathcal{W}\)</span> <span class="math inline">\(\sum_{w \in \mathcal{W}} \delta_{g,t,w} = 1 \quad \forall g \in \mathcal{G}, t \in \mathcal{T}\)</span></p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>The binary variables <span class="math inline">\(\delta_{g,t,w}\)</span> ensure that only one segment is active at a time, while the weights <span class="math inline">\(\lambda_{g,t,w}\)</span> determine the exact position within that segment. This approach maintains linearity while accurately approximating non-linear efficiency curves.</p>
+<p>While the efficiency curve of a thermal generator typically is concave, we model the fuel consumption curve (<span class="math inline">\(f = p/\eta\)</span>) which is convex. This allows us to use piecewise linear approximation in our MILP formulation while maintaining mathematical properties needed for optimization. The convexity of the fuel consumption curve allows us to use piecewise linear approximation in our MILP formulation while maintaining mathematical properties needed for optimization.</p>
 </div>
 </div>
 </section>
@@ -1008,6 +1047,7 @@ Tip
 <li>Plus energy from charging (accounting for efficiency)</li>
 <li>Minus energy from discharging (accounting for efficiency)</li>
 </ul>
+<p>For batteries the energy level is often referred to as state of charge (SOC).</p>
 </div>
 </div>
 </section>
@@ -1034,7 +1074,9 @@ Tip
 </section>
 <section id="power-limits-and-mutual-exclusion" class="level2">
 <h2 class="anchored" data-anchor-id="power-limits-and-mutual-exclusion">Power Limits and Mutual Exclusion</h2>
-<p><span class="math inline">\(0 \leq p^{ch}_{s,t} \leq P^{ch,max}_s u^{ch}_{s,t} \quad \forall s \in \mathcal{S}, t \in \mathcal{T}\)</span> <span class="math inline">\(0 \leq p^{dis}_{s,t} \leq P^{dis,max}_s u^{dis}_{s,t} \quad \forall s \in \mathcal{S}, t \in \mathcal{T}\)</span> <span class="math inline">\(u^{ch}_{s,t} + u^{dis}_{s,t} \leq 1 \quad \forall s \in \mathcal{S}, t \in \mathcal{T}\)</span></p>
+<p><span class="math inline">\(0 \leq p^{ch}_{s,t} \leq P^{ch,max}_s u^{ch}_{s,t} \quad \forall s \in \mathcal{S}, t \in \mathcal{T}\)</span></p>
+<p><span class="math inline">\(0 \leq p^{dis}_{s,t} \leq P^{dis,max}_s u^{dis}_{s,t} \quad \forall s \in \mathcal{S}, t \in \mathcal{T}\)</span></p>
+<p><span class="math inline">\(u^{ch}_{s,t} + u^{dis}_{s,t} \leq 1 \quad \forall s \in \mathcal{S}, t \in \mathcal{T}\)</span></p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1124,7 +1166,7 @@ Summary: Mutual Exclusion Decision
 <p>The mutual exclusion constraint should be included when:</p>
 <ol type="1">
 <li><strong>Technically Required</strong>: Physical limitations prevent simultaneous operation</li>
-<li><strong>Economically Beneficial</strong>: Efficiency losses and wear costs exceed benefits</li>
+<li><strong>Economically Beneficial</strong>: Efficiency losses and wear costs exceed benefits but are not included in the model</li>
 <li><strong>Operationally Sensible</strong>: System design favors separate charging/discharging</li>
 </ol>
 <p>The decision depends on both the storage technology and the specific economic context of the application.</p>
@@ -1163,37 +1205,41 @@ Tip
 <h3 class="anchored" data-anchor-id="additional-decision-variables">Additional Decision Variables</h3>
 <p>New Decision Variables:</p>
 <ul>
-<li><span class="math inline">\(E^{nom}_s\)</span> - Nominal energy capacity of storage <span class="math inline">\(s\)</span> [MWh]</li>
-<li><span class="math inline">\(P^{ch,nom}_s\)</span> - Nominal charging power of storage <span class="math inline">\(s\)</span> [MW]</li>
-<li><span class="math inline">\(P^{dis,nom}_s\)</span> - Nominal discharging power of storage <span class="math inline">\(s\)</span> [MW]</li>
+<li><span class="math inline">\(e^{nom}_s\)</span> - Nominal energy capacity of storage <span class="math inline">\(s\)</span> [MWh]</li>
+<li><span class="math inline">\(p^{ch,nom}_s\)</span> - Nominal charging power of storage <span class="math inline">\(s\)</span> [MW]</li>
+<li><span class="math inline">\(p^{dis,nom}_s\)</span> - Nominal discharging power of storage <span class="math inline">\(s\)</span> [MW]</li>
 </ul>
 <p>Variables (previously parameters):</p>
 <ul>
-<li><span class="math inline">\(E^{max}_s\)</span> - Maximum energy capacity of storage <span class="math inline">\(s\)</span> [MWh]</li>
-<li><span class="math inline">\(E^{min}_s\)</span> - Minimum energy level of storage <span class="math inline">\(s\)</span> [MWh]</li>
-<li><span class="math inline">\(P^{ch,max}_s\)</span> - Maximum charging power of storage <span class="math inline">\(s\)</span> [MW]</li>
-<li><span class="math inline">\(P^{dis,max}_s\)</span> - Maximum discharging power of storage <span class="math inline">\(s\)</span> [MW]</li>
+<li><span class="math inline">\(e^{max}_s\)</span> - Maximum energy capacity of storage <span class="math inline">\(s\)</span> [MWh]</li>
+<li><span class="math inline">\(e^{min}_s\)</span> - Minimum energy level of storage <span class="math inline">\(s\)</span> [MWh]</li>
+<li><span class="math inline">\(p^{ch,max}_s\)</span> - Maximum charging power of storage <span class="math inline">\(s\)</span> [MW]</li>
+<li><span class="math inline">\(p^{dis,max}_s\)</span> - Maximum discharging power of storage <span class="math inline">\(s\)</span> [MW]</li>
 </ul>
 </section>
 <section id="additional-parameters" class="level3">
 <h3 class="anchored" data-anchor-id="additional-parameters">Additional Parameters</h3>
 <ul>
-<li><span class="math inline">\(c^{E}_s\)</span> - Cost per MWh of energy capacity for storage <span class="math inline">\(s\)</span> [EUR/MWh]</li>
+<li><span class="math inline">\(C^{E}_s\)</span> - Cost per MWh of energy capacity for storage <span class="math inline">\(s\)</span> [EUR/MWh]</li>
+<li><span class="math inline">\(C^{P,ch}_s\)</span> - Cost per MW of charging power capacity for storage <span class="math inline">\(s\)</span> [EUR/MW]</li>
+<li><span class="math inline">\(C^{P,dis}_s\)</span> - Cost per MW of discharging power capacity for storage <span class="math inline">\(s\)</span> [EUR/MW]</li>
+<li><span class="math inline">\(DoD_s\)</span> - Depth of discharge limit for storage <span class="math inline">\(s\)</span> [%]</li>
+<li><span class="math inline">\(F^{PVAF}\)</span> - Present value annuity factor for the investment costs</li>
 </ul>
 </section>
 <section id="modified-constraints" class="level3">
 <h3 class="anchored" data-anchor-id="modified-constraints">Modified Constraints</h3>
 <p><strong>Energy Capacity</strong>:</p>
-<p><span class="math inline">\(E^{min}_s = \text{DoD}_s E^{nom}_s\)</span></p>
-<p><span class="math inline">\(E^{max}_s = E^{nom}_s\)</span></p>
+<p><span class="math inline">\(e^{min}_s = DoD_s e^{nom}_s \quad \forall s \in \mathcal{S}\)</span></p>
+<p><span class="math inline">\(e^{max}_s = e^{nom}_s \quad \forall s \in \mathcal{S}\)</span></p>
 <p><strong>Power Capacity</strong>:</p>
-<p><span class="math inline">\(P^{ch,max}_s = P^{ch,nom}_s\)</span></p>
-<p><span class="math inline">\(P^{dis,max}_s = P^{dis,nom}_s\)</span></p>
+<p><span class="math inline">\(p^{ch,max}_s = p^{ch,nom}_s \quad \forall s \in \mathcal{S}\)</span></p>
+<p><span class="math inline">\(p^{dis,max}_s = p^{dis,nom}_s \quad \forall s \in \mathcal{S}\)</span></p>
 </section>
 <section id="extended-objective-function" class="level3">
 <h3 class="anchored" data-anchor-id="extended-objective-function">Extended Objective Function</h3>
 <p>Add to the original objective:</p>
-<p><span class="math inline">\(\text{Minimize} \quad ... + \sum_{s \in \mathcal{S}} c^{E}_s E^{nom}_s\)</span></p>
+<p><span class="math inline">\(\text{Minimize} \quad ... + \sum_{s \in \mathcal{S}} (C^{E}_s / F^{PVAF} e^{nom}_s + C^{P,ch}_s p^{ch,nom}_s + C^{P,dis}_s p^{dis,nom}_s)\)</span></p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1204,7 +1250,8 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>This extension allows us to find the optimal storage capacity that balances investment costs with operational benefits.</p>
+<p>This extension allows us to find the optimal storage capacity that balances investment costs with operational benefits. The objective function includes both energy and power capacity costs.</p>
+<p>The investment costs and operational costs need to be calculated on the same time basis to be comparable. While operational costs are calculated for a specific time horizon (e.g.&nbsp;one year), investment costs are typically one-time fixed costs. Therefore, the investment costs need to be converted to an equivalent annual cost using the present value annuity factor (PVAF). This ensures we compare annual operational benefits with annualized investment costs.</p>
 </div>
 </div>
 </section>
@@ -1223,12 +1270,14 @@ Note
 <li>Investment costs are fixed</li>
 <li>Operational benefits are time-dependent</li>
 <li>Need to consider lifetime of the system</li>
+<li>Separate costs for energy and power capacity</li>
 </ul></li>
 <li><strong>Technical Constraints</strong>:
 <ul>
 <li>Depth of discharge affects usable capacity</li>
 <li>Efficiency losses impact economic viability</li>
 <li>Power capacity affects flexibility</li>
+<li>Different power ratings for charging and discharging</li>
 </ul></li>
 </ol>
 <div class="callout callout-style-default callout-tip callout-titled">
@@ -1241,7 +1290,7 @@ Tip
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>The optimal storage capacity depends on the specific use case, electricity prices, and technical parameters of the storage system.</p>
+<p>The optimal storage capacity depends on the specific use case, electricity prices, and technical parameters of the storage system. The model now accounts for separate costs and capacities for energy storage and power handling equipment (charging/discharging infrastructure that converts between electrical energy and the storage medium’s form of energy, such as chemical energy in batteries or potential energy in pumped hydro).</p>
 </div>
 </div>
 </section>
@@ -1267,10 +1316,11 @@ Tip
 <li>Emission constraints</li>
 <li>Uncertainty in forecasts</li>
 </ul>
-<section id="energy-markets-overview" class="level3">
-<h3 class="anchored" data-anchor-id="energy-markets-overview">Energy Markets Overview</h3>
-<ol type="1">
-<li><strong>Power Purchase Agreements (PPA)</strong>:
+</section>
+<section id="excursion-energy-markets-overview" class="level2">
+<h2 class="anchored" data-anchor-id="excursion-energy-markets-overview">Excursion: Energy Markets Overview</h2>
+<section id="power-purchase-agreements-ppa" class="level4">
+<h4 class="anchored" data-anchor-id="power-purchase-agreements-ppa">Power Purchase Agreements (PPA):</h4>
 <ul>
 <li>Long-term contracts (5-20 years)</li>
 <li>Fixed or indexed prices</li>
@@ -1279,8 +1329,10 @@ Tip
 <li>Typically monthly or quarterly settlements</li>
 <li>Can include minimum/maximum volume commitments</li>
 <li>Often includes price escalation clauses</li>
-</ul></li>
-<li><strong>Day-ahead Market (XETRA)</strong>:
+</ul>
+</section>
+<section id="day-ahead-market-xetra" class="level4">
+<h4 class="anchored" data-anchor-id="day-ahead-market-xetra">Day-ahead Market (XETRA):</h4>
 <ul>
 <li>Trading for next day</li>
 <li>Hourly products</li>
@@ -1290,8 +1342,10 @@ Tip
 <li>Results published around 12:45</li>
 <li>Minimum bid size: 0.1 MW</li>
 <li>Price range: -500 to 3000 EUR/MWh</li>
-</ul></li>
-<li><strong>Intraday Continuous</strong>:
+</ul>
+</section>
+<section id="intraday-continuous" class="level4">
+<h4 class="anchored" data-anchor-id="intraday-continuous">Intraday Continuous:</h4>
 <ul>
 <li>Trading until 5 minutes before delivery</li>
 <li>15-minute products</li>
@@ -1301,8 +1355,10 @@ Tip
 <li>Price range: -500 to 3000 EUR/MWh</li>
 <li>Trading hours: 24/7</li>
 <li>Order book with best bid/ask prices</li>
-</ul></li>
-<li><strong>Intraday Auction</strong>:
+</ul>
+</section>
+<section id="intraday-auction" class="level4">
+<h4 class="anchored" data-anchor-id="intraday-auction">Intraday Auction:</h4>
 <ul>
 <li>Additional trading opportunities</li>
 <li>15-minute products</li>
@@ -1312,13 +1368,12 @@ Tip
 <li>Multiple auctions per day (e.g., 6:00, 12:00, 15:00, 18:00)</li>
 <li>Minimum bid size: 0.1 MW</li>
 <li>Price range: -500 to 3000 EUR/MWh</li>
-</ul></li>
-</ol>
+</ul>
 </section>
 <section id="ancillary-services-markets" class="level3">
 <h3 class="anchored" data-anchor-id="ancillary-services-markets">Ancillary Services Markets</h3>
-<ol type="1">
-<li><strong>Primary Control Reserve (FCR)</strong>:
+<section id="primary-control-reserve-fcr" class="level4">
+<h4 class="anchored" data-anchor-id="primary-control-reserve-fcr">Primary Control Reserve (FCR):</h4>
 <ul>
 <li>Fastest response (30 seconds)</li>
 <li>Symmetric (up/down)</li>
@@ -1334,8 +1389,10 @@ Tip
 <li>Down-regulation: Price of last activated unit (marginal price)</li>
 <li>Typically higher than day-ahead prices</li>
 </ul></li>
-</ul></li>
-<li><strong>Secondary Control Reserve (aFRR)</strong>:
+</ul>
+</section>
+<section id="secondary-control-reserve-afrr" class="level4">
+<h4 class="anchored" data-anchor-id="secondary-control-reserve-afrr">Secondary Control Reserve (aFRR):</h4>
 <ul>
 <li>Response within 5 minutes</li>
 <li>Symmetric (up/down)</li>
@@ -1352,8 +1409,10 @@ Tip
 <li>Can be significantly higher than day-ahead prices</li>
 <li>Separate price zones for up/down regulation</li>
 </ul></li>
-</ul></li>
-<li><strong>Minute Reserve (mFRR)</strong>:
+</ul>
+</section>
+<section id="minute-reserve-mfrr" class="level4">
+<h4 class="anchored" data-anchor-id="minute-reserve-mfrr">Minute Reserve (mFRR):</h4>
 <ul>
 <li>Response within 15 minutes</li>
 <li>Asymmetric (up/down)</li>
@@ -1370,8 +1429,7 @@ Tip
 <li>Highest energy prices among ancillary services</li>
 <li>Often triggered during system stress</li>
 </ul></li>
-</ul></li>
-</ol>
+</ul>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1471,6 +1529,7 @@ And that’s it for today’s lecture!
 <p>We have covered a extended version of the Unit Commitment problem with operation and sizing of storage systems and its mathematical formulation. The tutorial will help you implement and solve this problem using Julia and JuMP.</p>
 </div>
 </div>
+</section>
 </section>
 </section>
 <section id="section" class="level2 loud-slide">
