@@ -54,7 +54,7 @@
   </url>
   <url>
     <loc>https://TobiasCors.github.io/Energy-System-Optimization/index.html</loc>
-    <lastmod>2025-06-05T15:31:41.483Z</lastmod>
+    <lastmod>2025-06-06T21:20:55.580Z</lastmod>
   </url>
   <url>
     <loc>https://TobiasCors.github.io/Energy-System-Optimization/general/cheatsheet-julia.html</loc>
@@ -130,7 +130,7 @@
   </url>
   <url>
     <loc>https://TobiasCors.github.io/Energy-System-Optimization/part-06/tutorial-commitment.html</loc>
-    <lastmod>2025-05-22T09:52:22.095Z</lastmod>
+    <lastmod>2025-06-06T21:20:30.939Z</lastmod>
   </url>
   <url>
     <loc>https://TobiasCors.github.io/Energy-System-Optimization/part-06/lecture-commitment.html</loc>
@@ -147,5 +147,9 @@
   <url>
     <loc>https://TobiasCors.github.io/Energy-System-Optimization/part-07/lecture-presentation.html</loc>
     <lastmod>2025-06-05T15:26:09.127Z</lastmod>
+  </url>
+  <url>
+    <loc>https://TobiasCors.github.io/Energy-System-Optimization/part-07/tutorial-storage.html</loc>
+    <lastmod>2025-06-06T21:20:05.243Z</lastmod>
   </url>
 </urlset>

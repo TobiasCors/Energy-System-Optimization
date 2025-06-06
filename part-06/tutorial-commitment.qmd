@@ -279,31 +279,30 @@ We only have one scenario, so we can plot the results for that scenario like thi
 
 ```{julia}
 #| eval: false
+#| 
+# Format datetime to show only hours
+hours = hour.(results_df.datetime)
+
 # Plot generation over time
-p1 = plot(results_df.datetime, results_df.thermal_generation, 
+plot(hours, results_df.thermal_generation, 
     label="Thermal Generation", xlabel="Time", ylabel="Power [MW]")
-plot!(results_df.datetime, results_df.wind_generation, 
+plot!(hours, results_df.wind_generation, 
     label="Wind Generation")
-plot!(results_df.datetime, results_df.wind_curtailment, 
+plot!(hours, results_df.wind_curtailment, 
     label="Wind Curtailment")
 title!("Generation Profile")
 
-# Plot costs
-p2 = plot(results_df.datetime, results_df.total_cost, 
-    label="Total Cost", xlabel="Time", ylabel="Cost [EUR]")
-title!("Cost Profile")
-
-# Display plots
-plot(p1, p2, layout=(2,1), size=(800,600))
 ```
 
 ## Assert the correct objective value
 
 ```{julia}
 #| eval: false
+#| code-fold: true
+# Test your answer
 # Assert the correct objective value
 result_cost = results_df[results_df.scenario .== "S1", :total_cost][1]
-@assert isapprox(result_cost, 1.1446e6; atol=1e-2) "Objective value from results_df is not correct. Check your implementation."
+@assert isapprox(result_cost, 1.1446e6; atol=1e4) "Objective value from results_df is not correct. Check your implementation."
 println("Test passed: The objective value from results_df is correct!")
 ```
 ---

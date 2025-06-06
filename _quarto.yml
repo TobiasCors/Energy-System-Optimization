@@ -94,8 +94,8 @@ website:
         contents:
           - text: "Lecture"
             href: part-07/lecture-storage.qmd
-          # - text: "Tutorial"
-          #   href: part-07/tutorial-routing.qmd
+          - text: "Tutorial"
+            href: part-07/tutorial-storage.qmd
       # - section: "08 Districting"
       #   contents:
       #     - text: "Lecture"
