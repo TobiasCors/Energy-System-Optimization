@@ -131,6 +131,8 @@ Now, let's implement the Unit Commitment model with storage. We'll create a func
 **TASK:** Fill out the code below where you see `## YOUR CODE HERE` to implement the storage in the model.
 
 ```{julia}
+#| eval: false
+
 function solve_unit_commitment(dictGenerators, dictStorages, dictWindTurbines, scenario)
     # Create model
     model = Model(HiGHS.Optimizer)
@@ -262,6 +264,8 @@ end
 Now, let's solve the model and analyze the results with simple plotting.
 
 ```{julia}
+#| eval: false
+
 # Create a dataframe to store results
 results_df = DataFrame(
     scenario = String[],        # Scenario identifier
@@ -329,8 +333,6 @@ for (scenario_name, scenario_data) in dictScenarios
     # Display the figure
     display(fig)
 end
-
-
 
 ```
 
