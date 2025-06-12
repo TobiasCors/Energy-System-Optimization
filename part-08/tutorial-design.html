@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Dr.&nbsp;Tobias Cors">
 
-<title>Tutorial V - Economic Dispatch Problem – Energy System Optimization with Julia</title>
+<title>Tutorial VIII - Stochastic Energy System Design Problem – Energy System Optimization with Julia</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,41 +20,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -146,7 +112,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../part-05/lecture-dispatch.html">05 Dispatch</a></li><li class="breadcrumb-item"><a href="../part-05/tutorial-dispatch.html">Tutorial</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../part-08/lecture-design.html">08 Design</a></li><li class="breadcrumb-item"><a href="../part-08/tutorial-design.html">Tutorial</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -335,13 +301,13 @@ window.Quarto = {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
  <span class="menu-text">05 Dispatch</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../part-05/lecture-dispatch.html" class="sidebar-item-text sidebar-link">
@@ -350,7 +316,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../part-05/tutorial-dispatch.html" class="sidebar-item-text sidebar-link active">
+  <a href="../part-05/tutorial-dispatch.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Tutorial</span></a>
   </div>
 </li>
@@ -404,13 +370,13 @@ window.Quarto = {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
  <span class="menu-text">08 Design</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../part-08/lecture-design.html" class="sidebar-item-text sidebar-link">
@@ -419,7 +385,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../part-08/tutorial-design.html" class="sidebar-item-text sidebar-link">
+  <a href="../part-08/tutorial-design.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Tutorial</span></a>
   </div>
 </li>
@@ -473,26 +439,85 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#modelling-the-ed-problem" id="toc-modelling-the-ed-problem" class="nav-link active" data-scroll-target="#modelling-the-ed-problem">1. Modelling the ED problem</a></li>
-  <li><a href="#solving-scenarios-of-the-ed-problem" id="toc-solving-scenarios-of-the-ed-problem" class="nav-link" data-scroll-target="#solving-scenarios-of-the-ed-problem">2. Solving scenarios of the ED problem</a></li>
+  <li><a href="#stochastic-system-design" id="toc-stochastic-system-design" class="nav-link active" data-scroll-target="#stochastic-system-design"><span class="flow">Stochastic System Design</span></a>
+  <ul class="collapse">
+  <li><a href="#system-design-problem" id="toc-system-design-problem" class="nav-link" data-scroll-target="#system-design-problem">System Design Problem</a>
+  <ul class="collapse">
+  <li><a href="#key-components" id="toc-key-components" class="nav-link" data-scroll-target="#key-components">Key Components</a></li>
+  <li><a href="#mathematical-structure" id="toc-mathematical-structure" class="nav-link" data-scroll-target="#mathematical-structure">Mathematical Structure</a></li>
+  <li><a href="#solution-approaches" id="toc-solution-approaches" class="nav-link" data-scroll-target="#solution-approaches">Solution Approaches</a></li>
+  <li><a href="#applications" id="toc-applications" class="nav-link" data-scroll-target="#applications">Applications</a></li>
+  </ul></li>
+  <li><a href="#stochastic-formulation" id="toc-stochastic-formulation" class="nav-link" data-scroll-target="#stochastic-formulation">Stochastic Formulation</a></li>
+  <li><a href="#sets" id="toc-sets" class="nav-link" data-scroll-target="#sets">Sets</a></li>
+  <li><a href="#decision-variables" id="toc-decision-variables" class="nav-link" data-scroll-target="#decision-variables">Decision Variables</a>
+  <ul class="collapse">
+  <li><a href="#investment-variables-first-stage" id="toc-investment-variables-first-stage" class="nav-link" data-scroll-target="#investment-variables-first-stage">Investment Variables (First Stage)</a></li>
+  <li><a href="#operational-variables-second-stage" id="toc-operational-variables-second-stage" class="nav-link" data-scroll-target="#operational-variables-second-stage">Operational Variables (Second Stage)</a></li>
+  <li><a href="#annual-cost-variables" id="toc-annual-cost-variables" class="nav-link" data-scroll-target="#annual-cost-variables">Annual Cost Variables</a></li>
+  </ul></li>
+  <li><a href="#parameters" id="toc-parameters" class="nav-link" data-scroll-target="#parameters">Parameters</a>
+  <ul class="collapse">
+  <li><a href="#investment-costs-first-stage" id="toc-investment-costs-first-stage" class="nav-link" data-scroll-target="#investment-costs-first-stage">Investment Costs (First Stage)</a></li>
+  <li><a href="#operational-parameters-second-stage" id="toc-operational-parameters-second-stage" class="nav-link" data-scroll-target="#operational-parameters-second-stage">Operational Parameters (Second Stage)</a></li>
+  </ul></li>
+  <li><a href="#objective-function-1" id="toc-objective-function-1" class="nav-link" data-scroll-target="#objective-function-1">Objective Function</a></li>
+  <li><a href="#annual-cost-constraints" id="toc-annual-cost-constraints" class="nav-link" data-scroll-target="#annual-cost-constraints">Annual Cost Constraints</a>
+  <ul class="collapse">
+  <li><a href="#investment-costs-first-stage-1" id="toc-investment-costs-first-stage-1" class="nav-link" data-scroll-target="#investment-costs-first-stage-1">Investment Costs (First Stage)</a></li>
+  <li><a href="#investment-budget" id="toc-investment-budget" class="nav-link" data-scroll-target="#investment-budget">Investment Budget</a></li>
+  <li><a href="#grid-electricity-costs-second-stage" id="toc-grid-electricity-costs-second-stage" class="nav-link" data-scroll-target="#grid-electricity-costs-second-stage">Grid Electricity Costs (Second Stage)</a></li>
+  </ul></li>
+  <li><a href="#constraints" id="toc-constraints" class="nav-link" data-scroll-target="#constraints">Constraints</a>
+  <ul class="collapse">
+  <li><a href="#power-balance" id="toc-power-balance" class="nav-link" data-scroll-target="#power-balance">Power Balance</a></li>
+  <li><a href="#component-limits" id="toc-component-limits" class="nav-link" data-scroll-target="#component-limits">Component Limits</a></li>
+  <li><a href="#storage-energy-balance" id="toc-storage-energy-balance" class="nav-link" data-scroll-target="#storage-energy-balance">Storage Energy Balance</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#implementation-of-the-stochastic-system-design-problem" id="toc-implementation-of-the-stochastic-system-design-problem" class="nav-link" data-scroll-target="#implementation-of-the-stochastic-system-design-problem"><span class="flow">Implementation of the Stochastic System Design Problem</span></a>
+  <ul class="collapse">
+  <li><a href="#load-packages" id="toc-load-packages" class="nav-link" data-scroll-target="#load-packages">1. Load Packages</a></li>
+  <li><a href="#data-generation" id="toc-data-generation" class="nav-link" data-scroll-target="#data-generation">2. Data Generation</a></li>
+  <li><a href="#load-and-process-data" id="toc-load-and-process-data" class="nav-link" data-scroll-target="#load-and-process-data">3. Load and Process Data</a></li>
+  <li><a href="#model-implementation" id="toc-model-implementation" class="nav-link" data-scroll-target="#model-implementation">4. Model Implementation</a></li>
+  <li><a href="#solve-and-analyze-results" id="toc-solve-and-analyze-results" class="nav-link" data-scroll-target="#solve-and-analyze-results">5. Solve and Analyze Results</a></li>
+  <li><a href="#create-figures" id="toc-create-figures" class="nav-link" data-scroll-target="#create-figures">6. Create Figures</a></li>
+  <li><a href="#sensitivity-analysis-example" id="toc-sensitivity-analysis-example" class="nav-link" data-scroll-target="#sensitivity-analysis-example">7. Sensitivity Analysis Example</a></li>
+  <li><a href="#sensitivity-analysis-of-the-electricity-price" id="toc-sensitivity-analysis-of-the-electricity-price" class="nav-link" data-scroll-target="#sensitivity-analysis-of-the-electricity-price">8. Sensitivity Analysis of the Electricity Price</a></li>
+  <li><a href="#recommendations-for-hamburg-chempark-gmbh" id="toc-recommendations-for-hamburg-chempark-gmbh" class="nav-link" data-scroll-target="#recommendations-for-hamburg-chempark-gmbh">9. Recommendations for Hamburg ChemPark GmbH</a></li>
+  </ul></li>
   <li><a href="#solutions" id="toc-solutions" class="nav-link" data-scroll-target="#solutions">Solutions</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/edit/main/part-05/tutorial-dispatch.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/blob/main/part-05/tutorial-dispatch.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="tutorial-dispatch.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li><li><a href="tutorial-dispatch.ipynb" download="tutorial-dispatch.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/edit/main/part-08/tutorial-design.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/blob/main/part-08/tutorial-design.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="tutorial-design.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li><li><a href="tutorial-design.ipynb" download="tutorial-design.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../part-05/lecture-dispatch.html">05 Dispatch</a></li><li class="breadcrumb-item"><a href="../part-05/tutorial-dispatch.html">Tutorial</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../part-08/lecture-design.html">08 Design</a></li><li class="breadcrumb-item"><a href="../part-08/tutorial-design.html">Tutorial</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Tutorial V - Economic Dispatch Problem</h1>
+<h1 class="title">Tutorial VIII - Stochastic Energy System Design Problem</h1>
 <p class="subtitle lead">Energy System Optimization with Julia</p>
 </div>
 
 
+<div class="quarto-title-meta-author">
+  <div class="quarto-title-meta-heading">Author</div>
+  <div class="quarto-title-meta-heading">Affiliation</div>
+  
+    <div class="quarto-title-meta-contents">
+    <p class="author">Dr.&nbsp;Tobias Cors </p>
+  </div>
+  <div class="quarto-title-meta-contents">
+        <p class="affiliation">
+            Hamburg University of Applied Science - Summer 2025
+          </p>
+      </div>
+  </div>
 
 <div class="quarto-title-meta">
 
-    
+      
   
     
   </div>
@@ -502,139 +527,17 @@ window.Quarto = {
 </header>
 
 
-<section id="modelling-the-ed-problem" class="level1">
-<h1>1. Modelling the ED problem</h1>
-<p>Implement the ED problem from the lecture in Julia. Before we start, let’s load the necessary packages and data.</p>
-<div id="4" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">JuMP</span>, <span class="bu">HiGHS</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">CSV</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrames</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Plots</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Tip
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>If you haven’t installed the packages yet, you can do so by running <code>using Pkg</code> first and then <code>Pkg.add("JuMP")</code>, <code>Pkg.add("HiGHS")</code>, <code>Pkg.add("DataFrames")</code>, <code>Pkg.add("Plots")</code>, and <code>Pkg.add("StatsPlots")</code>.</p>
-</div>
-</div>
-<p>Now, let’s load the data. The generator data (<span class="math inline">\(p^{\min}_g, p^{\max}_g, c^{var}_g, c^{fix}_g\)</span>), <span class="math inline">\(c^{fix}_g\)</span> being fixed cost not used in the ED, the wind data (<span class="math inline">\(c^{var}_w\)</span>), and the scenario data (<span class="math inline">\(p^f_w, d^f\)</span>) are provided as CSV files.</p>
-<div id="6" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the directory of the current file</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>file_directory <span class="op">=</span> <span class="st">"</span><span class="sc">$</span>(<span class="pp">@__DIR__</span>)<span class="st">/data"</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the data of the thermal generators</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>generators <span class="op">=</span> CSV.<span class="fu">read</span>(<span class="st">"</span><span class="sc">$</span>file_directory<span class="st">/generator.csv"</span>, DataFrame)</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"Number of generator: </span><span class="sc">$</span>(<span class="fu">nrow</span>(generators))<span class="st">"</span>)</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"First 5 rows of available genrator:"</span>)</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(generators[<span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="op">:</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Number of generator: 6
-First 5 rows of available genrator:
-5×5 DataFrame
- Row │ name     min_power  max_power  variable_cost  fix_cost 
-     │ String3  Int64      Int64      Int64          Int64    
-─────┼────────────────────────────────────────────────────────
-   1 │ G1             100        500             50      1000
-   2 │ G2              50        350             60      1200
-   3 │ G3              40        250             55      1300
-   4 │ G4              30        200             70      1500
-   5 │ G5              30        200             60      1500</code></pre>
-</div>
-</div>
-<div id="8" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the data of the wind turbines</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>windTurbines <span class="op">=</span> CSV.<span class="fu">read</span>(<span class="st">"</span><span class="sc">$</span>file_directory<span class="st">/windTurbine.csv"</span>, DataFrame)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"Number of wind turbines: </span><span class="sc">$</span>(<span class="fu">nrow</span>(windTurbines))<span class="st">"</span>)</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"Variable cost per wind turbine:"</span>)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(windTurbines)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Number of wind turbines: 1
-Variable cost per wind turbine:
-1×2 DataFrame
- Row │ name     var_cost 
-     │ String3  Int64    
-─────┼───────────────────
-   1 │ T1             50</code></pre>
-</div>
-</div>
-<div id="10" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the sceanrio data about the demand and wind forecast</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>scenarios <span class="op">=</span> CSV.<span class="fu">read</span>(<span class="st">"</span><span class="sc">$</span>file_directory<span class="st">/scenario.csv"</span>, DataFrame)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"First 5 rows of sceanios:"</span>)</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(scenarios[<span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="op">:</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>First 5 rows of sceanios:
-5×3 DataFrame
- Row │ name     wind_forecast  demand_forecast 
-     │ String3  Int64          Int64           
-─────┼─────────────────────────────────────────
-   1 │ S1                1000             1500
-   2 │ S2                1000             1600
-   3 │ S3                1000             1400
-   4 │ S4                1000             1300
-   5 │ S5                1000             1000</code></pre>
-</div>
-</div>
-<p>Next, you need to prepare the given data for the model. We will use ‘function’ to create a ‘Named Tuple’ which we can access with the dot notation:</p>
-<div id="12" class="cell" data-execution_count="0">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This function creates the Named Tuple ThermalGenerator</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">ThermalGenerator</span>(</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    min<span class="op">::</span><span class="dt">Int64</span>,</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    max<span class="op">::</span><span class="dt">Int64</span>,</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    fixed_cost<span class="op">::</span><span class="dt">Int64</span>,</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    variable_cost<span class="op">::</span><span class="dt">Int64</span>,</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>        min <span class="op">=</span> min,</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>        max <span class="op">=</span> max,</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>        fixed_cost <span class="op">=</span> fixed_cost,</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>        variable_cost <span class="op">=</span> variable_cost,</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Add generators of the data to a dictionary of the generators</span></span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>dictThermalGeneartors <span class="op">=</span> <span class="fu">Dict</span>(row.name <span class="op">=&gt;</span> <span class="fu">ThermalGenerator</span>(row.min_power, row.max_power, row.fix_cost, row.variable_cost) <span class="cf">for</span> row <span class="kw">in</span> <span class="fu">eachrow</span>(generators))</span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Now a generator propety can be accessed</span></span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(dictThermalGeneartors[<span class="st">"G1"</span>].variable_cost)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>Analogously create a dictionary for the wind turbines and scenarios. Call them <code>dictWindTurbines</code> and <code>dictScenarios</code>.</p>
-<div id="14" class="cell" data-execution_count="0">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># YOUR CODE BELOW</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div id="16" class="cell" data-execution_count="0">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Validate your solution</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">length</span>(dictThermalGeneartors) <span class="op">==</span> <span class="fu">nrow</span>(generators) <span class="st">"Available time dictionary should have same length as input data"</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">length</span>(dictWindTurbines) <span class="op">==</span> <span class="fu">nrow</span>(windTurbines) <span class="st">"Available time dictionary should have same length as input data"</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">length</span>(dictScenarios) <span class="op">==</span> <span class="fu">nrow</span>(scenarios) <span class="st">"Scenario dictionary should have same length as input data"</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Check that all values are positive</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">all</span>(v <span class="op">-&gt;</span> <span class="fu">all</span>(x <span class="op">-&gt;</span> x <span class="op">&gt;=</span> <span class="fl">0</span>, [v.min, v.max, v.fixed_cost, v.variable_cost]), <span class="fu">values</span>(dictThermalGeneartors)) <span class="st">"All thermal generator values must be positive"</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">all</span>(v <span class="op">-&gt;</span> v.variable_cost <span class="op">&gt;=</span> <span class="fl">0</span>, <span class="fu">values</span>(dictWindTurbines)) <span class="st">"All wind turbine values must be positive"</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">all</span>(v <span class="op">-&gt;</span> <span class="fu">all</span>(x <span class="op">-&gt;</span> x <span class="op">&gt;=</span> <span class="fl">0</span>, [v.wind_forecast, v.demand_forecast]), <span class="fu">values</span>(dictScenarios)) <span class="st">"All scenario values must be positive"</span></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Check that dictionaries contain all expected keys</span></span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">all</span>(p <span class="op">-&gt;</span> <span class="fu">haskey</span>(dictThermalGeneartors, p), generators.name) <span class="st">"Missing names in dictionary"</span></span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">all</span>(b <span class="op">-&gt;</span> <span class="fu">haskey</span>(dictWindTurbines, b), windTurbines.name) <span class="st">"Missing names in dictionary"</span></span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">all</span>(b <span class="op">-&gt;</span> <span class="fu">haskey</span>(dictScenarios, b), scenarios.name) <span class="st">"Missing names in dictionary"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<p>Next, we define the model instance for the ED problem.</p>
-<div id="18" class="cell" data-execution_count="0">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Prepare the model instance</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>dispatchModel <span class="op">=</span> <span class="fu">Model</span>(HiGHS.Optimizer)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>Now, create your variables. Please name them <code>p_g</code> for the power output of generators, <code>p_w</code> for the power injection of wind turbines.</p>
+<section id="stochastic-system-design" class="level1 title">
+<h1 class="title"><span class="flow">Stochastic System Design</span></h1>
+<section id="system-design-problem" class="level2">
+<h2 class="anchored" data-anchor-id="system-design-problem">System Design Problem</h2>
+<p>The system design problem combines investment planning (sizing) and operational optimization to determine the optimal configuration of an energy system. This integrated approach allows us to:</p>
+<ol type="1">
+<li>Make optimal investment decisions</li>
+<li>Account for operational flexibility</li>
+<li>Balance investment and operational costs</li>
+<li>Consider system-wide interactions</li>
+</ol>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -645,68 +548,119 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Consider the bounds for these variables. First, we only want to solve the model for sceanrio “S1”.</p>
+<p>The system design problem is a two-stage optimization problem:</p>
+<ol type="1">
+<li>First stage: Investment decisions (sizing)</li>
+<li>Second stage: Operational decisions (dispatch)</li>
+</ol>
 </div>
 </div>
-<div id="20" class="cell" data-execution_count="0">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># YOUR CODE BELOW</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="key-components" class="level3">
+<h3 class="anchored" data-anchor-id="key-components">Key Components</h3>
+<section id="investment-planning-sizing" class="level4">
+<h4 class="anchored" data-anchor-id="investment-planning-sizing">Investment Planning (Sizing)</h4>
+<ul>
+<li>Component selection</li>
+<li>Capacity sizing</li>
+<li>Technology mix</li>
+<li>Investment costs</li>
+</ul>
+</section>
+<section id="operational-optimization-dispatch" class="level4">
+<h4 class="anchored" data-anchor-id="operational-optimization-dispatch">Operational Optimization (Dispatch)</h4>
+<ul>
+<li>Power generation</li>
+<li>Storage operation</li>
+<li>Grid interaction</li>
+<li>Operational costs</li>
+</ul>
+</section>
+</section>
+<section id="mathematical-structure" class="level3">
+<h3 class="anchored" data-anchor-id="mathematical-structure">Mathematical Structure</h3>
+<section id="two-stage-problem" class="level4">
+<h4 class="anchored" data-anchor-id="two-stage-problem">Two-Stage Problem</h4>
+<ol type="1">
+<li><strong>First Stage (Here-and-Now)</strong>:
+<ul>
+<li>Investment decisions</li>
+<li>Component sizing</li>
+<li>Fixed costs</li>
+</ul></li>
+<li><strong>Second Stage (Wait-and-See)</strong>:
+<ul>
+<li>Operational decisions</li>
+<li>Power dispatch</li>
+<li>Variable costs</li>
+</ul></li>
+</ol>
+</section>
+<section id="objective-function" class="level4">
+<h4 class="anchored" data-anchor-id="objective-function">Objective Function</h4>
+<p><span class="math inline">\(\text{Minimize} \quad \text{Investment Costs} + \text{Expected Operational Costs}\)</span></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
-<div id="22" class="cell" data-execution_count="0">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Validate your solution</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Check variable dimensions</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">length</span>(p_g) <span class="op">==</span> <span class="fu">length</span>(dictThermalGeneartors) <span class="st">"Incorrect dimensions for p_g"</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">length</span>(p_w) <span class="op">==</span> <span class="fu">length</span>(dictWindTurbines) <span class="st">"Incorrect dimensions for p_w"</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Check variable types</span></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">all</span>(x <span class="op">-&gt;</span> <span class="fu">is_valid</span>(dispatchModel, x), p_g) <span class="st">"p_g must be valid variables"</span></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">all</span>(x <span class="op">-&gt;</span> <span class="fu">is_valid</span>(dispatchModel, x), p_w) <span class="st">"p_w must be valid variables"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="callout-title-container flex-fill">
+Note
 </div>
-<p>Next, define the objective function.</p>
-<div id="24" class="cell" data-execution_count="0">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># YOUR CODE BELOW</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="26" class="cell" data-execution_count="0">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Validate your solution</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Check if the model has an objective</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">objective_function</span>(dispatchModel) <span class="op">!==</span> <span class="cn">nothing</span> <span class="st">"Model must have an objective function"</span></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Check if it's a minimization problem</span></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">objective_sense</span>(dispatchModel) <span class="op">==</span> MOI.MIN_SENSE <span class="st">"Objective should be minimization"</span></span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Check if the objective function contains both cost components</span></span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>obj_expr <span class="op">=</span> <span class="fu">objective_function</span>(dispatchModel)</span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">contains</span>(<span class="fu">string</span>(dispatchModel), <span class="st">"p_g"</span>) <span class="st">"Objective must include variable costs (p_g)"</span></span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">contains</span>(<span class="fu">string</span>(dispatchModel), <span class="st">"p_w"</span>) <span class="st">"Objective must include variable costs (p_w)"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="callout-body-container callout-body">
+<p>The objective function combines:</p>
+<ol type="1">
+<li>One-time investment costs (annualized)</li>
+<li>Expected operational costs over the system lifetime</li>
+</ol>
 </div>
-<p>Now, we need to define all necessary constraints for the model, which is only the demand/production balance constraint as we considered min and max power limitations in the variable setup.</p>
-<div id="28" class="cell" data-execution_count="0">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># YOUR CODE BELOW</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>Finally, implement the solve statement for your model instance and print the results.</p>
-<div id="30" class="cell" data-execution_count="0">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># YOUR CODE BELOW</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div id="32" class="cell" data-execution_count="0">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Validate your solution</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">objective_value</span>(dispatchModel) <span class="op">==</span> <span class="fl">76600</span> <span class="st">"Objective value should be 76600"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 </div>
 </section>
-<section id="solving-scenarios-of-the-ed-problem" class="level1">
-<h1>2. Solving scenarios of the ED problem</h1>
-<p>We now want to solve all sceanrios. To do so we wrap the model in a function that we then can call with different inputs.</p>
+</section>
+<section id="solution-approaches" class="level3">
+<h3 class="anchored" data-anchor-id="solution-approaches">Solution Approaches</h3>
+<section id="deterministic-approach" class="level4">
+<h4 class="anchored" data-anchor-id="deterministic-approach">Deterministic Approach</h4>
+<ul>
+<li>Single scenario</li>
+<li>Perfect foresight</li>
+<li>Simplified uncertainty handling</li>
+</ul>
+</section>
+<section id="stochastic-approach" class="level4">
+<h4 class="anchored" data-anchor-id="stochastic-approach">Stochastic Approach</h4>
+<ul>
+<li>Multiple scenarios</li>
+<li>Probability-weighted costs</li>
+<li>Robust investment decisions</li>
+</ul>
+</section>
+</section>
+<section id="applications" class="level3">
+<h3 class="anchored" data-anchor-id="applications">Applications</h3>
+<section id="energy-system-planning" class="level4">
+<h4 class="anchored" data-anchor-id="energy-system-planning">Energy System Planning</h4>
+<ul>
+<li>Microgrid design</li>
+<li>Industrial energy systems</li>
+<li>Residential energy systems</li>
+</ul>
+</section>
+<section id="grid-integration" class="level4">
+<h4 class="anchored" data-anchor-id="grid-integration">Grid Integration</h4>
+<ul>
+<li>Renewable energy integration</li>
+<li>Storage deployment</li>
+<li>Grid capacity planning</li>
+</ul>
+</section>
+<section id="market-participation" class="level4">
+<h4 class="anchored" data-anchor-id="market-participation">Market Participation</h4>
+<ul>
+<li>Multi-market optimization</li>
+<li>Price arbitrage</li>
+<li>Ancillary services</li>
+</ul>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -717,65 +671,259 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Copy your model into the function. The results should be stored in the dataframe.</p>
+<p>The system design problem provides a comprehensive framework for:</p>
+<ol type="1">
+<li>Optimal investment decisions</li>
+<li>Efficient system operation</li>
+<li>Cost-effective energy supply</li>
+<li>Sustainable energy systems</li>
+</ol>
 </div>
 </div>
-<div id="34" class="cell" data-execution_count="0">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a function `solve_economic_dispatch`, which solves the economic</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co"># dispatch problem for a given set of input parameters.</span></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">solve_economic_dispatch</span>(dictThermalGeneartors<span class="op">::</span><span class="dt">Dict</span>, dictWindTurbines<span class="op">::</span><span class="dt">Dict</span>, scenario)</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">## Define the economic dispatch (ED) model</span></span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    dispatchModel <span class="op">=</span> <span class="fu">Model</span>(HiGHS.Optimizer)</span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">set_silent</span>(dispatchModel)</span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">## Define decision variables</span></span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">## p_g power output of generators</span></span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># YOUR CODE BELOW</span></span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">## p_w wind power injection</span></span>
-<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># YOUR CODE BELOW</span></span>
-<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>    <span class="co">## Define the objective function</span></span>
-<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># YOUR CODE BELOW</span></span>
-<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>    <span class="co">## Define the power balance constraint</span></span>
-<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># YOUR CODE BELOW</span></span>
-<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>    <span class="co">## Solve statement</span></span>
-<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">optimize!</span>(dispatchModel)</span>
-<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">assert_is_solved_and_feasible</span>(dispatchModel)</span>
-<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>    <span class="co">## return the optimal value of the objective function and variables</span></span>
-<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (</span>
-<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a>        p_g <span class="op">=</span> <span class="fu">value</span>.(p_g),</span>
-<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a>        p_w <span class="op">=</span> <span class="fu">value</span>.(p_w),</span>
-<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a>        wind_curtailment <span class="op">=</span> scenario.wind_forecast <span class="op">-</span> <span class="fu">sum</span>(<span class="fu">value</span>.(p_w)),</span>
-<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a>        total_cost <span class="op">=</span> <span class="fu">objective_value</span>(dispatchModel),</span>
-<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
-<span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-34"><a href="#cb19-34" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a dataframe to store results</span></span>
-<span id="cb19-35"><a href="#cb19-35" aria-hidden="true" tabindex="-1"></a>results_df <span class="op">=</span> <span class="fu">DataFrame</span>(</span>
-<span id="cb19-36"><a href="#cb19-36" aria-hidden="true" tabindex="-1"></a>    scenario <span class="op">=</span> <span class="dt">String</span>[],</span>
-<span id="cb19-37"><a href="#cb19-37" aria-hidden="true" tabindex="-1"></a>    total_cost <span class="op">=</span> <span class="dt">Float64</span>[],</span>
-<span id="cb19-38"><a href="#cb19-38" aria-hidden="true" tabindex="-1"></a>    wind_curtailment <span class="op">=</span> <span class="dt">Float64</span>[]</span>
-<span id="cb19-39"><a href="#cb19-39" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb19-40"><a href="#cb19-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-41"><a href="#cb19-41" aria-hidden="true" tabindex="-1"></a><span class="co"># Loop over the scenarios and save the results to a dataframe</span></span>
-<span id="cb19-42"><a href="#cb19-42" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (scenario_name, scenario_data) <span class="kw">in</span> dictScenarios</span>
-<span id="cb19-43"><a href="#cb19-43" aria-hidden="true" tabindex="-1"></a>    solution <span class="op">=</span> <span class="fu">solve_economic_dispatch</span>(dictThermalGeneartors, dictWindTurbines, scenario_data)</span>
-<span id="cb19-44"><a href="#cb19-44" aria-hidden="true" tabindex="-1"></a>    <span class="fu">push!</span>(results_df, (scenario_name, solution.total_cost, solution.wind_curtailment))</span>
-<span id="cb19-45"><a href="#cb19-45" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
-<span id="cb19-46"><a href="#cb19-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-47"><a href="#cb19-47" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the dataframe</span></span>
-<span id="cb19-48"><a href="#cb19-48" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Results for all scenarios:"</span>)</span>
-<span id="cb19-49"><a href="#cb19-49" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(results_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+</section>
+<section id="stochastic-formulation" class="level2">
+<h2 class="anchored" data-anchor-id="stochastic-formulation">Stochastic Formulation</h2>
+<p>The stochastic system design problem extends the deterministic model by considering multiple scenarios. This allows us to:</p>
+<ol type="1">
+<li>Account for uncertainty in renewable generation</li>
+<li>Consider different demand patterns</li>
+<li>Handle price variations</li>
+<li>Make robust investment decisions</li>
+</ol>
+</section>
+<section id="sets" class="level2">
+<h2 class="anchored" data-anchor-id="sets">Sets</h2>
+<ul>
+<li><span class="math inline">\(\mathcal{T}\)</span> - Set of time periods indexed by <span class="math inline">\(t \in \{1,2,...,|\mathcal{T}|\}\)</span></li>
+<li><span class="math inline">\(\mathcal{S}\)</span> - Set of storage systems indexed by <span class="math inline">\(s \in \{1,2,...,|\mathcal{S}|\}\)</span></li>
+<li><span class="math inline">\(\mathcal{W}\)</span> - Set of wind parks indexed by <span class="math inline">\(w \in \{1,2,...,|\mathcal{W}|\}\)</span></li>
+<li><span class="math inline">\(\mathcal{V}\)</span> - Set of PV parks indexed by <span class="math inline">\(v \in \{1,2,...,|\mathcal{V}|\}\)</span></li>
+<li><span class="math inline">\(\Omega\)</span> - Set of scenarios indexed by <span class="math inline">\(\omega \in \{1,2,...,|\Omega|\}\)</span></li>
+</ul>
+</section>
+<section id="decision-variables" class="level2">
+<h2 class="anchored" data-anchor-id="decision-variables">Decision Variables</h2>
+<section id="investment-variables-first-stage" class="level3">
+<h3 class="anchored" data-anchor-id="investment-variables-first-stage">Investment Variables (First Stage)</h3>
+<ul>
+<li><span class="math inline">\(e^{nom}_s\)</span> - Nominal energy capacity of storage <span class="math inline">\(s\)</span> [MWh]</li>
+<li><span class="math inline">\(p^{ch,nom}_s\)</span> - Nominal charging power of storage <span class="math inline">\(s\)</span> [MW]</li>
+<li><span class="math inline">\(p^{dis,nom}_s\)</span> - Nominal discharging power of storage <span class="math inline">\(s\)</span> [MW]</li>
+<li><span class="math inline">\(p^{nom}_w\)</span> - Nominal power of wind park <span class="math inline">\(w\)</span> [MW]</li>
+<li><span class="math inline">\(p^{nom}_v\)</span> - Nominal power of PV park <span class="math inline">\(v\)</span> [MW]</li>
+</ul>
+</section>
+<section id="operational-variables-second-stage" class="level3">
+<h3 class="anchored" data-anchor-id="operational-variables-second-stage">Operational Variables (Second Stage)</h3>
+<ul>
+<li><span class="math inline">\(p_{w,t,\omega}\)</span> - Power output of wind park <span class="math inline">\(w\)</span> at time <span class="math inline">\(t\)</span> in scenario <span class="math inline">\(\omega\)</span> [MW]</li>
+<li><span class="math inline">\(p_{v,t,\omega}\)</span> - Power output of PV park <span class="math inline">\(v\)</span> at time <span class="math inline">\(t\)</span> in scenario <span class="math inline">\(\omega\)</span> [MW]</li>
+<li><span class="math inline">\(p^{in}_{t,\omega}\)</span> - Power inflow through market at time <span class="math inline">\(t\)</span> in scenario <span class="math inline">\(\omega\)</span> [MW]</li>
+<li><span class="math inline">\(p^{out}_{t,\omega}\)</span> - Power outflow through market at time <span class="math inline">\(t\)</span> in scenario <span class="math inline">\(\omega\)</span> [MW]</li>
+<li><span class="math inline">\(p^{ch}_{s,t,\omega}\)</span> - Charging power of storage <span class="math inline">\(s\)</span> at time <span class="math inline">\(t\)</span> in scenario <span class="math inline">\(\omega\)</span> [MW]</li>
+<li><span class="math inline">\(p^{dis}_{s,t,\omega}\)</span> - Discharging power of storage <span class="math inline">\(s\)</span> at time <span class="math inline">\(t\)</span> in scenario <span class="math inline">\(\omega\)</span> [MW]</li>
+<li><span class="math inline">\(e_{s,t,\omega}\)</span> - Energy level of storage <span class="math inline">\(s\)</span> at time <span class="math inline">\(t\)</span> in scenario <span class="math inline">\(\omega\)</span> [MWh]</li>
+</ul>
+</section>
+<section id="annual-cost-variables" class="level3">
+<h3 class="anchored" data-anchor-id="annual-cost-variables">Annual Cost Variables</h3>
+<ul>
+<li><span class="math inline">\(AC^{inv}_s\)</span> - Annual investment cost for storage <span class="math inline">\(s\)</span> [EUR/year]</li>
+<li><span class="math inline">\(AC^{inv}_w\)</span> - Annual investment cost for wind park <span class="math inline">\(w\)</span> [EUR/year]</li>
+<li><span class="math inline">\(AC^{inv}_v\)</span> - Annual investment cost for PV park <span class="math inline">\(v\)</span> [EUR/year]</li>
+<li><span class="math inline">\(AC^{grid,imp}_{\omega}\)</span> - Annual grid electricity import cost in scenario <span class="math inline">\(\omega\)</span> [EUR/year]</li>
+<li><span class="math inline">\(AR^{grid,exp}_{\omega}\)</span> - Annual grid electricity export revenue in scenario <span class="math inline">\(\omega\)</span> [EUR/year]</li>
+</ul>
+</section>
+</section>
+<section id="parameters" class="level2">
+<h2 class="anchored" data-anchor-id="parameters">Parameters</h2>
+<section id="investment-costs-first-stage" class="level3">
+<h3 class="anchored" data-anchor-id="investment-costs-first-stage">Investment Costs (First Stage)</h3>
+<ul>
+<li><span class="math inline">\(C^{E}_s\)</span> - Cost per MWh of energy capacity for storage <span class="math inline">\(s\)</span> [EUR/MWh]</li>
+<li><span class="math inline">\(C^{P,ch}_s\)</span> - Cost per MW of charging power capacity for storage <span class="math inline">\(s\)</span> [EUR/MW]</li>
+<li><span class="math inline">\(C^{P,dis}_s\)</span> - Cost per MW of discharging power capacity for storage <span class="math inline">\(s\)</span> [EUR/MW]</li>
+<li><span class="math inline">\(C^{W}_w\)</span> - Cost per MW of wind park <span class="math inline">\(w\)</span> [EUR/MW]</li>
+<li><span class="math inline">\(C^{PV}_v\)</span> - Cost per MW of PV park <span class="math inline">\(v\)</span> [EUR/MW]</li>
+<li><span class="math inline">\(F^{PVAF}\)</span> - Present value annuity factor for investment costs</li>
+<li><span class="math inline">\(B^{max}\)</span> - Maximum investment budget [EUR]</li>
+</ul>
+</section>
+<section id="operational-parameters-second-stage" class="level3">
+<h3 class="anchored" data-anchor-id="operational-parameters-second-stage">Operational Parameters (Second Stage)</h3>
+<ul>
+<li><span class="math inline">\(\eta^{ch}_s\)</span> - Charging efficiency of storage <span class="math inline">\(s\)</span></li>
+<li><span class="math inline">\(\eta^{dis}_s\)</span> - Discharging efficiency of storage <span class="math inline">\(s\)</span></li>
+<li><span class="math inline">\(sdr_s\)</span> - Self-discharge rate of storage <span class="math inline">\(s\)</span> per time step</li>
+<li><span class="math inline">\(DoD_s\)</span> - Depth of discharge limit for storage <span class="math inline">\(s\)</span> [%]</li>
+<li><span class="math inline">\(f_{w,t,\omega}\)</span> - Wind capacity factor at time <span class="math inline">\(t\)</span> in scenario <span class="math inline">\(\omega\)</span> for wind park <span class="math inline">\(w\)</span></li>
+<li><span class="math inline">\(f_{v,t,\omega}\)</span> - Solar capacity factor at time <span class="math inline">\(t\)</span> in scenario <span class="math inline">\(\omega\)</span> for PV park <span class="math inline">\(v\)</span></li>
+<li><span class="math inline">\(d_{t,\omega}\)</span> - Electric demand at time <span class="math inline">\(t\)</span> in scenario <span class="math inline">\(\omega\)</span> [MW]</li>
+<li><span class="math inline">\(c^{MP}_{t,\omega}\)</span> - Grid electricity market price at time <span class="math inline">\(t\)</span> in scenario <span class="math inline">\(\omega\)</span> [EUR/MWh]</li>
+<li><span class="math inline">\(c^{TaL}\)</span> - Grid electricity taxes and levies (including Netzentgelt) [EUR/MWh]</li>
+<li><span class="math inline">\(\pi_{\omega}\)</span> - Probability of scenario <span class="math inline">\(\omega\)</span></li>
+</ul>
+</section>
+</section>
+<section id="objective-function-1" class="level2">
+<h2 class="anchored" data-anchor-id="objective-function-1">Objective Function</h2>
+<p><span class="math inline">\(\text{Minimize} \quad \sum_{s \in \mathcal{S}} AC^{inv}_s + \sum_{w \in \mathcal{W}} AC^{inv}_w + \sum_{v \in \mathcal{V}} AC^{inv}_v + \sum_{\omega \in \Omega} \pi_{\omega} (AC^{grid,imp}_{\omega} - AR^{grid,exp}_{\omega})\)</span></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
-<p>What is the problem in scenario “S5” with the assumptions made in the ED problem leading to an inefficient usage of wind turbines?</p>
-<div id="36" class="cell" data-execution_count="0">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># YOUR ANSWER HERE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout-title-container flex-fill">
+Note
 </div>
-<hr>
+</div>
+<div class="callout-body-container callout-body">
+<p>The objective function minimizes: 1. First-stage costs (deterministic): - Investment costs for all components 2. Second-stage costs (stochastic): - Expected grid electricity costs/revenues - Weighted by scenario probabilities</p>
+</div>
+</div>
+</section>
+<section id="annual-cost-constraints" class="level2">
+<h2 class="anchored" data-anchor-id="annual-cost-constraints">Annual Cost Constraints</h2>
+<section id="investment-costs-first-stage-1" class="level3">
+<h3 class="anchored" data-anchor-id="investment-costs-first-stage-1">Investment Costs (First Stage)</h3>
+<p><span class="math inline">\(AC^{inv}_s = \frac{C^{E}_s}{F^{PVAF}} e^{nom}_s + C^{P,ch}_s p^{ch,nom}_s + C^{P,dis}_s p^{dis,nom}_s \quad \forall s \in \mathcal{S}\)</span> <span class="math inline">\(AC^{inv}_w = \frac{C^{W}_w}{F^{PVAF}} p^{nom}_w \quad \forall w \in \mathcal{W}\)</span> <span class="math inline">\(AC^{inv}_v = \frac{C^{PV}_v}{F^{PVAF}} p^{nom}_v \quad \forall v \in \mathcal{V}\)</span></p>
+</section>
+<section id="investment-budget" class="level3">
+<h3 class="anchored" data-anchor-id="investment-budget">Investment Budget</h3>
+<p><span class="math inline">\(\sum_{s \in \mathcal{S}} (C^{E}_s e^{nom}_s + C^{P,ch}_s p^{ch,nom}_s + C^{P,dis}_s p^{dis,nom}_s) + \sum_{w \in \mathcal{W}} C^{W}_w p^{nom}_w + \sum_{v \in \mathcal{V}} C^{PV}_v p^{nom}_v \leq B^{max}\)</span></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The investment budget constraint ensures that: 1. Total investment costs do not exceed the maximum budget 2. Includes all component investments: - Storage systems (energy and power capacity) - Wind parks - PV parks 3. Applies to first-stage decisions only</p>
+</div>
+</div>
+</section>
+<section id="grid-electricity-costs-second-stage" class="level3">
+<h3 class="anchored" data-anchor-id="grid-electricity-costs-second-stage">Grid Electricity Costs (Second Stage)</h3>
+<p><span class="math inline">\(AC^{grid,imp}_{\omega} = \sum_{t \in \mathcal{T}} (c^{MP}_{t,\omega} + c^{TaL}) p^{in}_{t,\omega} \quad \forall \omega \in \Omega\)</span> <span class="math inline">\(AR^{grid,exp}_{\omega} = \sum_{t \in \mathcal{T}} c^{MP}_{t,\omega} p^{out}_{t,\omega} \quad \forall \omega \in \Omega\)</span></p>
+</section>
+</section>
+<section id="constraints" class="level2">
+<h2 class="anchored" data-anchor-id="constraints">Constraints</h2>
+<section id="power-balance" class="level3">
+<h3 class="anchored" data-anchor-id="power-balance">Power Balance</h3>
+<p><span class="math inline">\(\sum_{w \in \mathcal{W}} p_{w,t,\omega} + \sum_{v \in \mathcal{V}} p_{v,t,\omega} + (p^{in}_{t,\omega} - p^{out}_{t,\omega}) + \sum_{s \in \mathcal{S}} (p^{dis}_{s,t,\omega} - p^{ch}_{s,t,\omega}) = d_{t,\omega} \quad \forall t \in \mathcal{T}, \omega \in \Omega\)</span></p>
+</section>
+<section id="component-limits" class="level3">
+<h3 class="anchored" data-anchor-id="component-limits">Component Limits</h3>
+<section id="wind-parks" class="level4">
+<h4 class="anchored" data-anchor-id="wind-parks">Wind Parks</h4>
+<p><span class="math inline">\(0 \leq p_{w,t,\omega} \leq f_{w,t,\omega} p^{nom}_w \quad \forall w \in \mathcal{W}, t \in \mathcal{T}, \omega \in \Omega\)</span></p>
+</section>
+<section id="pv-parks" class="level4">
+<h4 class="anchored" data-anchor-id="pv-parks">PV Parks</h4>
+<p><span class="math inline">\(0 \leq p_{v,t,\omega} \leq f_{v,t,\omega} p^{nom}_v \quad \forall v \in \mathcal{V}, t \in \mathcal{T}, \omega \in \Omega\)</span></p>
+</section>
+<section id="storage-systems" class="level4">
+<h4 class="anchored" data-anchor-id="storage-systems">Storage Systems</h4>
+<p><span class="math inline">\(0 \leq p^{ch}_{s,t,\omega} \leq p^{ch,nom}_s \quad \forall s \in \mathcal{S}, t \in \mathcal{T}, \omega \in \Omega\)</span> <span class="math inline">\(0 \leq p^{dis}_{s,t,\omega} \leq p^{dis,nom}_s \quad \forall s \in \mathcal{S}, t \in \mathcal{T}, \omega \in \Omega\)</span> <span class="math inline">\(DoD_s e^{nom}_s \leq e_{s,t,\omega} \leq e^{nom}_s \quad \forall s \in \mathcal{S}, t \in \mathcal{T}, \omega \in \Omega\)</span></p>
+</section>
+</section>
+<section id="storage-energy-balance" class="level3">
+<h3 class="anchored" data-anchor-id="storage-energy-balance">Storage Energy Balance</h3>
+<p><span class="math inline">\(e_{s,t,\omega} = (1-sdr_s)e_{s,t-1,\omega} + \eta^{ch}_s p^{ch}_{s,t,\omega} - \frac{p^{dis}_{s,t,\omega}}{\eta^{dis}_s} \quad \forall s \in \mathcal{S}, t \in \mathcal{T}, \omega \in \Omega\)</span></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The stochastic formulation: 1. First-stage decisions (here-and-now): - Component sizing - Investment costs 2. Second-stage decisions (wait-and-see): - Operational decisions - Scenario-dependent costs 3. Key differences from deterministic model: - Time-dependent parameters become scenario-dependent - Operational variables become scenario-dependent - Objective includes expected costs</p>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="implementation-of-the-stochastic-system-design-problem" class="level1 title">
+<h1 class="title"><span class="flow">Implementation of the Stochastic System Design Problem</span></h1>
+<section id="load-packages" class="level2">
+<h2 class="anchored" data-anchor-id="load-packages">1. Load Packages</h2>
+</section>
+<section id="data-generation" class="level2">
+<h2 class="anchored" data-anchor-id="data-generation">2. Data Generation</h2>
+</section>
+<section id="load-and-process-data" class="level2">
+<h2 class="anchored" data-anchor-id="load-and-process-data">3. Load and Process Data</h2>
+</section>
+<section id="model-implementation" class="level2">
+<h2 class="anchored" data-anchor-id="model-implementation">4. Model Implementation</h2>
+<p>Now, let’s implement the Stochastic System Design model using the dictionary format:</p>
+</section>
+<section id="solve-and-analyze-results" class="level2">
+<h2 class="anchored" data-anchor-id="solve-and-analyze-results">5. Solve and Analyze Results</h2>
+<p>Let’s solve the model with a maximum budget of 50 million EUR:</p>
+</section>
+<section id="create-figures" class="level2">
+<h2 class="anchored" data-anchor-id="create-figures">6. Create Figures</h2>
+</section>
+<section id="sensitivity-analysis-example" class="level2">
+<h2 class="anchored" data-anchor-id="sensitivity-analysis-example">7. Sensitivity Analysis Example</h2>
+<p>Let’s analyze how the optimal solution changes with different maximum budgets:</p>
+</section>
+<section id="sensitivity-analysis-of-the-electricity-price" class="level2">
+<h2 class="anchored" data-anchor-id="sensitivity-analysis-of-the-electricity-price">8. Sensitivity Analysis of the Electricity Price</h2>
+<p><strong>TASK</strong>: Watch for <strong>##YOUR CODE HERE</strong> and implement the missing code.</p>
+<ul>
+<li>Implement a sensitivity analysis of the electricity price.</li>
+<li>Plot the results in a figure.</li>
+<li>Interpret the results and make a recommendation in section 9.</li>
+</ul>
+</section>
+<section id="recommendations-for-hamburg-chempark-gmbh" class="level2">
+<h2 class="anchored" data-anchor-id="recommendations-for-hamburg-chempark-gmbh">9. Recommendations for Hamburg ChemPark GmbH</h2>
+<p><strong>TASK: Place your recommendations here: X, Y, Z, W, A, B, C, D, E, F, G.</strong></p>
+<p>Based on our analysis, we can provide the following recommendations for Hamburg ChemPark GmbH for the expected case of a price scaled by 200%:</p>
+<ol type="1">
+<li><p><strong>Optimal System Configuration</strong>:</p></li>
+<li><p><strong>Economic Performance</strong>:</p></li>
+<li><p><strong>Findings</strong>:</p></li>
+</ol>
+<p><strong>In a comprehensive sensitivity analysis, the following aspects should be considered:</strong></p>
+<ul>
+<li>The solution is most sensitive to [parameter]</li>
+<li>Key uncertainties include [uncertainty]</li>
+<li>Robustness can be improved by [action]</li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The model provides a foundation for decision-making, but additional factors should be considered:</p>
+<ol type="1">
+<li>Site-specific constraints</li>
+<li>Grid connection capacity</li>
+<li>Environmental ambitions</li>
+<li>Maintenance requirements and costs</li>
+<li>Future expansion possibilities</li>
+</ol>
+</div>
+</div>
+</section>
 </section>
 <section id="solutions" class="level1">
 <h1>Solutions</h1>
@@ -1194,7 +1342,7 @@ Note
     </div>   
     <div class="nav-footer-center">
 <p>Energy System Optimization with Julia, Tobias Cors<br>CC BY-NC-SA 4.0</p>
-<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/edit/main/part-05/tutorial-dispatch.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/blob/main/part-05/tutorial-dispatch.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/edit/main/part-08/tutorial-design.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/blob/main/part-08/tutorial-design.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">

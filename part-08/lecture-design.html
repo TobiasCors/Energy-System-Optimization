@@ -406,6 +406,12 @@ window.Quarto = {
  <span class="menu-text">Lecture</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../part-08/tutorial-design.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tutorial</span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item">
@@ -580,8 +586,8 @@ window.Quarto = {
 <section id="unit-commitment-problem-with-storage-overview" class="level2">
 <h2 class="anchored" data-anchor-id="unit-commitment-problem-with-storage-overview">Unit Commitment Problem with Storage Overview</h2>
 <ul>
-<li><strong>Objective</strong>: Minimize total generation and storage costs over multiple time periods</li>
-<li><strong>Decision Variables</strong>:
+<li><p><strong>Objective</strong>: Minimize total generation and storage costs over multiple time periods</p></li>
+<li><p><strong>Decision Variables</strong>:</p>
 <ul>
 <li>Power output of thermal generators (<span class="math inline">\(p_{g,t}\)</span>)</li>
 <li>Power output of wind turbines (<span class="math inline">\(p_{w,t}\)</span>)</li>
@@ -593,7 +599,7 @@ window.Quarto = {
 <li>Binary variables for storage charging status (<span class="math inline">\(u^{ch}_{s,t}\)</span>)</li>
 <li>Binary variables for storage discharging status (<span class="math inline">\(u^{dis}_{s,t}\)</span>)</li>
 </ul></li>
-<li><strong>Key Constraints</strong>:
+<li><p><strong>Key Constraints</strong>:</p>
 <ul>
 <li>Power balance (including storage)</li>
 <li>Generator limits</li>
@@ -745,11 +751,22 @@ Tip
 <p>In mathematical optimization, particularly for Mixed-Integer Linear Programming (MILP) problems like the Unit Commitment problem, the concepts of “tight” and “compact” formulations are crucial for efficient problem solving.</p>
 <section id="tight-formulations" class="level3">
 <h3 class="anchored" data-anchor-id="tight-formulations">Tight Formulations</h3>
-<p>A formulation is considered “tight” when there is a small gap between the optimal solution of the linear programming (LP) relaxation and the integer solution. This is important because: - It helps solvers find optimal solutions faster - It provides better lower bounds for branch-and-bound algorithms - It reduces the search space for integer solutions</p>
+<p>A formulation is considered “tight” when there is a small gap between the optimal solution of the linear programming (LP) relaxation and the integer solution. This is important because:</p>
+<ul>
+<li>It helps solvers find optimal solutions faster</li>
+<li>It provides better lower bounds for branch-and-bound algorithms</li>
+<li>It reduces the search space for integer solutions</li>
+</ul>
 </section>
 <section id="compact-formulations" class="level3">
 <h3 class="anchored" data-anchor-id="compact-formulations">Compact Formulations</h3>
-<p>A formulation is considered “compact” when it uses fewer variables and constraints while maintaining accuracy. This is important because: - It reduces computational complexity - It decreases memory requirements - It can speed up solution times - It makes the model easier to understand and maintain</p>
+<p>A formulation is considered “compact” when it uses fewer variables and constraints while maintaining accuracy. This is important because:</p>
+<ul>
+<li>It reduces computational complexity</li>
+<li>It decreases memory requirements</li>
+<li>It can speed up solution times</li>
+<li>It makes the model easier to understand and maintain</li>
+</ul>
 </section>
 </section>
 <section id="examples-in-uc-with-storage" class="level2">
@@ -1001,7 +1018,13 @@ Note
 <p>The Present Value Annuity Factor (PVAF) is used to convert investment costs into equivalent annual costs. It is calculated as:</p>
 <p><span class="math inline">\(F^{PVAF} = \frac{(1 + r)^n - 1}{r(1 + r)^n}\)</span></p>
 <p>where: - <span class="math inline">\(r\)</span> is the discount rate (e.g., 0.05 for 5%) - <span class="math inline">\(n\)</span> is the component lifetime in years (we assume the same lifetime for all components in the following)</p>
-<p>This factor allows us to: 1. Convert one-time investment costs into equivalent annual costs 2. Account for the time value of money 3. Compare investments with different lifetimes 4. Make investment decisions based on annual costs</p>
+<p>This factor allows us to:</p>
+<ol type="1">
+<li>Convert one-time investment costs into equivalent annual costs</li>
+<li>Account for the time value of money</li>
+<li>Compare investments with different lifetimes</li>
+<li>Make investment decisions based on annual costs</li>
+</ol>
 </section>
 <section id="objective-function-1" class="level2">
 <h2 class="anchored" data-anchor-id="objective-function-1">Objective Function</h2>
@@ -1016,7 +1039,20 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>The objective function minimizes the total annual costs of the energy system: 1. Investment costs for all components: - Storage systems (energy and power capacity) - Wind parks - PV parks 2. Grid electricity costs/revenues: - Import costs (market price + taxes/levies including Netzentgelt) - Export revenue (market price only)</p>
+<p>The objective function minimizes the total annual costs of the energy system:</p>
+<ol type="1">
+<li><p>Investment costs for all components:</p>
+<ul>
+<li>Storage systems (energy and power capacity)</li>
+<li>Wind parks</li>
+<li>PV parks</li>
+</ul></li>
+<li><p>Grid electricity costs/revenues:</p>
+<ul>
+<li>Import costs (market price + taxes/levies including Netzentgelt)</li>
+<li>Export revenue (market price only)</li>
+</ul></li>
+</ol>
 </div>
 </div>
 </section>
@@ -1024,7 +1060,7 @@ Note
 <h2 class="anchored" data-anchor-id="annual-cost-constraints">Annual Cost Constraints</h2>
 <section id="investment-costs-1" class="level3">
 <h3 class="anchored" data-anchor-id="investment-costs-1">Investment Costs</h3>
-<p><span class="math inline">\(AC^{inv}_s = \frac{C^{E}_s}{F^{PVAF}} e^{nom}_s + C^{P,ch}_s p^{ch,nom}_s + C^{P,dis}_s p^{dis,nom}_s \quad \forall s \in \mathcal{S}\)</span> <span class="math inline">\(AC^{inv}_w = \frac{C^{W}_w}{F^{PVAF}} p^{nom}_w \quad \forall w \in \mathcal{W}\)</span> <span class="math inline">\(AC^{inv}_v = \frac{C^{PV}_v}{F^{PVAF}} p^{nom}_v \quad \forall v \in \mathcal{V}\)</span></p>
+<p><span class="math inline">\(AC^{inv}_s = \frac{C^{E}_s}{F^{PVAF}} e^{nom}_s + \frac{C^{P,ch}_s}{F^{PVAF}} p^{ch,nom}_s + \frac{C^{P,dis}_s}{F^{PVAF}} p^{dis,nom}_s \quad \forall s \in \mathcal{S}\)</span> <span class="math inline">\(AC^{inv}_w = \frac{C^{W}_w}{F^{PVAF}} p^{nom}_w \quad \forall w \in \mathcal{W}\)</span> <span class="math inline">\(AC^{inv}_v = \frac{C^{PV}_v}{F^{PVAF}} p^{nom}_v \quad \forall v \in \mathcal{V}\)</span></p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1035,7 +1071,19 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>The investment costs are annualized using the Present Value Annuity Factor (PVAF): 1. Storage investment includes: - Energy capacity costs - Charging power capacity costs - Discharging power capacity costs 2. Wind and PV investment include: - Power capacity costs only</p>
+<p>The investment costs are annualized using the Present Value Annuity Factor (PVAF):</p>
+<ol type="1">
+<li><p>Storage investment includes:</p>
+<ul>
+<li>Energy capacity costs</li>
+<li>Charging power capacity costs</li>
+<li>Discharging power capacity costs</li>
+</ul></li>
+<li><p>Wind and PV investment include:</p>
+<ul>
+<li>Power capacity costs only</li>
+</ul></li>
+</ol>
 </div>
 </div>
 </section>
@@ -1052,7 +1100,16 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>The investment budget constraint ensures that: 1. Total investment costs do not exceed the maximum budget 2. Includes all component investments: - Storage systems (energy and power capacity) - Wind parks - PV parks</p>
+<p>The investment budget constraint ensures that:</p>
+<ol type="1">
+<li><p>Total investment costs do not exceed the maximum budget</p></li>
+<li><p>Includes all component investments:</p>
+<ul>
+<li>Storage systems (energy and power capacity)</li>
+<li>Wind parks</li>
+<li>PV parks</li>
+</ul></li>
+</ol>
 </div>
 </div>
 </section>
@@ -1069,7 +1126,18 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>The grid electricity costs and revenues are calculated as: 1. Import costs include: - Time-dependent market price - Fixed taxes and levies (including Netzentgelt) 2. Export revenue includes: - Time-dependent market price only</p>
+<p>The grid electricity costs and revenues are calculated as:</p>
+<ol type="1">
+<li><p>Import costs include:</p>
+<ul>
+<li>Time-dependent market price</li>
+<li>Fixed taxes and levies (including Netzentgelt)</li>
+</ul></li>
+<li><p>Export revenue includes:</p>
+<ul>
+<li>Time-dependent market price only</li>
+</ul></li>
+</ol>
 </div>
 </div>
 </section>
@@ -1089,7 +1157,21 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>The power balance ensures that at each time step: 1. Total generation equals total demand: - Wind generation - PV generation - Grid import/export - Storage charging/discharging 2. Net grid power flow is: - Positive for import - Negative for export</p>
+<p>The power balance ensures that at each time step:</p>
+<ol type="1">
+<li><p>Total generation equals total demand:</p>
+<ul>
+<li>Wind generation</li>
+<li>PV generation</li>
+<li>Grid import/export</li>
+<li>Storage charging/discharging</li>
+</ul></li>
+<li><p>Net grid power flow is:</p>
+<ul>
+<li>Positive for import</li>
+<li>Negative for export</li>
+</ul></li>
+</ol>
 </div>
 </div>
 </section>
@@ -1108,7 +1190,15 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Wind power output is constrained by: 1. Non-negativity (no negative generation) 2. Maximum available power: - Time-dependent capacity factor - Nominal power capacity</p>
+<p>Wind power output is constrained by:</p>
+<ol type="1">
+<li><p>Non-negativity (no negative generation)</p></li>
+<li><p>Maximum available power:</p>
+<ul>
+<li>Time-dependent capacity factor</li>
+<li>Nominal power capacity</li>
+</ul></li>
+</ol>
 </div>
 </div>
 </section>
@@ -1125,7 +1215,15 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>PV power output is constrained by: 1. Non-negativity (no negative generation) 2. Maximum available power: - Time-dependent capacity factor - Nominal power capacity</p>
+<p>PV power output is constrained by:</p>
+<ol type="1">
+<li><p>Non-negativity (no negative generation)</p></li>
+<li><p>Maximum available power:</p>
+<ul>
+<li>Time-dependent capacity factor</li>
+<li>Nominal power capacity</li>
+</ul></li>
+</ol>
 </div>
 </div>
 </section>
@@ -1142,7 +1240,24 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Storage operation is constrained by: 1. Charging power limits: - Non-negativity - Nominal charging power capacity 2. Discharging power limits: - Non-negativity - Nominal discharging power capacity 3. Energy level limits: - Minimum level based on depth of discharge - Maximum level based on nominal capacity</p>
+<p>Storage operation is constrained by:</p>
+<ol type="1">
+<li><p>Charging power limits:</p>
+<ul>
+<li>Non-negativity</li>
+<li>Nominal charging power capacity</li>
+</ul></li>
+<li><p>Discharging power limits:</p>
+<ul>
+<li>Non-negativity</li>
+<li>Nominal discharging power capacity</li>
+</ul></li>
+<li><p>Energy level limits:</p>
+<ul>
+<li>Minimum level based on depth of discharge</li>
+<li>Maximum level based on nominal capacity</li>
+</ul></li>
+</ol>
 </div>
 </div>
 </section>
@@ -1160,7 +1275,23 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>The storage energy balance accounts for: 1. Previous energy level: - Reduced by self-discharge 2. Charging: - Increased by charging power - Reduced by charging efficiency losses 3. Discharging: - Decreased by discharging power - Increased by discharging efficiency losses</p>
+<p>The storage energy balance accounts for:</p>
+<ol type="1">
+<li><p>Previous energy level:</p>
+<ul>
+<li>Reduced by self-discharge</li>
+</ul></li>
+<li><p>Charging:</p>
+<ul>
+<li>Increased by charging power</li>
+<li>Reduced by charging efficiency losses</li>
+</ul></li>
+<li><p>Discharging:</p>
+<ul>
+<li>Decreased by discharging power</li>
+<li>Increased by discharging efficiency losses</li>
+</ul></li>
+</ol>
 </div>
 </div>
 </section>
