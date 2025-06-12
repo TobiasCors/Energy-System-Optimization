@@ -42,7 +42,8 @@ execute:
 ## Unit Commitment Problem with Storage Overview
 
 - **Objective**: Minimize total generation and storage costs over multiple time periods
-- **Decision Variables**: 
+- **Decision Variables**:
+
   - Power output of thermal generators ($p_{g,t}$)
   - Power output of wind turbines ($p_{w,t}$)
   - Binary variables for generator status ($u_{g,t}$)
@@ -52,7 +53,9 @@ execute:
   - Storage discharging power ($p^{dis}_{s,t}$)
   - Binary variables for storage charging status ($u^{ch}_{s,t}$)
   - Binary variables for storage discharging status ($u^{dis}_{s,t}$)
+
 - **Key Constraints**:
+
   - Power balance (including storage)
   - Generator limits
   - Wind limits
@@ -71,6 +74,7 @@ The Unit Commitment problem with storage extends the basic UC problem by adding 
 ## Mathematical Formulation
 
 ### Objective Function
+
 $\text{Minimize} \quad \sum_{t \in \mathcal{T}} \left( \sum_{g \in \mathcal{G}} (c^{var}_g p_{g,t} + c^{fix}_g u_{g,t} + c^{start}_g v_{g,t}) + \sum_{w \in \mathcal{W}} c^{var}_w p_{w,t} \right)$
 
 ### Key Constraints
@@ -157,6 +161,7 @@ In mathematical optimization, particularly for Mixed-Integer Linear Programming 
 ### Tight Formulations
 
 A formulation is considered "tight" when there is a small gap between the optimal solution of the linear programming (LP) relaxation and the integer solution. This is important because:
+
 - It helps solvers find optimal solutions faster
 - It provides better lower bounds for branch-and-bound algorithms
 - It reduces the search space for integer solutions
@@ -164,6 +169,7 @@ A formulation is considered "tight" when there is a small gap between the optima
 ### Compact Formulations
 
 A formulation is considered "compact" when it uses fewer variables and constraints while maintaining accuracy. This is important because:
+
 - It reduces computational complexity
 - It decreases memory requirements
 - It can speed up solution times
@@ -360,6 +366,7 @@ where:
 - $n$ is the component lifetime in years (we assume the same lifetime for all components in the following)
 
 This factor allows us to:
+
 1. Convert one-time investment costs into equivalent annual costs
 2. Account for the time value of money
 3. Compare investments with different lifetimes
@@ -371,11 +378,15 @@ $\text{Minimize} \quad \sum_{s \in \mathcal{S}} AC^{inv}_s + \sum_{w \in \mathca
 
 ::: {.callout-note}
 The objective function minimizes the total annual costs of the energy system:
+
 1. Investment costs for all components:
+
    - Storage systems (energy and power capacity)
    - Wind parks
    - PV parks
+
 2. Grid electricity costs/revenues:
+
    - Import costs (market price + taxes/levies including Netzentgelt)
    - Export revenue (market price only)
 :::
@@ -383,17 +394,21 @@ The objective function minimizes the total annual costs of the energy system:
 ## Annual Cost Constraints
 
 ### Investment Costs
-$AC^{inv}_s = \frac{C^{E}_s}{F^{PVAF}} e^{nom}_s + C^{P,ch}_s p^{ch,nom}_s + C^{P,dis}_s p^{dis,nom}_s \quad \forall s \in \mathcal{S}$
+$AC^{inv}_s = \frac{C^{E}_s}{F^{PVAF}} e^{nom}_s + \frac{C^{P,ch}_s}{F^{PVAF}} p^{ch,nom}_s + \frac{C^{P,dis}_s}{F^{PVAF}} p^{dis,nom}_s \quad \forall s \in \mathcal{S}$
 $AC^{inv}_w = \frac{C^{W}_w}{F^{PVAF}} p^{nom}_w \quad \forall w \in \mathcal{W}$
 $AC^{inv}_v = \frac{C^{PV}_v}{F^{PVAF}} p^{nom}_v \quad \forall v \in \mathcal{V}$
 
 ::: {.callout-note}
 The investment costs are annualized using the Present Value Annuity Factor (PVAF):
+
 1. Storage investment includes:
+
    - Energy capacity costs
    - Charging power capacity costs
    - Discharging power capacity costs
+
 2. Wind and PV investment include:
+
    - Power capacity costs only
 :::
 
@@ -402,8 +417,11 @@ $\sum_{s \in \mathcal{S}} (C^{E}_s e^{nom}_s + C^{P,ch}_s p^{ch,nom}_s + C^{P,di
 
 ::: {.callout-note}
 The investment budget constraint ensures that:
+
 1. Total investment costs do not exceed the maximum budget
+
 2. Includes all component investments:
+
    - Storage systems (energy and power capacity)
    - Wind parks
    - PV parks
@@ -415,10 +433,14 @@ $AR^{grid,exp} = \sum_{t \in \mathcal{T}} c^{MP}_t p^{out}_t$
 
 ::: {.callout-note}
 The grid electricity costs and revenues are calculated as:
+
 1. Import costs include:
+
    - Time-dependent market price
    - Fixed taxes and levies (including Netzentgelt)
+
 2. Export revenue includes:
+
    - Time-dependent market price only
 :::
 
@@ -429,12 +451,16 @@ $\sum_{w \in \mathcal{W}} p_{w,t} + \sum_{v \in \mathcal{V}} p_{v,t} + (p^{in}_t
 
 ::: {.callout-note}
 The power balance ensures that at each time step:
+
 1. Total generation equals total demand:
+
    - Wind generation
    - PV generation
    - Grid import/export
    - Storage charging/discharging
+
 2. Net grid power flow is:
+
    - Positive for import
    - Negative for export
 :::
@@ -446,8 +472,10 @@ $0 \leq p_{w,t} \leq f_{w,t} p^{nom}_w \quad \forall w \in \mathcal{W}, t \in \m
 
 ::: {.callout-note}
 Wind power output is constrained by:
+
 1. Non-negativity (no negative generation)
 2. Maximum available power:
+
    - Time-dependent capacity factor
    - Nominal power capacity
 :::
@@ -457,8 +485,11 @@ $0 \leq p_{v,t} \leq f_{v,t} p^{nom}_v \quad \forall v \in \mathcal{V}, t \in \m
 
 ::: {.callout-note}
 PV power output is constrained by:
+
 1. Non-negativity (no negative generation)
+
 2. Maximum available power:
+
    - Time-dependent capacity factor
    - Nominal power capacity
 :::
@@ -470,13 +501,19 @@ $DoD_s e^{nom}_s \leq e_{s,t} \leq e^{nom}_s \quad \forall s \in \mathcal{S}, t 
 
 ::: {.callout-note}
 Storage operation is constrained by:
+
 1. Charging power limits:
+
    - Non-negativity
    - Nominal charging power capacity
+
 2. Discharging power limits:
+
    - Non-negativity
    - Nominal discharging power capacity
+
 3. Energy level limits:
+
    - Minimum level based on depth of discharge
    - Maximum level based on nominal capacity
 :::
@@ -486,12 +523,18 @@ $e_{s,t} = (1-sdr_s)e_{s,t-1} + \eta^{ch}_s p^{ch}_{s,t} - \frac{p^{dis}_{s,t}}{
 
 ::: {.callout-note}
 The storage energy balance accounts for:
+
 1. Previous energy level:
+
    - Reduced by self-discharge
+
 2. Charging:
+
    - Increased by charging power
    - Reduced by charging efficiency losses
+
 3. Discharging:
+
    - Decreased by discharging power
    - Increased by discharging efficiency losses
 :::
