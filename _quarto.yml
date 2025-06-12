@@ -96,10 +96,10 @@ website:
             href: part-07/lecture-storage.qmd
           - text: "Tutorial"
             href: part-07/tutorial-storage.qmd
-      # - section: "08 Districting"
-      #   contents:
-      #     - text: "Lecture"
-      #       href: part-08/lecture-districting.qmd
+      - section: "08 Design"
+        contents:
+          - text: "Lecture"
+            href: part-08/lecture-design.qmd
       #     - text: "Tutorial"
       #       href: part-08/tutorial-districting.qmd
       # - section: "09 Safety"
