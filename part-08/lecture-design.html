@@ -8,7 +8,7 @@
 
 <meta name="author" content="Dr.&nbsp;Tobias Cors">
 
-<title>Lecture VII - Storage Modeling – Energy System Optimization with Julia</title>
+<title>Lecture VIII - Energy System Design Problem – Energy System Optimization with Julia</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -135,7 +135,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../part-07/lecture-storage.html">07 Storage</a></li><li class="breadcrumb-item"><a href="../part-07/lecture-storage.html">Lecture</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../part-08/lecture-design.html">08 Design</a></li><li class="breadcrumb-item"><a href="../part-08/lecture-design.html">Lecture</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -370,16 +370,16 @@ window.Quarto = {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false">
  <span class="menu-text">07 Storage</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../part-07/lecture-storage.html" class="sidebar-item-text sidebar-link active">
+  <a href="../part-07/lecture-storage.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Lecture</span></a>
   </div>
 </li>
@@ -393,16 +393,16 @@ window.Quarto = {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
  <span class="menu-text">08 Design</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../part-08/lecture-design.html" class="sidebar-item-text sidebar-link">
+  <a href="../part-08/lecture-design.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Lecture</span></a>
   </div>
 </li>
@@ -458,7 +458,7 @@ window.Quarto = {
   <ul>
   <li><a href="#quick-recap-from-last-week" id="toc-quick-recap-from-last-week" class="nav-link active" data-scroll-target="#quick-recap-from-last-week"><span class="flow">Quick Recap from last Week</span></a>
   <ul class="collapse">
-  <li><a href="#unit-commitment-problem-overview" id="toc-unit-commitment-problem-overview" class="nav-link" data-scroll-target="#unit-commitment-problem-overview">Unit Commitment Problem Overview</a></li>
+  <li><a href="#unit-commitment-problem-with-storage-overview" id="toc-unit-commitment-problem-with-storage-overview" class="nav-link" data-scroll-target="#unit-commitment-problem-with-storage-overview">Unit Commitment Problem with Storage Overview</a></li>
   <li><a href="#mathematical-formulation" id="toc-mathematical-formulation" class="nav-link" data-scroll-target="#mathematical-formulation">Mathematical Formulation</a>
   <ul class="collapse">
   <li><a href="#objective-function" id="toc-objective-function" class="nav-link" data-scroll-target="#objective-function">Objective Function</a></li>
@@ -468,71 +468,83 @@ window.Quarto = {
   <li><a href="#implementation-insights" id="toc-implementation-insights" class="nav-link" data-scroll-target="#implementation-insights">Implementation Insights</a></li>
   <li><a href="#solutions-from-last-week" id="toc-solutions-from-last-week" class="nav-link" data-scroll-target="#solutions-from-last-week">Solutions from last Week</a></li>
   </ul></li>
+  <li><a href="#excursion-tight-and-compact-formulations" id="toc-excursion-tight-and-compact-formulations" class="nav-link" data-scroll-target="#excursion-tight-and-compact-formulations"><span class="flow">Excursion: Tight and Compact Formulations</span></a>
+  <ul class="collapse">
+  <li><a href="#what-are-tight-and-compact-formulations" id="toc-what-are-tight-and-compact-formulations" class="nav-link" data-scroll-target="#what-are-tight-and-compact-formulations">What are Tight and Compact Formulations?</a>
+  <ul class="collapse">
+  <li><a href="#tight-formulations" id="toc-tight-formulations" class="nav-link" data-scroll-target="#tight-formulations">Tight Formulations</a></li>
+  <li><a href="#compact-formulations" id="toc-compact-formulations" class="nav-link" data-scroll-target="#compact-formulations">Compact Formulations</a></li>
+  </ul></li>
+  <li><a href="#examples-in-uc-with-storage" id="toc-examples-in-uc-with-storage" class="nav-link" data-scroll-target="#examples-in-uc-with-storage">Examples in UC with Storage</a>
+  <ul class="collapse">
+  <li><a href="#tight-formulations-1" id="toc-tight-formulations-1" class="nav-link" data-scroll-target="#tight-formulations-1">1. Tight Formulations</a></li>
+  <li><a href="#compact-formulations-1" id="toc-compact-formulations-1" class="nav-link" data-scroll-target="#compact-formulations-1">2. Compact Formulations</a></li>
+  </ul></li>
+  <li><a href="#why-these-concepts-matter" id="toc-why-these-concepts-matter" class="nav-link" data-scroll-target="#why-these-concepts-matter">Why These Concepts Matter</a>
+  <ul class="collapse">
+  <li><a href="#computational-efficiency" id="toc-computational-efficiency" class="nav-link" data-scroll-target="#computational-efficiency">Computational Efficiency</a></li>
+  <li><a href="#solution-quality" id="toc-solution-quality" class="nav-link" data-scroll-target="#solution-quality">Solution Quality</a></li>
+  <li><a href="#practical-implementation" id="toc-practical-implementation" class="nav-link" data-scroll-target="#practical-implementation">Practical Implementation</a></li>
+  </ul></li>
+  <li><a href="#trade-offs-to-consider" id="toc-trade-offs-to-consider" class="nav-link" data-scroll-target="#trade-offs-to-consider">Trade-offs to Consider</a>
+  <ul class="collapse">
+  <li><a href="#tightness-vs.-compactness" id="toc-tightness-vs.-compactness" class="nav-link" data-scroll-target="#tightness-vs.-compactness">Tightness vs.&nbsp;Compactness</a></li>
+  <li><a href="#model-complexity" id="toc-model-complexity" class="nav-link" data-scroll-target="#model-complexity">Model Complexity</a></li>
+  </ul></li>
+  </ul></li>
   <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction"><span class="flow">Introduction</span></a>
   <ul class="collapse">
-  <li><a href="#extending-the-unit-commitment-problem" id="toc-extending-the-unit-commitment-problem" class="nav-link" data-scroll-target="#extending-the-unit-commitment-problem">Extending the Unit Commitment Problem</a></li>
+  <li><a href="#energy-system-design-problem" id="toc-energy-system-design-problem" class="nav-link" data-scroll-target="#energy-system-design-problem">Energy System Design Problem</a></li>
+  <li><a href="#key-components" id="toc-key-components" class="nav-link" data-scroll-target="#key-components">Key Components</a></li>
   </ul></li>
-  <li><a href="#generator-efficiency" id="toc-generator-efficiency" class="nav-link" data-scroll-target="#generator-efficiency"><span class="flow">Generator Efficiency</span></a>
+  <li><a href="#mathematical-formulation-of-the-deterministic-design-problem" id="toc-mathematical-formulation-of-the-deterministic-design-problem" class="nav-link" data-scroll-target="#mathematical-formulation-of-the-deterministic-design-problem"><span class="flow">Mathematical Formulation of the Deterministic Design Problem</span></a>
   <ul class="collapse">
-  <li><a href="#constant-efficiency" id="toc-constant-efficiency" class="nav-link" data-scroll-target="#constant-efficiency">Constant Efficiency</a></li>
-  <li><a href="#linear-efficiency-function" id="toc-linear-efficiency-function" class="nav-link" data-scroll-target="#linear-efficiency-function">Linear Efficiency Function</a></li>
-  <li><a href="#piecewise-linear-approximation" id="toc-piecewise-linear-approximation" class="nav-link" data-scroll-target="#piecewise-linear-approximation">Piecewise Linear Approximation</a>
+  <li><a href="#sets" id="toc-sets" class="nav-link" data-scroll-target="#sets">Sets</a></li>
+  <li><a href="#decision-variables" id="toc-decision-variables" class="nav-link" data-scroll-target="#decision-variables">Decision Variables</a>
   <ul class="collapse">
-  <li><a href="#mathematical-formulation-1" id="toc-mathematical-formulation-1" class="nav-link" data-scroll-target="#mathematical-formulation-1">Mathematical Formulation</a></li>
-  <li><a href="#binary-variables-for-segment-selection" id="toc-binary-variables-for-segment-selection" class="nav-link" data-scroll-target="#binary-variables-for-segment-selection">Binary Variables for Segment Selection</a></li>
-  <li><a href="#constraints" id="toc-constraints" class="nav-link" data-scroll-target="#constraints">Constraints</a></li>
-  <li><a href="#visual-explanation" id="toc-visual-explanation" class="nav-link" data-scroll-target="#visual-explanation">Visual Explanation</a></li>
-  <li><a href="#convexity-and-binary-variables" id="toc-convexity-and-binary-variables" class="nav-link" data-scroll-target="#convexity-and-binary-variables">Convexity and Binary Variables</a></li>
+  <li><a href="#investment-variables" id="toc-investment-variables" class="nav-link" data-scroll-target="#investment-variables">Investment Variables</a></li>
+  <li><a href="#operational-variables" id="toc-operational-variables" class="nav-link" data-scroll-target="#operational-variables">Operational Variables</a></li>
+  <li><a href="#annual-cost-variables" id="toc-annual-cost-variables" class="nav-link" data-scroll-target="#annual-cost-variables">Annual Cost Variables</a></li>
+  </ul></li>
+  <li><a href="#parameters" id="toc-parameters" class="nav-link" data-scroll-target="#parameters">Parameters</a>
+  <ul class="collapse">
+  <li><a href="#investment-costs" id="toc-investment-costs" class="nav-link" data-scroll-target="#investment-costs">Investment Costs</a></li>
+  <li><a href="#operational-parameters" id="toc-operational-parameters" class="nav-link" data-scroll-target="#operational-parameters">Operational Parameters</a></li>
+  </ul></li>
+  <li><a href="#present-value-annuity-factor-pvaf" id="toc-present-value-annuity-factor-pvaf" class="nav-link" data-scroll-target="#present-value-annuity-factor-pvaf">Present Value Annuity Factor (PVAF)</a></li>
+  <li><a href="#objective-function-1" id="toc-objective-function-1" class="nav-link" data-scroll-target="#objective-function-1">Objective Function</a></li>
+  <li><a href="#annual-cost-constraints" id="toc-annual-cost-constraints" class="nav-link" data-scroll-target="#annual-cost-constraints">Annual Cost Constraints</a>
+  <ul class="collapse">
+  <li><a href="#investment-costs-1" id="toc-investment-costs-1" class="nav-link" data-scroll-target="#investment-costs-1">Investment Costs</a></li>
+  <li><a href="#investment-budget" id="toc-investment-budget" class="nav-link" data-scroll-target="#investment-budget">Investment Budget</a></li>
+  <li><a href="#grid-electricity-costs" id="toc-grid-electricity-costs" class="nav-link" data-scroll-target="#grid-electricity-costs">Grid Electricity Costs</a></li>
+  </ul></li>
+  <li><a href="#constraints" id="toc-constraints" class="nav-link" data-scroll-target="#constraints">Constraints</a>
+  <ul class="collapse">
+  <li><a href="#power-balance" id="toc-power-balance" class="nav-link" data-scroll-target="#power-balance">Power Balance</a></li>
+  <li><a href="#component-limits" id="toc-component-limits" class="nav-link" data-scroll-target="#component-limits">Component Limits</a></li>
+  <li><a href="#storage-energy-balance" id="toc-storage-energy-balance" class="nav-link" data-scroll-target="#storage-energy-balance">Storage Energy Balance</a></li>
   </ul></li>
   </ul></li>
-  <li><a href="#storage-modeling" id="toc-storage-modeling" class="nav-link" data-scroll-target="#storage-modeling"><span class="flow">Storage Modeling</span></a>
+  <li><a href="#implementation-insights-1" id="toc-implementation-insights-1" class="nav-link" data-scroll-target="#implementation-insights-1"><span class="flow">Implementation Insights</span></a>
   <ul class="collapse">
-  <li><a href="#battery-storage-system" id="toc-battery-storage-system" class="nav-link" data-scroll-target="#battery-storage-system">Battery Storage System</a></li>
-  <li><a href="#sets-and-indices" id="toc-sets-and-indices" class="nav-link" data-scroll-target="#sets-and-indices">Sets and Indices</a></li>
-  <li><a href="#decision-variables" id="toc-decision-variables" class="nav-link" data-scroll-target="#decision-variables">Decision Variables</a></li>
-  <li><a href="#parameters" id="toc-parameters" class="nav-link" data-scroll-target="#parameters">Parameters</a></li>
-  <li><a href="#energy-balance-constraint" id="toc-energy-balance-constraint" class="nav-link" data-scroll-target="#energy-balance-constraint">Energy Balance Constraint</a></li>
-  <li><a href="#energy-limits-constraint" id="toc-energy-limits-constraint" class="nav-link" data-scroll-target="#energy-limits-constraint">Energy Limits Constraint</a></li>
-  <li><a href="#power-limits-and-mutual-exclusion" id="toc-power-limits-and-mutual-exclusion" class="nav-link" data-scroll-target="#power-limits-and-mutual-exclusion">Power Limits and Mutual Exclusion</a></li>
-  <li><a href="#when-is-mutual-exclusion-required-technical" id="toc-when-is-mutual-exclusion-required-technical" class="nav-link" data-scroll-target="#when-is-mutual-exclusion-required-technical">When is Mutual Exclusion Required? (Technical)</a></li>
-  <li><a href="#when-is-mutual-exclusion-required-economic" id="toc-when-is-mutual-exclusion-required-economic" class="nav-link" data-scroll-target="#when-is-mutual-exclusion-required-economic">When is Mutual Exclusion Required? (Economic)</a></li>
-  <li><a href="#ramp-rate-constraints" id="toc-ramp-rate-constraints" class="nav-link" data-scroll-target="#ramp-rate-constraints">Ramp Rate Constraints</a></li>
+  <li><a href="#model-characteristics-1" id="toc-model-characteristics-1" class="nav-link" data-scroll-target="#model-characteristics-1">Model Characteristics</a></li>
+  <li><a href="#key-considerations" id="toc-key-considerations" class="nav-link" data-scroll-target="#key-considerations">Key Considerations</a></li>
   </ul></li>
-  <li><a href="#storage-capacity-optimization" id="toc-storage-capacity-optimization" class="nav-link" data-scroll-target="#storage-capacity-optimization"><span class="flow">Storage Capacity Optimization</span></a>
+  <li><a href="#applications" id="toc-applications" class="nav-link" data-scroll-target="#applications"><span class="flow">Applications</span></a>
   <ul class="collapse">
-  <li><a href="#extended-model" id="toc-extended-model" class="nav-link" data-scroll-target="#extended-model">Extended Model</a>
-  <ul class="collapse">
-  <li><a href="#additional-decision-variables" id="toc-additional-decision-variables" class="nav-link" data-scroll-target="#additional-decision-variables">Additional Decision Variables</a></li>
-  <li><a href="#additional-parameters" id="toc-additional-parameters" class="nav-link" data-scroll-target="#additional-parameters">Additional Parameters</a></li>
-  <li><a href="#modified-constraints" id="toc-modified-constraints" class="nav-link" data-scroll-target="#modified-constraints">Modified Constraints</a></li>
-  <li><a href="#extended-objective-function" id="toc-extended-objective-function" class="nav-link" data-scroll-target="#extended-objective-function">Extended Objective Function</a></li>
-  </ul></li>
-  <li><a href="#key-insights" id="toc-key-insights" class="nav-link" data-scroll-target="#key-insights">Key Insights</a></li>
-  </ul></li>
-  <li><a href="#impact" id="toc-impact" class="nav-link" data-scroll-target="#impact"><span class="flow">Impact</span></a>
-  <ul class="collapse">
-  <li><a href="#real-world-applications" id="toc-real-world-applications" class="nav-link" data-scroll-target="#real-world-applications">Real-World Applications</a></li>
-  <li><a href="#further-extensions-for-battery-storage-use-cases" id="toc-further-extensions-for-battery-storage-use-cases" class="nav-link" data-scroll-target="#further-extensions-for-battery-storage-use-cases">Further Extensions for Battery Storage Use Cases</a></li>
-  <li><a href="#excursion-energy-markets-overview" id="toc-excursion-energy-markets-overview" class="nav-link" data-scroll-target="#excursion-energy-markets-overview">Excursion: Energy Markets Overview</a>
-  <ul class="collapse">
-  <li><a href="#ancillary-services-markets" id="toc-ancillary-services-markets" class="nav-link" data-scroll-target="#ancillary-services-markets">Ancillary Services Markets</a></li>
-  </ul></li>
-  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"></a></li>
-  </ul></li>
-  <li><a href="#literature" id="toc-literature" class="nav-link" data-scroll-target="#literature"><span class="flow">Literature</span></a>
-  <ul class="collapse">
-  <li><a href="#literature-i" id="toc-literature-i" class="nav-link" data-scroll-target="#literature-i">Literature I</a></li>
-  <li><a href="#literature-ii" id="toc-literature-ii" class="nav-link" data-scroll-target="#literature-ii">Literature II</a></li>
+  <li><a href="#real-world-use-cases" id="toc-real-world-use-cases" class="nav-link" data-scroll-target="#real-world-use-cases">Real-World Use Cases</a></li>
+  <li><a href="#extensions" id="toc-extensions" class="nav-link" data-scroll-target="#extensions">Extensions</a></li>
   </ul></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/edit/main/part-07/lecture-storage.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/blob/main/part-07/lecture-storage.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="lecture-presentation.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/edit/main/part-08/lecture-design.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/blob/main/part-08/lecture-design.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="lecture-presentation.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../part-07/lecture-storage.html">07 Storage</a></li><li class="breadcrumb-item"><a href="../part-07/lecture-storage.html">Lecture</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../part-08/lecture-design.html">08 Design</a></li><li class="breadcrumb-item"><a href="../part-08/lecture-design.html">Lecture</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Lecture VII - Storage Modeling</h1>
+<h1 class="title">Lecture VIII - Energy System Design Problem</h1>
 <p class="subtitle lead">Energy System Optimization with Julia</p>
 </div>
 
@@ -565,25 +577,34 @@ window.Quarto = {
 
 <section id="quick-recap-from-last-week" class="level1 title">
 <h1 class="title"><span class="flow">Quick Recap from last Week</span></h1>
-<section id="unit-commitment-problem-overview" class="level2">
-<h2 class="anchored" data-anchor-id="unit-commitment-problem-overview">Unit Commitment Problem Overview</h2>
+<section id="unit-commitment-problem-with-storage-overview" class="level2">
+<h2 class="anchored" data-anchor-id="unit-commitment-problem-with-storage-overview">Unit Commitment Problem with Storage Overview</h2>
 <ul>
-<li><strong>Objective</strong>: Minimize total generation cost over multiple time periods</li>
+<li><strong>Objective</strong>: Minimize total generation and storage costs over multiple time periods</li>
 <li><strong>Decision Variables</strong>:
 <ul>
 <li>Power output of thermal generators (<span class="math inline">\(p_{g,t}\)</span>)</li>
 <li>Power output of wind turbines (<span class="math inline">\(p_{w,t}\)</span>)</li>
 <li>Binary variables for generator status (<span class="math inline">\(u_{g,t}\)</span>)</li>
 <li>Binary variables for startup events (<span class="math inline">\(v_{g,t}\)</span>)</li>
+<li>Storage energy level (<span class="math inline">\(e_{s,t}\)</span>)</li>
+<li>Storage charging power (<span class="math inline">\(p^{ch}_{s,t}\)</span>)</li>
+<li>Storage discharging power (<span class="math inline">\(p^{dis}_{s,t}\)</span>)</li>
+<li>Binary variables for storage charging status (<span class="math inline">\(u^{ch}_{s,t}\)</span>)</li>
+<li>Binary variables for storage discharging status (<span class="math inline">\(u^{dis}_{s,t}\)</span>)</li>
 </ul></li>
 <li><strong>Key Constraints</strong>:
 <ul>
-<li>Power balance</li>
+<li>Power balance (including storage)</li>
 <li>Generator limits</li>
 <li>Wind limits</li>
 <li>Minimum up/down times</li>
 <li>Ramp rate limits</li>
 <li>Startup variable definition</li>
+<li>Storage energy balance</li>
+<li>Storage energy limits</li>
+<li>Storage power limits and mutual exclusion</li>
+<li>Storage ramp rate limits</li>
 </ul></li>
 </ul>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -596,7 +617,7 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>The Unit Commitment problem extends Economic Dispatch by adding operational constraints and time-dependent unit commitment decisions.</p>
+<p>The Unit Commitment problem with storage extends the basic UC problem by adding storage system modeling and operation constraints.</p>
 </div>
 </div>
 </section>
@@ -611,7 +632,7 @@ Note
 <ol type="1">
 <li><strong>Power Balance</strong>:</li>
 </ol>
-<p><span class="math inline">\(\sum_{g \in \mathcal{G}} p_{g,t} + \sum_{w \in \mathcal{W}} p_{w,t} = d^f_t \quad \forall t \in \mathcal{T}\)</span></p>
+<p><span class="math inline">\(\sum_{g \in \mathcal{G}} p_{g,t} + \sum_{w \in \mathcal{W}} p_{w,t} + \sum_{s \in \mathcal{S}} (p^{dis}_{s,t} - p^{ch}_{s,t}) = d^f_t \quad \forall t \in \mathcal{T}\)</span></p>
 <ol start="2" type="1">
 <li><strong>Generator Limits</strong>:</li>
 </ol>
@@ -621,35 +642,34 @@ Note
 </ol>
 <p><span class="math inline">\(0 \leq p_{w,t} \leq p^f_{w,t} \quad \forall w \in \mathcal{W}, t \in \mathcal{T}\)</span></p>
 <ol start="4" type="1">
-<li><strong>Minimum Up/Down Times</strong>:</li>
+<li><strong>Storage Energy Balance</strong>:</li>
 </ol>
-<p><span class="math inline">\(u_{g,t} - u_{g,t-1} \leq u_{g,\tau} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}, \tau \in [t+1, \min(t+T^{up}_g-1,|\mathcal{T}|)]\)</span> <span class="math inline">\(u_{g,t-1} - u_{g,t} \leq 1 - u_{g,\tau} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}, \tau \in [t+1, \min(t+T^{down}_g-1,|\mathcal{T}|)]\)</span></p>
+<p><span class="math inline">\(e_{s,t} = (1-sdr_s)e_{s,t-1} + \eta^{ch}_s p^{ch}_{s,t} - \frac{p^{dis}_{s,t}}{\eta^{dis}_s} \quad \forall s \in \mathcal{S}, t \in \mathcal{T}\)</span></p>
 <ol start="5" type="1">
-<li><strong>Ramp Rate Limits</strong>:</li>
+<li><strong>Storage Energy Limits</strong>:</li>
 </ol>
-<p><span class="math inline">\(p_{g,t} - p_{g,t-1} \leq R^{up}_g \quad \forall g \in \mathcal{G}, t \in \mathcal{T}\)</span> <span class="math inline">\(p_{g,t-1} - p_{g,t} \leq R^{down}_g \quad \forall g \in \mathcal{G}, t \in \mathcal{T}\)</span></p>
+<p><span class="math inline">\(E^{min}_s \leq e_{s,t} \leq E^{max}_s \quad \forall s \in \mathcal{S}, t \in \mathcal{T}\)</span></p>
 <ol start="6" type="1">
-<li><strong>Startup Variable Definition</strong>:</li>
+<li><strong>Storage Power Limits and Mutual Exclusion</strong>:</li>
 </ol>
-<p><span class="math inline">\(v_{g,t} \geq u_{g,t} - u_{g,t-1} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}\)</span></p>
+<p><span class="math inline">\(0 \leq p^{ch}_{s,t} \leq P^{ch,max}_s u^{ch}_{s,t} \quad \forall s \in \mathcal{S}, t \in \mathcal{T}\)</span> <span class="math inline">\(0 \leq p^{dis}_{s,t} \leq P^{dis,max}_s u^{dis}_{s,t} \quad \forall s \in \mathcal{S}, t \in \mathcal{T}\)</span> <span class="math inline">\(u^{ch}_{s,t} + u^{dis}_{s,t} \leq 1 \quad \forall s \in \mathcal{S}, t \in \mathcal{T}\)</span></p>
+<ol start="7" type="1">
+<li><strong>Storage Ramp Rate Limits</strong>:</li>
+</ol>
+<p><span class="math inline">\(p^{ch}_{s,t} - p^{ch}_{s,t-1} \leq R^{ch}_s \quad \forall s \in \mathcal{S}, t \in \mathcal{T}\)</span> <span class="math inline">\(p^{dis}_{s,t} - p^{dis}_{s,t-1} \leq R^{dis}_s \quad \forall s \in \mathcal{S}, t \in \mathcal{T}\)</span></p>
 </section>
 </section>
 <section id="model-characteristics" class="level2">
 <h2 class="anchored" data-anchor-id="model-characteristics">Model Characteristics</h2>
 <ul>
 <li>Mixed-Integer Linear Programming (MILP) problem</li>
-<li>Binary variables for generator status and startup events</li>
-<li>Time-dependent decisions</li>
+<li>Binary variables for generator status, startup events, and storage operation</li>
+<li>Time-dependent decisions for both generation and storage</li>
 <li>Computationally challenging due to:
 <ul>
 <li>Large number of binary variables</li>
 <li>Large number of time steps</li>
-<li>Large number of constraints (Challenge: finding formulations that are both computationally efficient and mathematically accurate)</li>
-<li>Need for tight and compact formulations:
-<ul>
-<li>Tight: Small gap between LP relaxation and integer solution</li>
-<li>Compact: Fewer variables and constraints while maintaining accuracy</li>
-</ul></li>
+<li>Large number of constraints</li>
 </ul></li>
 </ul>
 <div class="callout callout-style-default callout-tip callout-titled">
@@ -662,7 +682,7 @@ Tip
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>The Unit Commitment problem is fundamental for power system operation, providing a realistic model estimating generator operation over time.</p>
+<p>The Unit Commitment problem with storage provides a comprehensive model for power system operation, including both generation and storage resources.</p>
 </div>
 </div>
 </section>
@@ -677,6 +697,8 @@ Tip
 <li>Wind curtailment</li>
 <li>Thermal and wind generation</li>
 <li>Generator status and startup events</li>
+<li>Storage energy levels</li>
+<li>Storage charging/discharging power</li>
 </ul></li>
 </ul>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -689,7 +711,7 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>The tutorial demonstrated how to implement and solve the UC problem using Julia and JuMP, including simple visualization of results over time.</p>
+<p>The tutorial demonstrated how to implement and solve the UC problem with storage using Julia and JuMP, including visualization of generation and storage operation over time.</p>
 </div>
 </div>
 </section>
@@ -716,27 +738,162 @@ Tip
 </div>
 </section>
 </section>
+<section id="excursion-tight-and-compact-formulations" class="level1 title">
+<h1 class="title"><span class="flow">Excursion: Tight and Compact Formulations</span></h1>
+<section id="what-are-tight-and-compact-formulations" class="level2">
+<h2 class="anchored" data-anchor-id="what-are-tight-and-compact-formulations">What are Tight and Compact Formulations?</h2>
+<p>In mathematical optimization, particularly for Mixed-Integer Linear Programming (MILP) problems like the Unit Commitment problem, the concepts of “tight” and “compact” formulations are crucial for efficient problem solving.</p>
+<section id="tight-formulations" class="level3">
+<h3 class="anchored" data-anchor-id="tight-formulations">Tight Formulations</h3>
+<p>A formulation is considered “tight” when there is a small gap between the optimal solution of the linear programming (LP) relaxation and the integer solution. This is important because: - It helps solvers find optimal solutions faster - It provides better lower bounds for branch-and-bound algorithms - It reduces the search space for integer solutions</p>
+</section>
+<section id="compact-formulations" class="level3">
+<h3 class="anchored" data-anchor-id="compact-formulations">Compact Formulations</h3>
+<p>A formulation is considered “compact” when it uses fewer variables and constraints while maintaining accuracy. This is important because: - It reduces computational complexity - It decreases memory requirements - It can speed up solution times - It makes the model easier to understand and maintain</p>
+</section>
+</section>
+<section id="examples-in-uc-with-storage" class="level2">
+<h2 class="anchored" data-anchor-id="examples-in-uc-with-storage">Examples in UC with Storage</h2>
+<section id="tight-formulations-1" class="level3">
+<h3 class="anchored" data-anchor-id="tight-formulations-1">1. Tight Formulations</h3>
+<section id="example-1---generator-commitment" class="level4">
+<h4 class="anchored" data-anchor-id="example-1---generator-commitment">Example 1 - Generator Commitment:</h4>
+<pre class="math"><code># Less tight formulation
+p_{g,t} ≤ P^{max}_g u_{g,t}  # Only upper bound
+
+# Tighter formulation
+P^{min}_g u_{g,t} ≤ p_{g,t} ≤ P^{max}_g u_{g,t}  # Both bounds</code></pre>
+<ul>
+<li>The second formulation is tighter because it includes both minimum and maximum power constraints</li>
+<li>This reduces the feasible region of the LP relaxation</li>
+<li>Makes it easier for the solver to find integer solutions</li>
+</ul>
+</section>
+<section id="example-2---storage-operation" class="level4">
+<h4 class="anchored" data-anchor-id="example-2---storage-operation">Example 2 - Storage Operation:</h4>
+<pre class="math"><code># Less tight formulation
+e_{s,t} = e_{s,t-1} + p^{ch}_{s,t} - p^{dis}_{s,t}  # Without efficiency
+
+# Tighter formulation
+e_{s,t} = (1-sdr_s)e_{s,t-1} + η^{ch}_s p^{ch}_{s,t} - p^{dis}_{s,t}/η^{dis}_s  # With efficiency</code></pre>
+<ul>
+<li>The second formulation is tighter because it accounts for efficiency losses</li>
+<li>This better represents the physical reality of storage operation</li>
+<li>Helps the solver find more realistic solutions</li>
+</ul>
+</section>
+</section>
+<section id="compact-formulations-1" class="level3">
+<h3 class="anchored" data-anchor-id="compact-formulations-1">2. Compact Formulations</h3>
+<section id="example-1---minimum-updown-times" class="level4">
+<h4 class="anchored" data-anchor-id="example-1---minimum-updown-times">Example 1 - Minimum Up/Down Times:</h4>
+<pre class="math"><code># Less compact formulation
+u_{g,t} - u_{g,t-1} ≤ u_{g,τ}  ∀τ ∈ [t+1, t+T^{up}_g-1]
+u_{g,t-1} - u_{g,t} ≤ 1 - u_{g,τ}  ∀τ ∈ [t+1, t+T^{down}_g-1]
+
+# More compact formulation
+∑_{τ=t}^{t+T^{up}_g-1} u_{g,τ} ≥ T^{up}_g (u_{g,t} - u_{g,t-1})
+∑_{τ=t}^{t+T^{down}_g-1} (1-u_{g,τ}) ≥ T^{down}_g (u_{g,t-1} - u_{g,t})</code></pre>
+<ul>
+<li>The second formulation uses fewer constraints</li>
+<li>Achieves the same result with less computational overhead</li>
+<li>Makes the model more efficient to solve</li>
+</ul>
+</section>
+<section id="example-2---storage-mutual-exclusion" class="level4">
+<h4 class="anchored" data-anchor-id="example-2---storage-mutual-exclusion">Example 2 - Storage Mutual Exclusion:</h4>
+<pre class="math"><code># Less compact formulation
+p^{ch}_{s,t} ≤ P^{ch,max}_s u^{ch}_{s,t}
+p^{dis}_{s,t} ≤ P^{dis,max}_s u^{dis}_{s,t}
+u^{ch}_{s,t} + u^{dis}_{s,t} ≤ 1
+
+# More compact formulation
+p^{ch}_{s,t}/P^{ch,max}_s + p^{dis}_{s,t}/P^{dis,max}_s ≤ 1</code></pre>
+<ul>
+<li>The second formulation combines three constraints into one</li>
+<li>Reduces the number of binary variables needed</li>
+<li>Simplifies the model while maintaining accuracy</li>
+</ul>
+</section>
+</section>
+</section>
+<section id="why-these-concepts-matter" class="level2">
+<h2 class="anchored" data-anchor-id="why-these-concepts-matter">Why These Concepts Matter</h2>
+<section id="computational-efficiency" class="level3">
+<h3 class="anchored" data-anchor-id="computational-efficiency">Computational Efficiency</h3>
+<ul>
+<li>Tighter formulations reduce the search space</li>
+<li>Compact formulations reduce the problem size</li>
+<li>Both lead to faster solution times</li>
+</ul>
+</section>
+<section id="solution-quality" class="level3">
+<h3 class="anchored" data-anchor-id="solution-quality">Solution Quality</h3>
+<ul>
+<li>Tighter formulations provide better bounds</li>
+<li>Help find optimal solutions more reliably</li>
+<li>Reduce the gap between LP relaxation and integer solution</li>
+</ul>
+</section>
+<section id="practical-implementation" class="level3">
+<h3 class="anchored" data-anchor-id="practical-implementation">Practical Implementation</h3>
+<ul>
+<li>More efficient use of computational resources</li>
+<li>Better handling of large-scale problems</li>
+<li>More reliable results for real-world applications</li>
+</ul>
+</section>
+</section>
+<section id="trade-offs-to-consider" class="level2">
+<h2 class="anchored" data-anchor-id="trade-offs-to-consider">Trade-offs to Consider</h2>
+<section id="tightness-vs.-compactness" class="level3">
+<h3 class="anchored" data-anchor-id="tightness-vs.-compactness">Tightness vs.&nbsp;Compactness</h3>
+<ul>
+<li>Sometimes making a formulation tighter makes it less compact</li>
+<li>Need to balance between tightness and problem size</li>
+<li>Choose based on specific problem characteristics</li>
+</ul>
+</section>
+<section id="model-complexity" class="level3">
+<h3 class="anchored" data-anchor-id="model-complexity">Model Complexity</h3>
+<ul>
+<li>More complex formulations might be tighter but harder to understand</li>
+<li>Simpler formulations might be more compact but less accurate</li>
+<li>Need to find the right balance for your specific use case</li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>These concepts are particularly important in the Unit Commitment problem with storage and approximations of part-load efficiencies because:</p>
+<ol type="1">
+<li>The problem is already complex with many variables and constraints</li>
+<li>Storage adds additional complexity with its operational constraints</li>
+<li>Real-world applications need efficient solutions</li>
+<li>The problem size can grow quickly with more time periods or storage units</li>
+</ol>
+</div>
+</div>
+</section>
+</section>
+</section>
 <section id="introduction" class="level1 title">
 <h1 class="title"><span class="flow">Introduction</span></h1>
-<section id="extending-the-unit-commitment-problem" class="level2">
-<h2 class="anchored" data-anchor-id="extending-the-unit-commitment-problem">Extending the Unit Commitment Problem</h2>
-<p>In this lecture, we will extend the Unit Commitment problem by adding:</p>
-<pre><code>1. Generator efficiency modeling
-2. Storage system modeling
-3. Storage capacity optimization</code></pre>
-<p>These extensions make the model more realistic and allow for more sophisticated analysis of power systems.</p>
-</section>
-</section>
-<section id="generator-efficiency" class="level1 title">
-<h1 class="title"><span class="flow">Generator Efficiency</span></h1>
-<section id="constant-efficiency" class="level2">
-<h2 class="anchored" data-anchor-id="constant-efficiency">Constant Efficiency</h2>
-<p>The simplest approach is to assume constant efficiency:</p>
-<p><span class="math inline">\(\eta_g = \text{constant} \quad \forall g \in \mathcal{G}\)</span></p>
-<ul>
-<li>Fuel consumption: <span class="math inline">\(f_{g,t} = \frac{p_{g,t}}{\eta_g}\)</span></li>
-<li>Variable cost: <span class="math inline">\(c^{var}_g = c^{fuel}_g \sum_{t \in \mathcal{T}} f_{g,t}\)</span></li>
-</ul>
+<section id="energy-system-design-problem" class="level2">
+<h2 class="anchored" data-anchor-id="energy-system-design-problem">Energy System Design Problem</h2>
+<p>In this lecture, we extend the Unit Commitment problem to include investment decisions for energy system components. This allows us to:</p>
+<ol type="1">
+<li>Optimize technology selection</li>
+<li>Determine optimal component sizes</li>
+<li>Balance investment and operational costs</li>
+<li>Plan local energy systems holistically</li>
+</ol>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -747,522 +904,108 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Constant efficiency is a simplification that works well for generators operating near their optimal point.</p>
+<p>The design problem combines investment planning (sizing) with operational optimization, enabling comprehensive energy system design.</p>
 </div>
 </div>
 </section>
-<section id="linear-efficiency-function" class="level2">
-<h2 class="anchored" data-anchor-id="linear-efficiency-function">Linear Efficiency Function</h2>
-<p>While efficiency can be modeled as a linear function of power output:</p>
-<p><span class="math inline">\(\eta_g(p_{g,t}) = \alpha_g + \beta_g p_{g,t}\)</span></p>
-<p>This leads to a non-linear fuel consumption function:</p>
-<p><span class="math inline">\(f_{g,t} = \frac{p_{g,t}}{\alpha_g + \beta_g p_{g,t}}\)</span></p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Direct linear approximation of efficiency is not possible in MILP because:</p>
-<ol type="1">
-<li>Fuel consumption <span class="math inline">\(f_{g,t} = \frac{p_{g,t}}{\eta_g(p_{g,t})}\)</span> involves variable multiplication</li>
-<li>This would make the problem non-linear</li>
-<li>Instead, we directly approximate the fuel consumption curve <span class="math inline">\(f_{g,t}\)</span> as a linear function of power output <span class="math inline">\(p_{g,t}\)</span></li>
-</ol>
-</div>
-</div>
-</section>
-<section id="piecewise-linear-approximation" class="level2">
-<h2 class="anchored" data-anchor-id="piecewise-linear-approximation">Piecewise Linear Approximation</h2>
-<p>For non-linear fuel consumption curves, we use piecewise linear approximation:</p>
-<ol type="1">
-<li>Divide the power range into segments</li>
-<li>Approximate each segment with a linear function</li>
-<li>Use binary variables to select the active segment</li>
-</ol>
-<section id="mathematical-formulation-1" class="level3">
-<h3 class="anchored" data-anchor-id="mathematical-formulation-1">Mathematical Formulation</h3>
-<p><span class="math inline">\(f_{g,t} = \sum_{k \in \mathcal{K}} \lambda_{g,t,k} F_{g,k}\)</span></p>
-<p>where:</p>
+<section id="key-components" class="level2">
+<h2 class="anchored" data-anchor-id="key-components">Key Components</h2>
+<p>We will focus on optimizing:</p>
 <ul>
-<li><span class="math inline">\(\mathcal{K}\)</span> is the set of segments</li>
-<li><span class="math inline">\(\lambda_{g,t,k}\)</span> are the weights for each segment</li>
-<li><span class="math inline">\(F_{g,k}\)</span> is the fuel consumption in segment <span class="math inline">\(k\)</span></li>
+<li>Storage systems</li>
+<li>Wind parks</li>
+<li>PV parks</li>
+<li>Electric market participation</li>
 </ul>
+<p>… while fullfilling a fixed electric demand. Additionally, we consider a maximum investment budget.</p>
+<p>All nominal sizes will be decision variables in our optimization model.</p>
 </section>
-<section id="binary-variables-for-segment-selection" class="level3">
-<h3 class="anchored" data-anchor-id="binary-variables-for-segment-selection">Binary Variables for Segment Selection</h3>
-<p>To ensure that only one segment is active at a time, we introduce binary variables <span class="math inline">\(\delta_{g,t,k}\)</span>:</p>
+</section>
+<section id="mathematical-formulation-of-the-deterministic-design-problem" class="level1 title">
+<h1 class="title"><span class="flow">Mathematical Formulation of the Deterministic Design Problem</span></h1>
+<section id="sets" class="level2">
+<h2 class="anchored" data-anchor-id="sets">Sets</h2>
 <ul>
-<li><span class="math inline">\(\delta_{g,t,k} = 1\)</span> if segment <span class="math inline">\(k\)</span> is active for generator <span class="math inline">\(g\)</span> at time <span class="math inline">\(t\)</span></li>
-<li><span class="math inline">\(\delta_{g,t,k} = 0\)</span> otherwise</li>
-</ul>
-<p>These binary variables are used to:</p>
-<ol type="1">
-<li>Select which segment is active</li>
-<li>Ensure the weights <span class="math inline">\(\lambda_{g,t,k}\)</span> are only non-zero for the active segment</li>
-<li>Maintain the convexity of the piecewise linear approximation</li>
-</ol>
-</section>
-<section id="constraints" class="level3">
-<h3 class="anchored" data-anchor-id="constraints">Constraints</h3>
-<p><strong>Segment Selection</strong>:</p>
-<p><span class="math inline">\(\sum_{k \in \mathcal{K}} \delta_{g,t,k} = 1 \quad \forall g \in \mathcal{G}, t \in \mathcal{T}\)</span></p>
-<p><strong>Power Output</strong>:</p>
-<p><span class="math inline">\(p_{g,t} = \sum_{k \in \mathcal{K}} \lambda_{g,t,k} P_{g,k} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}\)</span></p>
-<p><strong>Segment Limits</strong>:</p>
-<p><span class="math inline">\(\lambda_{g,t,k} \leq \delta_{g,t,k} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}, k \in \mathcal{K}\)</span></p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>The binary variables <span class="math inline">\(\delta_{g,t,k}\)</span> ensure that only one segment is active at a time, while the weights <span class="math inline">\(\lambda_{g,t,k}\)</span> determine the exact position within that segment. This approach maintains linearity while accurately approximating non-linear efficiency curves.</p>
-</div>
-</div>
-</section>
-<section id="visual-explanation" class="level3">
-<h3 class="anchored" data-anchor-id="visual-explanation">Visual Explanation</h3>
-<div style="position: relative; width: 600px; height: 400px; margin: 20px auto;">
-    <!-- Axes -->
-    <svg style="position: absolute; width: 100%; height: 100%;">
-        <!-- X-axis -->
-        <line x1="50" y1="350" x2="550" y2="350" stroke="black" stroke-width="2"></line>
-        <!-- Y-axis -->
-        <line x1="50" y1="350" x2="50" y2="50" stroke="black" stroke-width="2"></line>
-        
-        <!-- X-axis ticks -->
-        <line x1="150" y1="350" x2="150" y2="355" stroke="black" stroke-width="2"></line>
-        <line x1="250" y1="350" x2="250" y2="355" stroke="black" stroke-width="2"></line>
-        <line x1="350" y1="350" x2="350" y2="355" stroke="black" stroke-width="2"></line>
-        <line x1="500" y1="350" x2="500" y2="355" stroke="black" stroke-width="2"></line>
-        
-        <!-- Original curve (convex) -->
-        <path d="M 50,350 C 100,348 150,345 200,340 C 250,330 300,310 350,270 C 375,250 400,240 500,100" stroke="blue" stroke-width="3" fill="none"></path>
-        
-        <!-- Piecewise linear approximation -->
-        <path d="M 50,350 L 150,345 L 250,330 L 350,270 L 500,100" stroke="red" stroke-width="3" fill="none"></path>
-        
-        <!-- Points -->
-        <circle cx="150" cy="345" r="4" fill="black"></circle>
-        <circle cx="250" cy="330" r="4" fill="black"></circle>
-        <circle cx="350" cy="270" r="4" fill="black"></circle>
-        <circle cx="500" cy="100" r="4" fill="black"></circle>
-        
-        <!-- Example point -->
-        <circle cx="200" cy="340" r="6" fill="green"></circle>
-        
-        <!-- Solid green lines -->
-        <line x1="200" y1="340" x2="200" y2="350" stroke="green" stroke-width="2"></line>
-        <line x1="50" y1="340" x2="200" y2="340" stroke="green" stroke-width="2"></line>
-        
-        <!-- Fuel consumption intercepts -->
-        <line x1="45" y1="345" x2="55" y2="345" stroke="black" stroke-width="2"></line>
-        <line x1="45" y1="330" x2="55" y2="330" stroke="black" stroke-width="2"></line>
-        <line x1="45" y1="270" x2="55" y2="270" stroke="black" stroke-width="2"></line>
-        <line x1="45" y1="100" x2="55" y2="100" stroke="black" stroke-width="2"></line>
-        
-        <!-- Grey dashed lines to y-axis intercepts -->
-        <line x1="150" y1="345" x2="50" y2="345" stroke="gray" stroke-width="1" stroke-dasharray="5,5"></line>
-        <line x1="250" y1="330" x2="50" y2="330" stroke="gray" stroke-width="1" stroke-dasharray="5,5"></line>
-        <line x1="350" y1="270" x2="50" y2="270" stroke="gray" stroke-width="1" stroke-dasharray="5,5"></line>
-        <line x1="500" y1="100" x2="50" y2="100" stroke="gray" stroke-width="1" stroke-dasharray="5,5"></line>
-        
-        <!-- Grey dashed lines to x-axis intercepts -->
-        <line x1="150" y1="345" x2="150" y2="350" stroke="gray" stroke-width="1" stroke-dasharray="5,5"></line>
-        <line x1="250" y1="330" x2="250" y2="350" stroke="gray" stroke-width="1" stroke-dasharray="5,5"></line>
-        <line x1="350" y1="270" x2="350" y2="350" stroke="gray" stroke-width="1" stroke-dasharray="5,5"></line>
-        <line x1="500" y1="100" x2="500" y2="350" stroke="gray" stroke-width="1" stroke-dasharray="5,5"></line>
-    </svg>
-    
-    <!-- Labels -->
-    <div style="position: absolute; left: 200px; bottom: -10px; color: green; z-index: 1;">
-        <span class="math inline">\(p_{g,t}\)</span>
-    </div>
-    <div style="position: absolute; left: -30px; top: 324px; color: green; z-index: 1;">
-        <span class="math inline">\(f_{g,t}\)</span>
-    </div>
-    <div style="position: absolute; right: 150px; top: 50px; color: blue;">
-        <span class="math inline">\(\text{Original curve}\)</span>
-    </div>
-    <div style="position: absolute; right: 150px; top: 70px; color: red;">
-        <span class="math inline">\(\text{Piecewise linear}\)</span>
-    </div>
-    
-    <!-- Delta variables -->
-    <div style="position: absolute; left: 150px; bottom: 20px;">
-        <span class="math inline">\(\delta_{g,t,1}=0\)</span>
-    </div>
-    <div style="position: absolute; left: 250px; bottom: 20px;">
-        <span class="math inline">\(\delta_{g,t,2}=1\)</span>
-    </div>
-    <div style="position: absolute; left: 350px; bottom: 20px;">
-        <span class="math inline">\(\delta_{g,t,3}=0\)</span>
-    </div>
-    <div style="position: absolute; left: 500px; bottom: 20px;">
-        <span class="math inline">\(\delta_{g,t,4}=0\)</span>
-    </div>
-    
-    <!-- Lambda weights -->
-    <div style="position: absolute; left: 150px; bottom: 0px;">
-        <span class="math inline">\(\lambda_{g,t,1}\)</span>
-    </div>
-    <div style="position: absolute; left: 250px; bottom: 0px;">
-        <span class="math inline">\(\lambda_{g,t,2}\)</span>
-    </div>
-    
-    <!-- Fuel consumption labels -->
-    <div style="position: absolute; left: 5px; top: 340px;">
-        <span class="math inline">\(F_{g,1}\)</span>
-    </div>
-    <div style="position: absolute; left: 5px; top: 305px;">
-        <span class="math inline">\(F_{g,2}\)</span>
-    </div>
-    <div style="position: absolute; left: 5px; top: 250px;">
-        <span class="math inline">\(F_{g,3}\)</span>
-    </div>
-    <div style="position: absolute; left: 5px; top: 80px;">
-        <span class="math inline">\(F_{g,4}\)</span>
-    </div>
-    
-    <!-- Y-axis label -->
-    <div style="position: absolute; left: -10px; bottom: 100px; transform: rotate(-90deg); transform-origin: left;">
-        <span class="math inline">\(\text{Fuel Consumption }[MWh]\)</span>
-    </div>
-    
-    <!-- X-axis label -->
-    <div style="position: absolute; left: 400px; bottom: -10px;">
-        <span class="math inline">\(\text{Power Output }[MW]\)</span>
-    </div>
-</div>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Diagram Explanation
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>The diagram shows:</p>
-<ol type="1">
-<li>Original convex fuel consumption curve (blue) and its piecewise linear approximation (red)</li>
-<li>Example point (green) at (<span class="math inline">\(p_{g,t}\)</span>, <span class="math inline">\(f_{g,t}\)</span>)</li>
-<li>Weights (<span class="math inline">\(\lambda\)</span>) determining position within segments</li>
-<li>Binary variables (<span class="math inline">\(\delta\)</span>) selecting active segment</li>
-</ol>
-<p>The point lies in segment 2, with:</p>
-<ul>
-<li><span class="math inline">\(\delta_{g,t,2}=1\)</span> selects this segment</li>
-<li><span class="math inline">\(\lambda_{g,t,1}\)</span> and <span class="math inline">\(\lambda_{g,t,2}\)</span> determine the exact position within the segment</li>
-<li>Other segments are inactive (<span class="math inline">\(\delta_{g,t,k}=0\)</span> for <span class="math inline">\(k \neq 2\)</span>)</li>
-</ul>
-</div>
-</div>
-</section>
-<section id="convexity-and-binary-variables" class="level3">
-<h3 class="anchored" data-anchor-id="convexity-and-binary-variables">Convexity and Binary Variables</h3>
-<p>The piecewise linear approximation must be convex to ensure:</p>
-<ol type="1">
-<li>The fuel consumption curve is monotonically increasing</li>
-<li>The optimization problem remains linear</li>
-<li>The solution is unique and globally optimal</li>
-</ol>
-<p>The binary variables <span class="math inline">\(\delta_{g,t,k}\)</span> enforce convexity by:</p>
-<ol type="1">
-<li>Ensuring only one segment is active at a time</li>
-<li>Preventing interpolation between non-adjacent segments</li>
-<li>Maintaining the proper order of segments</li>
-</ol>
-<p>In the example above:</p>
-<ul>
-<li>The point (<span class="math inline">\(p_{g,t}\)</span>, <span class="math inline">\(f_{g,t}\)</span>) lies in segment 2</li>
-<li><span class="math inline">\(\delta_{g,t,2}=1\)</span> selects this segment</li>
-<li><span class="math inline">\(\lambda_{g,t,1}\)</span> and <span class="math inline">\(\lambda_{g,t,2}\)</span> determine the exact position within the segment</li>
-<li>Other segments are inactive (<span class="math inline">\(\delta_{g,t,k}=0\)</span> for <span class="math inline">\(k \neq 2\)</span>)</li>
-</ul>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Tip
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>While the efficiency curve of a thermal generator typically is concave, we model the fuel consumption curve (<span class="math inline">\(f = p/\eta\)</span>) which is convex. This allows us to use piecewise linear approximation in our MILP formulation while maintaining mathematical properties needed for optimization. The convexity of the fuel consumption curve allows us to use piecewise linear approximation in our MILP formulation while maintaining mathematical properties needed for optimization.</p>
-</div>
-</div>
-</section>
-</section>
-</section>
-<section id="storage-modeling" class="level1 title">
-<h1 class="title"><span class="flow">Storage Modeling</span></h1>
-<section id="battery-storage-system" class="level2">
-<h2 class="anchored" data-anchor-id="battery-storage-system">Battery Storage System</h2>
-<p>We model a battery storage system with the following characteristics:</p>
-<ul>
-<li>Energy capacity (MWh)</li>
-<li>Power capacity (MW)</li>
-<li>Charge/discharge efficiency</li>
-<li>Self-discharge rate</li>
-<li>Depth of discharge limit</li>
-</ul>
-</section>
-<section id="sets-and-indices" class="level2">
-<h2 class="anchored" data-anchor-id="sets-and-indices">Sets and Indices</h2>
-<ul>
-<li><span class="math inline">\(\mathcal{S}\)</span> - Set of storage units indexed by <span class="math inline">\(s \in \{1,2,...,|\mathcal{S}|\}\)</span></li>
 <li><span class="math inline">\(\mathcal{T}\)</span> - Set of time periods indexed by <span class="math inline">\(t \in \{1,2,...,|\mathcal{T}|\}\)</span></li>
+<li><span class="math inline">\(\mathcal{S}\)</span> - Set of storage systems indexed by <span class="math inline">\(s \in \{1,2,...,|\mathcal{S}|\}\)</span></li>
+<li><span class="math inline">\(\mathcal{W}\)</span> - Set of wind parks indexed by <span class="math inline">\(w \in \{1,2,...,|\mathcal{W}|\}\)</span></li>
+<li><span class="math inline">\(\mathcal{V}\)</span> - Set of PV parks indexed by <span class="math inline">\(v \in \{1,2,...,|\mathcal{V}|\}\)</span></li>
 </ul>
 </section>
 <section id="decision-variables" class="level2">
 <h2 class="anchored" data-anchor-id="decision-variables">Decision Variables</h2>
-<ul>
-<li><span class="math inline">\(e_{s,t}\)</span> - Energy level of storage <span class="math inline">\(s\)</span> at time <span class="math inline">\(t\)</span> [MWh]</li>
-<li><span class="math inline">\(p^{ch}_{s,t}\)</span> - Charging power of storage <span class="math inline">\(s\)</span> at time <span class="math inline">\(t\)</span> [MW]</li>
-<li><span class="math inline">\(p^{dis}_{s,t}\)</span> - Discharging power of storage <span class="math inline">\(s\)</span> at time <span class="math inline">\(t\)</span> [MW]</li>
-<li><span class="math inline">\(u^{ch}_{s,t}\)</span> - Binary variable for charging status of storage <span class="math inline">\(s\)</span> at time <span class="math inline">\(t\)</span></li>
-<li><span class="math inline">\(u^{dis}_{s,t}\)</span> - Binary variable for discharging status of storage <span class="math inline">\(s\)</span> at time <span class="math inline">\(t\)</span></li>
-</ul>
-</section>
-<section id="parameters" class="level2">
-<h2 class="anchored" data-anchor-id="parameters">Parameters</h2>
-<ul>
-<li><span class="math inline">\(E^{max}_s\)</span> - Maximum energy capacity of storage <span class="math inline">\(s\)</span> [MWh]</li>
-<li><span class="math inline">\(E^{min}_s\)</span> - Minimum energy level of storage <span class="math inline">\(s\)</span> [MWh]</li>
-<li><span class="math inline">\(P^{ch,max}_s\)</span> - Maximum charging power of storage <span class="math inline">\(s\)</span> [MW]</li>
-<li><span class="math inline">\(P^{dis,max}_s\)</span> - Maximum discharging power of storage <span class="math inline">\(s\)</span> [MW]</li>
-<li><span class="math inline">\(\eta^{ch}_s\)</span> - Charging efficiency of storage <span class="math inline">\(s\)</span></li>
-<li><span class="math inline">\(\eta^{dis}_s\)</span> - Discharging efficiency of storage <span class="math inline">\(s\)</span></li>
-<li><span class="math inline">\(sdr_s\)</span> - Self-discharge rate of storage <span class="math inline">\(s\)</span> per time step</li>
-<li><span class="math inline">\(R^{ch}_s\)</span> - Maximum ramp-up rate for charging of storage <span class="math inline">\(s\)</span> [MW/h]</li>
-<li><span class="math inline">\(R^{dis}_s\)</span> - Maximum ramp-up rate for discharging of storage <span class="math inline">\(s\)</span> [MW/h]</li>
-</ul>
-</section>
-<section id="energy-balance-constraint" class="level2">
-<h2 class="anchored" data-anchor-id="energy-balance-constraint">Energy Balance Constraint</h2>
-<p><span class="math inline">\(e_{s,t} = (1-sdr_s)e_{s,t-1} + \eta^{ch}_s p^{ch}_{s,t} - \frac{p^{dis}_{s,t}}{\eta^{dis}_s} \quad \forall s \in \mathcal{S}, t \in \mathcal{T}\)</span></p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Tip
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>This constraint ensures that the energy level at time <span class="math inline">\(t\)</span> equals:</p>
-<ul>
-<li>Previous energy level minus self-discharge</li>
-<li>Plus energy from charging (accounting for efficiency)</li>
-<li>Minus energy from discharging (accounting for efficiency)</li>
-</ul>
-<p>For batteries the energy level is often referred to as state of charge (SOC).</p>
-</div>
-</div>
-</section>
-<section id="energy-limits-constraint" class="level2">
-<h2 class="anchored" data-anchor-id="energy-limits-constraint">Energy Limits Constraint</h2>
-<p><span class="math inline">\(E^{min}_s \leq e_{s,t} \leq E^{max}_s \quad \forall s \in \mathcal{S}, t \in \mathcal{T}\)</span></p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Tip
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>This constraint ensures that:</p>
-<ul>
-<li>The energy level never falls below the minimum level (depth of discharge)</li>
-<li>The energy level never exceeds the maximum capacity</li>
-</ul>
-</div>
-</div>
-</section>
-<section id="power-limits-and-mutual-exclusion" class="level2">
-<h2 class="anchored" data-anchor-id="power-limits-and-mutual-exclusion">Power Limits and Mutual Exclusion</h2>
-<p><span class="math inline">\(0 \leq p^{ch}_{s,t} \leq P^{ch,max}_s u^{ch}_{s,t} \quad \forall s \in \mathcal{S}, t \in \mathcal{T}\)</span></p>
-<p><span class="math inline">\(0 \leq p^{dis}_{s,t} \leq P^{dis,max}_s u^{dis}_{s,t} \quad \forall s \in \mathcal{S}, t \in \mathcal{T}\)</span></p>
-<p><span class="math inline">\(u^{ch}_{s,t} + u^{dis}_{s,t} \leq 1 \quad \forall s \in \mathcal{S}, t \in \mathcal{T}\)</span></p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Tip
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>These constraints ensure that:</p>
-<ul>
-<li>Charging power is between zero and maximum when charging is active</li>
-<li>Discharging power is between zero and maximum when discharging is active</li>
-<li>The storage cannot charge and discharge simultaneously</li>
-</ul>
-</div>
-</div>
-</section>
-<section id="when-is-mutual-exclusion-required-technical" class="level2">
-<h2 class="anchored" data-anchor-id="when-is-mutual-exclusion-required-technical">When is Mutual Exclusion Required? (Technical)</h2>
-<p><span class="question">Question:</span> <strong>When do we need the mutual exclusion constraint from a technical perspective?</strong></p>
-<p>. . .</p>
-<ol type="1">
-<li><strong>Battery Storage Systems</strong>:
-<ul>
-<li>Required due to physical limitations</li>
-<li>Prevents simultaneous charge/discharge</li>
-<li>Protects battery life and efficiency</li>
-<li>Avoids internal power circulation</li>
-</ul></li>
-<li><strong>Pumped Hydro Storage</strong>:
-<ul>
-<li>Not required</li>
-<li>Can have separate pumps and turbines</li>
-<li>Allows simultaneous operation</li>
-<li>Different equipment for each direction</li>
-</ul></li>
-<li><strong>Thermal Storage</strong>:
-<ul>
-<li>May or may not be required</li>
-<li>Depends on system design</li>
-<li>Consider heat transfer limitations</li>
-<li>Can have separate charging/discharging circuits</li>
-</ul></li>
-</ol>
-</section>
-<section id="when-is-mutual-exclusion-required-economic" class="level2">
-<h2 class="anchored" data-anchor-id="when-is-mutual-exclusion-required-economic">When is Mutual Exclusion Required? (Economic)</h2>
-<p><span class="question">Question:</span> <strong>When do we need the mutual exclusion constraint from an economic perspective?</strong></p>
-<p>. . .</p>
-<ol type="1">
-<li><strong>Efficiency Losses</strong>:
-<ul>
-<li>Charging and discharging both have efficiency losses</li>
-<li>Simultaneous operation would create unnecessary losses</li>
-<li>Round-trip efficiency is typically 70-90%</li>
-</ul></li>
-<li><strong>Wear and Tear</strong>:
-<ul>
-<li>Each charge/discharge cycle causes wear</li>
-<li>Simultaneous operation increases wear</li>
-<li>Reduces system lifetime</li>
-<li>Maintenance costs increase</li>
-</ul></li>
-<li><strong>Economic Optimization</strong>:
-<ul>
-<li>Prevents unnecessary cycling</li>
-<li>Avoids situations where:
-<ul>
-<li>Cost of efficiency losses &lt;= cost of increasing power consumption</li>
-<li>Cost of efficiency losses &lt;= cost of curtailing power production</li>
-<li>while actual costs of the cycling are not included in the model</li>
-</ul></li>
-</ul></li>
-</ol>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Summary: Mutual Exclusion Decision
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>The mutual exclusion constraint should be included when:</p>
-<ol type="1">
-<li><strong>Technically Required</strong>: Physical limitations prevent simultaneous operation</li>
-<li><strong>Economically Beneficial</strong>: Efficiency losses and wear costs exceed benefits but are not included in the model</li>
-<li><strong>Operationally Sensible</strong>: System design favors separate charging/discharging</li>
-</ol>
-<p>The decision depends on both the storage technology and the specific economic context of the application.</p>
-</div>
-</div>
-</section>
-<section id="ramp-rate-constraints" class="level2">
-<h2 class="anchored" data-anchor-id="ramp-rate-constraints">Ramp Rate Constraints</h2>
-<p><span class="math inline">\(p^{ch}_{s,t} - p^{ch}_{s,t-1} \leq R^{ch}_s \quad \forall s \in \mathcal{S}, t \in \mathcal{T}\)</span> <span class="math inline">\(p^{dis}_{s,t} - p^{dis}_{s,t-1} \leq R^{dis}_s \quad \forall s \in \mathcal{S}, t \in \mathcal{T}\)</span></p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Tip
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>These constraints limit how quickly the storage can change its charging or discharging power:</p>
-<ul>
-<li>Prevents sudden changes that could damage equipment</li>
-<li>Accounts for physical limitations of the storage system</li>
-<li>May be different for charging and discharging</li>
-</ul>
-</div>
-</div>
-</section>
-</section>
-<section id="storage-capacity-optimization" class="level1 title">
-<h1 class="title"><span class="flow">Storage Capacity Optimization</span></h1>
-<section id="extended-model" class="level2">
-<h2 class="anchored" data-anchor-id="extended-model">Extended Model</h2>
-<p>We now optimize both energy and power capacity:</p>
-<section id="additional-decision-variables" class="level3">
-<h3 class="anchored" data-anchor-id="additional-decision-variables">Additional Decision Variables</h3>
-<p>New Decision Variables:</p>
+<section id="investment-variables" class="level3">
+<h3 class="anchored" data-anchor-id="investment-variables">Investment Variables</h3>
 <ul>
 <li><span class="math inline">\(e^{nom}_s\)</span> - Nominal energy capacity of storage <span class="math inline">\(s\)</span> [MWh]</li>
 <li><span class="math inline">\(p^{ch,nom}_s\)</span> - Nominal charging power of storage <span class="math inline">\(s\)</span> [MW]</li>
 <li><span class="math inline">\(p^{dis,nom}_s\)</span> - Nominal discharging power of storage <span class="math inline">\(s\)</span> [MW]</li>
-</ul>
-<p>Variables (previously parameters):</p>
-<ul>
-<li><span class="math inline">\(e^{max}_s\)</span> - Maximum energy capacity of storage <span class="math inline">\(s\)</span> [MWh]</li>
-<li><span class="math inline">\(e^{min}_s\)</span> - Minimum energy level of storage <span class="math inline">\(s\)</span> [MWh]</li>
-<li><span class="math inline">\(p^{ch,max}_s\)</span> - Maximum charging power of storage <span class="math inline">\(s\)</span> [MW]</li>
-<li><span class="math inline">\(p^{dis,max}_s\)</span> - Maximum discharging power of storage <span class="math inline">\(s\)</span> [MW]</li>
+<li><span class="math inline">\(p^{nom}_w\)</span> - Nominal power of wind park <span class="math inline">\(w\)</span> [MW]</li>
+<li><span class="math inline">\(p^{nom}_v\)</span> - Nominal power of PV park <span class="math inline">\(v\)</span> [MW]</li>
 </ul>
 </section>
-<section id="additional-parameters" class="level3">
-<h3 class="anchored" data-anchor-id="additional-parameters">Additional Parameters</h3>
+<section id="operational-variables" class="level3">
+<h3 class="anchored" data-anchor-id="operational-variables">Operational Variables</h3>
+<ul>
+<li><span class="math inline">\(p_{w,t}\)</span> - Power output of wind park <span class="math inline">\(w\)</span> at time <span class="math inline">\(t\)</span> [MW]</li>
+<li><span class="math inline">\(p_{v,t}\)</span> - Power output of PV park <span class="math inline">\(v\)</span> at time <span class="math inline">\(t\)</span> [MW]</li>
+<li><span class="math inline">\(p^{in}_t\)</span> - Power inflow through market at time <span class="math inline">\(t\)</span> [MW]</li>
+<li><span class="math inline">\(p^{out}_t\)</span> - Power outflow through market at time <span class="math inline">\(t\)</span> [MW]</li>
+<li><span class="math inline">\(p^{ch}_{s,t}\)</span> - Charging power of storage <span class="math inline">\(s\)</span> at time <span class="math inline">\(t\)</span> [MW]</li>
+<li><span class="math inline">\(p^{dis}_{s,t}\)</span> - Discharging power of storage <span class="math inline">\(s\)</span> at time <span class="math inline">\(t\)</span> [MW]</li>
+<li><span class="math inline">\(e_{s,t}\)</span> - Energy level of storage <span class="math inline">\(s\)</span> at time <span class="math inline">\(t\)</span> [MWh]</li>
+</ul>
+</section>
+<section id="annual-cost-variables" class="level3">
+<h3 class="anchored" data-anchor-id="annual-cost-variables">Annual Cost Variables</h3>
+<ul>
+<li><span class="math inline">\(AC^{inv}_s\)</span> - Annual investment cost for storage <span class="math inline">\(s\)</span> [EUR/year]</li>
+<li><span class="math inline">\(AC^{inv}_w\)</span> - Annual investment cost for wind park <span class="math inline">\(w\)</span> [EUR/year]</li>
+<li><span class="math inline">\(AC^{inv}_v\)</span> - Annual investment cost for PV park <span class="math inline">\(v\)</span> [EUR/year]</li>
+<li><span class="math inline">\(AC^{grid,imp}\)</span> - Annual grid electricity import cost [EUR/year]</li>
+<li><span class="math inline">\(AR^{grid,exp}\)</span> - Annual grid electricity export revenue [EUR/year]</li>
+</ul>
+</section>
+</section>
+<section id="parameters" class="level2">
+<h2 class="anchored" data-anchor-id="parameters">Parameters</h2>
+<section id="investment-costs" class="level3">
+<h3 class="anchored" data-anchor-id="investment-costs">Investment Costs</h3>
 <ul>
 <li><span class="math inline">\(C^{E}_s\)</span> - Cost per MWh of energy capacity for storage <span class="math inline">\(s\)</span> [EUR/MWh]</li>
 <li><span class="math inline">\(C^{P,ch}_s\)</span> - Cost per MW of charging power capacity for storage <span class="math inline">\(s\)</span> [EUR/MW]</li>
 <li><span class="math inline">\(C^{P,dis}_s\)</span> - Cost per MW of discharging power capacity for storage <span class="math inline">\(s\)</span> [EUR/MW]</li>
-<li><span class="math inline">\(DoD_s\)</span> - Depth of discharge limit for storage <span class="math inline">\(s\)</span> [%]</li>
-<li><span class="math inline">\(F^{PVAF}\)</span> - Present value annuity factor for the investment costs</li>
+<li><span class="math inline">\(C^{W}_w\)</span> - Cost per MW of wind park <span class="math inline">\(w\)</span> [EUR/MW]</li>
+<li><span class="math inline">\(C^{PV}_v\)</span> - Cost per MW of PV park <span class="math inline">\(v\)</span> [EUR/MW]</li>
+<li><span class="math inline">\(F^{PVAF}\)</span> - Present value annuity factor for investment costs</li>
+<li><span class="math inline">\(B^{max}\)</span> - Maximum investment budget [EUR]</li>
 </ul>
 </section>
-<section id="modified-constraints" class="level3">
-<h3 class="anchored" data-anchor-id="modified-constraints">Modified Constraints</h3>
-<p><strong>Energy Capacity</strong>:</p>
-<p><span class="math inline">\(e^{min}_s = DoD_s e^{nom}_s \quad \forall s \in \mathcal{S}\)</span></p>
-<p><span class="math inline">\(e^{max}_s = e^{nom}_s \quad \forall s \in \mathcal{S}\)</span></p>
-<p><strong>Power Capacity</strong>:</p>
-<p><span class="math inline">\(p^{ch,max}_s = p^{ch,nom}_s \quad \forall s \in \mathcal{S}\)</span></p>
-<p><span class="math inline">\(p^{dis,max}_s = p^{dis,nom}_s \quad \forall s \in \mathcal{S}\)</span></p>
+<section id="operational-parameters" class="level3">
+<h3 class="anchored" data-anchor-id="operational-parameters">Operational Parameters</h3>
+<ul>
+<li><span class="math inline">\(\eta^{ch}_s\)</span> - Charging efficiency of storage <span class="math inline">\(s\)</span></li>
+<li><span class="math inline">\(\eta^{dis}_s\)</span> - Discharging efficiency of storage <span class="math inline">\(s\)</span></li>
+<li><span class="math inline">\(sdr_s\)</span> - Self-discharge rate of storage <span class="math inline">\(s\)</span> per time step</li>
+<li><span class="math inline">\(DoD_s\)</span> - Depth of discharge limit for storage <span class="math inline">\(s\)</span> [%]</li>
+<li><span class="math inline">\(f_{w,t}\)</span> - Wind capacity factor at time <span class="math inline">\(t\)</span> for wind park <span class="math inline">\(w\)</span></li>
+<li><span class="math inline">\(f_{v,t}\)</span> - Solar capacity factor at time <span class="math inline">\(t\)</span> for PV park <span class="math inline">\(v\)</span></li>
+<li><span class="math inline">\(d_t\)</span> - Electric demand at time <span class="math inline">\(t\)</span> [MW]</li>
+<li><span class="math inline">\(c^{MP}_t\)</span> - Grid electricity market price at time <span class="math inline">\(t\)</span> [EUR/MWh]</li>
+<li><span class="math inline">\(c^{TaL}\)</span> - Grid electricity taxes and levies (including Netzentgelt) [EUR/MWh]</li>
+</ul>
 </section>
-<section id="extended-objective-function" class="level3">
-<h3 class="anchored" data-anchor-id="extended-objective-function">Extended Objective Function</h3>
-<p>Add to the original objective:</p>
-<p><span class="math inline">\(\text{Minimize} \quad ... + \sum_{s \in \mathcal{S}} (C^{E}_s / F^{PVAF} e^{nom}_s + C^{P,ch}_s p^{ch,nom}_s + C^{P,dis}_s p^{dis,nom}_s)\)</span></p>
+</section>
+<section id="present-value-annuity-factor-pvaf" class="level2">
+<h2 class="anchored" data-anchor-id="present-value-annuity-factor-pvaf">Present Value Annuity Factor (PVAF)</h2>
+<p>The Present Value Annuity Factor (PVAF) is used to convert investment costs into equivalent annual costs. It is calculated as:</p>
+<p><span class="math inline">\(F^{PVAF} = \frac{(1 + r)^n - 1}{r(1 + r)^n}\)</span></p>
+<p>where: - <span class="math inline">\(r\)</span> is the discount rate (e.g., 0.05 for 5%) - <span class="math inline">\(n\)</span> is the component lifetime in years (we assume the same lifetime for all components in the following)</p>
+<p>This factor allows us to: 1. Convert one-time investment costs into equivalent annual costs 2. Account for the time value of money 3. Compare investments with different lifetimes 4. Make investment decisions based on annual costs</p>
+</section>
+<section id="objective-function-1" class="level2">
+<h2 class="anchored" data-anchor-id="objective-function-1">Objective Function</h2>
+<p><span class="math inline">\(\text{Minimize} \quad \sum_{s \in \mathcal{S}} AC^{inv}_s + \sum_{w \in \mathcal{W}} AC^{inv}_w + \sum_{v \in \mathcal{V}} AC^{inv}_v + AC^{grid,imp} - AR^{grid,exp}\)</span></p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1273,229 +1016,255 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>This extension allows us to find the optimal storage capacity that balances investment costs with operational benefits. The objective function includes both energy and power capacity costs.</p>
-<p>The investment costs and operational costs need to be calculated on the same time basis to be comparable. While operational costs are calculated for a specific time horizon (e.g.&nbsp;one year), investment costs are typically one-time fixed costs. Therefore, the investment costs need to be converted to an equivalent annual cost using the present value annuity factor (PVAF). This ensures we compare annual operational benefits with annualized investment costs.</p>
+<p>The objective function minimizes the total annual costs of the energy system: 1. Investment costs for all components: - Storage systems (energy and power capacity) - Wind parks - PV parks 2. Grid electricity costs/revenues: - Import costs (market price + taxes/levies including Netzentgelt) - Export revenue (market price only)</p>
+</div>
+</div>
+</section>
+<section id="annual-cost-constraints" class="level2">
+<h2 class="anchored" data-anchor-id="annual-cost-constraints">Annual Cost Constraints</h2>
+<section id="investment-costs-1" class="level3">
+<h3 class="anchored" data-anchor-id="investment-costs-1">Investment Costs</h3>
+<p><span class="math inline">\(AC^{inv}_s = \frac{C^{E}_s}{F^{PVAF}} e^{nom}_s + C^{P,ch}_s p^{ch,nom}_s + C^{P,dis}_s p^{dis,nom}_s \quad \forall s \in \mathcal{S}\)</span> <span class="math inline">\(AC^{inv}_w = \frac{C^{W}_w}{F^{PVAF}} p^{nom}_w \quad \forall w \in \mathcal{W}\)</span> <span class="math inline">\(AC^{inv}_v = \frac{C^{PV}_v}{F^{PVAF}} p^{nom}_v \quad \forall v \in \mathcal{V}\)</span></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The investment costs are annualized using the Present Value Annuity Factor (PVAF): 1. Storage investment includes: - Energy capacity costs - Charging power capacity costs - Discharging power capacity costs 2. Wind and PV investment include: - Power capacity costs only</p>
+</div>
+</div>
+</section>
+<section id="investment-budget" class="level3">
+<h3 class="anchored" data-anchor-id="investment-budget">Investment Budget</h3>
+<p><span class="math inline">\(\sum_{s \in \mathcal{S}} (C^{E}_s e^{nom}_s + C^{P,ch}_s p^{ch,nom}_s + C^{P,dis}_s p^{dis,nom}_s) + \sum_{w \in \mathcal{W}} C^{W}_w p^{nom}_w + \sum_{v \in \mathcal{V}} C^{PV}_v p^{nom}_v \leq B^{max}\)</span></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The investment budget constraint ensures that: 1. Total investment costs do not exceed the maximum budget 2. Includes all component investments: - Storage systems (energy and power capacity) - Wind parks - PV parks</p>
+</div>
+</div>
+</section>
+<section id="grid-electricity-costs" class="level3">
+<h3 class="anchored" data-anchor-id="grid-electricity-costs">Grid Electricity Costs</h3>
+<p><span class="math inline">\(AC^{grid,imp} = \sum_{t \in \mathcal{T}} (c^{MP}_t + c^{TaL}) p^{in}_t\)</span> <span class="math inline">\(AR^{grid,exp} = \sum_{t \in \mathcal{T}} c^{MP}_t p^{out}_t\)</span></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The grid electricity costs and revenues are calculated as: 1. Import costs include: - Time-dependent market price - Fixed taxes and levies (including Netzentgelt) 2. Export revenue includes: - Time-dependent market price only</p>
 </div>
 </div>
 </section>
 </section>
-<section id="key-insights" class="level2">
-<h2 class="anchored" data-anchor-id="key-insights">Key Insights</h2>
+<section id="constraints" class="level2">
+<h2 class="anchored" data-anchor-id="constraints">Constraints</h2>
+<section id="power-balance" class="level3">
+<h3 class="anchored" data-anchor-id="power-balance">Power Balance</h3>
+<p><span class="math inline">\(\sum_{w \in \mathcal{W}} p_{w,t} + \sum_{v \in \mathcal{V}} p_{v,t} + (p^{in}_t - p^{out}_t) + \sum_{s \in \mathcal{S}} (p^{dis}_{s,t} - p^{ch}_{s,t}) = d_t \quad \forall t \in \mathcal{T}\)</span></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The power balance ensures that at each time step: 1. Total generation equals total demand: - Wind generation - PV generation - Grid import/export - Storage charging/discharging 2. Net grid power flow is: - Positive for import - Negative for export</p>
+</div>
+</div>
+</section>
+<section id="component-limits" class="level3">
+<h3 class="anchored" data-anchor-id="component-limits">Component Limits</h3>
+<section id="wind-parks" class="level4">
+<h4 class="anchored" data-anchor-id="wind-parks">Wind Parks</h4>
+<p><span class="math inline">\(0 \leq p_{w,t} \leq f_{w,t} p^{nom}_w \quad \forall w \in \mathcal{W}, t \in \mathcal{T}\)</span></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Wind power output is constrained by: 1. Non-negativity (no negative generation) 2. Maximum available power: - Time-dependent capacity factor - Nominal power capacity</p>
+</div>
+</div>
+</section>
+<section id="pv-parks" class="level4">
+<h4 class="anchored" data-anchor-id="pv-parks">PV Parks</h4>
+<p><span class="math inline">\(0 \leq p_{v,t} \leq f_{v,t} p^{nom}_v \quad \forall v \in \mathcal{V}, t \in \mathcal{T}\)</span></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>PV power output is constrained by: 1. Non-negativity (no negative generation) 2. Maximum available power: - Time-dependent capacity factor - Nominal power capacity</p>
+</div>
+</div>
+</section>
+<section id="storage-systems" class="level4">
+<h4 class="anchored" data-anchor-id="storage-systems">Storage Systems</h4>
+<p><span class="math inline">\(0 \leq p^{ch}_{s,t} \leq p^{ch,nom}_s \quad \forall s \in \mathcal{S}, t \in \mathcal{T}\)</span> <span class="math inline">\(0 \leq p^{dis}_{s,t} \leq p^{dis,nom}_s \quad \forall s \in \mathcal{S}, t \in \mathcal{T}\)</span> <span class="math inline">\(DoD_s e^{nom}_s \leq e_{s,t} \leq e^{nom}_s \quad \forall s \in \mathcal{S}, t \in \mathcal{T}\)</span></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Storage operation is constrained by: 1. Charging power limits: - Non-negativity - Nominal charging power capacity 2. Discharging power limits: - Non-negativity - Nominal discharging power capacity 3. Energy level limits: - Minimum level based on depth of discharge - Maximum level based on nominal capacity</p>
+</div>
+</div>
+</section>
+</section>
+<section id="storage-energy-balance" class="level3">
+<h3 class="anchored" data-anchor-id="storage-energy-balance">Storage Energy Balance</h3>
+<p><span class="math inline">\(e_{s,t} = (1-sdr_s)e_{s,t-1} + \eta^{ch}_s p^{ch}_{s,t} - \frac{p^{dis}_{s,t}}{\eta^{dis}_s} \quad \forall s \in \mathcal{S}, t \in \mathcal{T}\)</span></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The storage energy balance accounts for: 1. Previous energy level: - Reduced by self-discharge 2. Charging: - Increased by charging power - Reduced by charging efficiency losses 3. Discharging: - Decreased by discharging power - Increased by discharging efficiency losses</p>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="implementation-insights-1" class="level1 title">
+<h1 class="title"><span class="flow">Implementation Insights</span></h1>
+<section id="model-characteristics-1" class="level2">
+<h2 class="anchored" data-anchor-id="model-characteristics-1">Model Characteristics</h2>
+<ul>
+<li>Mixed-Integer Linear Programming (MILP) problem</li>
+<li>Combines investment and operational decisions</li>
+<li>Large-scale optimization problem</li>
+<li>Requires efficient solution methods</li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The model can be adapted to the specific use case, i.e.&nbsp;if a windpark already has a fixed capacity, the corresponding variable can be coverted to a parameter.</p>
+</div>
+</div>
+</section>
+<section id="key-considerations" class="level2">
+<h2 class="anchored" data-anchor-id="key-considerations">Key Considerations</h2>
 <ol type="1">
-<li><strong>Trade-off Analysis</strong>:
+<li><strong>Time Resolution</strong>:
 <ul>
-<li>Higher capacity reduces operational costs</li>
-<li>Higher capacity increases investment costs</li>
-<li>Optimal capacity depends on usage patterns, technical and economic parameters</li>
+<li>Balance between accuracy and computational effort</li>
+<li>Consider representative periods</li>
+<li>Account for seasonal variations</li>
 </ul></li>
-<li><strong>Economic Considerations</strong>:
+<li><strong>Investment Costs</strong>:
 <ul>
-<li>Investment costs are fixed</li>
-<li>Operational benefits are time-dependent</li>
-<li>Need to consider lifetime of the system</li>
-<li>Separate costs for energy and power capacity</li>
+<li>Annualize investment costs using PVAF</li>
+<li>Consider component lifetimes</li>
+<li>Include maintenance costs</li>
 </ul></li>
-<li><strong>Technical Constraints</strong>:
+<li><strong>Operational Constraints</strong>:
 <ul>
-<li>Depth of discharge affects usable capacity</li>
-<li>Efficiency losses impact economic viability</li>
-<li>Power capacity affects flexibility</li>
-<li>Different power ratings for charging and discharging</li>
+<li>Storage cycling limits</li>
+<li>Grid connection capacity</li>
+<li>Renewable generation profiles</li>
+</ul></li>
+<li><strong>Solution Methods</strong>:
+<ul>
+<li>Decomposition approaches</li>
+<li>Heuristic methods</li>
+<li>Commercial solvers</li>
 </ul></li>
 </ol>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Tip
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>The optimal storage capacity depends on the specific use case, electricity prices, and technical parameters of the storage system. The model now accounts for separate costs and capacities for energy storage and power handling equipment (charging/discharging infrastructure that converts between electrical energy and the storage medium’s form of energy, such as chemical energy in batteries or potential energy in pumped hydro).</p>
-</div>
-</div>
 </section>
 </section>
-<section id="impact" class="level1 title">
-<h1 class="title"><span class="flow">Impact</span></h1>
-<section id="real-world-applications" class="level2">
-<h2 class="anchored" data-anchor-id="real-world-applications">Real-World Applications</h2>
-<ul>
-<li>Investment planning for new storage systems</li>
-<li>Local energy system planning</li>
-<li>System operation planning</li>
-</ul>
-</section>
-<section id="further-extensions-for-battery-storage-use-cases" class="level2">
-<h2 class="anchored" data-anchor-id="further-extensions-for-battery-storage-use-cases">Further Extensions for Battery Storage Use Cases</h2>
-<ul>
-<li>Multi-market trading and operation
-<ul>
-<li>Energy services: PPA, EPEX Day-ahead (XETRA), EPEX Intraday Continuous, EPEX Intraday Auction, etc.</li>
-<li>Ancillary services: Primary Control Reserve (FCR), Secondary Control Reserve (aFRR), Minute Reserve (mFRR), Reactive Power, etc.</li>
-</ul></li>
-<li>Emission constraints</li>
-<li>Uncertainty in forecasts</li>
-</ul>
-</section>
-<section id="excursion-energy-markets-overview" class="level2">
-<h2 class="anchored" data-anchor-id="excursion-energy-markets-overview">Excursion: Energy Markets Overview</h2>
-<section id="power-purchase-agreements-ppa" class="level4">
-<h4 class="anchored" data-anchor-id="power-purchase-agreements-ppa">Power Purchase Agreements (PPA):</h4>
-<ul>
-<li>Long-term contracts (5-20 years)</li>
-<li>Fixed or indexed prices</li>
-<li>Bilateral agreements</li>
-<li>Low price volatility</li>
-<li>Typically monthly or quarterly settlements</li>
-<li>Can include minimum/maximum volume commitments</li>
-<li>Often includes price escalation clauses</li>
-</ul>
-</section>
-<section id="day-ahead-market-xetra" class="level4">
-<h4 class="anchored" data-anchor-id="day-ahead-market-xetra">Day-ahead Market (XETRA):</h4>
-<ul>
-<li>Trading for next day</li>
-<li>Hourly products</li>
-<li>Auction-based</li>
-<li>Moderate price volatility</li>
-<li>Gate closure: 12:00 (noon) for next day</li>
-<li>Results published around 12:45</li>
-<li>Minimum bid size: 0.1 MW</li>
-<li>Price range: -500 to 3000 EUR/MWh</li>
-</ul>
-</section>
-<section id="intraday-continuous" class="level4">
-<h4 class="anchored" data-anchor-id="intraday-continuous">Intraday Continuous:</h4>
-<ul>
-<li>Trading until 5 minutes before delivery</li>
-<li>15-minute products</li>
-<li>Continuous trading</li>
-<li>High price volatility</li>
-<li>Minimum bid size: 0.1 MW</li>
-<li>Price range: -500 to 3000 EUR/MWh</li>
-<li>Trading hours: 24/7</li>
-<li>Order book with best bid/ask prices</li>
-</ul>
-</section>
-<section id="intraday-auction" class="level4">
-<h4 class="anchored" data-anchor-id="intraday-auction">Intraday Auction:</h4>
-<ul>
-<li>Additional trading opportunities</li>
-<li>15-minute products</li>
-<li>Auction-based</li>
-<li>High price volatility</li>
-<li>Gate closure: 30 minutes before delivery</li>
-<li>Multiple auctions per day (e.g., 6:00, 12:00, 15:00, 18:00)</li>
-<li>Minimum bid size: 0.1 MW</li>
-<li>Price range: -500 to 3000 EUR/MWh</li>
-</ul>
-</section>
-<section id="ancillary-services-markets" class="level3">
-<h3 class="anchored" data-anchor-id="ancillary-services-markets">Ancillary Services Markets</h3>
-<section id="primary-control-reserve-fcr" class="level4">
-<h4 class="anchored" data-anchor-id="primary-control-reserve-fcr">Primary Control Reserve (FCR):</h4>
-<ul>
-<li>Fastest response (30 seconds)</li>
-<li>Symmetric (up/down)</li>
-<li>Weekly auctions</li>
-<li>High capacity prices</li>
-<li>Gate closure: Thursday 12:00</li>
-<li>Delivery period: Monday 00:00 to Sunday 23:59</li>
-<li>Minimum bid size: 1 MW</li>
-<li>Must be available 24/7</li>
-<li>Energy prices when activated:
-<ul>
-<li>Up-regulation: Price of last activated unit (marginal price)</li>
-<li>Down-regulation: Price of last activated unit (marginal price)</li>
-<li>Typically higher than day-ahead prices</li>
-</ul></li>
-</ul>
-</section>
-<section id="secondary-control-reserve-afrr" class="level4">
-<h4 class="anchored" data-anchor-id="secondary-control-reserve-afrr">Secondary Control Reserve (aFRR):</h4>
-<ul>
-<li>Response within 5 minutes</li>
-<li>Symmetric (up/down)</li>
-<li>Daily auctions</li>
-<li>Moderate capacity prices</li>
-<li>Gate closure: 14:30 for next day</li>
-<li>Delivery period: 00:00 to 23:59</li>
-<li>Minimum bid size: 5 MW</li>
-<li>Must be available for full delivery period</li>
-<li>Energy prices when activated:
-<ul>
-<li>Up-regulation: Price of last activated unit (marginal price)</li>
-<li>Down-regulation: Price of last activated unit (marginal price)</li>
-<li>Can be significantly higher than day-ahead prices</li>
-<li>Separate price zones for up/down regulation</li>
-</ul></li>
-</ul>
-</section>
-<section id="minute-reserve-mfrr" class="level4">
-<h4 class="anchored" data-anchor-id="minute-reserve-mfrr">Minute Reserve (mFRR):</h4>
-<ul>
-<li>Response within 15 minutes</li>
-<li>Asymmetric (up/down)</li>
-<li>Daily auctions</li>
-<li>Lower capacity prices</li>
-<li>Gate closure: 14:30 for next day</li>
-<li>Delivery period: 00:00 to 23:59</li>
-<li>Minimum bid size: 5 MW</li>
-<li>Separate auctions for up/down regulation</li>
-<li>Energy prices when activated:
-<ul>
-<li>Up-regulation: Price of last activated unit (marginal price)</li>
-<li>Down-regulation: Price of last activated unit (marginal price)</li>
-<li>Highest energy prices among ancillary services</li>
-<li>Often triggered during system stress</li>
-</ul></li>
-</ul>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Energy Prices in Ancillary Services
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>When ancillary services are activated:</p>
+<section id="applications" class="level1 title">
+<h1 class="title"><span class="flow">Applications</span></h1>
+<section id="real-world-use-cases" class="level2">
+<h2 class="anchored" data-anchor-id="real-world-use-cases">Real-World Use Cases</h2>
 <ol type="1">
-<li><strong>Price Formation</strong>:
+<li><strong>Local Energy Systems</strong>:
 <ul>
-<li>Based on marginal pricing (price of last activated unit)</li>
-<li>Can be significantly higher than day-ahead prices</li>
-<li>Separate prices for up/down regulation</li>
+<li>Microgrids</li>
+<li>Industrial parks</li>
+<li>Residential communities</li>
 </ul></li>
-<li><strong>Price Volatility</strong>:
+<li><strong>Grid Integration</strong>:
 <ul>
-<li>Highest for mFRR (emergency situations)</li>
-<li>Moderate for aFRR (regular balancing)</li>
-<li>Lowest for FCR (continuous small adjustments)</li>
+<li>Renewable energy integration</li>
+<li>Grid capacity planning</li>
+<li>Ancillary services</li>
 </ul></li>
-<li><strong>Revenue Streams</strong>:
+<li><strong>Energy Markets</strong>:
 <ul>
-<li>Capacity payments (for being available)</li>
-<li>Energy payments (when activated)</li>
+<li>Multi-market participation</li>
+<li>Price arbitrage</li>
+<li>Capacity markets</li>
 </ul></li>
 </ol>
-</div>
-</div>
-<ol start="4" type="1">
-<li><strong>Reactive Power</strong>:
+</section>
+<section id="extensions" class="level2">
+<h2 class="anchored" data-anchor-id="extensions">Extensions</h2>
+<ol type="1">
+<li><strong>Multi-Criteria Optimization</strong>:
 <ul>
-<li>Voltage control</li>
-<li>Local markets</li>
-<li>Continuous operation</li>
-<li>Varies by region</li>
-<li>Typically monthly contracts</li>
-<li>Based on grid operator requirements</li>
-<li>Compensation for both capacity and energy</li>
-<li>Location-specific pricing</li>
+<li>Economic objectives</li>
+<li>Environmental impact</li>
+<li>System reliability</li>
+</ul></li>
+<li><strong>Uncertainty Handling</strong>:
+<ul>
+<li>Weather forecasts</li>
+<li>Price forecasts</li>
+<li>Demand forecasts</li>
+</ul></li>
+<li><strong>Advanced Features</strong>:
+<ul>
+<li>Battery degradation</li>
+<li>Multi-market participation</li>
+<li>Grid services</li>
 </ul></li>
 </ol>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -1504,67 +1273,20 @@ Energy Prices in Ancillary Services
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Reactive Power and Battery Storage
+Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Battery storage systems with power electronic converters (inverters) can provide reactive power:</p>
-<ul>
-<li>Can provide reactive power independently of active power</li>
-<li>Typical capability: 0.9 leading to 0.9 lagging power factor</li>
-<li>No additional hardware needed (uses existing inverter)</li>
-<li>Can provide reactive power even when battery is empty</li>
-<li>Important for grid stability, especially in areas with high renewable penetration</li>
-</ul>
+<p>The sizing problem provides a foundation for comprehensive energy system planning and optimization.</p>
 </div>
 </div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Tip
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Storage systems can participate in multiple markets simultaneously, but need to consider:</p>
-<ul>
-<li>Technical requirements for each market</li>
-<li>Market timing and deadlines</li>
-<li>Capacity allocation across markets</li>
-<li>Price volatility and risk</li>
-<li>Minimum bid sizes and price ranges</li>
-<li>Contract durations and settlement periods</li>
-</ul>
-</div>
-</div>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-And that’s it for today’s lecture!
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>We have covered a extended version of the Unit Commitment problem with operation and sizing of storage systems and its mathematical formulation. The tutorial will help you implement and solve this problem using Julia and JuMP.</p>
-</div>
-</div>
-</section>
-</section>
-</section>
-<section id="section" class="level2 loud-slide">
-<h2 class="loud-slide anchored" data-anchor-id="section"></h2>
+<div class="loud-slide">
 <div class="r-fit-text">
 <p>Questions?</p>
 </div>
 <div class="footer">
 
 </div>
-</section>
-</section>
 <section id="literature" class="level1 title">
 <h1 class="title"><span class="flow">Literature</span></h1>
 <section id="literature-i" class="level2">
@@ -1576,6 +1298,9 @@ And that’s it for today’s lecture!
 <p>For a detailed mathematical formulation of the Unit Commitment problem, see <span class="citation" data-cites="morales2013tight">Morales-Espana, Latorre, and Ramos (<a href="#ref-morales2013tight" role="doc-biblioref">2013</a>)</span> and <span class="citation" data-cites="zimmermann2019increasing">Zimmermann and Kather (<a href="#ref-zimmermann2019increasing" role="doc-biblioref">2019</a>)</span>.</p>
 
 
+</section>
+</section>
+</div>
 
 </section>
 </section>
@@ -1995,7 +1720,7 @@ Zimmermann, Cors, T., and A. Kather. 2019. <span>“Increasing Tightness by Intr
     </div>   
     <div class="nav-footer-center">
 <p>Energy System Optimization with Julia, Tobias Cors<br>CC BY-NC-SA 4.0</p>
-<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/edit/main/part-07/lecture-storage.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/blob/main/part-07/lecture-storage.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/edit/main/part-08/lecture-design.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/blob/main/part-08/lecture-design.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">
