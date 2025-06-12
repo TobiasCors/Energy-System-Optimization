@@ -100,8 +100,8 @@ website:
         contents:
           - text: "Lecture"
             href: part-08/lecture-design.qmd
-      #     - text: "Tutorial"
-      #       href: part-08/tutorial-districting.qmd
+          - text: "Tutorial"
+            href: part-08/tutorial-design.qmd
       # - section: "09 Safety"
       #   contents:
       #     - text: "Lecture"

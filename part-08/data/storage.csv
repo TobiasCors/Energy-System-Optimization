@@ -1,0 +1,2 @@
+name,energy_cost,power_cost,lifetime,discount_rate,charge_efficiency,discharge_efficiency,self_discharge_rate
+storage,100000.0,50000.0,10,0.05,0.95,0.95,0.001
