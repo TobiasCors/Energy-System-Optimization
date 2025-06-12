@@ -11,7 +11,7 @@ project:
     - part-05/*.qmd
     - part-06/*.qmd
     - part-07/*.qmd
-    # - part-08/*.qmd
+    - part-08/*.qmd
     # - part-09/*.qmd
     # - part-10/*.qmd
     # - part-11/*.qmd
