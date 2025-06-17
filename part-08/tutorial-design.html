@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.31">
+<meta name="generator" content="quarto-1.7.32">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -21,6 +21,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -37,7 +72,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../site_libs/bootstrap/bootstrap-a6ef90cfdb74e828c1a9db3872de2949.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
@@ -857,27 +892,635 @@ Note
 <h1 class="title"><span class="flow">Implementation of the Stochastic System Design Problem</span></h1>
 <section id="load-packages" class="level2">
 <h2 class="anchored" data-anchor-id="load-packages">1. Load Packages</h2>
+<div id="2" class="cell" data-execution_count="0">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Pkg</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">Pkg</span>.<span class="fu">add</span>(<span class="st">"JuMP"</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="bu">Pkg</span>.<span class="fu">add</span>(<span class="st">"HiGHS"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="bu">Pkg</span>.<span class="fu">add</span>(<span class="st">"CSV"</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="bu">Pkg</span>.<span class="fu">add</span>(<span class="st">"DataFrames"</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="bu">Pkg</span>.<span class="fu">add</span>(<span class="st">"CairoMakie"</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="bu">Pkg</span>.<span class="fu">add</span>(<span class="st">"Dates"</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Required packages</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Random</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Statistics</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrames</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">CSV</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Dates</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">JuMP</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">HiGHS</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">CairoMakie</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Set up CairoMakie</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="fu">set_theme!</span>(<span class="fu">theme_light</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
 <section id="data-generation" class="level2">
 <h2 class="anchored" data-anchor-id="data-generation">2. Data Generation</h2>
+<div id="4" class="cell" data-execution_count="0">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set random seed for reproducibility</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">Random</span>.<span class="fu">seed!</span>(<span class="fl">42</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the directory of the current file</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>file_directory <span class="op">=</span> <span class="st">"</span><span class="sc">$</span>(<span class="pp">@__DIR__</span>)<span class="st">/data"</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Number of scenarios and time periods</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>n_scenarios <span class="op">=</span> <span class="fl">5</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>n_hours <span class="op">=</span> <span class="fl">168</span>  <span class="co"># One week</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate scenario data</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>scenario_data <span class="op">=</span> <span class="fu">DataFrame</span>(</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    scenario <span class="op">=</span> <span class="dt">String</span>[],</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    datetime <span class="op">=</span> <span class="dt">DateTime</span>[],</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    demand <span class="op">=</span> <span class="dt">Float64</span>[],</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    wind_cf <span class="op">=</span> <span class="dt">Float64</span>[],</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    pv_cf <span class="op">=</span> <span class="dt">Float64</span>[],</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    market_price <span class="op">=</span> <span class="dt">Float64</span>[],</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    probability <span class="op">=</span> <span class="dt">Float64</span>[]</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Base datetime</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>base_datetime <span class="op">=</span> <span class="fu">DateTime</span>(<span class="fl">2024</span>, <span class="fl">1</span>, <span class="fl">1</span>)</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate data for each scenario</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>n_scenarios</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Generate base demand profile (daily pattern)</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    base_demand <span class="op">=</span> <span class="fl">60</span> <span class="op">.+</span> <span class="fl">40</span> <span class="op">.*</span> <span class="fu">sin</span>.(<span class="fl">2</span>π <span class="op">.*</span> (<span class="fl">0</span><span class="op">:</span>n_hours<span class="op">-</span><span class="fl">1</span>) <span class="op">./</span> <span class="fl">24</span>)</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Add random variations for each scenario</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    demand <span class="op">=</span> base_demand <span class="op">.+</span> <span class="fu">randn</span>(n_hours) <span class="op">.*</span> <span class="fl">10</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>    demand <span class="op">=</span> <span class="fu">max</span>.(<span class="fl">20</span>, <span class="fu">min</span>.(<span class="fl">100</span>, demand))  <span class="co"># Clamp between 20 and 100 MW</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Generate wind capacity factors</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    wind_cf <span class="op">=</span> <span class="fu">rand</span>(n_hours)  <span class="co"># Random between 0 and 1</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Generate PV capacity factors (daily pattern)</span></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>    hour_of_day <span class="op">=</span> <span class="fu">mod</span>.(<span class="fl">0</span><span class="op">:</span>n_hours<span class="op">-</span><span class="fl">1</span>, <span class="fl">24</span>)</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>    pv_cf <span class="op">=</span> <span class="fu">max</span>.(<span class="fl">0</span>, <span class="fu">sin</span>.(<span class="cn">π</span> <span class="op">.*</span> hour_of_day <span class="op">./</span> <span class="fl">12</span>)) <span class="op">.+</span> <span class="fu">randn</span>(n_hours) <span class="op">.*</span> <span class="fl">0.1</span></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>    pv_cf <span class="op">=</span> <span class="fu">max</span>.(<span class="fl">0</span>, <span class="fu">min</span>.(<span class="fl">1</span>, pv_cf))  <span class="co"># Clamp between 0 and 1</span></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Generate market prices</span></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>    base_price <span class="op">=</span> <span class="fl">200</span> <span class="op">.+</span> <span class="fl">100</span> <span class="op">.*</span> <span class="fu">sin</span>.(<span class="fl">2</span>π <span class="op">.*</span> (<span class="fl">0</span><span class="op">:</span>n_hours<span class="op">-</span><span class="fl">1</span>) <span class="op">./</span> <span class="fl">24</span>)</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>    market_price <span class="op">=</span> base_price <span class="op">.+</span> <span class="fu">randn</span>(n_hours) <span class="op">.*</span> <span class="fl">100</span></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>    market_price <span class="op">=</span> <span class="fu">max</span>.(<span class="op">-</span><span class="fl">500</span>, <span class="fu">min</span>.(<span class="fl">1000</span>, market_price))  <span class="co"># Clamp between -500 and 1000</span></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Add data to DataFrame</span></span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> h <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>n_hours</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>        <span class="fu">push!</span>(scenario_data, (</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>            <span class="st">"S</span><span class="sc">$</span>s<span class="st">"</span>,</span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>            base_datetime <span class="op">+</span> <span class="fu">Hour</span>(h<span class="op">-</span><span class="fl">1</span>),</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>            demand[h],</span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>            wind_cf[h],</span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>            pv_cf[h],</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>            market_price[h],</span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>            <span class="fl">1</span><span class="op">/</span>n_scenarios  <span class="co"># Equal probability for each scenario</span></span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>        ))</span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a><span class="co"># Save scenario data</span></span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>CSV.<span class="fu">write</span>(<span class="st">"</span><span class="sc">$</span>file_directory<span class="st">/scenario.csv"</span>, scenario_data)</span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a><span class="co"># Create grid data</span></span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>grid_data <span class="op">=</span> <span class="fu">DataFrame</span>(</span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>    name <span class="op">=</span> [<span class="st">"grid"</span>],</span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a>    taxes_levies <span class="op">=</span> [<span class="fl">50.0</span>]  <span class="co"># 50 EUR/MWh for taxes and levies</span></span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a><span class="co"># Save grid data</span></span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a>CSV.<span class="fu">write</span>(<span class="st">"</span><span class="sc">$</span>file_directory<span class="st">/grid.csv"</span>, grid_data)</span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a><span class="co"># Create storage data</span></span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a>storage_data <span class="op">=</span> <span class="fu">DataFrame</span>(</span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a>    name <span class="op">=</span> [<span class="st">"storage"</span>],</span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a>    energy_cost <span class="op">=</span> [<span class="fl">100000.0</span>],  <span class="co"># 100,000 EUR/MWh</span></span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a>    power_cost <span class="op">=</span> [<span class="fl">50000.0</span>],    <span class="co"># 50,000 EUR/MW</span></span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a>    lifetime <span class="op">=</span> [<span class="fl">10</span>],           <span class="co"># 10 years</span></span>
+<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a>    discount_rate <span class="op">=</span> [<span class="fl">0.05</span>],    <span class="co"># 5% discount rate</span></span>
+<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a>    charge_efficiency <span class="op">=</span> [<span class="fl">0.95</span>],</span>
+<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a>    discharge_efficiency <span class="op">=</span> [<span class="fl">0.95</span>],</span>
+<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a>    self_discharge_rate <span class="op">=</span> [<span class="fl">0.001</span>]  <span class="co"># 0.1% per hour</span></span>
+<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a><span class="co"># Save storage data</span></span>
+<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a>CSV.<span class="fu">write</span>(<span class="st">"</span><span class="sc">$</span>file_directory<span class="st">/storage.csv"</span>, storage_data)</span>
+<span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-88"><a href="#cb2-88" aria-hidden="true" tabindex="-1"></a><span class="co"># Create wind turbine data</span></span>
+<span id="cb2-89"><a href="#cb2-89" aria-hidden="true" tabindex="-1"></a>wind_data <span class="op">=</span> <span class="fu">DataFrame</span>(</span>
+<span id="cb2-90"><a href="#cb2-90" aria-hidden="true" tabindex="-1"></a>    name <span class="op">=</span> [<span class="st">"wind"</span>],</span>
+<span id="cb2-91"><a href="#cb2-91" aria-hidden="true" tabindex="-1"></a>    power_cost <span class="op">=</span> [<span class="fl">1000000.0</span>],  <span class="co"># 1,000,000 EUR/MW</span></span>
+<span id="cb2-92"><a href="#cb2-92" aria-hidden="true" tabindex="-1"></a>    lifetime <span class="op">=</span> [<span class="fl">20</span>],           <span class="co"># 20 years</span></span>
+<span id="cb2-93"><a href="#cb2-93" aria-hidden="true" tabindex="-1"></a>    discount_rate <span class="op">=</span> [<span class="fl">0.05</span>]     <span class="co"># 5% discount rate</span></span>
+<span id="cb2-94"><a href="#cb2-94" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-95"><a href="#cb2-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-96"><a href="#cb2-96" aria-hidden="true" tabindex="-1"></a><span class="co"># Save wind data</span></span>
+<span id="cb2-97"><a href="#cb2-97" aria-hidden="true" tabindex="-1"></a>CSV.<span class="fu">write</span>(<span class="st">"</span><span class="sc">$</span>file_directory<span class="st">/windTurbine.csv"</span>, wind_data)</span>
+<span id="cb2-98"><a href="#cb2-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-99"><a href="#cb2-99" aria-hidden="true" tabindex="-1"></a><span class="co"># Create PV data</span></span>
+<span id="cb2-100"><a href="#cb2-100" aria-hidden="true" tabindex="-1"></a>pv_data <span class="op">=</span> <span class="fu">DataFrame</span>(</span>
+<span id="cb2-101"><a href="#cb2-101" aria-hidden="true" tabindex="-1"></a>    name <span class="op">=</span> [<span class="st">"pv"</span>],</span>
+<span id="cb2-102"><a href="#cb2-102" aria-hidden="true" tabindex="-1"></a>    power_cost <span class="op">=</span> [<span class="fl">500000.0</span>],   <span class="co"># 500,000 EUR/MW</span></span>
+<span id="cb2-103"><a href="#cb2-103" aria-hidden="true" tabindex="-1"></a>    lifetime <span class="op">=</span> [<span class="fl">25</span>],           <span class="co"># 25 years</span></span>
+<span id="cb2-104"><a href="#cb2-104" aria-hidden="true" tabindex="-1"></a>    discount_rate <span class="op">=</span> [<span class="fl">0.05</span>]     <span class="co"># 5% discount rate</span></span>
+<span id="cb2-105"><a href="#cb2-105" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-106"><a href="#cb2-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-107"><a href="#cb2-107" aria-hidden="true" tabindex="-1"></a><span class="co"># Save PV data</span></span>
+<span id="cb2-108"><a href="#cb2-108" aria-hidden="true" tabindex="-1"></a>CSV.<span class="fu">write</span>(<span class="st">"</span><span class="sc">$</span>file_directory<span class="st">/pv.csv"</span>, pv_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
 <section id="load-and-process-data" class="level2">
 <h2 class="anchored" data-anchor-id="load-and-process-data">3. Load and Process Data</h2>
+<div id="6" class="cell" data-execution_count="0">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load and process data into dictionaries</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>dfStorage <span class="op">=</span> CSV.<span class="fu">read</span>(<span class="st">"</span><span class="sc">$</span>file_directory<span class="st">/storage.csv"</span>, DataFrame)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>dfWindTurbines <span class="op">=</span> CSV.<span class="fu">read</span>(<span class="st">"</span><span class="sc">$</span>file_directory<span class="st">/windTurbine.csv"</span>, DataFrame)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>dfPV <span class="op">=</span> CSV.<span class="fu">read</span>(<span class="st">"</span><span class="sc">$</span>file_directory<span class="st">/pv.csv"</span>, DataFrame)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>dfScenarios <span class="op">=</span> CSV.<span class="fu">read</span>(<span class="st">"</span><span class="sc">$</span>file_directory<span class="st">/scenario.csv"</span>, DataFrame)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>dfGrid <span class="op">=</span> CSV.<span class="fu">read</span>(<span class="st">"</span><span class="sc">$</span>file_directory<span class="st">/grid.csv"</span>, DataFrame)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Process storage data</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>dictStorage <span class="op">=</span> <span class="fu">Dict</span>(</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    row.name <span class="op">=&gt;</span> (</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>        energy_cost <span class="op">=</span> row.energy_cost,</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>        power_cost <span class="op">=</span> row.power_cost,</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>        lifetime <span class="op">=</span> row.lifetime,</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>        discount_rate <span class="op">=</span> row.discount_rate,</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>        charge_efficiency <span class="op">=</span> row.charge_efficiency,</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>        discharge_efficiency <span class="op">=</span> row.discharge_efficiency,</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>        self_discharge_rate <span class="op">=</span> row.self_discharge_rate</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    ) <span class="cf">for</span> row <span class="kw">in</span> <span class="fu">eachrow</span>(dfStorage)</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Process wind turbine data</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>dictWindTurbines <span class="op">=</span> <span class="fu">Dict</span>(</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    row.name <span class="op">=&gt;</span> (</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>        power_cost <span class="op">=</span> row.power_cost,</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>        lifetime <span class="op">=</span> row.lifetime,</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>        discount_rate <span class="op">=</span> row.discount_rate</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    ) <span class="cf">for</span> row <span class="kw">in</span> <span class="fu">eachrow</span>(dfWindTurbines)</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Process PV data</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>dictPV <span class="op">=</span> <span class="fu">Dict</span>(</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>    row.name <span class="op">=&gt;</span> (</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>        power_cost <span class="op">=</span> row.power_cost,</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>        lifetime <span class="op">=</span> row.lifetime,</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>        discount_rate <span class="op">=</span> row.discount_rate</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>    ) <span class="cf">for</span> row <span class="kw">in</span> <span class="fu">eachrow</span>(dfPV)</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a><span class="co"># Process scenario data</span></span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>dictScenarios <span class="op">=</span> <span class="fu">Dict</span>()</span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> scenario <span class="kw">in</span> <span class="fu">unique</span>(dfScenarios.scenario)</span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>    scenario_data <span class="op">=</span> dfScenarios[dfScenarios.scenario <span class="op">.==</span> scenario, <span class="op">:</span>]</span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>    dictScenarios[scenario] <span class="op">=</span> (</span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>        datetime <span class="op">=</span> scenario_data.datetime,</span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>        demand <span class="op">=</span> scenario_data.demand,</span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>        wind_cf <span class="op">=</span> scenario_data.wind_cf,</span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>        pv_cf <span class="op">=</span> scenario_data.pv_cf,</span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>        market_price <span class="op">=</span> scenario_data.market_price,</span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>        probability <span class="op">=</span> scenario_data.probability[<span class="fl">1</span>]</span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a><span class="co"># Process grid data</span></span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>dictGrid <span class="op">=</span> <span class="fu">Dict</span>(</span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>    row.name <span class="op">=&gt;</span> (</span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>        taxes_levies <span class="op">=</span> row.taxes_levies,</span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>    ) <span class="cf">for</span> row <span class="kw">in</span> <span class="fu">eachrow</span>(dfGrid)</span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
 <section id="model-implementation" class="level2">
 <h2 class="anchored" data-anchor-id="model-implementation">4. Model Implementation</h2>
 <p>Now, let’s implement the Stochastic System Design model using the dictionary format:</p>
+<div id="8" class="cell" data-execution_count="0">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">solve_stochastic_design</span>(dictStorage, dictWindTurbines, dictPV, dictScenarios, dictGrid, max_budget)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Create model</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> <span class="fu">Model</span>(HiGHS.Optimizer)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">set_silent</span>(model)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Define sets</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    T <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">168</span>  <span class="co"># Time periods (hours)</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    S <span class="op">=</span> <span class="fu">keys</span>(dictStorage)  <span class="co"># Set of storage systems</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    W <span class="op">=</span> <span class="fu">keys</span>(dictWindTurbines)  <span class="co"># Set of wind parks</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    V <span class="op">=</span> <span class="fu">keys</span>(dictPV)  <span class="co"># Set of PV parks</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    Ω <span class="op">=</span> <span class="fu">keys</span>(dictScenarios)  <span class="co"># Set of scenarios</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calculate PVAF for each component type</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    pvaf <span class="op">=</span> <span class="fu">Dict</span>(</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>        <span class="st">"storage"</span> <span class="op">=&gt;</span> (<span class="fl">1</span> <span class="op">+</span> dictStorage[<span class="st">"storage"</span>].discount_rate)<span class="op">^</span>dictStorage[<span class="st">"storage"</span>].lifetime <span class="op">/</span> </span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>                    (dictStorage[<span class="st">"storage"</span>].discount_rate <span class="op">*</span> (<span class="fl">1</span> <span class="op">+</span> dictStorage[<span class="st">"storage"</span>].discount_rate)<span class="op">^</span>dictStorage[<span class="st">"storage"</span>].lifetime),</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>        <span class="st">"wind"</span> <span class="op">=&gt;</span> (<span class="fl">1</span> <span class="op">+</span> dictWindTurbines[<span class="st">"wind"</span>].discount_rate)<span class="op">^</span>dictWindTurbines[<span class="st">"wind"</span>].lifetime <span class="op">/</span> </span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>                 (dictWindTurbines[<span class="st">"wind"</span>].discount_rate <span class="op">*</span> (<span class="fl">1</span> <span class="op">+</span> dictWindTurbines[<span class="st">"wind"</span>].discount_rate)<span class="op">^</span>dictWindTurbines[<span class="st">"wind"</span>].lifetime),</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>        <span class="st">"pv"</span> <span class="op">=&gt;</span> (<span class="fl">1</span> <span class="op">+</span> dictPV[<span class="st">"pv"</span>].discount_rate)<span class="op">^</span>dictPV[<span class="st">"pv"</span>].lifetime <span class="op">/</span> </span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>               (dictPV[<span class="st">"pv"</span>].discount_rate <span class="op">*</span> (<span class="fl">1</span> <span class="op">+</span> dictPV[<span class="st">"pv"</span>].discount_rate)<span class="op">^</span>dictPV[<span class="st">"pv"</span>].lifetime)</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Decision Variables</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># First stage (investment)</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@variable</span>(model, e_nom[s <span class="kw">in</span> S] <span class="op">&gt;=</span> <span class="fl">0</span>)  <span class="co"># Nominal energy capacity</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@variable</span>(model, p_ch_nom[s <span class="kw">in</span> S] <span class="op">&gt;=</span> <span class="fl">0</span>)  <span class="co"># Nominal charging power</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@variable</span>(model, p_dis_nom[s <span class="kw">in</span> S] <span class="op">&gt;=</span> <span class="fl">0</span>)  <span class="co"># Nominal discharging power</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@variable</span>(model, p_w_nom[w <span class="kw">in</span> W] <span class="op">&gt;=</span> <span class="fl">0</span>)  <span class="co"># Nominal wind power</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@variable</span>(model, p_v_nom[v <span class="kw">in</span> V] <span class="op">&gt;=</span> <span class="fl">0</span>)  <span class="co"># Nominal PV power</span></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Second stage (operation)</span></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@variable</span>(model, p_w[w <span class="kw">in</span> W, t <span class="kw">in</span> T, ω <span class="kw">in</span> Ω] <span class="op">&gt;=</span> <span class="fl">0</span>)  <span class="co"># Wind power output</span></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@variable</span>(model, p_v[v <span class="kw">in</span> V, t <span class="kw">in</span> T, ω <span class="kw">in</span> Ω] <span class="op">&gt;=</span> <span class="fl">0</span>)  <span class="co"># PV power output</span></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@variable</span>(model, p_in[t <span class="kw">in</span> T, ω <span class="kw">in</span> Ω] <span class="op">&gt;=</span> <span class="fl">0</span>)  <span class="co"># Grid import</span></span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@variable</span>(model, p_out[t <span class="kw">in</span> T, ω <span class="kw">in</span> Ω] <span class="op">&gt;=</span> <span class="fl">0</span>)  <span class="co"># Grid export</span></span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@variable</span>(model, p_ch[s <span class="kw">in</span> S, t <span class="kw">in</span> T, ω <span class="kw">in</span> Ω] <span class="op">&gt;=</span> <span class="fl">0</span>)  <span class="co"># Storage charging</span></span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@variable</span>(model, p_dis[s <span class="kw">in</span> S, t <span class="kw">in</span> T, ω <span class="kw">in</span> Ω] <span class="op">&gt;=</span> <span class="fl">0</span>)  <span class="co"># Storage discharging</span></span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@variable</span>(model, <span class="cn">e</span>[s <span class="kw">in</span> S, t <span class="kw">in</span> T, ω <span class="kw">in</span> Ω] <span class="op">&gt;=</span> <span class="fl">0</span>)  <span class="co"># Storage energy level</span></span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Annual cost variables</span></span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@variable</span>(model, AC_inv_s[s <span class="kw">in</span> S] <span class="op">&gt;=</span> <span class="fl">0</span>)  <span class="co"># Annual storage investment cost</span></span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@variable</span>(model, AC_inv_w[w <span class="kw">in</span> W] <span class="op">&gt;=</span> <span class="fl">0</span>)  <span class="co"># Annual wind investment cost</span></span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@variable</span>(model, AC_inv_v[v <span class="kw">in</span> V] <span class="op">&gt;=</span> <span class="fl">0</span>)  <span class="co"># Annual PV investment cost</span></span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@variable</span>(model, AC_grid_imp[ω <span class="kw">in</span> Ω] <span class="op">&gt;=</span> <span class="fl">0</span>)  <span class="co"># Annual grid import cost</span></span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@variable</span>(model, AR_grid_exp[ω <span class="kw">in</span> Ω] <span class="op">&gt;=</span> <span class="fl">0</span>)  <span class="co"># Annual grid export revenue</span></span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Objective Function</span></span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@objective</span>(model, Min, </span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(AC_inv_s[s] <span class="cf">for</span> s <span class="kw">in</span> S) <span class="op">+</span></span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(AC_inv_w[w] <span class="cf">for</span> w <span class="kw">in</span> W) <span class="op">+</span></span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(AC_inv_v[v] <span class="cf">for</span> v <span class="kw">in</span> V) <span class="op">+</span></span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(dictScenarios[ω].probability <span class="op">*</span> (AC_grid_imp[ω] <span class="op">-</span> AR_grid_exp[ω]) <span class="cf">for</span> ω <span class="kw">in</span> Ω) <span class="op">*</span> <span class="fl">52.1429</span></span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Investment cost constraints</span></span>
+<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@constraint</span>(model, [s <span class="kw">in</span> S],</span>
+<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>        AC_inv_s[s] <span class="op">==</span> dictStorage[s].energy_cost<span class="op">/</span>pvaf[<span class="st">"storage"</span>] <span class="op">*</span> e_nom[s] <span class="op">+</span></span>
+<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>                      dictStorage[s].power_cost<span class="op">/</span>pvaf[<span class="st">"storage"</span>] <span class="op">*</span> (p_ch_nom[s] <span class="op">+</span> p_dis_nom[s])</span>
+<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@constraint</span>(model, [w <span class="kw">in</span> W],</span>
+<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a>        AC_inv_w[w] <span class="op">==</span> dictWindTurbines[w].power_cost<span class="op">/</span>pvaf[<span class="st">"wind"</span>] <span class="op">*</span> p_w_nom[w]</span>
+<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-65"><a href="#cb4-65" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@constraint</span>(model, [v <span class="kw">in</span> V],</span>
+<span id="cb4-66"><a href="#cb4-66" aria-hidden="true" tabindex="-1"></a>        AC_inv_v[v] <span class="op">==</span> dictPV[v].power_cost<span class="op">/</span>pvaf[<span class="st">"pv"</span>] <span class="op">*</span> p_v_nom[v]</span>
+<span id="cb4-67"><a href="#cb4-67" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-68"><a href="#cb4-68" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-69"><a href="#cb4-69" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Investment budget constraint</span></span>
+<span id="cb4-70"><a href="#cb4-70" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@constraint</span>(model,</span>
+<span id="cb4-71"><a href="#cb4-71" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(dictStorage[s].energy_cost <span class="op">*</span> e_nom[s] <span class="op">+</span></span>
+<span id="cb4-72"><a href="#cb4-72" aria-hidden="true" tabindex="-1"></a>            dictStorage[s].power_cost <span class="op">*</span> (p_ch_nom[s] <span class="op">+</span> p_dis_nom[s]) <span class="cf">for</span> s <span class="kw">in</span> S) <span class="op">+</span></span>
+<span id="cb4-73"><a href="#cb4-73" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(dictWindTurbines[w].power_cost <span class="op">*</span> p_w_nom[w] <span class="cf">for</span> w <span class="kw">in</span> W) <span class="op">+</span></span>
+<span id="cb4-74"><a href="#cb4-74" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(dictPV[v].power_cost <span class="op">*</span> p_v_nom[v] <span class="cf">for</span> v <span class="kw">in</span> V) <span class="op">&lt;=</span> max_budget</span>
+<span id="cb4-75"><a href="#cb4-75" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-76"><a href="#cb4-76" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-77"><a href="#cb4-77" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Grid electricity costs</span></span>
+<span id="cb4-78"><a href="#cb4-78" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@constraint</span>(model, [ω <span class="kw">in</span> Ω],</span>
+<span id="cb4-79"><a href="#cb4-79" aria-hidden="true" tabindex="-1"></a>        AC_grid_imp[ω] <span class="op">==</span> <span class="fu">sum</span>(</span>
+<span id="cb4-80"><a href="#cb4-80" aria-hidden="true" tabindex="-1"></a>            (dictScenarios[ω].market_price[t] <span class="op">+</span> dictGrid[<span class="st">"grid"</span>].taxes_levies) <span class="op">*</span> p_in[t,ω]</span>
+<span id="cb4-81"><a href="#cb4-81" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> t <span class="kw">in</span> T</span>
+<span id="cb4-82"><a href="#cb4-82" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb4-83"><a href="#cb4-83" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-84"><a href="#cb4-84" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-85"><a href="#cb4-85" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@constraint</span>(model, [ω <span class="kw">in</span> Ω],</span>
+<span id="cb4-86"><a href="#cb4-86" aria-hidden="true" tabindex="-1"></a>        AR_grid_exp[ω] <span class="op">==</span> <span class="fu">sum</span>(</span>
+<span id="cb4-87"><a href="#cb4-87" aria-hidden="true" tabindex="-1"></a>            dictScenarios[ω].market_price[t] <span class="op">*</span> p_out[t,ω]</span>
+<span id="cb4-88"><a href="#cb4-88" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> t <span class="kw">in</span> T</span>
+<span id="cb4-89"><a href="#cb4-89" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb4-90"><a href="#cb4-90" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-91"><a href="#cb4-91" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-92"><a href="#cb4-92" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Power balance</span></span>
+<span id="cb4-93"><a href="#cb4-93" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@constraint</span>(model, [t <span class="kw">in</span> T, ω <span class="kw">in</span> Ω],</span>
+<span id="cb4-94"><a href="#cb4-94" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(p_w[w,t,ω] <span class="cf">for</span> w <span class="kw">in</span> W) <span class="op">+</span></span>
+<span id="cb4-95"><a href="#cb4-95" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(p_v[v,t,ω] <span class="cf">for</span> v <span class="kw">in</span> V) <span class="op">+</span></span>
+<span id="cb4-96"><a href="#cb4-96" aria-hidden="true" tabindex="-1"></a>        (p_in[t,ω] <span class="op">-</span> p_out[t,ω]) <span class="op">+</span></span>
+<span id="cb4-97"><a href="#cb4-97" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(p_dis[s,t,ω] <span class="op">-</span> p_ch[s,t,ω] <span class="cf">for</span> s <span class="kw">in</span> S) <span class="op">==</span></span>
+<span id="cb4-98"><a href="#cb4-98" aria-hidden="true" tabindex="-1"></a>        dictScenarios[ω].demand[t]</span>
+<span id="cb4-99"><a href="#cb4-99" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-100"><a href="#cb4-100" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-101"><a href="#cb4-101" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Component limits</span></span>
+<span id="cb4-102"><a href="#cb4-102" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@constraint</span>(model, [w <span class="kw">in</span> W, t <span class="kw">in</span> T, ω <span class="kw">in</span> Ω],</span>
+<span id="cb4-103"><a href="#cb4-103" aria-hidden="true" tabindex="-1"></a>        p_w[w,t,ω] <span class="op">&lt;=</span> dictScenarios[ω].wind_cf[t] <span class="op">*</span> p_w_nom[w]</span>
+<span id="cb4-104"><a href="#cb4-104" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-105"><a href="#cb4-105" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-106"><a href="#cb4-106" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@constraint</span>(model, [v <span class="kw">in</span> V, t <span class="kw">in</span> T, ω <span class="kw">in</span> Ω],</span>
+<span id="cb4-107"><a href="#cb4-107" aria-hidden="true" tabindex="-1"></a>        p_v[v,t,ω] <span class="op">&lt;=</span> dictScenarios[ω].pv_cf[t] <span class="op">*</span> p_v_nom[v]</span>
+<span id="cb4-108"><a href="#cb4-108" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-109"><a href="#cb4-109" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-110"><a href="#cb4-110" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@constraint</span>(model, [s <span class="kw">in</span> S, t <span class="kw">in</span> T, ω <span class="kw">in</span> Ω],</span>
+<span id="cb4-111"><a href="#cb4-111" aria-hidden="true" tabindex="-1"></a>        p_ch[s,t,ω] <span class="op">&lt;=</span> p_ch_nom[s]</span>
+<span id="cb4-112"><a href="#cb4-112" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-113"><a href="#cb4-113" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-114"><a href="#cb4-114" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@constraint</span>(model, [s <span class="kw">in</span> S, t <span class="kw">in</span> T, ω <span class="kw">in</span> Ω],</span>
+<span id="cb4-115"><a href="#cb4-115" aria-hidden="true" tabindex="-1"></a>        p_dis[s,t,ω] <span class="op">&lt;=</span> p_dis_nom[s]</span>
+<span id="cb4-116"><a href="#cb4-116" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-117"><a href="#cb4-117" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-118"><a href="#cb4-118" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@constraint</span>(model, [s <span class="kw">in</span> S, t <span class="kw">in</span> T, ω <span class="kw">in</span> Ω],</span>
+<span id="cb4-119"><a href="#cb4-119" aria-hidden="true" tabindex="-1"></a>        <span class="cn">e</span>[s,t,ω] <span class="op">&lt;=</span> e_nom[s]</span>
+<span id="cb4-120"><a href="#cb4-120" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-121"><a href="#cb4-121" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-122"><a href="#cb4-122" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Storage energy balance</span></span>
+<span id="cb4-123"><a href="#cb4-123" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@constraint</span>(model, [s <span class="kw">in</span> S, t <span class="kw">in</span> <span class="fl">2</span><span class="op">:</span><span class="fu">length</span>(T), ω <span class="kw">in</span> Ω],</span>
+<span id="cb4-124"><a href="#cb4-124" aria-hidden="true" tabindex="-1"></a>        <span class="cn">e</span>[s,t,ω] <span class="op">==</span> (<span class="fl">1</span> <span class="op">-</span> dictStorage[s].self_discharge_rate) <span class="op">*</span> <span class="cn">e</span>[s,t<span class="op">-</span><span class="fl">1</span>,ω] <span class="op">+</span></span>
+<span id="cb4-125"><a href="#cb4-125" aria-hidden="true" tabindex="-1"></a>                    dictStorage[s].charge_efficiency <span class="op">*</span> p_ch[s,t,ω] <span class="op">-</span></span>
+<span id="cb4-126"><a href="#cb4-126" aria-hidden="true" tabindex="-1"></a>                    p_dis[s,t,ω] <span class="op">/</span> dictStorage[s].discharge_efficiency</span>
+<span id="cb4-127"><a href="#cb4-127" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-128"><a href="#cb4-128" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-129"><a href="#cb4-129" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@constraint</span>(model, [s <span class="kw">in</span> S, ω <span class="kw">in</span> Ω],</span>
+<span id="cb4-130"><a href="#cb4-130" aria-hidden="true" tabindex="-1"></a>        <span class="cn">e</span>[s,<span class="fl">1</span>,ω] <span class="op">==</span> dictStorage[s].charge_efficiency <span class="op">*</span> p_ch[s,<span class="fl">1</span>,ω] <span class="op">-</span></span>
+<span id="cb4-131"><a href="#cb4-131" aria-hidden="true" tabindex="-1"></a>                    p_dis[s,<span class="fl">1</span>,ω] <span class="op">/</span> dictStorage[s].discharge_efficiency</span>
+<span id="cb4-132"><a href="#cb4-132" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-133"><a href="#cb4-133" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-134"><a href="#cb4-134" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Solve the model</span></span>
+<span id="cb4-135"><a href="#cb4-135" aria-hidden="true" tabindex="-1"></a>    <span class="fu">optimize!</span>(model)</span>
+<span id="cb4-136"><a href="#cb4-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-137"><a href="#cb4-137" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Assert that the solution is feasible</span></span>
+<span id="cb4-138"><a href="#cb4-138" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="fu">termination_status</span>(model) <span class="op">!=</span> MOI.OPTIMAL</span>
+<span id="cb4-139"><a href="#cb4-139" aria-hidden="true" tabindex="-1"></a>        ts <span class="op">=</span> <span class="fu">termination_status</span>(model)</span>
+<span id="cb4-140"><a href="#cb4-140" aria-hidden="true" tabindex="-1"></a>        <span class="pp">@info</span> <span class="st">"Optimization finished. The model was not solved correctly. Termination Status: </span><span class="sc">$</span>ts<span class="st">"</span></span>
+<span id="cb4-141"><a href="#cb4-141" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Helpful resource: https://jump.dev/JuMP.jl/stable/manual/solutions/#Conflicts</span></span>
+<span id="cb4-142"><a href="#cb4-142" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb4-143"><a href="#cb4-143" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-144"><a href="#cb4-144" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Return results</span></span>
+<span id="cb4-145"><a href="#cb4-145" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (</span>
+<span id="cb4-146"><a href="#cb4-146" aria-hidden="true" tabindex="-1"></a>        e_nom <span class="op">=</span> <span class="fu">value</span>.(e_nom),</span>
+<span id="cb4-147"><a href="#cb4-147" aria-hidden="true" tabindex="-1"></a>        p_ch_nom <span class="op">=</span> <span class="fu">value</span>.(p_ch_nom),</span>
+<span id="cb4-148"><a href="#cb4-148" aria-hidden="true" tabindex="-1"></a>        p_dis_nom <span class="op">=</span> <span class="fu">value</span>.(p_dis_nom),</span>
+<span id="cb4-149"><a href="#cb4-149" aria-hidden="true" tabindex="-1"></a>        p_w_nom <span class="op">=</span> <span class="fu">value</span>.(p_w_nom),</span>
+<span id="cb4-150"><a href="#cb4-150" aria-hidden="true" tabindex="-1"></a>        p_v_nom <span class="op">=</span> <span class="fu">value</span>.(p_v_nom),</span>
+<span id="cb4-151"><a href="#cb4-151" aria-hidden="true" tabindex="-1"></a>        total_cost <span class="op">=</span> <span class="fu">objective_value</span>(model),</span>
+<span id="cb4-152"><a href="#cb4-152" aria-hidden="true" tabindex="-1"></a>        investment_costs <span class="op">=</span> <span class="fu">Dict</span>(</span>
+<span id="cb4-153"><a href="#cb4-153" aria-hidden="true" tabindex="-1"></a>            <span class="st">"storage"</span> <span class="op">=&gt;</span> <span class="fu">value</span>.(AC_inv_s[<span class="st">"storage"</span>]),</span>
+<span id="cb4-154"><a href="#cb4-154" aria-hidden="true" tabindex="-1"></a>            <span class="st">"wind"</span> <span class="op">=&gt;</span> <span class="fu">value</span>.(AC_inv_w[<span class="st">"wind"</span>]),</span>
+<span id="cb4-155"><a href="#cb4-155" aria-hidden="true" tabindex="-1"></a>            <span class="st">"pv"</span> <span class="op">=&gt;</span> <span class="fu">value</span>.(AC_inv_v[<span class="st">"pv"</span>])</span>
+<span id="cb4-156"><a href="#cb4-156" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb4-157"><a href="#cb4-157" aria-hidden="true" tabindex="-1"></a>        operational_costs <span class="op">=</span> <span class="fu">Dict</span>(</span>
+<span id="cb4-158"><a href="#cb4-158" aria-hidden="true" tabindex="-1"></a>            <span class="st">"grid_import"</span> <span class="op">=&gt;</span> <span class="fu">sum</span>(dictScenarios[ω].probability <span class="op">*</span> <span class="fu">value</span>.(AC_grid_imp[ω]) <span class="cf">for</span> ω <span class="kw">in</span> Ω) <span class="op">*</span> <span class="fl">52.1429</span>,</span>
+<span id="cb4-159"><a href="#cb4-159" aria-hidden="true" tabindex="-1"></a>            <span class="st">"grid_export"</span> <span class="op">=&gt;</span> <span class="fu">sum</span>(dictScenarios[ω].probability <span class="op">*</span> <span class="fu">value</span>.(AR_grid_exp[ω]) <span class="cf">for</span> ω <span class="kw">in</span> Ω) <span class="op">*</span> <span class="fl">52.1429</span></span>
+<span id="cb4-160"><a href="#cb4-160" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb4-161"><a href="#cb4-161" aria-hidden="true" tabindex="-1"></a>        operational_variables <span class="op">=</span> <span class="fu">Dict</span>(</span>
+<span id="cb4-162"><a href="#cb4-162" aria-hidden="true" tabindex="-1"></a>            <span class="st">"storage_energy"</span> <span class="op">=&gt;</span> <span class="fu">value</span>.(<span class="cn">e</span>),</span>
+<span id="cb4-163"><a href="#cb4-163" aria-hidden="true" tabindex="-1"></a>            <span class="st">"storage_charge"</span> <span class="op">=&gt;</span> <span class="fu">value</span>.(p_ch),</span>
+<span id="cb4-164"><a href="#cb4-164" aria-hidden="true" tabindex="-1"></a>            <span class="st">"storage_discharge"</span> <span class="op">=&gt;</span> <span class="fu">value</span>.(p_dis),</span>
+<span id="cb4-165"><a href="#cb4-165" aria-hidden="true" tabindex="-1"></a>            <span class="st">"wind_power"</span> <span class="op">=&gt;</span> <span class="fu">value</span>.(p_w),</span>
+<span id="cb4-166"><a href="#cb4-166" aria-hidden="true" tabindex="-1"></a>            <span class="st">"pv_power"</span> <span class="op">=&gt;</span> <span class="fu">value</span>.(p_v),</span>
+<span id="cb4-167"><a href="#cb4-167" aria-hidden="true" tabindex="-1"></a>            <span class="st">"grid_import"</span> <span class="op">=&gt;</span> <span class="fu">value</span>.(p_in),</span>
+<span id="cb4-168"><a href="#cb4-168" aria-hidden="true" tabindex="-1"></a>            <span class="st">"grid_export"</span> <span class="op">=&gt;</span> <span class="fu">value</span>.(p_out)</span>
+<span id="cb4-169"><a href="#cb4-169" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb4-170"><a href="#cb4-170" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-171"><a href="#cb4-171" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
 <section id="solve-and-analyze-results" class="level2">
 <h2 class="anchored" data-anchor-id="solve-and-analyze-results">5. Solve and Analyze Results</h2>
 <p>Let’s solve the model with a maximum budget of 50 million EUR:</p>
+<div id="10" class="cell" data-execution_count="0">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Solve model</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>max_budget <span class="op">=</span> <span class="fl">50_000_000</span>  <span class="co"># 50 million EUR</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> <span class="fu">solve_stochastic_design</span>(dictStorage, dictWindTurbines, dictPV, dictScenarios, dictGrid, max_budget)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Create results DataFrame</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>results_df <span class="op">=</span> <span class="fu">DataFrame</span>(</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    component <span class="op">=</span> <span class="dt">String</span>[],</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    capacity <span class="op">=</span> <span class="dt">Float64</span>[],</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    investment_cost <span class="op">=</span> <span class="dt">Float64</span>[]</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Add storage results</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="fu">push!</span>(results_df, (<span class="st">"Storage"</span>, results.e_nom[<span class="st">"storage"</span>], results.investment_costs[<span class="st">"storage"</span>]))</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Add wind results</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="fu">push!</span>(results_df, (<span class="st">"Wind"</span>, results.p_w_nom[<span class="st">"wind"</span>], results.investment_costs[<span class="st">"wind"</span>]))</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Add PV results</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="fu">push!</span>(results_df, (<span class="st">"PV"</span>, results.p_v_nom[<span class="st">"pv"</span>], results.investment_costs[<span class="st">"pv"</span>]))</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate total costs</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>total_investment_cost <span class="op">=</span> <span class="fu">sum</span>(<span class="fu">values</span>(results.investment_costs))</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>total_operational_cost <span class="op">=</span> results.operational_costs[<span class="st">"grid_import"</span>] <span class="op">-</span> results.operational_costs[<span class="st">"grid_export"</span>]</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>total_cost <span class="op">=</span> total_investment_cost <span class="op">+</span> total_operational_cost</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Print results</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"Optimal System Design:"</span>)</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"Storage Energy Capacity: </span><span class="sc">$</span>(<span class="fu">round</span>(results.e_nom[<span class="st">"storage"</span>], digits<span class="op">=</span><span class="fl">2</span>))<span class="st"> MWh"</span>)</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"Storage Charging Power: </span><span class="sc">$</span>(<span class="fu">round</span>(results.p_ch_nom[<span class="st">"storage"</span>], digits<span class="op">=</span><span class="fl">2</span>))<span class="st"> MW"</span>)</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"Storage Discharging Power: </span><span class="sc">$</span>(<span class="fu">round</span>(results.p_dis_nom[<span class="st">"storage"</span>], digits<span class="op">=</span><span class="fl">2</span>))<span class="st"> MW"</span>)</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"Wind Power Capacity: </span><span class="sc">$</span>(<span class="fu">round</span>(results.p_w_nom[<span class="st">"wind"</span>], digits<span class="op">=</span><span class="fl">2</span>))<span class="st"> MW"</span>)</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"PV Power Capacity: </span><span class="sc">$</span>(<span class="fu">round</span>(results.p_v_nom[<span class="st">"pv"</span>], digits<span class="op">=</span><span class="fl">2</span>))<span class="st"> MW"</span>)</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Costs:"</span>)</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"Total Annual Cost: </span><span class="sc">$</span>(<span class="fu">round</span>(total_cost, digits<span class="op">=</span><span class="fl">2</span>))<span class="st"> EUR/year"</span>)</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"Annual Investment Cost: </span><span class="sc">$</span>(<span class="fu">round</span>(total_investment_cost, digits<span class="op">=</span><span class="fl">2</span>))<span class="st"> EUR/year"</span>)</span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"Annual Operational Cost: </span><span class="sc">$</span>(<span class="fu">round</span>(total_operational_cost, digits<span class="op">=</span><span class="fl">2</span>))<span class="st"> EUR/year"</span>)</span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Investment Costs by Component:"</span>)</span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"Storage: </span><span class="sc">$</span>(<span class="fu">round</span>(results.investment_costs[<span class="st">"storage"</span>], digits<span class="op">=</span><span class="fl">2</span>))<span class="st"> EUR/year"</span>)</span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"Wind: </span><span class="sc">$</span>(<span class="fu">round</span>(results.investment_costs[<span class="st">"wind"</span>], digits<span class="op">=</span><span class="fl">2</span>))<span class="st"> EUR/year"</span>)</span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"PV: </span><span class="sc">$</span>(<span class="fu">round</span>(results.investment_costs[<span class="st">"pv"</span>], digits<span class="op">=</span><span class="fl">2</span>))<span class="st"> EUR/year"</span>)</span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Operational Costs:"</span>)</span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"Grid Import: </span><span class="sc">$</span>(<span class="fu">round</span>(results.operational_costs[<span class="st">"grid_import"</span>], digits<span class="op">=</span><span class="fl">2</span>))<span class="st"> EUR/year"</span>)</span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"Grid Export Revenue: </span><span class="sc">$</span>(<span class="fu">round</span>(results.operational_costs[<span class="st">"grid_export"</span>], digits<span class="op">=</span><span class="fl">2</span>))<span class="st"> EUR/year"</span>)</span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a><span class="co"># Create operational results DataFrame</span></span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a>operational_df <span class="op">=</span> <span class="fu">DataFrame</span>(</span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>    scenario <span class="op">=</span> <span class="dt">String</span>[],</span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a>    hour <span class="op">=</span> <span class="dt">Int</span>[],</span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a>    storage_energy <span class="op">=</span> <span class="dt">Float64</span>[],</span>
+<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a>    storage_charge <span class="op">=</span> <span class="dt">Float64</span>[],</span>
+<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a>    storage_discharge <span class="op">=</span> <span class="dt">Float64</span>[],</span>
+<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a>    wind_power <span class="op">=</span> <span class="dt">Float64</span>[],</span>
+<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a>    pv_power <span class="op">=</span> <span class="dt">Float64</span>[],</span>
+<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a>    grid_import <span class="op">=</span> <span class="dt">Float64</span>[],</span>
+<span id="cb5-55"><a href="#cb5-55" aria-hidden="true" tabindex="-1"></a>    grid_export <span class="op">=</span> <span class="dt">Float64</span>[],</span>
+<span id="cb5-56"><a href="#cb5-56" aria-hidden="true" tabindex="-1"></a>    demand <span class="op">=</span> <span class="dt">Float64</span>[]</span>
+<span id="cb5-57"><a href="#cb5-57" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-58"><a href="#cb5-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-59"><a href="#cb5-59" aria-hidden="true" tabindex="-1"></a><span class="co"># Add operational data for each scenario</span></span>
+<span id="cb5-60"><a href="#cb5-60" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ω <span class="kw">in</span> <span class="fu">keys</span>(dictScenarios)</span>
+<span id="cb5-61"><a href="#cb5-61" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> t <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">168</span></span>
+<span id="cb5-62"><a href="#cb5-62" aria-hidden="true" tabindex="-1"></a>        <span class="fu">push!</span>(operational_df, (</span>
+<span id="cb5-63"><a href="#cb5-63" aria-hidden="true" tabindex="-1"></a>            ω,</span>
+<span id="cb5-64"><a href="#cb5-64" aria-hidden="true" tabindex="-1"></a>            t,</span>
+<span id="cb5-65"><a href="#cb5-65" aria-hidden="true" tabindex="-1"></a>            results.operational_variables[<span class="st">"storage_energy"</span>][<span class="st">"storage"</span>, t, ω],</span>
+<span id="cb5-66"><a href="#cb5-66" aria-hidden="true" tabindex="-1"></a>            results.operational_variables[<span class="st">"storage_charge"</span>][<span class="st">"storage"</span>, t, ω],</span>
+<span id="cb5-67"><a href="#cb5-67" aria-hidden="true" tabindex="-1"></a>            results.operational_variables[<span class="st">"storage_discharge"</span>][<span class="st">"storage"</span>, t, ω],</span>
+<span id="cb5-68"><a href="#cb5-68" aria-hidden="true" tabindex="-1"></a>            results.operational_variables[<span class="st">"wind_power"</span>][<span class="st">"wind"</span>, t, ω],</span>
+<span id="cb5-69"><a href="#cb5-69" aria-hidden="true" tabindex="-1"></a>            results.operational_variables[<span class="st">"pv_power"</span>][<span class="st">"pv"</span>, t, ω],</span>
+<span id="cb5-70"><a href="#cb5-70" aria-hidden="true" tabindex="-1"></a>            results.operational_variables[<span class="st">"grid_import"</span>][t, ω],</span>
+<span id="cb5-71"><a href="#cb5-71" aria-hidden="true" tabindex="-1"></a>            results.operational_variables[<span class="st">"grid_export"</span>][t, ω],</span>
+<span id="cb5-72"><a href="#cb5-72" aria-hidden="true" tabindex="-1"></a>            dictScenarios[ω].demand[t]</span>
+<span id="cb5-73"><a href="#cb5-73" aria-hidden="true" tabindex="-1"></a>        ))</span>
+<span id="cb5-74"><a href="#cb5-74" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb5-75"><a href="#cb5-75" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
 <section id="create-figures" class="level2">
 <h2 class="anchored" data-anchor-id="create-figures">6. Create Figures</h2>
+<div id="12" class="cell" data-execution_count="0">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create figure for component sizes and costs</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>fig1 <span class="op">=</span> <span class="fu">Figure</span>(size<span class="op">=</span>(<span class="fl">800</span>, <span class="fl">800</span>))</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Component sizes</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>ax1 <span class="op">=</span> <span class="fu">Axis</span>(fig1[<span class="fl">1</span>, <span class="fl">1</span>], title<span class="op">=</span><span class="st">"Optimal Component Sizes"</span>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>x_pos <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fu">length</span>(results_df.component)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot!</span>(ax1, x_pos, results_df.capacity)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>ax1.xticks <span class="op">=</span> (x_pos, results_df.component)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>ax1.xticklabelrotation <span class="op">=</span> <span class="cn">π</span><span class="op">/</span><span class="fl">4</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>ax1.ylabel <span class="op">=</span> <span class="st">"Capacity [MWh/MW]"</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Cost breakdown</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>ax2 <span class="op">=</span> <span class="fu">Axis</span>(fig1[<span class="fl">1</span>, <span class="fl">2</span>], title<span class="op">=</span><span class="st">"Annual Cost Breakdown"</span>, aspect<span class="op">=</span><span class="fl">1</span>)  <span class="co"># Force square aspect ratio</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="fu">hidespines!</span>(ax2)  <span class="co"># Hide the axis spines</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="fu">hidedecorations!</span>(ax2)  <span class="co"># Hide all decorations (ticks, labels, etc.)</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>costs <span class="op">=</span> [results.investment_costs[<span class="st">"storage"</span>], results.investment_costs[<span class="st">"wind"</span>], results.investment_costs[<span class="st">"pv"</span>]]</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> [<span class="op">:</span>blue, <span class="op">:</span>green, <span class="op">:</span>orange]</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>labels <span class="op">=</span> [<span class="st">"Storage"</span>, <span class="st">"Wind"</span>, <span class="st">"PV"</span>]</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Create pie chart</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="fu">pie!</span>(ax2, costs, color<span class="op">=</span>colors, radius<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Create legend below the pie chart</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a><span class="fu">Legend</span>(fig1[<span class="fl">2</span>, <span class="fl">2</span>], [<span class="fu">PolyElement</span>(color<span class="op">=</span>c) for c <span class="kw">in</span> colors], labels, <span class="st">"Components"</span>, </span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>    orientation<span class="op">=:</span>horizontal)</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Display figure</span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a><span class="fu">display</span>(fig1)</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Create operational plots</span></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>fig2 <span class="op">=</span> <span class="fu">Figure</span>(size<span class="op">=</span>(<span class="fl">1200</span>, <span class="fl">1600</span>))</span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Storage operation</span></span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>ax1 <span class="op">=</span> <span class="fu">Axis</span>(fig2[<span class="fl">1</span>, <span class="fl">1</span>], title<span class="op">=</span><span class="st">"Storage Energy Level"</span>)</span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ω <span class="kw">in</span> <span class="fu">keys</span>(dictScenarios)</span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>    <span class="fu">lines!</span>(ax1, operational_df[operational_df.scenario <span class="op">.==</span> ω, <span class="op">:</span>].hour,</span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>           operational_df[operational_df.scenario <span class="op">.==</span> ω, <span class="op">:</span>].storage_energy,</span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>           label<span class="op">=</span>ω)</span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>ax1.xlabel <span class="op">=</span> <span class="st">"Hour"</span></span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>ax1.ylabel <span class="op">=</span> <span class="st">"Energy [MWh]"</span></span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a><span class="fu">axislegend</span>(ax1)</span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a><span class="co"># Storage power</span></span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>ax2 <span class="op">=</span> <span class="fu">Axis</span>(fig2[<span class="fl">1</span>, <span class="fl">2</span>], title<span class="op">=</span><span class="st">"Storage Power"</span>)</span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ω <span class="kw">in</span> <span class="fu">keys</span>(dictScenarios)</span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a>    <span class="fu">lines!</span>(ax2, operational_df[operational_df.scenario <span class="op">.==</span> ω, <span class="op">:</span>].hour,</span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a>           operational_df[operational_df.scenario <span class="op">.==</span> ω, <span class="op">:</span>].storage_charge,</span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a>           label<span class="op">=</span><span class="st">"Charge - </span><span class="sc">$</span><span class="st">ω")</span></span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a><span class="st">    </span>lines<span class="st">!(ax2, operational_df[operational_df.scenario .== ω, :].hour,</span></span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a>           operational_df[operational_df.scenario <span class="op">.==</span> ω, <span class="op">:</span>].storage_discharge,</span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a>           label<span class="op">=</span><span class="st">"Discharge - </span><span class="sc">$</span><span class="st">ω")</span></span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a>end</span>
+<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a>ax2.xlabel <span class="op">=</span> <span class="st">"Hour"</span></span>
+<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a>ax2.ylabel <span class="op">=</span> <span class="st">"Power [MW]"</span></span>
+<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a><span class="fu">axislegend</span>(ax2)</span>
+<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a><span class="co"># Wind power</span></span>
+<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a>ax3 <span class="op">=</span> <span class="fu">Axis</span>(fig2[<span class="fl">2</span>, <span class="fl">1</span>], title<span class="op">=</span><span class="st">"Wind Power Generation"</span>)</span>
+<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ω <span class="kw">in</span> <span class="fu">keys</span>(dictScenarios)</span>
+<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a>    <span class="fu">lines!</span>(ax3, operational_df[operational_df.scenario <span class="op">.==</span> ω, <span class="op">:</span>].hour,</span>
+<span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a>           operational_df[operational_df.scenario <span class="op">.==</span> ω, <span class="op">:</span>].wind_power,</span>
+<span id="cb6-63"><a href="#cb6-63" aria-hidden="true" tabindex="-1"></a>           label<span class="op">=</span>ω)</span>
+<span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
+<span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a>ax3.xlabel <span class="op">=</span> <span class="st">"Hour"</span></span>
+<span id="cb6-66"><a href="#cb6-66" aria-hidden="true" tabindex="-1"></a>ax3.ylabel <span class="op">=</span> <span class="st">"Power [MW]"</span></span>
+<span id="cb6-67"><a href="#cb6-67" aria-hidden="true" tabindex="-1"></a><span class="fu">axislegend</span>(ax3)</span>
+<span id="cb6-68"><a href="#cb6-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-69"><a href="#cb6-69" aria-hidden="true" tabindex="-1"></a><span class="co"># PV power</span></span>
+<span id="cb6-70"><a href="#cb6-70" aria-hidden="true" tabindex="-1"></a>ax4 <span class="op">=</span> <span class="fu">Axis</span>(fig2[<span class="fl">2</span>, <span class="fl">2</span>], title<span class="op">=</span><span class="st">"PV Power Generation"</span>)</span>
+<span id="cb6-71"><a href="#cb6-71" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ω <span class="kw">in</span> <span class="fu">keys</span>(dictScenarios)</span>
+<span id="cb6-72"><a href="#cb6-72" aria-hidden="true" tabindex="-1"></a>    <span class="fu">lines!</span>(ax4, operational_df[operational_df.scenario <span class="op">.==</span> ω, <span class="op">:</span>].hour,</span>
+<span id="cb6-73"><a href="#cb6-73" aria-hidden="true" tabindex="-1"></a>           operational_df[operational_df.scenario <span class="op">.==</span> ω, <span class="op">:</span>].pv_power,</span>
+<span id="cb6-74"><a href="#cb6-74" aria-hidden="true" tabindex="-1"></a>           label<span class="op">=</span>ω)</span>
+<span id="cb6-75"><a href="#cb6-75" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
+<span id="cb6-76"><a href="#cb6-76" aria-hidden="true" tabindex="-1"></a>ax4.xlabel <span class="op">=</span> <span class="st">"Hour"</span></span>
+<span id="cb6-77"><a href="#cb6-77" aria-hidden="true" tabindex="-1"></a>ax4.ylabel <span class="op">=</span> <span class="st">"Power [MW]"</span></span>
+<span id="cb6-78"><a href="#cb6-78" aria-hidden="true" tabindex="-1"></a><span class="fu">axislegend</span>(ax4)</span>
+<span id="cb6-79"><a href="#cb6-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-80"><a href="#cb6-80" aria-hidden="true" tabindex="-1"></a><span class="co"># Grid interaction</span></span>
+<span id="cb6-81"><a href="#cb6-81" aria-hidden="true" tabindex="-1"></a>ax5 <span class="op">=</span> <span class="fu">Axis</span>(fig2[<span class="fl">3</span>, <span class="fl">1</span>], title<span class="op">=</span><span class="st">"Grid Import"</span>)</span>
+<span id="cb6-82"><a href="#cb6-82" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ω <span class="kw">in</span> <span class="fu">keys</span>(dictScenarios)</span>
+<span id="cb6-83"><a href="#cb6-83" aria-hidden="true" tabindex="-1"></a>    <span class="fu">lines!</span>(ax5, operational_df[operational_df.scenario <span class="op">.==</span> ω, <span class="op">:</span>].hour,</span>
+<span id="cb6-84"><a href="#cb6-84" aria-hidden="true" tabindex="-1"></a>           operational_df[operational_df.scenario <span class="op">.==</span> ω, <span class="op">:</span>].grid_import,</span>
+<span id="cb6-85"><a href="#cb6-85" aria-hidden="true" tabindex="-1"></a>           label<span class="op">=</span>ω)</span>
+<span id="cb6-86"><a href="#cb6-86" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
+<span id="cb6-87"><a href="#cb6-87" aria-hidden="true" tabindex="-1"></a>ax5.xlabel <span class="op">=</span> <span class="st">"Hour"</span></span>
+<span id="cb6-88"><a href="#cb6-88" aria-hidden="true" tabindex="-1"></a>ax5.ylabel <span class="op">=</span> <span class="st">"Power [MW]"</span></span>
+<span id="cb6-89"><a href="#cb6-89" aria-hidden="true" tabindex="-1"></a><span class="fu">axislegend</span>(ax5)</span>
+<span id="cb6-90"><a href="#cb6-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-91"><a href="#cb6-91" aria-hidden="true" tabindex="-1"></a>ax6 <span class="op">=</span> <span class="fu">Axis</span>(fig2[<span class="fl">3</span>, <span class="fl">2</span>], title<span class="op">=</span><span class="st">"Grid Export"</span>)</span>
+<span id="cb6-92"><a href="#cb6-92" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ω <span class="kw">in</span> <span class="fu">keys</span>(dictScenarios)</span>
+<span id="cb6-93"><a href="#cb6-93" aria-hidden="true" tabindex="-1"></a>    <span class="fu">lines!</span>(ax6, operational_df[operational_df.scenario <span class="op">.==</span> ω, <span class="op">:</span>].hour,</span>
+<span id="cb6-94"><a href="#cb6-94" aria-hidden="true" tabindex="-1"></a>           operational_df[operational_df.scenario <span class="op">.==</span> ω, <span class="op">:</span>].grid_export,</span>
+<span id="cb6-95"><a href="#cb6-95" aria-hidden="true" tabindex="-1"></a>           label<span class="op">=</span>ω)</span>
+<span id="cb6-96"><a href="#cb6-96" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
+<span id="cb6-97"><a href="#cb6-97" aria-hidden="true" tabindex="-1"></a>ax6.xlabel <span class="op">=</span> <span class="st">"Hour"</span></span>
+<span id="cb6-98"><a href="#cb6-98" aria-hidden="true" tabindex="-1"></a>ax6.ylabel <span class="op">=</span> <span class="st">"Power [MW]"</span></span>
+<span id="cb6-99"><a href="#cb6-99" aria-hidden="true" tabindex="-1"></a><span class="fu">axislegend</span>(ax6)</span>
+<span id="cb6-100"><a href="#cb6-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-101"><a href="#cb6-101" aria-hidden="true" tabindex="-1"></a><span class="co"># Demand</span></span>
+<span id="cb6-102"><a href="#cb6-102" aria-hidden="true" tabindex="-1"></a>ax7 <span class="op">=</span> <span class="fu">Axis</span>(fig2[<span class="fl">4</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>], title<span class="op">=</span><span class="st">"System Demand"</span>)</span>
+<span id="cb6-103"><a href="#cb6-103" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ω <span class="kw">in</span> <span class="fu">keys</span>(dictScenarios)</span>
+<span id="cb6-104"><a href="#cb6-104" aria-hidden="true" tabindex="-1"></a>    <span class="fu">lines!</span>(ax7, operational_df[operational_df.scenario <span class="op">.==</span> ω, <span class="op">:</span>].hour,</span>
+<span id="cb6-105"><a href="#cb6-105" aria-hidden="true" tabindex="-1"></a>           operational_df[operational_df.scenario <span class="op">.==</span> ω, <span class="op">:</span>].demand,</span>
+<span id="cb6-106"><a href="#cb6-106" aria-hidden="true" tabindex="-1"></a>           label<span class="op">=</span>ω)</span>
+<span id="cb6-107"><a href="#cb6-107" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
+<span id="cb6-108"><a href="#cb6-108" aria-hidden="true" tabindex="-1"></a>ax7.xlabel <span class="op">=</span> <span class="st">"Hour"</span></span>
+<span id="cb6-109"><a href="#cb6-109" aria-hidden="true" tabindex="-1"></a>ax7.ylabel <span class="op">=</span> <span class="st">"Power [MW]"</span></span>
+<span id="cb6-110"><a href="#cb6-110" aria-hidden="true" tabindex="-1"></a><span class="fu">axislegend</span>(ax7)</span>
+<span id="cb6-111"><a href="#cb6-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-112"><a href="#cb6-112" aria-hidden="true" tabindex="-1"></a><span class="co"># Display figure</span></span>
+<span id="cb6-113"><a href="#cb6-113" aria-hidden="true" tabindex="-1"></a><span class="fu">display</span>(fig2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
 <section id="sensitivity-analysis-example" class="level2">
 <h2 class="anchored" data-anchor-id="sensitivity-analysis-example">7. Sensitivity Analysis Example</h2>
 <p>Let’s analyze how the optimal solution changes with different maximum budgets:</p>
+<div id="14" class="cell" data-execution_count="0">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test different budgets</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>budgets <span class="op">=</span> [<span class="fl">25_000_000</span>, <span class="fl">50_000_000</span>, <span class="fl">75_000_000</span>, <span class="fl">100_000_000</span>]</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>results_by_budget <span class="op">=</span> <span class="fu">Dict</span>()</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> budget <span class="kw">in</span> budgets</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    results_by_budget[budget] <span class="op">=</span> <span class="fu">solve_stochastic_design</span>(dictStorage, dictWindTurbines, dictPV, dictScenarios, dictGrid, budget)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Create figure</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>fig3 <span class="op">=</span> <span class="fu">Figure</span>(size<span class="op">=</span>(<span class="fl">1200</span>, <span class="fl">800</span>))</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Sort budgets and get corresponding results</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>sorted_budgets <span class="op">=</span> <span class="fu">sort</span>(budgets)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>sorted_results <span class="op">=</span> [results_by_budget[b] for b <span class="kw">in</span> sorted_budgets]</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Component sizes vs budget</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>ax1 <span class="op">=</span> <span class="fu">Axis</span>(fig3[<span class="fl">1</span>, <span class="fl">1</span>], title<span class="op">=</span><span class="st">"Component Sizes vs Budget"</span>)</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="fu">lines!</span>(ax1, sorted_budgets, [r.e_nom[<span class="st">"storage"</span>] for r <span class="kw">in</span> sorted_results], label<span class="op">=</span><span class="st">"Storage Energy"</span>)</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="fu">lines!</span>(ax1, sorted_budgets, [r.p_w_nom[<span class="st">"wind"</span>] for r <span class="kw">in</span> sorted_results], label<span class="op">=</span><span class="st">"Wind"</span>)</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="fu">lines!</span>(ax1, sorted_budgets, [r.p_v_nom[<span class="st">"pv"</span>] for r <span class="kw">in</span> sorted_results], label<span class="op">=</span><span class="st">"PV"</span>)</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>ax1.xlabel <span class="op">=</span> <span class="st">"Maximum Budget [EUR]"</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>ax1.ylabel <span class="op">=</span> <span class="st">"Capacity [MWh or MW]"</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="fu">axislegend</span>(ax1)</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Costs vs budget</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>ax2 <span class="op">=</span> <span class="fu">Axis</span>(fig3[<span class="fl">1</span>, <span class="fl">2</span>], title<span class="op">=</span><span class="st">"Costs vs Budget"</span>)</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a><span class="fu">lines!</span>(ax2, sorted_budgets, [r.total_cost for r <span class="kw">in</span> sorted_results], label<span class="op">=</span><span class="st">"Total Annual Cost"</span>)</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a><span class="fu">lines!</span>(ax2, sorted_budgets, [r.investment_costs[<span class="st">"storage"</span>] for r <span class="kw">in</span> sorted_results], label<span class="op">=</span><span class="st">"Storage"</span>)</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a><span class="fu">lines!</span>(ax2, sorted_budgets, [r.investment_costs[<span class="st">"wind"</span>] for r <span class="kw">in</span> sorted_results], label<span class="op">=</span><span class="st">"Wind"</span>)</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a><span class="fu">lines!</span>(ax2, sorted_budgets, [r.investment_costs[<span class="st">"pv"</span>] for r <span class="kw">in</span> sorted_results], label<span class="op">=</span><span class="st">"PV"</span>)</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Add initial investment cost line</span></span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>initial_investment <span class="op">=</span> [<span class="fu">sum</span>([</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>    dictStorage[<span class="st">"storage"</span>].energy_cost <span class="op">*</span> r.e_nom[<span class="st">"storage"</span>] <span class="op">+</span></span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>    dictStorage[<span class="st">"storage"</span>].power_cost <span class="op">*</span> (r.p_ch_nom[<span class="st">"storage"</span>] <span class="op">+</span> r.p_dis_nom[<span class="st">"storage"</span>]) <span class="op">+</span></span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>    dictWindTurbines[<span class="st">"wind"</span>].power_cost <span class="op">*</span> r.p_w_nom[<span class="st">"wind"</span>] <span class="op">+</span></span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>    dictPV[<span class="st">"pv"</span>].power_cost <span class="op">*</span> r.p_v_nom[<span class="st">"pv"</span>]</span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>]) for r <span class="kw">in</span> sorted_results]</span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a><span class="fu">lines!</span>(ax2, sorted_budgets, initial_investment, label<span class="op">=</span><span class="st">"Initial Investment"</span>, linestyle<span class="op">=:</span>dash)</span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a><span class="co"># Add budget line for reference</span></span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a><span class="fu">lines!</span>(ax2, sorted_budgets, sorted_budgets, label<span class="op">=</span><span class="st">"Maximum Budget"</span>, linestyle<span class="op">=:</span>dot, color<span class="op">=:</span>black)</span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>ax2.xlabel <span class="op">=</span> <span class="st">"Maximum Budget [EUR]"</span></span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>ax2.ylabel <span class="op">=</span> <span class="st">"Annual Cost [EUR/year]"</span></span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a><span class="fu">axislegend</span>(ax2)</span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a><span class="co"># Display figure</span></span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a><span class="fu">display</span>(fig3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
 <section id="sensitivity-analysis-of-the-electricity-price" class="level2">
 <h2 class="anchored" data-anchor-id="sensitivity-analysis-of-the-electricity-price">8. Sensitivity Analysis of the Electricity Price</h2>
@@ -887,16 +1530,105 @@ Note
 <li>Plot the results in a figure.</li>
 <li>Interpret the results and make a recommendation in section 9.</li>
 </ul>
+<div id="16" class="cell" data-execution_count="0">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test different price scaling factors</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>price_scales <span class="op">=</span> <span class="fl">1.0</span><span class="op">:</span><span class="fl">0.1</span><span class="op">:</span><span class="fl">2.0</span>  <span class="co"># From 100% to 200% in 10% steps</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>results_by_price <span class="op">=</span> <span class="fu">Dict</span>()</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a copy of the original scenarios to modify</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>modified_scenarios <span class="op">=</span> <span class="fu">deepcopy</span>(dictScenarios)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> scale <span class="kw">in</span> price_scales</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># HINT: Scale the market prices in each scenario. Use the modified_scenarios dictionary.</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">## YOUR CODE HERE</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Solve the model with modified prices</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="co">## YOUR CODE HERE</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Create figure</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>fig4 <span class="op">=</span> <span class="fu">Figure</span>(size<span class="op">=</span>(<span class="fl">1200</span>, <span class="fl">800</span>))</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Sort price scales and get corresponding results</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>sorted_scales <span class="op">=</span> <span class="fu">sort</span>(<span class="fu">collect</span>(<span class="fu">keys</span>(results_by_price)))</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>sorted_results <span class="op">=</span> [results_by_price[s] for s <span class="kw">in</span> sorted_scales]</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate initial investment costs</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>initial_investment <span class="op">=</span> [<span class="fu">sum</span>([</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>    dictStorage[<span class="st">"storage"</span>].energy_cost <span class="op">*</span> r.e_nom[<span class="st">"storage"</span>] <span class="op">+</span></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>    dictStorage[<span class="st">"storage"</span>].power_cost <span class="op">*</span> (r.p_ch_nom[<span class="st">"storage"</span>] <span class="op">+</span> r.p_dis_nom[<span class="st">"storage"</span>]) <span class="op">+</span></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>    dictWindTurbines[<span class="st">"wind"</span>].power_cost <span class="op">*</span> r.p_w_nom[<span class="st">"wind"</span>] <span class="op">+</span></span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>    dictPV[<span class="st">"pv"</span>].power_cost <span class="op">*</span> r.p_v_nom[<span class="st">"pv"</span>]</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>]) for r <span class="kw">in</span> sorted_results]</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Component sizes vs price scale</span></span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>ax1 <span class="op">=</span> <span class="fu">Axis</span>(fig4[<span class="fl">1</span>, <span class="fl">1</span>], title<span class="op">=</span><span class="st">"Component Sizes vs Electricity Price"</span>)</span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a><span class="fu">lines!</span>(ax1, sorted_scales, [r.e_nom[<span class="st">"storage"</span>] for r <span class="kw">in</span> sorted_results], label<span class="op">=</span><span class="st">"Storage Energy"</span>)</span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a><span class="fu">lines!</span>(ax1, sorted_scales, [r.p_w_nom[<span class="st">"wind"</span>] for r <span class="kw">in</span> sorted_results], label<span class="op">=</span><span class="st">"Wind"</span>)</span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a><span class="fu">lines!</span>(ax1, sorted_scales, [r.p_v_nom[<span class="st">"pv"</span>] for r <span class="kw">in</span> sorted_results], label<span class="op">=</span><span class="st">"PV"</span>)</span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>ax1.xlabel <span class="op">=</span> <span class="st">"Price Scale Factor"</span></span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>ax1.ylabel <span class="op">=</span> <span class="st">"Capacity [MWh or MW]"</span></span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a><span class="fu">axislegend</span>(ax1)</span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a><span class="co"># Costs vs price scale</span></span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>ax2 <span class="op">=</span> <span class="fu">Axis</span>(fig4[<span class="fl">1</span>, <span class="fl">2</span>], title<span class="op">=</span><span class="st">"Costs vs Electricity Price"</span>)</span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a><span class="fu">lines!</span>(ax2, sorted_scales, [r.total_cost for r <span class="kw">in</span> sorted_results], label<span class="op">=</span><span class="st">"Total Annual Cost"</span>)</span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a><span class="fu">lines!</span>(ax2, sorted_scales, [r.investment_costs[<span class="st">"storage"</span>] for r <span class="kw">in</span> sorted_results], label<span class="op">=</span><span class="st">"Storage"</span>)</span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a><span class="fu">lines!</span>(ax2, sorted_scales, [r.investment_costs[<span class="st">"wind"</span>] for r <span class="kw">in</span> sorted_results], label<span class="op">=</span><span class="st">"Wind"</span>)</span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a><span class="fu">lines!</span>(ax2, sorted_scales, [r.investment_costs[<span class="st">"pv"</span>] for r <span class="kw">in</span> sorted_results], label<span class="op">=</span><span class="st">"PV"</span>)</span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a><span class="co"># Add operational costs</span></span>
+<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a>operational_costs <span class="op">=</span> [r.operational_costs[<span class="st">"grid_import"</span>] <span class="op">-</span> r.operational_costs[<span class="st">"grid_export"</span>] for r <span class="kw">in</span> sorted_results]</span>
+<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a><span class="fu">lines!</span>(ax2, sorted_scales, operational_costs, label<span class="op">=</span><span class="st">"Operational Cost"</span>, linestyle<span class="op">=:</span>dash)</span>
+<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a>ax2.xlabel <span class="op">=</span> <span class="st">"Price Scale Factor"</span></span>
+<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a>ax2.ylabel <span class="op">=</span> <span class="st">"Annual Cost [EUR/year]"</span></span>
+<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a><span class="fu">axislegend</span>(ax2)</span>
+<span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a><span class="co"># Display figure</span></span>
+<span id="cb8-57"><a href="#cb8-57" aria-hidden="true" tabindex="-1"></a><span class="fu">display</span>(fig4)</span>
+<span id="cb8-58"><a href="#cb8-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-59"><a href="#cb8-59" aria-hidden="true" tabindex="-1"></a><span class="co"># Print key findings</span></span>
+<span id="cb8-60"><a href="#cb8-60" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Key Findings from Price Sensitivity Analysis:"</span>)</span>
+<span id="cb8-61"><a href="#cb8-61" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"1. Impact on Component Sizes:"</span>)</span>
+<span id="cb8-62"><a href="#cb8-62" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"   - Storage capacity changes from </span><span class="sc">$</span>(<span class="fu">round</span>(sorted_results[<span class="fl">1</span>].e_nom[<span class="st">"storage"</span>], digits<span class="op">=</span><span class="fl">2</span>))<span class="st"> to </span><span class="sc">$</span>(<span class="fu">round</span>(sorted_results[<span class="kw">end</span>].e_nom[<span class="st">"storage"</span>], digits<span class="op">=</span><span class="fl">2</span>))<span class="st"> MWh"</span>)</span>
+<span id="cb8-63"><a href="#cb8-63" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"   - Wind capacity changes from </span><span class="sc">$</span>(<span class="fu">round</span>(sorted_results[<span class="fl">1</span>].p_w_nom[<span class="st">"wind"</span>], digits<span class="op">=</span><span class="fl">2</span>))<span class="st"> to </span><span class="sc">$</span>(<span class="fu">round</span>(sorted_results[<span class="kw">end</span>].p_w_nom[<span class="st">"wind"</span>], digits<span class="op">=</span><span class="fl">2</span>))<span class="st"> MW"</span>)</span>
+<span id="cb8-64"><a href="#cb8-64" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"   - PV capacity changes from </span><span class="sc">$</span>(<span class="fu">round</span>(sorted_results[<span class="fl">1</span>].p_v_nom[<span class="st">"pv"</span>], digits<span class="op">=</span><span class="fl">2</span>))<span class="st"> to </span><span class="sc">$</span>(<span class="fu">round</span>(sorted_results[<span class="kw">end</span>].p_v_nom[<span class="st">"pv"</span>], digits<span class="op">=</span><span class="fl">2</span>))<span class="st"> MW"</span>)</span>
+<span id="cb8-65"><a href="#cb8-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-66"><a href="#cb8-66" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">2. Impact on Costs:"</span>)</span>
+<span id="cb8-67"><a href="#cb8-67" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"   - Total cost changes from </span><span class="sc">$</span>(<span class="fu">round</span>(sorted_results[<span class="fl">1</span>].total_cost, digits<span class="op">=</span><span class="fl">2</span>))<span class="st"> to </span><span class="sc">$</span>(<span class="fu">round</span>(sorted_results[<span class="kw">end</span>].total_cost, digits<span class="op">=</span><span class="fl">2</span>))<span class="st"> EUR/year"</span>)</span>
+<span id="cb8-68"><a href="#cb8-68" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"   - Operational cost changes from </span><span class="sc">$</span>(<span class="fu">round</span>(operational_costs[<span class="fl">1</span>], digits<span class="op">=</span><span class="fl">2</span>))<span class="st"> to </span><span class="sc">$</span>(<span class="fu">round</span>(operational_costs[<span class="kw">end</span>], digits<span class="op">=</span><span class="fl">2</span>))<span class="st"> EUR/year"</span>)</span>
+<span id="cb8-69"><a href="#cb8-69" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"   - Investment cost changes from </span><span class="sc">$</span>(<span class="fu">round</span>(sorted_results[<span class="fl">1</span>].total_cost <span class="op">-</span> operational_costs[<span class="fl">1</span>], digits<span class="op">=</span><span class="fl">2</span>))<span class="st"> to </span><span class="sc">$</span>(<span class="fu">round</span>(sorted_results[<span class="kw">end</span>].total_cost <span class="op">-</span> operational_costs[<span class="kw">end</span>], digits<span class="op">=</span><span class="fl">2</span>))<span class="st"> EUR/year"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
 <section id="recommendations-for-hamburg-chempark-gmbh" class="level2">
 <h2 class="anchored" data-anchor-id="recommendations-for-hamburg-chempark-gmbh">9. Recommendations for Hamburg ChemPark GmbH</h2>
 <p><strong>TASK: Place your recommendations here: X, Y, Z, W, A, B, C, D, E, F, G.</strong></p>
 <p>Based on our analysis, we can provide the following recommendations for Hamburg ChemPark GmbH for the expected case of a price scaled by 200%:</p>
 <ol type="1">
-<li><p><strong>Optimal System Configuration</strong>:</p></li>
-<li><p><strong>Economic Performance</strong>:</p></li>
-<li><p><strong>Findings</strong>:</p></li>
+<li><strong>Optimal System Configuration</strong>:</li>
 </ol>
+<div id="18" class="cell" data-execution_count="0">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>   <span class="op">-</span> Storage system with [X] MWh energy capacity and [Y] MW power capacity</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>   <span class="op">-</span> Wind park with [Z] MW capacity</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>   <span class="op">-</span> PV system with [W] MW capacity</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="2" type="1">
+<li><strong>Economic Performance</strong>:</li>
+</ol>
+<div id="20" class="cell" data-execution_count="0">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>   <span class="op">-</span> Total annual cost<span class="op">:</span> [A] EUR<span class="op">/</span>year</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>   <span class="op">-</span> Investment cost<span class="op">:</span> [B] EUR<span class="op">/</span>year</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>   <span class="op">-</span> Operational cost<span class="op">:</span> [C] EUR<span class="op">/</span>year</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="3" type="1">
+<li><strong>Findings</strong>:</li>
+</ol>
+<div id="22" class="cell" data-execution_count="0">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span> Significant storage capacity is added at an electricity price scaled by [D]<span class="op">%</span> of the base case.</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span> The annual investment cost increases from base case to <span class="fl">200</span><span class="op">%</span> case from [E] EUR<span class="op">/</span>year to [F] EUR<span class="op">/</span>year, because the [G] <span class="cf">for</span> storage is much lower than <span class="cf">for</span> PV.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <p><strong>In a comprehensive sensitivity analysis, the following aspects should be considered:</strong></p>
 <ul>
 <li>The solution is most sensitive to [parameter]</li>
