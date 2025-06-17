@@ -5409,5 +5409,478 @@
       "07 Storage",
       "Tutorial"
     ]
+  },
+  {
+    "objectID": "part-08/tutorial-design.html",
+    "href": "part-08/tutorial-design.html",
+    "title": "Tutorial VIII - Stochastic Energy System Design Problem",
+    "section": "",
+    "text": "The system design problem combines investment planning (sizing) and operational optimization to determine the optimal configuration of an energy system. This integrated approach allows us to:\n\nMake optimal investment decisions\nAccount for operational flexibility\nBalance investment and operational costs\nConsider system-wide interactions\n\n\n\n\n\n\n\nNote\n\n\n\nThe system design problem is a two-stage optimization problem:\n\nFirst stage: Investment decisions (sizing)\nSecond stage: Operational decisions (dispatch)\n\n\n\n\n\n\n\n\nComponent selection\nCapacity sizing\nTechnology mix\nInvestment costs\n\n\n\n\n\nPower generation\nStorage operation\nGrid interaction\nOperational costs\n\n\n\n\n\n\n\n\nFirst Stage (Here-and-Now):\n\nInvestment decisions\nComponent sizing\nFixed costs\n\nSecond Stage (Wait-and-See):\n\nOperational decisions\nPower dispatch\nVariable costs\n\n\n\n\n\n\\(\\text{Minimize} \\quad \\text{Investment Costs} + \\text{Expected Operational Costs}\\)\n\n\n\n\n\n\nNote\n\n\n\nThe objective function combines:\n\nOne-time investment costs (annualized)\nExpected operational costs over the system lifetime\n\n\n\n\n\n\n\n\n\n\nSingle scenario\nPerfect foresight\nSimplified uncertainty handling\n\n\n\n\n\nMultiple scenarios\nProbability-weighted costs\nRobust investment decisions\n\n\n\n\n\n\n\n\nMicrogrid design\nIndustrial energy systems\nResidential energy systems\n\n\n\n\n\nRenewable energy integration\nStorage deployment\nGrid capacity planning\n\n\n\n\n\nMulti-market optimization\nPrice arbitrage\nAncillary services\n\n\n\n\n\n\n\nNote\n\n\n\nThe system design problem provides a comprehensive framework for:\n\nOptimal investment decisions\nEfficient system operation\nCost-effective energy supply\nSustainable energy systems\n\n\n\n\n\n\n\n\nThe stochastic system design problem extends the deterministic model by considering multiple scenarios. This allows us to:\n\nAccount for uncertainty in renewable generation\nConsider different demand patterns\nHandle price variations\nMake robust investment decisions\n\n\n\n\n\n\\(\\mathcal{T}\\) - Set of time periods indexed by \\(t \\in \\{1,2,...,|\\mathcal{T}|\\}\\)\n\\(\\mathcal{S}\\) - Set of storage systems indexed by \\(s \\in \\{1,2,...,|\\mathcal{S}|\\}\\)\n\\(\\mathcal{W}\\) - Set of wind parks indexed by \\(w \\in \\{1,2,...,|\\mathcal{W}|\\}\\)\n\\(\\mathcal{V}\\) - Set of PV parks indexed by \\(v \\in \\{1,2,...,|\\mathcal{V}|\\}\\)\n\\(\\Omega\\) - Set of scenarios indexed by \\(\\omega \\in \\{1,2,...,|\\Omega|\\}\\)\n\n\n\n\n\n\n\n\\(e^{nom}_s\\) - Nominal energy capacity of storage \\(s\\) [MWh]\n\\(p^{ch,nom}_s\\) - Nominal charging power of storage \\(s\\) [MW]\n\\(p^{dis,nom}_s\\) - Nominal discharging power of storage \\(s\\) [MW]\n\\(p^{nom}_w\\) - Nominal power of wind park \\(w\\) [MW]\n\\(p^{nom}_v\\) - Nominal power of PV park \\(v\\) [MW]\n\n\n\n\n\n\\(p_{w,t,\\omega}\\) - Power output of wind park \\(w\\) at time \\(t\\) in scenario \\(\\omega\\) [MW]\n\\(p_{v,t,\\omega}\\) - Power output of PV park \\(v\\) at time \\(t\\) in scenario \\(\\omega\\) [MW]\n\\(p^{in}_{t,\\omega}\\) - Power inflow through market at time \\(t\\) in scenario \\(\\omega\\) [MW]\n\\(p^{out}_{t,\\omega}\\) - Power outflow through market at time \\(t\\) in scenario \\(\\omega\\) [MW]\n\\(p^{ch}_{s,t,\\omega}\\) - Charging power of storage \\(s\\) at time \\(t\\) in scenario \\(\\omega\\) [MW]\n\\(p^{dis}_{s,t,\\omega}\\) - Discharging power of storage \\(s\\) at time \\(t\\) in scenario \\(\\omega\\) [MW]\n\\(e_{s,t,\\omega}\\) - Energy level of storage \\(s\\) at time \\(t\\) in scenario \\(\\omega\\) [MWh]\n\n\n\n\n\n\\(AC^{inv}_s\\) - Annual investment cost for storage \\(s\\) [EUR/year]\n\\(AC^{inv}_w\\) - Annual investment cost for wind park \\(w\\) [EUR/year]\n\\(AC^{inv}_v\\) - Annual investment cost for PV park \\(v\\) [EUR/year]\n\\(AC^{grid,imp}_{\\omega}\\) - Annual grid electricity import cost in scenario \\(\\omega\\) [EUR/year]\n\\(AR^{grid,exp}_{\\omega}\\) - Annual grid electricity export revenue in scenario \\(\\omega\\) [EUR/year]\n\n\n\n\n\n\n\n\n\\(C^{E}_s\\) - Cost per MWh of energy capacity for storage \\(s\\) [EUR/MWh]\n\\(C^{P,ch}_s\\) - Cost per MW of charging power capacity for storage \\(s\\) [EUR/MW]\n\\(C^{P,dis}_s\\) - Cost per MW of discharging power capacity for storage \\(s\\) [EUR/MW]\n\\(C^{W}_w\\) - Cost per MW of wind park \\(w\\) [EUR/MW]\n\\(C^{PV}_v\\) - Cost per MW of PV park \\(v\\) [EUR/MW]\n\\(F^{PVAF}\\) - Present value annuity factor for investment costs\n\\(B^{max}\\) - Maximum investment budget [EUR]\n\n\n\n\n\n\\(\\eta^{ch}_s\\) - Charging efficiency of storage \\(s\\)\n\\(\\eta^{dis}_s\\) - Discharging efficiency of storage \\(s\\)\n\\(sdr_s\\) - Self-discharge rate of storage \\(s\\) per time step\n\\(DoD_s\\) - Depth of discharge limit for storage \\(s\\) [%]\n\\(f_{w,t,\\omega}\\) - Wind capacity factor at time \\(t\\) in scenario \\(\\omega\\) for wind park \\(w\\)\n\\(f_{v,t,\\omega}\\) - Solar capacity factor at time \\(t\\) in scenario \\(\\omega\\) for PV park \\(v\\)\n\\(d_{t,\\omega}\\) - Electric demand at time \\(t\\) in scenario \\(\\omega\\) [MW]\n\\(c^{MP}_{t,\\omega}\\) - Grid electricity market price at time \\(t\\) in scenario \\(\\omega\\) [EUR/MWh]\n\\(c^{TaL}\\) - Grid electricity taxes and levies (including Netzentgelt) [EUR/MWh]\n\\(\\pi_{\\omega}\\) - Probability of scenario \\(\\omega\\)\n\n\n\n\n\n\\(\\text{Minimize} \\quad \\sum_{s \\in \\mathcal{S}} AC^{inv}_s + \\sum_{w \\in \\mathcal{W}} AC^{inv}_w + \\sum_{v \\in \\mathcal{V}} AC^{inv}_v + \\sum_{\\omega \\in \\Omega} \\pi_{\\omega} (AC^{grid,imp}_{\\omega} - AR^{grid,exp}_{\\omega})\\)\n\n\n\n\n\n\nNote\n\n\n\nThe objective function minimizes: 1. First-stage costs (deterministic): - Investment costs for all components 2. Second-stage costs (stochastic): - Expected grid electricity costs/revenues - Weighted by scenario probabilities\n\n\n\n\n\n\n\n\\(AC^{inv}_s = \\frac{C^{E}_s}{F^{PVAF}} e^{nom}_s + C^{P,ch}_s p^{ch,nom}_s + C^{P,dis}_s p^{dis,nom}_s \\quad \\forall s \\in \\mathcal{S}\\) \\(AC^{inv}_w = \\frac{C^{W}_w}{F^{PVAF}} p^{nom}_w \\quad \\forall w \\in \\mathcal{W}\\) \\(AC^{inv}_v = \\frac{C^{PV}_v}{F^{PVAF}} p^{nom}_v \\quad \\forall v \\in \\mathcal{V}\\)\n\n\n\n\\(\\sum_{s \\in \\mathcal{S}} (C^{E}_s e^{nom}_s + C^{P,ch}_s p^{ch,nom}_s + C^{P,dis}_s p^{dis,nom}_s) + \\sum_{w \\in \\mathcal{W}} C^{W}_w p^{nom}_w + \\sum_{v \\in \\mathcal{V}} C^{PV}_v p^{nom}_v \\leq B^{max}\\)\n\n\n\n\n\n\nNote\n\n\n\nThe investment budget constraint ensures that: 1. Total investment costs do not exceed the maximum budget 2. Includes all component investments: - Storage systems (energy and power capacity) - Wind parks - PV parks 3. Applies to first-stage decisions only\n\n\n\n\n\n\\(AC^{grid,imp}_{\\omega} = \\sum_{t \\in \\mathcal{T}} (c^{MP}_{t,\\omega} + c^{TaL}) p^{in}_{t,\\omega} \\quad \\forall \\omega \\in \\Omega\\) \\(AR^{grid,exp}_{\\omega} = \\sum_{t \\in \\mathcal{T}} c^{MP}_{t,\\omega} p^{out}_{t,\\omega} \\quad \\forall \\omega \\in \\Omega\\)\n\n\n\n\n\n\n\\(\\sum_{w \\in \\mathcal{W}} p_{w,t,\\omega} + \\sum_{v \\in \\mathcal{V}} p_{v,t,\\omega} + (p^{in}_{t,\\omega} - p^{out}_{t,\\omega}) + \\sum_{s \\in \\mathcal{S}} (p^{dis}_{s,t,\\omega} - p^{ch}_{s,t,\\omega}) = d_{t,\\omega} \\quad \\forall t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\n\n\n\n\n\n\\(0 \\leq p_{w,t,\\omega} \\leq f_{w,t,\\omega} p^{nom}_w \\quad \\forall w \\in \\mathcal{W}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\n\n\n\n\\(0 \\leq p_{v,t,\\omega} \\leq f_{v,t,\\omega} p^{nom}_v \\quad \\forall v \\in \\mathcal{V}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\n\n\n\n\\(0 \\leq p^{ch}_{s,t,\\omega} \\leq p^{ch,nom}_s \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\) \\(0 \\leq p^{dis}_{s,t,\\omega} \\leq p^{dis,nom}_s \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\) \\(DoD_s e^{nom}_s \\leq e_{s,t,\\omega} \\leq e^{nom}_s \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\n\n\n\n\n\\(e_{s,t,\\omega} = (1-sdr_s)e_{s,t-1,\\omega} + \\eta^{ch}_s p^{ch}_{s,t,\\omega} - \\frac{p^{dis}_{s,t,\\omega}}{\\eta^{dis}_s} \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\n\n\n\n\n\n\nNote\n\n\n\nThe stochastic formulation: 1. First-stage decisions (here-and-now): - Component sizing - Investment costs 2. Second-stage decisions (wait-and-see): - Operational decisions - Scenario-dependent costs 3. Key differences from deterministic model: - Time-dependent parameters become scenario-dependent - Operational variables become scenario-dependent - Objective includes expected costs",
+    "crumbs": [
+      "08 Design",
+      "Tutorial"
+    ]
+  },
+  {
+    "objectID": "part-08/tutorial-design.html#system-design-problem",
+    "href": "part-08/tutorial-design.html#system-design-problem",
+    "title": "Tutorial VIII - Stochastic Energy System Design Problem",
+    "section": "",
+    "text": "The system design problem combines investment planning (sizing) and operational optimization to determine the optimal configuration of an energy system. This integrated approach allows us to:\n\nMake optimal investment decisions\nAccount for operational flexibility\nBalance investment and operational costs\nConsider system-wide interactions\n\n\n\n\n\n\n\nNote\n\n\n\nThe system design problem is a two-stage optimization problem:\n\nFirst stage: Investment decisions (sizing)\nSecond stage: Operational decisions (dispatch)\n\n\n\n\n\n\n\n\nComponent selection\nCapacity sizing\nTechnology mix\nInvestment costs\n\n\n\n\n\nPower generation\nStorage operation\nGrid interaction\nOperational costs\n\n\n\n\n\n\n\n\nFirst Stage (Here-and-Now):\n\nInvestment decisions\nComponent sizing\nFixed costs\n\nSecond Stage (Wait-and-See):\n\nOperational decisions\nPower dispatch\nVariable costs\n\n\n\n\n\n\\(\\text{Minimize} \\quad \\text{Investment Costs} + \\text{Expected Operational Costs}\\)\n\n\n\n\n\n\nNote\n\n\n\nThe objective function combines:\n\nOne-time investment costs (annualized)\nExpected operational costs over the system lifetime\n\n\n\n\n\n\n\n\n\n\nSingle scenario\nPerfect foresight\nSimplified uncertainty handling\n\n\n\n\n\nMultiple scenarios\nProbability-weighted costs\nRobust investment decisions\n\n\n\n\n\n\n\n\nMicrogrid design\nIndustrial energy systems\nResidential energy systems\n\n\n\n\n\nRenewable energy integration\nStorage deployment\nGrid capacity planning\n\n\n\n\n\nMulti-market optimization\nPrice arbitrage\nAncillary services\n\n\n\n\n\n\n\nNote\n\n\n\nThe system design problem provides a comprehensive framework for:\n\nOptimal investment decisions\nEfficient system operation\nCost-effective energy supply\nSustainable energy systems",
+    "crumbs": [
+      "08 Design",
+      "Tutorial"
+    ]
+  },
+  {
+    "objectID": "part-08/tutorial-design.html#stochastic-formulation",
+    "href": "part-08/tutorial-design.html#stochastic-formulation",
+    "title": "Tutorial VIII - Stochastic Energy System Design Problem",
+    "section": "",
+    "text": "The stochastic system design problem extends the deterministic model by considering multiple scenarios. This allows us to:\n\nAccount for uncertainty in renewable generation\nConsider different demand patterns\nHandle price variations\nMake robust investment decisions",
+    "crumbs": [
+      "08 Design",
+      "Tutorial"
+    ]
+  },
+  {
+    "objectID": "part-08/tutorial-design.html#sets",
+    "href": "part-08/tutorial-design.html#sets",
+    "title": "Tutorial VIII - Stochastic Energy System Design Problem",
+    "section": "",
+    "text": "\\(\\mathcal{T}\\) - Set of time periods indexed by \\(t \\in \\{1,2,...,|\\mathcal{T}|\\}\\)\n\\(\\mathcal{S}\\) - Set of storage systems indexed by \\(s \\in \\{1,2,...,|\\mathcal{S}|\\}\\)\n\\(\\mathcal{W}\\) - Set of wind parks indexed by \\(w \\in \\{1,2,...,|\\mathcal{W}|\\}\\)\n\\(\\mathcal{V}\\) - Set of PV parks indexed by \\(v \\in \\{1,2,...,|\\mathcal{V}|\\}\\)\n\\(\\Omega\\) - Set of scenarios indexed by \\(\\omega \\in \\{1,2,...,|\\Omega|\\}\\)",
+    "crumbs": [
+      "08 Design",
+      "Tutorial"
+    ]
+  },
+  {
+    "objectID": "part-08/tutorial-design.html#decision-variables",
+    "href": "part-08/tutorial-design.html#decision-variables",
+    "title": "Tutorial VIII - Stochastic Energy System Design Problem",
+    "section": "",
+    "text": "\\(e^{nom}_s\\) - Nominal energy capacity of storage \\(s\\) [MWh]\n\\(p^{ch,nom}_s\\) - Nominal charging power of storage \\(s\\) [MW]\n\\(p^{dis,nom}_s\\) - Nominal discharging power of storage \\(s\\) [MW]\n\\(p^{nom}_w\\) - Nominal power of wind park \\(w\\) [MW]\n\\(p^{nom}_v\\) - Nominal power of PV park \\(v\\) [MW]\n\n\n\n\n\n\\(p_{w,t,\\omega}\\) - Power output of wind park \\(w\\) at time \\(t\\) in scenario \\(\\omega\\) [MW]\n\\(p_{v,t,\\omega}\\) - Power output of PV park \\(v\\) at time \\(t\\) in scenario \\(\\omega\\) [MW]\n\\(p^{in}_{t,\\omega}\\) - Power inflow through market at time \\(t\\) in scenario \\(\\omega\\) [MW]\n\\(p^{out}_{t,\\omega}\\) - Power outflow through market at time \\(t\\) in scenario \\(\\omega\\) [MW]\n\\(p^{ch}_{s,t,\\omega}\\) - Charging power of storage \\(s\\) at time \\(t\\) in scenario \\(\\omega\\) [MW]\n\\(p^{dis}_{s,t,\\omega}\\) - Discharging power of storage \\(s\\) at time \\(t\\) in scenario \\(\\omega\\) [MW]\n\\(e_{s,t,\\omega}\\) - Energy level of storage \\(s\\) at time \\(t\\) in scenario \\(\\omega\\) [MWh]\n\n\n\n\n\n\\(AC^{inv}_s\\) - Annual investment cost for storage \\(s\\) [EUR/year]\n\\(AC^{inv}_w\\) - Annual investment cost for wind park \\(w\\) [EUR/year]\n\\(AC^{inv}_v\\) - Annual investment cost for PV park \\(v\\) [EUR/year]\n\\(AC^{grid,imp}_{\\omega}\\) - Annual grid electricity import cost in scenario \\(\\omega\\) [EUR/year]\n\\(AR^{grid,exp}_{\\omega}\\) - Annual grid electricity export revenue in scenario \\(\\omega\\) [EUR/year]",
+    "crumbs": [
+      "08 Design",
+      "Tutorial"
+    ]
+  },
+  {
+    "objectID": "part-08/tutorial-design.html#parameters",
+    "href": "part-08/tutorial-design.html#parameters",
+    "title": "Tutorial VIII - Stochastic Energy System Design Problem",
+    "section": "",
+    "text": "\\(C^{E}_s\\) - Cost per MWh of energy capacity for storage \\(s\\) [EUR/MWh]\n\\(C^{P,ch}_s\\) - Cost per MW of charging power capacity for storage \\(s\\) [EUR/MW]\n\\(C^{P,dis}_s\\) - Cost per MW of discharging power capacity for storage \\(s\\) [EUR/MW]\n\\(C^{W}_w\\) - Cost per MW of wind park \\(w\\) [EUR/MW]\n\\(C^{PV}_v\\) - Cost per MW of PV park \\(v\\) [EUR/MW]\n\\(F^{PVAF}\\) - Present value annuity factor for investment costs\n\\(B^{max}\\) - Maximum investment budget [EUR]\n\n\n\n\n\n\\(\\eta^{ch}_s\\) - Charging efficiency of storage \\(s\\)\n\\(\\eta^{dis}_s\\) - Discharging efficiency of storage \\(s\\)\n\\(sdr_s\\) - Self-discharge rate of storage \\(s\\) per time step\n\\(DoD_s\\) - Depth of discharge limit for storage \\(s\\) [%]\n\\(f_{w,t,\\omega}\\) - Wind capacity factor at time \\(t\\) in scenario \\(\\omega\\) for wind park \\(w\\)\n\\(f_{v,t,\\omega}\\) - Solar capacity factor at time \\(t\\) in scenario \\(\\omega\\) for PV park \\(v\\)\n\\(d_{t,\\omega}\\) - Electric demand at time \\(t\\) in scenario \\(\\omega\\) [MW]\n\\(c^{MP}_{t,\\omega}\\) - Grid electricity market price at time \\(t\\) in scenario \\(\\omega\\) [EUR/MWh]\n\\(c^{TaL}\\) - Grid electricity taxes and levies (including Netzentgelt) [EUR/MWh]\n\\(\\pi_{\\omega}\\) - Probability of scenario \\(\\omega\\)",
+    "crumbs": [
+      "08 Design",
+      "Tutorial"
+    ]
+  },
+  {
+    "objectID": "part-08/tutorial-design.html#objective-function-1",
+    "href": "part-08/tutorial-design.html#objective-function-1",
+    "title": "Tutorial VIII - Stochastic Energy System Design Problem",
+    "section": "",
+    "text": "\\(\\text{Minimize} \\quad \\sum_{s \\in \\mathcal{S}} AC^{inv}_s + \\sum_{w \\in \\mathcal{W}} AC^{inv}_w + \\sum_{v \\in \\mathcal{V}} AC^{inv}_v + \\sum_{\\omega \\in \\Omega} \\pi_{\\omega} (AC^{grid,imp}_{\\omega} - AR^{grid,exp}_{\\omega})\\)\n\n\n\n\n\n\nNote\n\n\n\nThe objective function minimizes: 1. First-stage costs (deterministic): - Investment costs for all components 2. Second-stage costs (stochastic): - Expected grid electricity costs/revenues - Weighted by scenario probabilities",
+    "crumbs": [
+      "08 Design",
+      "Tutorial"
+    ]
+  },
+  {
+    "objectID": "part-08/tutorial-design.html#annual-cost-constraints",
+    "href": "part-08/tutorial-design.html#annual-cost-constraints",
+    "title": "Tutorial VIII - Stochastic Energy System Design Problem",
+    "section": "",
+    "text": "\\(AC^{inv}_s = \\frac{C^{E}_s}{F^{PVAF}} e^{nom}_s + C^{P,ch}_s p^{ch,nom}_s + C^{P,dis}_s p^{dis,nom}_s \\quad \\forall s \\in \\mathcal{S}\\) \\(AC^{inv}_w = \\frac{C^{W}_w}{F^{PVAF}} p^{nom}_w \\quad \\forall w \\in \\mathcal{W}\\) \\(AC^{inv}_v = \\frac{C^{PV}_v}{F^{PVAF}} p^{nom}_v \\quad \\forall v \\in \\mathcal{V}\\)\n\n\n\n\\(\\sum_{s \\in \\mathcal{S}} (C^{E}_s e^{nom}_s + C^{P,ch}_s p^{ch,nom}_s + C^{P,dis}_s p^{dis,nom}_s) + \\sum_{w \\in \\mathcal{W}} C^{W}_w p^{nom}_w + \\sum_{v \\in \\mathcal{V}} C^{PV}_v p^{nom}_v \\leq B^{max}\\)\n\n\n\n\n\n\nNote\n\n\n\nThe investment budget constraint ensures that: 1. Total investment costs do not exceed the maximum budget 2. Includes all component investments: - Storage systems (energy and power capacity) - Wind parks - PV parks 3. Applies to first-stage decisions only\n\n\n\n\n\n\\(AC^{grid,imp}_{\\omega} = \\sum_{t \\in \\mathcal{T}} (c^{MP}_{t,\\omega} + c^{TaL}) p^{in}_{t,\\omega} \\quad \\forall \\omega \\in \\Omega\\) \\(AR^{grid,exp}_{\\omega} = \\sum_{t \\in \\mathcal{T}} c^{MP}_{t,\\omega} p^{out}_{t,\\omega} \\quad \\forall \\omega \\in \\Omega\\)",
+    "crumbs": [
+      "08 Design",
+      "Tutorial"
+    ]
+  },
+  {
+    "objectID": "part-08/tutorial-design.html#constraints",
+    "href": "part-08/tutorial-design.html#constraints",
+    "title": "Tutorial VIII - Stochastic Energy System Design Problem",
+    "section": "",
+    "text": "\\(\\sum_{w \\in \\mathcal{W}} p_{w,t,\\omega} + \\sum_{v \\in \\mathcal{V}} p_{v,t,\\omega} + (p^{in}_{t,\\omega} - p^{out}_{t,\\omega}) + \\sum_{s \\in \\mathcal{S}} (p^{dis}_{s,t,\\omega} - p^{ch}_{s,t,\\omega}) = d_{t,\\omega} \\quad \\forall t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\n\n\n\n\n\n\\(0 \\leq p_{w,t,\\omega} \\leq f_{w,t,\\omega} p^{nom}_w \\quad \\forall w \\in \\mathcal{W}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\n\n\n\n\\(0 \\leq p_{v,t,\\omega} \\leq f_{v,t,\\omega} p^{nom}_v \\quad \\forall v \\in \\mathcal{V}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\n\n\n\n\\(0 \\leq p^{ch}_{s,t,\\omega} \\leq p^{ch,nom}_s \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\) \\(0 \\leq p^{dis}_{s,t,\\omega} \\leq p^{dis,nom}_s \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\) \\(DoD_s e^{nom}_s \\leq e_{s,t,\\omega} \\leq e^{nom}_s \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\n\n\n\n\n\\(e_{s,t,\\omega} = (1-sdr_s)e_{s,t-1,\\omega} + \\eta^{ch}_s p^{ch}_{s,t,\\omega} - \\frac{p^{dis}_{s,t,\\omega}}{\\eta^{dis}_s} \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\n\n\n\n\n\n\nNote\n\n\n\nThe stochastic formulation: 1. First-stage decisions (here-and-now): - Component sizing - Investment costs 2. Second-stage decisions (wait-and-see): - Operational decisions - Scenario-dependent costs 3. Key differences from deterministic model: - Time-dependent parameters become scenario-dependent - Operational variables become scenario-dependent - Objective includes expected costs",
+    "crumbs": [
+      "08 Design",
+      "Tutorial"
+    ]
+  },
+  {
+    "objectID": "part-08/tutorial-design.html#load-packages",
+    "href": "part-08/tutorial-design.html#load-packages",
+    "title": "Tutorial VIII - Stochastic Energy System Design Problem",
+    "section": "1. Load Packages",
+    "text": "1. Load Packages\n\nusing Pkg\nPkg.add(\"JuMP\")\nPkg.add(\"HiGHS\")\nPkg.add(\"CSV\")\nPkg.add(\"DataFrames\")\nPkg.add(\"CairoMakie\")\nPkg.add(\"Dates\")\n\n# Required packages\nusing Random\nusing Statistics\nusing DataFrames\nusing CSV\nusing Dates\nusing JuMP\nusing HiGHS\nusing CairoMakie\n\n# Set up CairoMakie\nset_theme!(theme_light())",
+    "crumbs": [
+      "08 Design",
+      "Tutorial"
+    ]
+  },
+  {
+    "objectID": "part-08/tutorial-design.html#data-generation",
+    "href": "part-08/tutorial-design.html#data-generation",
+    "title": "Tutorial VIII - Stochastic Energy System Design Problem",
+    "section": "2. Data Generation",
+    "text": "2. Data Generation\n\n# Set random seed for reproducibility\nRandom.seed!(42)\n\n# Get the directory of the current file\nfile_directory = \"$(@__DIR__)/data\"\n\n# Number of scenarios and time periods\nn_scenarios = 5\nn_hours = 168  # One week\n\n# Generate scenario data\nscenario_data = DataFrame(\n    scenario = String[],\n    datetime = DateTime[],\n    demand = Float64[],\n    wind_cf = Float64[],\n    pv_cf = Float64[],\n    market_price = Float64[],\n    probability = Float64[]\n)\n\n# Base datetime\nbase_datetime = DateTime(2024, 1, 1)\n\n# Generate data for each scenario\nfor s in 1:n_scenarios\n    # Generate base demand profile (daily pattern)\n    base_demand = 60 .+ 40 .* sin.(2π .* (0:n_hours-1) ./ 24)\n    \n    # Add random variations for each scenario\n    demand = base_demand .+ randn(n_hours) .* 10\n    demand = max.(20, min.(100, demand))  # Clamp between 20 and 100 MW\n    \n    # Generate wind capacity factors\n    wind_cf = rand(n_hours)  # Random between 0 and 1\n    \n    # Generate PV capacity factors (daily pattern)\n    hour_of_day = mod.(0:n_hours-1, 24)\n    pv_cf = max.(0, sin.(π .* hour_of_day ./ 12)) .+ randn(n_hours) .* 0.1\n    pv_cf = max.(0, min.(1, pv_cf))  # Clamp between 0 and 1\n    \n    # Generate market prices\n    base_price = 200 .+ 100 .* sin.(2π .* (0:n_hours-1) ./ 24)\n    market_price = base_price .+ randn(n_hours) .* 100\n    market_price = max.(-500, min.(1000, market_price))  # Clamp between -500 and 1000\n    \n    # Add data to DataFrame\n    for h in 1:n_hours\n        push!(scenario_data, (\n            \"S$s\",\n            base_datetime + Hour(h-1),\n            demand[h],\n            wind_cf[h],\n            pv_cf[h],\n            market_price[h],\n            1/n_scenarios  # Equal probability for each scenario\n        ))\n    end\nend\n\n# Save scenario data\nCSV.write(\"$file_directory/scenario.csv\", scenario_data)\n\n# Create grid data\ngrid_data = DataFrame(\n    name = [\"grid\"],\n    taxes_levies = [50.0]  # 50 EUR/MWh for taxes and levies\n)\n\n# Save grid data\nCSV.write(\"$file_directory/grid.csv\", grid_data)\n\n# Create storage data\nstorage_data = DataFrame(\n    name = [\"storage\"],\n    energy_cost = [100000.0],  # 100,000 EUR/MWh\n    power_cost = [50000.0],    # 50,000 EUR/MW\n    lifetime = [10],           # 10 years\n    discount_rate = [0.05],    # 5% discount rate\n    charge_efficiency = [0.95],\n    discharge_efficiency = [0.95],\n    self_discharge_rate = [0.001]  # 0.1% per hour\n)\n\n# Save storage data\nCSV.write(\"$file_directory/storage.csv\", storage_data)\n\n# Create wind turbine data\nwind_data = DataFrame(\n    name = [\"wind\"],\n    power_cost = [1000000.0],  # 1,000,000 EUR/MW\n    lifetime = [20],           # 20 years\n    discount_rate = [0.05]     # 5% discount rate\n)\n\n# Save wind data\nCSV.write(\"$file_directory/windTurbine.csv\", wind_data)\n\n# Create PV data\npv_data = DataFrame(\n    name = [\"pv\"],\n    power_cost = [500000.0],   # 500,000 EUR/MW\n    lifetime = [25],           # 25 years\n    discount_rate = [0.05]     # 5% discount rate\n)\n\n# Save PV data\nCSV.write(\"$file_directory/pv.csv\", pv_data)",
+    "crumbs": [
+      "08 Design",
+      "Tutorial"
+    ]
+  },
+  {
+    "objectID": "part-08/tutorial-design.html#load-and-process-data",
+    "href": "part-08/tutorial-design.html#load-and-process-data",
+    "title": "Tutorial VIII - Stochastic Energy System Design Problem",
+    "section": "3. Load and Process Data",
+    "text": "3. Load and Process Data\n\n# Load and process data into dictionaries\ndfStorage = CSV.read(\"$file_directory/storage.csv\", DataFrame)\ndfWindTurbines = CSV.read(\"$file_directory/windTurbine.csv\", DataFrame)\ndfPV = CSV.read(\"$file_directory/pv.csv\", DataFrame)\ndfScenarios = CSV.read(\"$file_directory/scenario.csv\", DataFrame)\ndfGrid = CSV.read(\"$file_directory/grid.csv\", DataFrame)\n\n# Process storage data\ndictStorage = Dict(\n    row.name =&gt; (\n        energy_cost = row.energy_cost,\n        power_cost = row.power_cost,\n        lifetime = row.lifetime,\n        discount_rate = row.discount_rate,\n        charge_efficiency = row.charge_efficiency,\n        discharge_efficiency = row.discharge_efficiency,\n        self_discharge_rate = row.self_discharge_rate\n    ) for row in eachrow(dfStorage)\n)\n\n# Process wind turbine data\ndictWindTurbines = Dict(\n    row.name =&gt; (\n        power_cost = row.power_cost,\n        lifetime = row.lifetime,\n        discount_rate = row.discount_rate\n    ) for row in eachrow(dfWindTurbines)\n)\n\n# Process PV data\ndictPV = Dict(\n    row.name =&gt; (\n        power_cost = row.power_cost,\n        lifetime = row.lifetime,\n        discount_rate = row.discount_rate\n    ) for row in eachrow(dfPV)\n)\n\n# Process scenario data\ndictScenarios = Dict()\nfor scenario in unique(dfScenarios.scenario)\n    scenario_data = dfScenarios[dfScenarios.scenario .== scenario, :]\n    dictScenarios[scenario] = (\n        datetime = scenario_data.datetime,\n        demand = scenario_data.demand,\n        wind_cf = scenario_data.wind_cf,\n        pv_cf = scenario_data.pv_cf,\n        market_price = scenario_data.market_price,\n        probability = scenario_data.probability[1]\n    )\nend\n\n# Process grid data\ndictGrid = Dict(\n    row.name =&gt; (\n        taxes_levies = row.taxes_levies,\n    ) for row in eachrow(dfGrid)\n)",
+    "crumbs": [
+      "08 Design",
+      "Tutorial"
+    ]
+  },
+  {
+    "objectID": "part-08/tutorial-design.html#model-implementation",
+    "href": "part-08/tutorial-design.html#model-implementation",
+    "title": "Tutorial VIII - Stochastic Energy System Design Problem",
+    "section": "4. Model Implementation",
+    "text": "4. Model Implementation\nNow, let’s implement the Stochastic System Design model using the dictionary format:\n\nfunction solve_stochastic_design(dictStorage, dictWindTurbines, dictPV, dictScenarios, dictGrid, max_budget)\n    # Create model\n    model = Model(HiGHS.Optimizer)\n    set_silent(model)\n    \n    # Define sets\n    T = 1:168  # Time periods (hours)\n    S = keys(dictStorage)  # Set of storage systems\n    W = keys(dictWindTurbines)  # Set of wind parks\n    V = keys(dictPV)  # Set of PV parks\n    Ω = keys(dictScenarios)  # Set of scenarios\n    \n    # Calculate PVAF for each component type\n    pvaf = Dict(\n        \"storage\" =&gt; (1 + dictStorage[\"storage\"].discount_rate)^dictStorage[\"storage\"].lifetime / \n                    (dictStorage[\"storage\"].discount_rate * (1 + dictStorage[\"storage\"].discount_rate)^dictStorage[\"storage\"].lifetime),\n        \"wind\" =&gt; (1 + dictWindTurbines[\"wind\"].discount_rate)^dictWindTurbines[\"wind\"].lifetime / \n                 (dictWindTurbines[\"wind\"].discount_rate * (1 + dictWindTurbines[\"wind\"].discount_rate)^dictWindTurbines[\"wind\"].lifetime),\n        \"pv\" =&gt; (1 + dictPV[\"pv\"].discount_rate)^dictPV[\"pv\"].lifetime / \n               (dictPV[\"pv\"].discount_rate * (1 + dictPV[\"pv\"].discount_rate)^dictPV[\"pv\"].lifetime)\n    )\n    \n    # Decision Variables\n    # First stage (investment)\n    @variable(model, e_nom[s in S] &gt;= 0)  # Nominal energy capacity\n    @variable(model, p_ch_nom[s in S] &gt;= 0)  # Nominal charging power\n    @variable(model, p_dis_nom[s in S] &gt;= 0)  # Nominal discharging power\n    @variable(model, p_w_nom[w in W] &gt;= 0)  # Nominal wind power\n    @variable(model, p_v_nom[v in V] &gt;= 0)  # Nominal PV power\n    \n    # Second stage (operation)\n    @variable(model, p_w[w in W, t in T, ω in Ω] &gt;= 0)  # Wind power output\n    @variable(model, p_v[v in V, t in T, ω in Ω] &gt;= 0)  # PV power output\n    @variable(model, p_in[t in T, ω in Ω] &gt;= 0)  # Grid import\n    @variable(model, p_out[t in T, ω in Ω] &gt;= 0)  # Grid export\n    @variable(model, p_ch[s in S, t in T, ω in Ω] &gt;= 0)  # Storage charging\n    @variable(model, p_dis[s in S, t in T, ω in Ω] &gt;= 0)  # Storage discharging\n    @variable(model, e[s in S, t in T, ω in Ω] &gt;= 0)  # Storage energy level\n    \n    # Annual cost variables\n    @variable(model, AC_inv_s[s in S] &gt;= 0)  # Annual storage investment cost\n    @variable(model, AC_inv_w[w in W] &gt;= 0)  # Annual wind investment cost\n    @variable(model, AC_inv_v[v in V] &gt;= 0)  # Annual PV investment cost\n    @variable(model, AC_grid_imp[ω in Ω] &gt;= 0)  # Annual grid import cost\n    @variable(model, AR_grid_exp[ω in Ω] &gt;= 0)  # Annual grid export revenue\n    \n    # Objective Function\n    @objective(model, Min, \n        sum(AC_inv_s[s] for s in S) +\n        sum(AC_inv_w[w] for w in W) +\n        sum(AC_inv_v[v] for v in V) +\n        sum(dictScenarios[ω].probability * (AC_grid_imp[ω] - AR_grid_exp[ω]) for ω in Ω) * 52.1429\n    )\n    \n    # Investment cost constraints\n    @constraint(model, [s in S],\n        AC_inv_s[s] == dictStorage[s].energy_cost/pvaf[\"storage\"] * e_nom[s] +\n                      dictStorage[s].power_cost/pvaf[\"storage\"] * (p_ch_nom[s] + p_dis_nom[s])\n    )\n    \n    @constraint(model, [w in W],\n        AC_inv_w[w] == dictWindTurbines[w].power_cost/pvaf[\"wind\"] * p_w_nom[w]\n    )\n    \n    @constraint(model, [v in V],\n        AC_inv_v[v] == dictPV[v].power_cost/pvaf[\"pv\"] * p_v_nom[v]\n    )\n    \n    # Investment budget constraint\n    @constraint(model,\n        sum(dictStorage[s].energy_cost * e_nom[s] +\n            dictStorage[s].power_cost * (p_ch_nom[s] + p_dis_nom[s]) for s in S) +\n        sum(dictWindTurbines[w].power_cost * p_w_nom[w] for w in W) +\n        sum(dictPV[v].power_cost * p_v_nom[v] for v in V) &lt;= max_budget\n    )\n    \n    # Grid electricity costs\n    @constraint(model, [ω in Ω],\n        AC_grid_imp[ω] == sum(\n            (dictScenarios[ω].market_price[t] + dictGrid[\"grid\"].taxes_levies) * p_in[t,ω]\n            for t in T\n        )\n    )\n    \n    @constraint(model, [ω in Ω],\n        AR_grid_exp[ω] == sum(\n            dictScenarios[ω].market_price[t] * p_out[t,ω]\n            for t in T\n        )\n    )\n    \n    # Power balance\n    @constraint(model, [t in T, ω in Ω],\n        sum(p_w[w,t,ω] for w in W) +\n        sum(p_v[v,t,ω] for v in V) +\n        (p_in[t,ω] - p_out[t,ω]) +\n        sum(p_dis[s,t,ω] - p_ch[s,t,ω] for s in S) ==\n        dictScenarios[ω].demand[t]\n    )\n    \n    # Component limits\n    @constraint(model, [w in W, t in T, ω in Ω],\n        p_w[w,t,ω] &lt;= dictScenarios[ω].wind_cf[t] * p_w_nom[w]\n    )\n    \n    @constraint(model, [v in V, t in T, ω in Ω],\n        p_v[v,t,ω] &lt;= dictScenarios[ω].pv_cf[t] * p_v_nom[v]\n    )\n    \n    @constraint(model, [s in S, t in T, ω in Ω],\n        p_ch[s,t,ω] &lt;= p_ch_nom[s]\n    )\n    \n    @constraint(model, [s in S, t in T, ω in Ω],\n        p_dis[s,t,ω] &lt;= p_dis_nom[s]\n    )\n    \n    @constraint(model, [s in S, t in T, ω in Ω],\n        e[s,t,ω] &lt;= e_nom[s]\n    )\n    \n    # Storage energy balance\n    @constraint(model, [s in S, t in 2:length(T), ω in Ω],\n        e[s,t,ω] == (1 - dictStorage[s].self_discharge_rate) * e[s,t-1,ω] +\n                    dictStorage[s].charge_efficiency * p_ch[s,t,ω] -\n                    p_dis[s,t,ω] / dictStorage[s].discharge_efficiency\n    )\n    \n    @constraint(model, [s in S, ω in Ω],\n        e[s,1,ω] == dictStorage[s].charge_efficiency * p_ch[s,1,ω] -\n                    p_dis[s,1,ω] / dictStorage[s].discharge_efficiency\n    )\n    \n    # Solve the model\n    optimize!(model)\n\n    # Assert that the solution is feasible\n    if termination_status(model) != MOI.OPTIMAL\n        ts = termination_status(model)\n        @info \"Optimization finished. The model was not solved correctly. Termination Status: $ts\"\n        # Helpful resource: https://jump.dev/JuMP.jl/stable/manual/solutions/#Conflicts\n    end\n\n    # Return results\n    return (\n        e_nom = value.(e_nom),\n        p_ch_nom = value.(p_ch_nom),\n        p_dis_nom = value.(p_dis_nom),\n        p_w_nom = value.(p_w_nom),\n        p_v_nom = value.(p_v_nom),\n        total_cost = objective_value(model),\n        investment_costs = Dict(\n            \"storage\" =&gt; value.(AC_inv_s[\"storage\"]),\n            \"wind\" =&gt; value.(AC_inv_w[\"wind\"]),\n            \"pv\" =&gt; value.(AC_inv_v[\"pv\"])\n        ),\n        operational_costs = Dict(\n            \"grid_import\" =&gt; sum(dictScenarios[ω].probability * value.(AC_grid_imp[ω]) for ω in Ω) * 52.1429,\n            \"grid_export\" =&gt; sum(dictScenarios[ω].probability * value.(AR_grid_exp[ω]) for ω in Ω) * 52.1429\n        ),\n        operational_variables = Dict(\n            \"storage_energy\" =&gt; value.(e),\n            \"storage_charge\" =&gt; value.(p_ch),\n            \"storage_discharge\" =&gt; value.(p_dis),\n            \"wind_power\" =&gt; value.(p_w),\n            \"pv_power\" =&gt; value.(p_v),\n            \"grid_import\" =&gt; value.(p_in),\n            \"grid_export\" =&gt; value.(p_out)\n        )\n    )\nend",
+    "crumbs": [
+      "08 Design",
+      "Tutorial"
+    ]
+  },
+  {
+    "objectID": "part-08/tutorial-design.html#solve-and-analyze-results",
+    "href": "part-08/tutorial-design.html#solve-and-analyze-results",
+    "title": "Tutorial VIII - Stochastic Energy System Design Problem",
+    "section": "5. Solve and Analyze Results",
+    "text": "5. Solve and Analyze Results\nLet’s solve the model with a maximum budget of 50 million EUR:\n\n# Solve model\nmax_budget = 50_000_000  # 50 million EUR\nresults = solve_stochastic_design(dictStorage, dictWindTurbines, dictPV, dictScenarios, dictGrid, max_budget)\n\n# Create results DataFrame\nresults_df = DataFrame(\n    component = String[],\n    capacity = Float64[],\n    investment_cost = Float64[]\n)\n\n# Add storage results\npush!(results_df, (\"Storage\", results.e_nom[\"storage\"], results.investment_costs[\"storage\"]))\n\n# Add wind results\npush!(results_df, (\"Wind\", results.p_w_nom[\"wind\"], results.investment_costs[\"wind\"]))\n\n# Add PV results\npush!(results_df, (\"PV\", results.p_v_nom[\"pv\"], results.investment_costs[\"pv\"]))\n\n# Calculate total costs\ntotal_investment_cost = sum(values(results.investment_costs))\ntotal_operational_cost = results.operational_costs[\"grid_import\"] - results.operational_costs[\"grid_export\"]\ntotal_cost = total_investment_cost + total_operational_cost\n\n# Print results\nprintln(\"Optimal System Design:\")\nprintln(\"Storage Energy Capacity: $(round(results.e_nom[\"storage\"], digits=2)) MWh\")\nprintln(\"Storage Charging Power: $(round(results.p_ch_nom[\"storage\"], digits=2)) MW\")\nprintln(\"Storage Discharging Power: $(round(results.p_dis_nom[\"storage\"], digits=2)) MW\")\nprintln(\"Wind Power Capacity: $(round(results.p_w_nom[\"wind\"], digits=2)) MW\")\nprintln(\"PV Power Capacity: $(round(results.p_v_nom[\"pv\"], digits=2)) MW\")\nprintln(\"\\nCosts:\")\nprintln(\"Total Annual Cost: $(round(total_cost, digits=2)) EUR/year\")\nprintln(\"Annual Investment Cost: $(round(total_investment_cost, digits=2)) EUR/year\")\nprintln(\"Annual Operational Cost: $(round(total_operational_cost, digits=2)) EUR/year\")\nprintln(\"\\nInvestment Costs by Component:\")\nprintln(\"Storage: $(round(results.investment_costs[\"storage\"], digits=2)) EUR/year\")\nprintln(\"Wind: $(round(results.investment_costs[\"wind\"], digits=2)) EUR/year\")\nprintln(\"PV: $(round(results.investment_costs[\"pv\"], digits=2)) EUR/year\")\nprintln(\"\\nOperational Costs:\")\nprintln(\"Grid Import: $(round(results.operational_costs[\"grid_import\"], digits=2)) EUR/year\")\nprintln(\"Grid Export Revenue: $(round(results.operational_costs[\"grid_export\"], digits=2)) EUR/year\")\n\n# Create operational results DataFrame\noperational_df = DataFrame(\n    scenario = String[],\n    hour = Int[],\n    storage_energy = Float64[],\n    storage_charge = Float64[],\n    storage_discharge = Float64[],\n    wind_power = Float64[],\n    pv_power = Float64[],\n    grid_import = Float64[],\n    grid_export = Float64[],\n    demand = Float64[]\n)\n\n# Add operational data for each scenario\nfor ω in keys(dictScenarios)\n    for t in 1:168\n        push!(operational_df, (\n            ω,\n            t,\n            results.operational_variables[\"storage_energy\"][\"storage\", t, ω],\n            results.operational_variables[\"storage_charge\"][\"storage\", t, ω],\n            results.operational_variables[\"storage_discharge\"][\"storage\", t, ω],\n            results.operational_variables[\"wind_power\"][\"wind\", t, ω],\n            results.operational_variables[\"pv_power\"][\"pv\", t, ω],\n            results.operational_variables[\"grid_import\"][t, ω],\n            results.operational_variables[\"grid_export\"][t, ω],\n            dictScenarios[ω].demand[t]\n        ))\n    end\nend",
+    "crumbs": [
+      "08 Design",
+      "Tutorial"
+    ]
+  },
+  {
+    "objectID": "part-08/tutorial-design.html#create-figures",
+    "href": "part-08/tutorial-design.html#create-figures",
+    "title": "Tutorial VIII - Stochastic Energy System Design Problem",
+    "section": "6. Create Figures",
+    "text": "6. Create Figures\n\n# Create figure for component sizes and costs\nfig1 = Figure(size=(800, 800))\n\n# Component sizes\nax1 = Axis(fig1[1, 1], title=\"Optimal Component Sizes\")\nx_pos = 1:length(results_df.component)\nbarplot!(ax1, x_pos, results_df.capacity)\nax1.xticks = (x_pos, results_df.component)\nax1.xticklabelrotation = π/4\nax1.ylabel = \"Capacity [MWh/MW]\"\n\n# Cost breakdown\nax2 = Axis(fig1[1, 2], title=\"Annual Cost Breakdown\", aspect=1)  # Force square aspect ratio\nhidespines!(ax2)  # Hide the axis spines\nhidedecorations!(ax2)  # Hide all decorations (ticks, labels, etc.)\ncosts = [results.investment_costs[\"storage\"], results.investment_costs[\"wind\"], results.investment_costs[\"pv\"]]\ncolors = [:blue, :green, :orange]\nlabels = [\"Storage\", \"Wind\", \"PV\"]\n\n# Create pie chart\npie!(ax2, costs, color=colors, radius=0.8)\n\n# Create legend below the pie chart\nLegend(fig1[2, 2], [PolyElement(color=c) for c in colors], labels, \"Components\", \n    orientation=:horizontal)\n\n# Display figure\ndisplay(fig1)\n\n# Create operational plots\nfig2 = Figure(size=(1200, 1600))\n\n# Storage operation\nax1 = Axis(fig2[1, 1], title=\"Storage Energy Level\")\nfor ω in keys(dictScenarios)\n    lines!(ax1, operational_df[operational_df.scenario .== ω, :].hour,\n           operational_df[operational_df.scenario .== ω, :].storage_energy,\n           label=ω)\nend\nax1.xlabel = \"Hour\"\nax1.ylabel = \"Energy [MWh]\"\naxislegend(ax1)\n\n# Storage power\nax2 = Axis(fig2[1, 2], title=\"Storage Power\")\nfor ω in keys(dictScenarios)\n    lines!(ax2, operational_df[operational_df.scenario .== ω, :].hour,\n           operational_df[operational_df.scenario .== ω, :].storage_charge,\n           label=\"Charge - $ω\")\n    lines!(ax2, operational_df[operational_df.scenario .== ω, :].hour,\n           operational_df[operational_df.scenario .== ω, :].storage_discharge,\n           label=\"Discharge - $ω\")\nend\nax2.xlabel = \"Hour\"\nax2.ylabel = \"Power [MW]\"\naxislegend(ax2)\n\n# Wind power\nax3 = Axis(fig2[2, 1], title=\"Wind Power Generation\")\nfor ω in keys(dictScenarios)\n    lines!(ax3, operational_df[operational_df.scenario .== ω, :].hour,\n           operational_df[operational_df.scenario .== ω, :].wind_power,\n           label=ω)\nend\nax3.xlabel = \"Hour\"\nax3.ylabel = \"Power [MW]\"\naxislegend(ax3)\n\n# PV power\nax4 = Axis(fig2[2, 2], title=\"PV Power Generation\")\nfor ω in keys(dictScenarios)\n    lines!(ax4, operational_df[operational_df.scenario .== ω, :].hour,\n           operational_df[operational_df.scenario .== ω, :].pv_power,\n           label=ω)\nend\nax4.xlabel = \"Hour\"\nax4.ylabel = \"Power [MW]\"\naxislegend(ax4)\n\n# Grid interaction\nax5 = Axis(fig2[3, 1], title=\"Grid Import\")\nfor ω in keys(dictScenarios)\n    lines!(ax5, operational_df[operational_df.scenario .== ω, :].hour,\n           operational_df[operational_df.scenario .== ω, :].grid_import,\n           label=ω)\nend\nax5.xlabel = \"Hour\"\nax5.ylabel = \"Power [MW]\"\naxislegend(ax5)\n\nax6 = Axis(fig2[3, 2], title=\"Grid Export\")\nfor ω in keys(dictScenarios)\n    lines!(ax6, operational_df[operational_df.scenario .== ω, :].hour,\n           operational_df[operational_df.scenario .== ω, :].grid_export,\n           label=ω)\nend\nax6.xlabel = \"Hour\"\nax6.ylabel = \"Power [MW]\"\naxislegend(ax6)\n\n# Demand\nax7 = Axis(fig2[4, 1:2], title=\"System Demand\")\nfor ω in keys(dictScenarios)\n    lines!(ax7, operational_df[operational_df.scenario .== ω, :].hour,\n           operational_df[operational_df.scenario .== ω, :].demand,\n           label=ω)\nend\nax7.xlabel = \"Hour\"\nax7.ylabel = \"Power [MW]\"\naxislegend(ax7)\n\n# Display figure\ndisplay(fig2)",
+    "crumbs": [
+      "08 Design",
+      "Tutorial"
+    ]
+  },
+  {
+    "objectID": "part-08/tutorial-design.html#sensitivity-analysis-example",
+    "href": "part-08/tutorial-design.html#sensitivity-analysis-example",
+    "title": "Tutorial VIII - Stochastic Energy System Design Problem",
+    "section": "7. Sensitivity Analysis Example",
+    "text": "7. Sensitivity Analysis Example\nLet’s analyze how the optimal solution changes with different maximum budgets:\n\n# Test different budgets\nbudgets = [25_000_000, 50_000_000, 75_000_000, 100_000_000]\nresults_by_budget = Dict()\n\nfor budget in budgets\n    results_by_budget[budget] = solve_stochastic_design(dictStorage, dictWindTurbines, dictPV, dictScenarios, dictGrid, budget)\nend\n\n# Create figure\nfig3 = Figure(size=(1200, 800))\n\n# Sort budgets and get corresponding results\nsorted_budgets = sort(budgets)\nsorted_results = [results_by_budget[b] for b in sorted_budgets]\n\n# Component sizes vs budget\nax1 = Axis(fig3[1, 1], title=\"Component Sizes vs Budget\")\nlines!(ax1, sorted_budgets, [r.e_nom[\"storage\"] for r in sorted_results], label=\"Storage Energy\")\nlines!(ax1, sorted_budgets, [r.p_w_nom[\"wind\"] for r in sorted_results], label=\"Wind\")\nlines!(ax1, sorted_budgets, [r.p_v_nom[\"pv\"] for r in sorted_results], label=\"PV\")\nax1.xlabel = \"Maximum Budget [EUR]\"\nax1.ylabel = \"Capacity [MWh or MW]\"\naxislegend(ax1)\n\n# Costs vs budget\nax2 = Axis(fig3[1, 2], title=\"Costs vs Budget\")\nlines!(ax2, sorted_budgets, [r.total_cost for r in sorted_results], label=\"Total Annual Cost\")\nlines!(ax2, sorted_budgets, [r.investment_costs[\"storage\"] for r in sorted_results], label=\"Storage\")\nlines!(ax2, sorted_budgets, [r.investment_costs[\"wind\"] for r in sorted_results], label=\"Wind\")\nlines!(ax2, sorted_budgets, [r.investment_costs[\"pv\"] for r in sorted_results], label=\"PV\")\n\n# Add initial investment cost line\ninitial_investment = [sum([\n    dictStorage[\"storage\"].energy_cost * r.e_nom[\"storage\"] +\n    dictStorage[\"storage\"].power_cost * (r.p_ch_nom[\"storage\"] + r.p_dis_nom[\"storage\"]) +\n    dictWindTurbines[\"wind\"].power_cost * r.p_w_nom[\"wind\"] +\n    dictPV[\"pv\"].power_cost * r.p_v_nom[\"pv\"]\n]) for r in sorted_results]\nlines!(ax2, sorted_budgets, initial_investment, label=\"Initial Investment\", linestyle=:dash)\n\n# Add budget line for reference\nlines!(ax2, sorted_budgets, sorted_budgets, label=\"Maximum Budget\", linestyle=:dot, color=:black)\n\nax2.xlabel = \"Maximum Budget [EUR]\"\nax2.ylabel = \"Annual Cost [EUR/year]\"\naxislegend(ax2)\n\n# Display figure\ndisplay(fig3)",
+    "crumbs": [
+      "08 Design",
+      "Tutorial"
+    ]
+  },
+  {
+    "objectID": "part-08/tutorial-design.html#sensitivity-analysis-of-the-electricity-price",
+    "href": "part-08/tutorial-design.html#sensitivity-analysis-of-the-electricity-price",
+    "title": "Tutorial VIII - Stochastic Energy System Design Problem",
+    "section": "8. Sensitivity Analysis of the Electricity Price",
+    "text": "8. Sensitivity Analysis of the Electricity Price\nTASK: Watch for ##YOUR CODE HERE and implement the missing code.\n\nImplement a sensitivity analysis of the electricity price.\nPlot the results in a figure.\nInterpret the results and make a recommendation in section 9.\n\n\n# Test different price scaling factors\nprice_scales = 1.0:0.1:2.0  # From 100% to 200% in 10% steps\nresults_by_price = Dict()\n\n# Create a copy of the original scenarios to modify\nmodified_scenarios = deepcopy(dictScenarios)\n\n\nfor scale in price_scales\n    # HINT: Scale the market prices in each scenario. Use the modified_scenarios dictionary.\n    ## YOUR CODE HERE\n\n    # Solve the model with modified prices\n    ## YOUR CODE HERE\nend\n\n# Create figure\nfig4 = Figure(size=(1200, 800))\n\n# Sort price scales and get corresponding results\nsorted_scales = sort(collect(keys(results_by_price)))\nsorted_results = [results_by_price[s] for s in sorted_scales]\n\n# Calculate initial investment costs\ninitial_investment = [sum([\n    dictStorage[\"storage\"].energy_cost * r.e_nom[\"storage\"] +\n    dictStorage[\"storage\"].power_cost * (r.p_ch_nom[\"storage\"] + r.p_dis_nom[\"storage\"]) +\n    dictWindTurbines[\"wind\"].power_cost * r.p_w_nom[\"wind\"] +\n    dictPV[\"pv\"].power_cost * r.p_v_nom[\"pv\"]\n]) for r in sorted_results]\n\n# Component sizes vs price scale\nax1 = Axis(fig4[1, 1], title=\"Component Sizes vs Electricity Price\")\nlines!(ax1, sorted_scales, [r.e_nom[\"storage\"] for r in sorted_results], label=\"Storage Energy\")\nlines!(ax1, sorted_scales, [r.p_w_nom[\"wind\"] for r in sorted_results], label=\"Wind\")\nlines!(ax1, sorted_scales, [r.p_v_nom[\"pv\"] for r in sorted_results], label=\"PV\")\nax1.xlabel = \"Price Scale Factor\"\nax1.ylabel = \"Capacity [MWh or MW]\"\naxislegend(ax1)\n\n# Costs vs price scale\nax2 = Axis(fig4[1, 2], title=\"Costs vs Electricity Price\")\nlines!(ax2, sorted_scales, [r.total_cost for r in sorted_results], label=\"Total Annual Cost\")\nlines!(ax2, sorted_scales, [r.investment_costs[\"storage\"] for r in sorted_results], label=\"Storage\")\nlines!(ax2, sorted_scales, [r.investment_costs[\"wind\"] for r in sorted_results], label=\"Wind\")\nlines!(ax2, sorted_scales, [r.investment_costs[\"pv\"] for r in sorted_results], label=\"PV\")\n\n# Add operational costs\noperational_costs = [r.operational_costs[\"grid_import\"] - r.operational_costs[\"grid_export\"] for r in sorted_results]\nlines!(ax2, sorted_scales, operational_costs, label=\"Operational Cost\", linestyle=:dash)\n\nax2.xlabel = \"Price Scale Factor\"\nax2.ylabel = \"Annual Cost [EUR/year]\"\naxislegend(ax2)\n\n# Display figure\ndisplay(fig4)\n\n# Print key findings\nprintln(\"\\nKey Findings from Price Sensitivity Analysis:\")\nprintln(\"1. Impact on Component Sizes:\")\nprintln(\"   - Storage capacity changes from $(round(sorted_results[1].e_nom[\"storage\"], digits=2)) to $(round(sorted_results[end].e_nom[\"storage\"], digits=2)) MWh\")\nprintln(\"   - Wind capacity changes from $(round(sorted_results[1].p_w_nom[\"wind\"], digits=2)) to $(round(sorted_results[end].p_w_nom[\"wind\"], digits=2)) MW\")\nprintln(\"   - PV capacity changes from $(round(sorted_results[1].p_v_nom[\"pv\"], digits=2)) to $(round(sorted_results[end].p_v_nom[\"pv\"], digits=2)) MW\")\n\nprintln(\"\\n2. Impact on Costs:\")\nprintln(\"   - Total cost changes from $(round(sorted_results[1].total_cost, digits=2)) to $(round(sorted_results[end].total_cost, digits=2)) EUR/year\")\nprintln(\"   - Operational cost changes from $(round(operational_costs[1], digits=2)) to $(round(operational_costs[end], digits=2)) EUR/year\")\nprintln(\"   - Investment cost changes from $(round(sorted_results[1].total_cost - operational_costs[1], digits=2)) to $(round(sorted_results[end].total_cost - operational_costs[end], digits=2)) EUR/year\")",
+    "crumbs": [
+      "08 Design",
+      "Tutorial"
+    ]
+  },
+  {
+    "objectID": "part-08/tutorial-design.html#recommendations-for-hamburg-chempark-gmbh",
+    "href": "part-08/tutorial-design.html#recommendations-for-hamburg-chempark-gmbh",
+    "title": "Tutorial VIII - Stochastic Energy System Design Problem",
+    "section": "9. Recommendations for Hamburg ChemPark GmbH",
+    "text": "9. Recommendations for Hamburg ChemPark GmbH\nTASK: Place your recommendations here: X, Y, Z, W, A, B, C, D, E, F, G.\nBased on our analysis, we can provide the following recommendations for Hamburg ChemPark GmbH for the expected case of a price scaled by 200%:\n\nOptimal System Configuration:\n\n\n   - Storage system with [X] MWh energy capacity and [Y] MW power capacity\n   - Wind park with [Z] MW capacity\n   - PV system with [W] MW capacity\n\n\nEconomic Performance:\n\n\n   - Total annual cost: [A] EUR/year\n   - Investment cost: [B] EUR/year\n   - Operational cost: [C] EUR/year\n\n\nFindings:\n\n\n    - Significant storage capacity is added at an electricity price scaled by [D]% of the base case.\n    - The annual investment cost increases from base case to 200% case from [E] EUR/year to [F] EUR/year, because the [G] for storage is much lower than for PV.\n\nIn a comprehensive sensitivity analysis, the following aspects should be considered:\n\nThe solution is most sensitive to [parameter]\nKey uncertainties include [uncertainty]\nRobustness can be improved by [action]\n\n\n\n\n\n\n\nNote\n\n\n\nThe model provides a foundation for decision-making, but additional factors should be considered:\n\nSite-specific constraints\nGrid connection capacity\nEnvironmental ambitions\nMaintenance requirements and costs\nFuture expansion possibilities",
+    "crumbs": [
+      "08 Design",
+      "Tutorial"
+    ]
+  },
+  {
+    "objectID": "part-08/lecture-design.html",
+    "href": "part-08/lecture-design.html",
+    "title": "Lecture VIII - Energy System Design Problem",
+    "section": "",
+    "text": "Objective: Minimize total generation and storage costs over multiple time periods\nDecision Variables:\n\nPower output of thermal generators (\\(p_{g,t}\\))\nPower output of wind turbines (\\(p_{w,t}\\))\nBinary variables for generator status (\\(u_{g,t}\\))\nBinary variables for startup events (\\(v_{g,t}\\))\nStorage energy level (\\(e_{s,t}\\))\nStorage charging power (\\(p^{ch}_{s,t}\\))\nStorage discharging power (\\(p^{dis}_{s,t}\\))\nBinary variables for storage charging status (\\(u^{ch}_{s,t}\\))\nBinary variables for storage discharging status (\\(u^{dis}_{s,t}\\))\n\nKey Constraints:\n\nPower balance (including storage)\nGenerator limits\nWind limits\nMinimum up/down times\nRamp rate limits\nStartup variable definition\nStorage energy balance\nStorage energy limits\nStorage power limits and mutual exclusion\nStorage ramp rate limits\n\n\n\n\n\n\n\n\nNote\n\n\n\nThe Unit Commitment problem with storage extends the basic UC problem by adding storage system modeling and operation constraints.\n\n\n\n\n\n\n\n\\(\\text{Minimize} \\quad \\sum_{t \\in \\mathcal{T}} \\left( \\sum_{g \\in \\mathcal{G}} (c^{var}_g p_{g,t} + c^{fix}_g u_{g,t} + c^{start}_g v_{g,t}) + \\sum_{w \\in \\mathcal{W}} c^{var}_w p_{w,t} \\right)\\)\n\n\n\n\nPower Balance:\n\n\\(\\sum_{g \\in \\mathcal{G}} p_{g,t} + \\sum_{w \\in \\mathcal{W}} p_{w,t} + \\sum_{s \\in \\mathcal{S}} (p^{dis}_{s,t} - p^{ch}_{s,t}) = d^f_t \\quad \\forall t \\in \\mathcal{T}\\)\n\nGenerator Limits:\n\n\\(p^{\\min}_g u_{g,t} \\leq p_{g,t} \\leq p^{\\max}_g u_{g,t} \\quad \\forall g \\in \\mathcal{G}, t \\in \\mathcal{T}\\)\n\nWind Power:\n\n\\(0 \\leq p_{w,t} \\leq p^f_{w,t} \\quad \\forall w \\in \\mathcal{W}, t \\in \\mathcal{T}\\)\n\nStorage Energy Balance:\n\n\\(e_{s,t} = (1-sdr_s)e_{s,t-1} + \\eta^{ch}_s p^{ch}_{s,t} - \\frac{p^{dis}_{s,t}}{\\eta^{dis}_s} \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}\\)\n\nStorage Energy Limits:\n\n\\(E^{min}_s \\leq e_{s,t} \\leq E^{max}_s \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}\\)\n\nStorage Power Limits and Mutual Exclusion:\n\n\\(0 \\leq p^{ch}_{s,t} \\leq P^{ch,max}_s u^{ch}_{s,t} \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}\\) \\(0 \\leq p^{dis}_{s,t} \\leq P^{dis,max}_s u^{dis}_{s,t} \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}\\) \\(u^{ch}_{s,t} + u^{dis}_{s,t} \\leq 1 \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}\\)\n\nStorage Ramp Rate Limits:\n\n\\(p^{ch}_{s,t} - p^{ch}_{s,t-1} \\leq R^{ch}_s \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}\\) \\(p^{dis}_{s,t} - p^{dis}_{s,t-1} \\leq R^{dis}_s \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}\\)\n\n\n\n\n\nMixed-Integer Linear Programming (MILP) problem\nBinary variables for generator status, startup events, and storage operation\nTime-dependent decisions for both generation and storage\nComputationally challenging due to:\n\nLarge number of binary variables\nLarge number of time steps\nLarge number of constraints\n\n\n\n\n\n\n\n\nTip\n\n\n\nThe Unit Commitment problem with storage provides a comprehensive model for power system operation, including both generation and storage resources.\n\n\n\n\n\n\nData structures use NamedTuples for efficient parameter storage\nResults are stored in DataFrames for easy analysis\nKey metrics tracked:\n\nTotal system cost\nWind curtailment\nThermal and wind generation\nGenerator status and startup events\nStorage energy levels\nStorage charging/discharging power\n\n\n\n\n\n\n\n\nNote\n\n\n\nThe tutorial demonstrated how to implement and solve the UC problem with storage using Julia and JuMP, including visualization of generation and storage operation over time.\n\n\n\n\n\n\nThe tutorials from last week will again be available on Friday\nYou can access them in the project folder on Github\nClick on the little cat icon on the bottom right\n\n. . .\n\n\n\n\n\n\nTip\n\n\n\nYou can ask questions anytime in class or via email!",
+    "crumbs": [
+      "08 Design",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-08/lecture-design.html#unit-commitment-problem-with-storage-overview",
+    "href": "part-08/lecture-design.html#unit-commitment-problem-with-storage-overview",
+    "title": "Lecture VIII - Energy System Design Problem",
+    "section": "",
+    "text": "Objective: Minimize total generation and storage costs over multiple time periods\nDecision Variables:\n\nPower output of thermal generators (\\(p_{g,t}\\))\nPower output of wind turbines (\\(p_{w,t}\\))\nBinary variables for generator status (\\(u_{g,t}\\))\nBinary variables for startup events (\\(v_{g,t}\\))\nStorage energy level (\\(e_{s,t}\\))\nStorage charging power (\\(p^{ch}_{s,t}\\))\nStorage discharging power (\\(p^{dis}_{s,t}\\))\nBinary variables for storage charging status (\\(u^{ch}_{s,t}\\))\nBinary variables for storage discharging status (\\(u^{dis}_{s,t}\\))\n\nKey Constraints:\n\nPower balance (including storage)\nGenerator limits\nWind limits\nMinimum up/down times\nRamp rate limits\nStartup variable definition\nStorage energy balance\nStorage energy limits\nStorage power limits and mutual exclusion\nStorage ramp rate limits\n\n\n\n\n\n\n\n\nNote\n\n\n\nThe Unit Commitment problem with storage extends the basic UC problem by adding storage system modeling and operation constraints.",
+    "crumbs": [
+      "08 Design",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-08/lecture-design.html#mathematical-formulation",
+    "href": "part-08/lecture-design.html#mathematical-formulation",
+    "title": "Lecture VIII - Energy System Design Problem",
+    "section": "",
+    "text": "\\(\\text{Minimize} \\quad \\sum_{t \\in \\mathcal{T}} \\left( \\sum_{g \\in \\mathcal{G}} (c^{var}_g p_{g,t} + c^{fix}_g u_{g,t} + c^{start}_g v_{g,t}) + \\sum_{w \\in \\mathcal{W}} c^{var}_w p_{w,t} \\right)\\)\n\n\n\n\nPower Balance:\n\n\\(\\sum_{g \\in \\mathcal{G}} p_{g,t} + \\sum_{w \\in \\mathcal{W}} p_{w,t} + \\sum_{s \\in \\mathcal{S}} (p^{dis}_{s,t} - p^{ch}_{s,t}) = d^f_t \\quad \\forall t \\in \\mathcal{T}\\)\n\nGenerator Limits:\n\n\\(p^{\\min}_g u_{g,t} \\leq p_{g,t} \\leq p^{\\max}_g u_{g,t} \\quad \\forall g \\in \\mathcal{G}, t \\in \\mathcal{T}\\)\n\nWind Power:\n\n\\(0 \\leq p_{w,t} \\leq p^f_{w,t} \\quad \\forall w \\in \\mathcal{W}, t \\in \\mathcal{T}\\)\n\nStorage Energy Balance:\n\n\\(e_{s,t} = (1-sdr_s)e_{s,t-1} + \\eta^{ch}_s p^{ch}_{s,t} - \\frac{p^{dis}_{s,t}}{\\eta^{dis}_s} \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}\\)\n\nStorage Energy Limits:\n\n\\(E^{min}_s \\leq e_{s,t} \\leq E^{max}_s \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}\\)\n\nStorage Power Limits and Mutual Exclusion:\n\n\\(0 \\leq p^{ch}_{s,t} \\leq P^{ch,max}_s u^{ch}_{s,t} \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}\\) \\(0 \\leq p^{dis}_{s,t} \\leq P^{dis,max}_s u^{dis}_{s,t} \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}\\) \\(u^{ch}_{s,t} + u^{dis}_{s,t} \\leq 1 \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}\\)\n\nStorage Ramp Rate Limits:\n\n\\(p^{ch}_{s,t} - p^{ch}_{s,t-1} \\leq R^{ch}_s \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}\\) \\(p^{dis}_{s,t} - p^{dis}_{s,t-1} \\leq R^{dis}_s \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}\\)",
+    "crumbs": [
+      "08 Design",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-08/lecture-design.html#model-characteristics",
+    "href": "part-08/lecture-design.html#model-characteristics",
+    "title": "Lecture VIII - Energy System Design Problem",
+    "section": "",
+    "text": "Mixed-Integer Linear Programming (MILP) problem\nBinary variables for generator status, startup events, and storage operation\nTime-dependent decisions for both generation and storage\nComputationally challenging due to:\n\nLarge number of binary variables\nLarge number of time steps\nLarge number of constraints\n\n\n\n\n\n\n\n\nTip\n\n\n\nThe Unit Commitment problem with storage provides a comprehensive model for power system operation, including both generation and storage resources.",
+    "crumbs": [
+      "08 Design",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-08/lecture-design.html#implementation-insights",
+    "href": "part-08/lecture-design.html#implementation-insights",
+    "title": "Lecture VIII - Energy System Design Problem",
+    "section": "",
+    "text": "Data structures use NamedTuples for efficient parameter storage\nResults are stored in DataFrames for easy analysis\nKey metrics tracked:\n\nTotal system cost\nWind curtailment\nThermal and wind generation\nGenerator status and startup events\nStorage energy levels\nStorage charging/discharging power\n\n\n\n\n\n\n\n\nNote\n\n\n\nThe tutorial demonstrated how to implement and solve the UC problem with storage using Julia and JuMP, including visualization of generation and storage operation over time.",
+    "crumbs": [
+      "08 Design",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-08/lecture-design.html#solutions-from-last-week",
+    "href": "part-08/lecture-design.html#solutions-from-last-week",
+    "title": "Lecture VIII - Energy System Design Problem",
+    "section": "",
+    "text": "The tutorials from last week will again be available on Friday\nYou can access them in the project folder on Github\nClick on the little cat icon on the bottom right\n\n. . .\n\n\n\n\n\n\nTip\n\n\n\nYou can ask questions anytime in class or via email!",
+    "crumbs": [
+      "08 Design",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-08/lecture-design.html#what-are-tight-and-compact-formulations",
+    "href": "part-08/lecture-design.html#what-are-tight-and-compact-formulations",
+    "title": "Lecture VIII - Energy System Design Problem",
+    "section": "What are Tight and Compact Formulations?",
+    "text": "What are Tight and Compact Formulations?\nIn mathematical optimization, particularly for Mixed-Integer Linear Programming (MILP) problems like the Unit Commitment problem, the concepts of “tight” and “compact” formulations are crucial for efficient problem solving.\n\nTight Formulations\nA formulation is considered “tight” when there is a small gap between the optimal solution of the linear programming (LP) relaxation and the integer solution. This is important because:\n\nIt helps solvers find optimal solutions faster\nIt provides better lower bounds for branch-and-bound algorithms\nIt reduces the search space for integer solutions\n\n\n\nCompact Formulations\nA formulation is considered “compact” when it uses fewer variables and constraints while maintaining accuracy. This is important because:\n\nIt reduces computational complexity\nIt decreases memory requirements\nIt can speed up solution times\nIt makes the model easier to understand and maintain",
+    "crumbs": [
+      "08 Design",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-08/lecture-design.html#examples-in-uc-with-storage",
+    "href": "part-08/lecture-design.html#examples-in-uc-with-storage",
+    "title": "Lecture VIII - Energy System Design Problem",
+    "section": "Examples in UC with Storage",
+    "text": "Examples in UC with Storage\n\n1. Tight Formulations\n\nExample 1 - Generator Commitment:\n# Less tight formulation\np_{g,t} ≤ P^{max}_g u_{g,t}  # Only upper bound\n\n# Tighter formulation\nP^{min}_g u_{g,t} ≤ p_{g,t} ≤ P^{max}_g u_{g,t}  # Both bounds\n\nThe second formulation is tighter because it includes both minimum and maximum power constraints\nThis reduces the feasible region of the LP relaxation\nMakes it easier for the solver to find integer solutions\n\n\n\nExample 2 - Storage Operation:\n# Less tight formulation\ne_{s,t} = e_{s,t-1} + p^{ch}_{s,t} - p^{dis}_{s,t}  # Without efficiency\n\n# Tighter formulation\ne_{s,t} = (1-sdr_s)e_{s,t-1} + η^{ch}_s p^{ch}_{s,t} - p^{dis}_{s,t}/η^{dis}_s  # With efficiency\n\nThe second formulation is tighter because it accounts for efficiency losses\nThis better represents the physical reality of storage operation\nHelps the solver find more realistic solutions\n\n\n\n\n2. Compact Formulations\n\nExample 1 - Minimum Up/Down Times:\n# Less compact formulation\nu_{g,t} - u_{g,t-1} ≤ u_{g,τ}  ∀τ ∈ [t+1, t+T^{up}_g-1]\nu_{g,t-1} - u_{g,t} ≤ 1 - u_{g,τ}  ∀τ ∈ [t+1, t+T^{down}_g-1]\n\n# More compact formulation\n∑_{τ=t}^{t+T^{up}_g-1} u_{g,τ} ≥ T^{up}_g (u_{g,t} - u_{g,t-1})\n∑_{τ=t}^{t+T^{down}_g-1} (1-u_{g,τ}) ≥ T^{down}_g (u_{g,t-1} - u_{g,t})\n\nThe second formulation uses fewer constraints\nAchieves the same result with less computational overhead\nMakes the model more efficient to solve\n\n\n\nExample 2 - Storage Mutual Exclusion:\n# Less compact formulation\np^{ch}_{s,t} ≤ P^{ch,max}_s u^{ch}_{s,t}\np^{dis}_{s,t} ≤ P^{dis,max}_s u^{dis}_{s,t}\nu^{ch}_{s,t} + u^{dis}_{s,t} ≤ 1\n\n# More compact formulation\np^{ch}_{s,t}/P^{ch,max}_s + p^{dis}_{s,t}/P^{dis,max}_s ≤ 1\n\nThe second formulation combines three constraints into one\nReduces the number of binary variables needed\nSimplifies the model while maintaining accuracy",
+    "crumbs": [
+      "08 Design",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-08/lecture-design.html#why-these-concepts-matter",
+    "href": "part-08/lecture-design.html#why-these-concepts-matter",
+    "title": "Lecture VIII - Energy System Design Problem",
+    "section": "Why These Concepts Matter",
+    "text": "Why These Concepts Matter\n\nComputational Efficiency\n\nTighter formulations reduce the search space\nCompact formulations reduce the problem size\nBoth lead to faster solution times\n\n\n\nSolution Quality\n\nTighter formulations provide better bounds\nHelp find optimal solutions more reliably\nReduce the gap between LP relaxation and integer solution\n\n\n\nPractical Implementation\n\nMore efficient use of computational resources\nBetter handling of large-scale problems\nMore reliable results for real-world applications",
+    "crumbs": [
+      "08 Design",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-08/lecture-design.html#trade-offs-to-consider",
+    "href": "part-08/lecture-design.html#trade-offs-to-consider",
+    "title": "Lecture VIII - Energy System Design Problem",
+    "section": "Trade-offs to Consider",
+    "text": "Trade-offs to Consider\n\nTightness vs. Compactness\n\nSometimes making a formulation tighter makes it less compact\nNeed to balance between tightness and problem size\nChoose based on specific problem characteristics\n\n\n\nModel Complexity\n\nMore complex formulations might be tighter but harder to understand\nSimpler formulations might be more compact but less accurate\nNeed to find the right balance for your specific use case\n\n\n\n\n\n\n\nNote\n\n\n\nThese concepts are particularly important in the Unit Commitment problem with storage and approximations of part-load efficiencies because:\n\nThe problem is already complex with many variables and constraints\nStorage adds additional complexity with its operational constraints\nReal-world applications need efficient solutions\nThe problem size can grow quickly with more time periods or storage units",
+    "crumbs": [
+      "08 Design",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-08/lecture-design.html#energy-system-design-problem",
+    "href": "part-08/lecture-design.html#energy-system-design-problem",
+    "title": "Lecture VIII - Energy System Design Problem",
+    "section": "Energy System Design Problem",
+    "text": "Energy System Design Problem\nIn this lecture, we extend the Unit Commitment problem to include investment decisions for energy system components. This allows us to:\n\nOptimize technology selection\nDetermine optimal component sizes\nBalance investment and operational costs\nPlan local energy systems holistically\n\n\n\n\n\n\n\nNote\n\n\n\nThe design problem combines investment planning (sizing) with operational optimization, enabling comprehensive energy system design.",
+    "crumbs": [
+      "08 Design",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-08/lecture-design.html#key-components",
+    "href": "part-08/lecture-design.html#key-components",
+    "title": "Lecture VIII - Energy System Design Problem",
+    "section": "Key Components",
+    "text": "Key Components\nWe will focus on optimizing:\n\nStorage systems\nWind parks\nPV parks\nElectric market participation\n\n… while fullfilling a fixed electric demand. Additionally, we consider a maximum investment budget.\nAll nominal sizes will be decision variables in our optimization model.",
+    "crumbs": [
+      "08 Design",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-08/lecture-design.html#sets",
+    "href": "part-08/lecture-design.html#sets",
+    "title": "Lecture VIII - Energy System Design Problem",
+    "section": "Sets",
+    "text": "Sets\n\n\\(\\mathcal{T}\\) - Set of time periods indexed by \\(t \\in \\{1,2,...,|\\mathcal{T}|\\}\\)\n\\(\\mathcal{S}\\) - Set of storage systems indexed by \\(s \\in \\{1,2,...,|\\mathcal{S}|\\}\\)\n\\(\\mathcal{W}\\) - Set of wind parks indexed by \\(w \\in \\{1,2,...,|\\mathcal{W}|\\}\\)\n\\(\\mathcal{V}\\) - Set of PV parks indexed by \\(v \\in \\{1,2,...,|\\mathcal{V}|\\}\\)",
+    "crumbs": [
+      "08 Design",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-08/lecture-design.html#decision-variables",
+    "href": "part-08/lecture-design.html#decision-variables",
+    "title": "Lecture VIII - Energy System Design Problem",
+    "section": "Decision Variables",
+    "text": "Decision Variables\n\nInvestment Variables\n\n\\(e^{nom}_s\\) - Nominal energy capacity of storage \\(s\\) [MWh]\n\\(p^{ch,nom}_s\\) - Nominal charging power of storage \\(s\\) [MW]\n\\(p^{dis,nom}_s\\) - Nominal discharging power of storage \\(s\\) [MW]\n\\(p^{nom}_w\\) - Nominal power of wind park \\(w\\) [MW]\n\\(p^{nom}_v\\) - Nominal power of PV park \\(v\\) [MW]\n\n\n\nOperational Variables\n\n\\(p_{w,t}\\) - Power output of wind park \\(w\\) at time \\(t\\) [MW]\n\\(p_{v,t}\\) - Power output of PV park \\(v\\) at time \\(t\\) [MW]\n\\(p^{in}_t\\) - Power inflow through market at time \\(t\\) [MW]\n\\(p^{out}_t\\) - Power outflow through market at time \\(t\\) [MW]\n\\(p^{ch}_{s,t}\\) - Charging power of storage \\(s\\) at time \\(t\\) [MW]\n\\(p^{dis}_{s,t}\\) - Discharging power of storage \\(s\\) at time \\(t\\) [MW]\n\\(e_{s,t}\\) - Energy level of storage \\(s\\) at time \\(t\\) [MWh]\n\n\n\nAnnual Cost Variables\n\n\\(AC^{inv}_s\\) - Annual investment cost for storage \\(s\\) [EUR/year]\n\\(AC^{inv}_w\\) - Annual investment cost for wind park \\(w\\) [EUR/year]\n\\(AC^{inv}_v\\) - Annual investment cost for PV park \\(v\\) [EUR/year]\n\\(AC^{grid,imp}\\) - Annual grid electricity import cost [EUR/year]\n\\(AR^{grid,exp}\\) - Annual grid electricity export revenue [EUR/year]",
+    "crumbs": [
+      "08 Design",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-08/lecture-design.html#parameters",
+    "href": "part-08/lecture-design.html#parameters",
+    "title": "Lecture VIII - Energy System Design Problem",
+    "section": "Parameters",
+    "text": "Parameters\n\nInvestment Costs\n\n\\(C^{E}_s\\) - Cost per MWh of energy capacity for storage \\(s\\) [EUR/MWh]\n\\(C^{P,ch}_s\\) - Cost per MW of charging power capacity for storage \\(s\\) [EUR/MW]\n\\(C^{P,dis}_s\\) - Cost per MW of discharging power capacity for storage \\(s\\) [EUR/MW]\n\\(C^{W}_w\\) - Cost per MW of wind park \\(w\\) [EUR/MW]\n\\(C^{PV}_v\\) - Cost per MW of PV park \\(v\\) [EUR/MW]\n\\(F^{PVAF}\\) - Present value annuity factor for investment costs\n\\(B^{max}\\) - Maximum investment budget [EUR]\n\n\n\nOperational Parameters\n\n\\(\\eta^{ch}_s\\) - Charging efficiency of storage \\(s\\)\n\\(\\eta^{dis}_s\\) - Discharging efficiency of storage \\(s\\)\n\\(sdr_s\\) - Self-discharge rate of storage \\(s\\) per time step\n\\(DoD_s\\) - Depth of discharge limit for storage \\(s\\) [%]\n\\(f_{w,t}\\) - Wind capacity factor at time \\(t\\) for wind park \\(w\\)\n\\(f_{v,t}\\) - Solar capacity factor at time \\(t\\) for PV park \\(v\\)\n\\(d_t\\) - Electric demand at time \\(t\\) [MW]\n\\(c^{MP}_t\\) - Grid electricity market price at time \\(t\\) [EUR/MWh]\n\\(c^{TaL}\\) - Grid electricity taxes and levies (including Netzentgelt) [EUR/MWh]",
+    "crumbs": [
+      "08 Design",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-08/lecture-design.html#present-value-annuity-factor-pvaf",
+    "href": "part-08/lecture-design.html#present-value-annuity-factor-pvaf",
+    "title": "Lecture VIII - Energy System Design Problem",
+    "section": "Present Value Annuity Factor (PVAF)",
+    "text": "Present Value Annuity Factor (PVAF)\nThe Present Value Annuity Factor (PVAF) is used to convert investment costs into equivalent annual costs. It is calculated as:\n\\(F^{PVAF} = \\frac{(1 + r)^n - 1}{r(1 + r)^n}\\)\nwhere: - \\(r\\) is the discount rate (e.g., 0.05 for 5%) - \\(n\\) is the component lifetime in years (we assume the same lifetime for all components in the following)\nThis factor allows us to:\n\nConvert one-time investment costs into equivalent annual costs\nAccount for the time value of money\nCompare investments with different lifetimes\nMake investment decisions based on annual costs",
+    "crumbs": [
+      "08 Design",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-08/lecture-design.html#objective-function-1",
+    "href": "part-08/lecture-design.html#objective-function-1",
+    "title": "Lecture VIII - Energy System Design Problem",
+    "section": "Objective Function",
+    "text": "Objective Function\n\\(\\text{Minimize} \\quad \\sum_{s \\in \\mathcal{S}} AC^{inv}_s + \\sum_{w \\in \\mathcal{W}} AC^{inv}_w + \\sum_{v \\in \\mathcal{V}} AC^{inv}_v + AC^{grid,imp} - AR^{grid,exp}\\)\n\n\n\n\n\n\nNote\n\n\n\nThe objective function minimizes the total annual costs of the energy system:\n\nInvestment costs for all components:\n\nStorage systems (energy and power capacity)\nWind parks\nPV parks\n\nGrid electricity costs/revenues:\n\nImport costs (market price + taxes/levies including Netzentgelt)\nExport revenue (market price only)",
+    "crumbs": [
+      "08 Design",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-08/lecture-design.html#annual-cost-constraints",
+    "href": "part-08/lecture-design.html#annual-cost-constraints",
+    "title": "Lecture VIII - Energy System Design Problem",
+    "section": "Annual Cost Constraints",
+    "text": "Annual Cost Constraints\n\nInvestment Costs\n\\(AC^{inv}_s = \\frac{C^{E}_s}{F^{PVAF}} e^{nom}_s + \\frac{C^{P,ch}_s}{F^{PVAF}} p^{ch,nom}_s + \\frac{C^{P,dis}_s}{F^{PVAF}} p^{dis,nom}_s \\quad \\forall s \\in \\mathcal{S}\\) \\(AC^{inv}_w = \\frac{C^{W}_w}{F^{PVAF}} p^{nom}_w \\quad \\forall w \\in \\mathcal{W}\\) \\(AC^{inv}_v = \\frac{C^{PV}_v}{F^{PVAF}} p^{nom}_v \\quad \\forall v \\in \\mathcal{V}\\)\n\n\n\n\n\n\nNote\n\n\n\nThe investment costs are annualized using the Present Value Annuity Factor (PVAF):\n\nStorage investment includes:\n\nEnergy capacity costs\nCharging power capacity costs\nDischarging power capacity costs\n\nWind and PV investment include:\n\nPower capacity costs only\n\n\n\n\n\n\nInvestment Budget\n\\(\\sum_{s \\in \\mathcal{S}} (C^{E}_s e^{nom}_s + C^{P,ch}_s p^{ch,nom}_s + C^{P,dis}_s p^{dis,nom}_s) + \\sum_{w \\in \\mathcal{W}} C^{W}_w p^{nom}_w + \\sum_{v \\in \\mathcal{V}} C^{PV}_v p^{nom}_v \\leq B^{max}\\)\n\n\n\n\n\n\nNote\n\n\n\nThe investment budget constraint ensures that:\n\nTotal investment costs do not exceed the maximum budget\nIncludes all component investments:\n\nStorage systems (energy and power capacity)\nWind parks\nPV parks\n\n\n\n\n\n\nGrid Electricity Costs\n\\(AC^{grid,imp} = \\sum_{t \\in \\mathcal{T}} (c^{MP}_t + c^{TaL}) p^{in}_t\\) \\(AR^{grid,exp} = \\sum_{t \\in \\mathcal{T}} c^{MP}_t p^{out}_t\\)\n\n\n\n\n\n\nNote\n\n\n\nThe grid electricity costs and revenues are calculated as:\n\nImport costs include:\n\nTime-dependent market price\nFixed taxes and levies (including Netzentgelt)\n\nExport revenue includes:\n\nTime-dependent market price only",
+    "crumbs": [
+      "08 Design",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-08/lecture-design.html#constraints",
+    "href": "part-08/lecture-design.html#constraints",
+    "title": "Lecture VIII - Energy System Design Problem",
+    "section": "Constraints",
+    "text": "Constraints\n\nPower Balance\n\\(\\sum_{w \\in \\mathcal{W}} p_{w,t} + \\sum_{v \\in \\mathcal{V}} p_{v,t} + (p^{in}_t - p^{out}_t) + \\sum_{s \\in \\mathcal{S}} (p^{dis}_{s,t} - p^{ch}_{s,t}) = d_t \\quad \\forall t \\in \\mathcal{T}\\)\n\n\n\n\n\n\nNote\n\n\n\nThe power balance ensures that at each time step:\n\nTotal generation equals total demand:\n\nWind generation\nPV generation\nGrid import/export\nStorage charging/discharging\n\nNet grid power flow is:\n\nPositive for import\nNegative for export\n\n\n\n\n\n\nComponent Limits\n\nWind Parks\n\\(0 \\leq p_{w,t} \\leq f_{w,t} p^{nom}_w \\quad \\forall w \\in \\mathcal{W}, t \\in \\mathcal{T}\\)\n\n\n\n\n\n\nNote\n\n\n\nWind power output is constrained by:\n\nNon-negativity (no negative generation)\nMaximum available power:\n\nTime-dependent capacity factor\nNominal power capacity\n\n\n\n\n\n\nPV Parks\n\\(0 \\leq p_{v,t} \\leq f_{v,t} p^{nom}_v \\quad \\forall v \\in \\mathcal{V}, t \\in \\mathcal{T}\\)\n\n\n\n\n\n\nNote\n\n\n\nPV power output is constrained by:\n\nNon-negativity (no negative generation)\nMaximum available power:\n\nTime-dependent capacity factor\nNominal power capacity\n\n\n\n\n\n\nStorage Systems\n\\(0 \\leq p^{ch}_{s,t} \\leq p^{ch,nom}_s \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}\\) \\(0 \\leq p^{dis}_{s,t} \\leq p^{dis,nom}_s \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}\\) \\(DoD_s e^{nom}_s \\leq e_{s,t} \\leq e^{nom}_s \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}\\)\n\n\n\n\n\n\nNote\n\n\n\nStorage operation is constrained by:\n\nCharging power limits:\n\nNon-negativity\nNominal charging power capacity\n\nDischarging power limits:\n\nNon-negativity\nNominal discharging power capacity\n\nEnergy level limits:\n\nMinimum level based on depth of discharge\nMaximum level based on nominal capacity\n\n\n\n\n\n\n\nStorage Energy Balance\n\\(e_{s,t} = (1-sdr_s)e_{s,t-1} + \\eta^{ch}_s p^{ch}_{s,t} - \\frac{p^{dis}_{s,t}}{\\eta^{dis}_s} \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}\\)\n\n\n\n\n\n\nNote\n\n\n\nThe storage energy balance accounts for:\n\nPrevious energy level:\n\nReduced by self-discharge\n\nCharging:\n\nIncreased by charging power\nReduced by charging efficiency losses\n\nDischarging:\n\nDecreased by discharging power\nIncreased by discharging efficiency losses",
+    "crumbs": [
+      "08 Design",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-08/lecture-design.html#model-characteristics-1",
+    "href": "part-08/lecture-design.html#model-characteristics-1",
+    "title": "Lecture VIII - Energy System Design Problem",
+    "section": "Model Characteristics",
+    "text": "Model Characteristics\n\nMixed-Integer Linear Programming (MILP) problem\nCombines investment and operational decisions\nLarge-scale optimization problem\nRequires efficient solution methods\n\n\n\n\n\n\n\nNote\n\n\n\nThe model can be adapted to the specific use case, i.e. if a windpark already has a fixed capacity, the corresponding variable can be coverted to a parameter.",
+    "crumbs": [
+      "08 Design",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-08/lecture-design.html#key-considerations",
+    "href": "part-08/lecture-design.html#key-considerations",
+    "title": "Lecture VIII - Energy System Design Problem",
+    "section": "Key Considerations",
+    "text": "Key Considerations\n\nTime Resolution:\n\nBalance between accuracy and computational effort\nConsider representative periods\nAccount for seasonal variations\n\nInvestment Costs:\n\nAnnualize investment costs using PVAF\nConsider component lifetimes\nInclude maintenance costs\n\nOperational Constraints:\n\nStorage cycling limits\nGrid connection capacity\nRenewable generation profiles\n\nSolution Methods:\n\nDecomposition approaches\nHeuristic methods\nCommercial solvers",
+    "crumbs": [
+      "08 Design",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-08/lecture-design.html#real-world-use-cases",
+    "href": "part-08/lecture-design.html#real-world-use-cases",
+    "title": "Lecture VIII - Energy System Design Problem",
+    "section": "Real-World Use Cases",
+    "text": "Real-World Use Cases\n\nLocal Energy Systems:\n\nMicrogrids\nIndustrial parks\nResidential communities\n\nGrid Integration:\n\nRenewable energy integration\nGrid capacity planning\nAncillary services\n\nEnergy Markets:\n\nMulti-market participation\nPrice arbitrage\nCapacity markets",
+    "crumbs": [
+      "08 Design",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-08/lecture-design.html#extensions",
+    "href": "part-08/lecture-design.html#extensions",
+    "title": "Lecture VIII - Energy System Design Problem",
+    "section": "Extensions",
+    "text": "Extensions\n\nMulti-Criteria Optimization:\n\nEconomic objectives\nEnvironmental impact\nSystem reliability\n\nUncertainty Handling:\n\nWeather forecasts\nPrice forecasts\nDemand forecasts\n\nAdvanced Features:\n\nBattery degradation\nMulti-market participation\nGrid services\n\n\n\n\n\n\n\n\nNote\n\n\n\nThe sizing problem provides a foundation for comprehensive energy system planning and optimization.\n\n\n\n\nQuestions?\n\n\n\n\n\nLiterature\n\nLiterature I\nFor more interesting literature to learn more about Julia, take a look at the literature list of this course.\n\n\nLiterature II\nFor a detailed mathematical formulation of the Unit Commitment problem, see Morales-Espana, Latorre, and Ramos (2013) and Zimmermann and Kather (2019).",
+    "crumbs": [
+      "08 Design",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-08/lecture-design.html#literature-i",
+    "href": "part-08/lecture-design.html#literature-i",
+    "title": "Lecture VIII - Energy System Design Problem",
+    "section": "Literature I",
+    "text": "Literature I\nFor more interesting literature to learn more about Julia, take a look at the literature list of this course.",
+    "crumbs": [
+      "08 Design",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-08/lecture-design.html#literature-ii",
+    "href": "part-08/lecture-design.html#literature-ii",
+    "title": "Lecture VIII - Energy System Design Problem",
+    "section": "Literature II",
+    "text": "Literature II\nFor a detailed mathematical formulation of the Unit Commitment problem, see Morales-Espana, Latorre, and Ramos (2013) and Zimmermann and Kather (2019).",
+    "crumbs": [
+      "08 Design",
+      "Lecture"
+    ]
   }
 ]

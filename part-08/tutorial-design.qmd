@@ -263,8 +263,7 @@ The stochastic formulation:
 
 ```{julia}
 #| eval: false
-#| echo: false
-#| output: false
+
 using Pkg
 Pkg.add("JuMP")
 Pkg.add("HiGHS")
@@ -291,8 +290,7 @@ set_theme!(theme_light())
 
 ```{julia}
 #| eval: false
-#| echo: false
-#| output: false
+
 # Set random seed for reproducibility
 Random.seed!(42)
 
@@ -407,8 +405,7 @@ CSV.write("$file_directory/pv.csv", pv_data)
 
 ```{julia}
 #| eval: false
-#| echo: false
-#| output: false
+
 # Load and process data into dictionaries
 dfStorage = CSV.read("$file_directory/storage.csv", DataFrame)
 dfWindTurbines = CSV.read("$file_directory/windTurbine.csv", DataFrame)
@@ -475,8 +472,7 @@ Now, let's implement the Stochastic System Design model using the dictionary for
 
 ```{julia}
 #| eval: false
-#| echo: false
-#| output: false
+
 function solve_stochastic_design(dictStorage, dictWindTurbines, dictPV, dictScenarios, dictGrid, max_budget)
     # Create model
     model = Model(HiGHS.Optimizer)
@@ -656,8 +652,7 @@ Let's solve the model with a maximum budget of 50 million EUR:
 
 ```{julia}
 #| eval: false
-#| echo: false
-#| output: false
+
 # Solve model
 max_budget = 50_000_000  # 50 million EUR
 results = solve_stochastic_design(dictStorage, dictWindTurbines, dictPV, dictScenarios, dictGrid, max_budget)
@@ -739,8 +734,7 @@ end
 
 ```{julia}
 #| eval: false
-#| echo: false
-#| output: false
+
 # Create figure for component sizes and costs
 fig1 = Figure(size=(800, 800))
 
@@ -862,8 +856,7 @@ Let's analyze how the optimal solution changes with different maximum budgets:
 
 ```{julia}
 #| eval: false
-#| echo: false
-#| output: false
+
 # Test different budgets
 budgets = [25_000_000, 50_000_000, 75_000_000, 100_000_000]
 results_by_budget = Dict()
@@ -926,8 +919,7 @@ display(fig3)
 
 ```{julia}
 #| eval: false
-#| echo: false
-#| output: false
+
 # Test different price scaling factors
 price_scales = 1.0:0.1:2.0  # From 100% to 200% in 10% steps
 results_by_price = Dict()
@@ -1008,8 +1000,7 @@ Based on our analysis, we can provide the following recommendations for Hamburg 
 1. **Optimal System Configuration**:
 ```{julia}
 #| eval: false
-#| echo: false
-#| output: false
+
    - Storage system with [X] MWh energy capacity and [Y] MW power capacity
    - Wind park with [Z] MW capacity
    - PV system with [W] MW capacity
@@ -1018,8 +1009,7 @@ Based on our analysis, we can provide the following recommendations for Hamburg 
 2. **Economic Performance**:
 ```{julia}
 #| eval: false
-#| echo: false
-#| output: false
+
    - Total annual cost: [A] EUR/year
    - Investment cost: [B] EUR/year
    - Operational cost: [C] EUR/year
@@ -1028,8 +1018,7 @@ Based on our analysis, we can provide the following recommendations for Hamburg 
 3. **Findings**:
 ```{julia}
 #| eval: false
-#| echo: false
-#| output: false
+
     - Significant storage capacity is added at an electricity price scaled by [D]% of the base case.
     - The annual investment cost increases from base case to 200% case from [E] EUR/year to [F] EUR/year, because the [G] for storage is much lower than for PV.
 ```
