@@ -6,9 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Dr.&nbsp;Tobias Cors">
 
-<title>Lecture III - Packages and Data Management – Energy System Optimization with Julia</title>
+<title>hydrogen-value-chain-diagram – Energy System Optimization with Julia</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -69,6 +68,9 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 <script defer="" data-domain="TobiasCors.github.io/energy-system-optimization" src="https://plausible.io/js/script.file-downloads.outbound-links.js"></script>
 <script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
+<script src="../site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="../site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 
 
 </head>
@@ -82,7 +84,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../part-03/lecture-packages.html">03 Data</a></li><li class="breadcrumb-item"><a href="../part-03/lecture-packages.html">Lecture</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -177,16 +179,16 @@ ul.task-list li input[type="checkbox"] {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
  <span class="menu-text">03 Data</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../part-03/lecture-packages.html" class="sidebar-item-text sidebar-link active">
+  <a href="../part-03/lecture-packages.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Lecture</span></a>
   </div>
 </li>
@@ -422,230 +424,61 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#quick-recap-from-last-week" id="toc-quick-recap-from-last-week" class="nav-link active" data-scroll-target="#quick-recap-from-last-week"><span class="flow">Quick Recap from last Week</span></a>
-  <ul class="collapse">
-  <li><a href="#variables-and-data-types" id="toc-variables-and-data-types" class="nav-link" data-scroll-target="#variables-and-data-types">Variables and Data Types</a></li>
-  <li><a href="#vectors-and-matrices" id="toc-vectors-and-matrices" class="nav-link" data-scroll-target="#vectors-and-matrices">Vectors and Matrices</a></li>
-  <li><a href="#comparisons-and-logic" id="toc-comparisons-and-logic" class="nav-link" data-scroll-target="#comparisons-and-logic">Comparisons and Logic</a></li>
-  <li><a href="#loops" id="toc-loops" class="nav-link" data-scroll-target="#loops">Loops</a></li>
-  <li><a href="#scope" id="toc-scope" class="nav-link" data-scroll-target="#scope">Scope</a></li>
-  <li><a href="#solutions-from-last-week" id="toc-solutions-from-last-week" class="nav-link" data-scroll-target="#solutions-from-last-week">Solutions from last Week</a></li>
-  </ul></li>
-  <li><a href="#five-tutorials-for-this-week" id="toc-five-tutorials-for-this-week" class="nav-link" data-scroll-target="#five-tutorials-for-this-week"><span class="flow">Five Tutorials for this Week</span></a>
-  <ul class="collapse">
-  <li><a href="#topics-of-the-tutorials" id="toc-topics-of-the-tutorials" class="nav-link" data-scroll-target="#topics-of-the-tutorials">Topics of the Tutorials</a></li>
-  <li><a href="#get-started-with-the-tutorials" id="toc-get-started-with-the-tutorials" class="nav-link" data-scroll-target="#get-started-with-the-tutorials">Get started with the tutorials</a></li>
-  </ul></li>
-  <li><a href="#literature" id="toc-literature" class="nav-link" data-scroll-target="#literature"><span class="flow">Literature</span></a>
-  <ul class="collapse">
-  <li><a href="#literature-1" id="toc-literature-1" class="nav-link" data-scroll-target="#literature-1">Literature</a></li>
-  </ul></li>
-  </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/edit/main/part-03/lecture-packages.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/blob/main/part-03/lecture-packages.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="lecture-presentation.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
-    </div>
+        
+    <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="hydrogen-value-chain-diagram.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../part-03/lecture-packages.html">03 Data</a></li><li class="breadcrumb-item"><a href="../part-03/lecture-packages.html">Lecture</a></li></ol></nav>
-<div class="quarto-title">
-<h1 class="title">Lecture III - Packages and Data Management</h1>
-<p class="subtitle lead">Energy System Optimization with Julia</p>
-</div>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
 
 
-<div class="quarto-title-meta-author">
-  <div class="quarto-title-meta-heading">Author</div>
-  <div class="quarto-title-meta-heading">Affiliation</div>
-  
-    <div class="quarto-title-meta-contents">
-    <p class="author">Dr.&nbsp;Tobias Cors </p>
-  </div>
-  <div class="quarto-title-meta-contents">
-        <p class="affiliation">
-            Hamburg University of Applied Science - Summer 2025
-          </p>
-      </div>
-  </div>
 
-<div class="quarto-title-meta">
 
-      
-  
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">graph LR
+    %% Renewable Energy Sources
+    PV[🌞 PV Plant]
+    Wind[💨 Wind Power Plant]
+    Grid[⚡ Transmission Grid]
     
-  </div>
-  
+    %% Electric Bus Bar
+    ElectricBus[⚡ Electric Bus Bar]
+    
+    %% Hydrogen Components
+    Electrolyzer[🔋 Electrolyzer]
+    HydrogenBus[💧 Hydrogen Bus Bar]
+    Storage[🏭 Hydrogen Storage]
+    Demand[🏢 Hydrogen Demand]
+    
+    %% Connections
+    PV --&gt; ElectricBus
+    Wind --&gt; ElectricBus
+    Grid --&gt; ElectricBus
+    ElectricBus --&gt; Electrolyzer
+    Electrolyzer --&gt; HydrogenBus
+    HydrogenBus --&gt; Storage
+    HydrogenBus --&gt; Demand
+    
+    %% Styling
+    classDef energy fill:#f9f,stroke:#333,stroke-width:2px
+    classDef component fill:#bbf,stroke:#333,stroke-width:2px
+    classDef storage fill:#bfb,stroke:#333,stroke-width:2px
+    
+    class PV,Wind,Grid energy
+    class ElectricBus,HydrogenBus component
+    class Storage,Demand storage
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p>This diagram shows a multi-energy system with: - Renewable energy sources (PV and Wind) and grid connection - Electric bus bar for power distribution - Electrolyzer for hydrogen production - Hydrogen bus bar for hydrogen distribution - Hydrogen storage and demand points</p>
+<p>The pictograms help visualize each component: - 🌞 for PV plant - 💨 for wind power - ⚡ for electrical components - 🔋 for electrolyzer - 💧 for hydrogen - 🏭 for storage - 🏢 for demand</p>
 
 
-</header>
-
-
-<section id="quick-recap-from-last-week" class="level1 title">
-<h1 class="title"><span class="flow">Quick Recap from last Week</span></h1>
-<section id="variables-and-data-types" class="level2">
-<h2 class="anchored" data-anchor-id="variables-and-data-types">Variables and Data Types</h2>
-<ul>
-<li>Variables are used to store values</li>
-<li>Assign a value to a variable using the <code>=</code> operator</li>
-<li>You can use <span class="highlight">different data types</span> for variables</li>
-<li>You can change the value of a variable</li>
-</ul>
-<p>. . .</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Tip
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>You can use the <code>typeof</code> function to check the type of a variable.</p>
-</div>
-</div>
-</section>
-<section id="vectors-and-matrices" class="level2">
-<h2 class="anchored" data-anchor-id="vectors-and-matrices">Vectors and Matrices</h2>
-<ul>
-<li>Vectors and matrices are used to store multiple values</li>
-<li>You can create a them using the <code>[</code> and <code>]</code> operators</li>
-<li>Access their elements using square brackets</li>
-</ul>
-<p>. . .</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Tip
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>You can use the <code>push!</code> function to add elements to a vector or the <code>pop!</code> function to remove elements from a vector.</p>
-</div>
-</div>
-</section>
-<section id="comparisons-and-logic" class="level2">
-<h2 class="anchored" data-anchor-id="comparisons-and-logic">Comparisons and Logic</h2>
-<ul>
-<li>Comparisons are <span class="highlight">used to compare values</span></li>
-<li><code>==</code> checks if two values are equal</li>
-<li><code>!=</code> checks if two values are not equal</li>
-<li><code>&lt;</code> checks if one value is smaller than the other</li>
-<li><code>&gt;=</code> checks if one value is greater than or equal to the other</li>
-<li><code>&amp;&amp;</code> checks if two values are true</li>
-<li><code>||</code> checks if at least one of two values is true</li>
-</ul>
-</section>
-<section id="loops" class="level2">
-<h2 class="anchored" data-anchor-id="loops">Loops</h2>
-<ul>
-<li>Loops are used to repeat code</li>
-<li><code>for</code> loop repeats code for a fixed number of times</li>
-<li><code>while</code> loop repeats code until a condition is met</li>
-<li><code>if</code> statement checks if a condition is true</li>
-<li><code>else</code> executes code if a condition is false</li>
-<li><code>elseif</code> checks if a condition is true and executes if it is</li>
-</ul>
-</section>
-<section id="scope" class="level2">
-<h2 class="anchored" data-anchor-id="scope">Scope</h2>
-<ul>
-<li>Scope determines where a variable is defined and lives</li>
-<li><code>global</code> keyword defines a global variable</li>
-<li><code>local</code> keyword defines a local variable</li>
-<li><code>let</code> keyword defines a local variable</li>
-</ul>
-<p>. . .</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Tip
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Global variables usually make your code much slower, if they are not defined as constants. <span class="highlight">But for this leeture this is not that important</span>.</p>
-</div>
-</div>
-</section>
-<section id="solutions-from-last-week" class="level2">
-<h2 class="anchored" data-anchor-id="solutions-from-last-week">Solutions from last Week</h2>
-<ul>
-<li>The tutorials from last week will be <span class="highlight">available on Friday</span></li>
-<li>You can access them in the project folder on Github</li>
-<li>Click on the little cat icon on the bottom right</li>
-</ul>
-<p>. . .</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Tip
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>You can ask questions anytime in class or via email!</p>
-</div>
-</div>
-</section>
-</section>
-<section id="five-tutorials-for-this-week" class="level1 title">
-<h1 class="title"><span class="flow">Five Tutorials for this Week</span></h1>
-<section id="topics-of-the-tutorials" class="level2">
-<h2 class="anchored" data-anchor-id="topics-of-the-tutorials">Topics of the Tutorials</h2>
-<ul>
-<li><strong>Functions</strong>: Learn how to define and use functions</li>
-<li><strong>Packages</strong>: Learn how to install and use packages</li>
-<li><strong>DataFrames</strong>: Learn how to work with tabular data in Julia</li>
-<li><strong>IO</strong>: Learn how to read and write data in Julia</li>
-<li><strong>Plots</strong>: Learn how to create plots in Julia</li>
-</ul>
-</section>
-<section id="get-started-with-the-tutorials" class="level2">
-<h2 class="anchored" data-anchor-id="get-started-with-the-tutorials">Get started with the tutorials</h2>
-<ul>
-<li>Download this weeks tutorials and start with the first one</li>
-<li><span class="highlight">Remember, you can ask questions anytime!</span></li>
-</ul>
-<p>. . .</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-And that’s it for this lecture!
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>The remaining time we will already start working on the problems of the third lecture.</p>
-</div>
-</div>
-</section>
-</section>
-<section id="literature" class="level1 title">
-<h1 class="title"><span class="flow">Literature</span></h1>
-<section id="literature-1" class="level2">
-<h2 class="anchored" data-anchor-id="literature-1">Literature</h2>
-<ul>
-<li><p>Lauwens, B., &amp; Downey, A. B. (2019). Think Julia: How to think like a computer scientist (First edition). O’Reilly®. <a href="https://benlauwens.github.io/ThinkJulia.jl/latest/book.html">Link to the free book website</a>.</p></li>
-<li><p><a href="https://docs.julialang.org/">Julia Documentation</a></p></li>
-</ul>
-<p>For more interesting literature to learn more about Julia, take a look at the <a href="../general/literature.html">literature list</a> of this course.</p>
-
-
-</section>
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -1073,7 +906,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>   
     <div class="nav-footer-center">
 <p>Energy System Optimization with Julia, Tobias Cors<br>CC BY-NC-SA 4.0</p>
-<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/edit/main/part-03/lecture-packages.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/blob/main/part-03/lecture-packages.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+<div class="toc-actions"><ul><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/edit/main/part-09/hydrogen-value-chain-diagram.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/blob/main/part-09/hydrogen-value-chain-diagram.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">

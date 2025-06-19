@@ -12,7 +12,7 @@ project:
     - part-06/*.qmd
     - part-07/*.qmd
     - part-08/*.qmd
-    # - part-09/*.qmd
+    - part-09/*.qmd
     # - part-10/*.qmd
     # - part-11/*.qmd
     # - part-12/*.qmd
@@ -102,12 +102,12 @@ website:
             href: part-08/lecture-design.qmd
           - text: "Tutorial"
             href: part-08/tutorial-design.qmd
-      # - section: "09 Safety"
-      #   contents:
-      #     - text: "Lecture"
-      #       href: part-09/lecture-safety.qmd
-      #     - text: "Tutorial"
-      #       href: part-09/tutorial-safety.qmd
+      - section: "09 MES"
+        contents:
+          - text: "Lecture"
+            href: part-09/lecture-mes.qmd
+          # - text: "Tutorial"
+          #   href: part-09/tutorial-mes.qmd
       # - section: "10 Intermission"
       #   contents:
       #     - text: "Lecture"

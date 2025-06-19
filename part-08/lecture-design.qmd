@@ -536,7 +536,7 @@ The storage energy balance accounts for:
 3. Discharging:
 
    - Decreased by discharging power
-   - Increased by discharging efficiency losses
+   - Decreased by discharging efficiency losses
 :::
 
 # [Implementation Insights]{.flow} {.title}

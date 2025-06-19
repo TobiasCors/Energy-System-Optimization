@@ -1,0 +1,529 @@
+---
+title: "Lecture IX - Multi-Energy Systems"
+subtitle: "Energy System Optimization with Julia"
+author: "Dr. Tobias Cors"
+institute: "Hamburg University of Applied Science - Summer 2025"
+title-slide-attributes:
+    data-background-color: "#025259"
+html-math-method:
+  method: mathjax
+  url: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+
+format:
+    html:
+        theme: [litera, ../styles.scss]
+        include-in-header: 
+            text: |
+                \usepackage{tikz}
+                \usepackage{pgfplots}
+                \pgfplotsset{compat=1.18}
+    revealjs:
+        theme: [default, ../styles.scss]
+        transition: slide
+        transition-speed: fast
+        highlight-style: arrow
+        slide-number: true
+        code-copy: true
+        code-link: true
+        preview-links: auto
+        footer: " {{< meta title >}} | {{< meta author >}} | [Home](lecture-mes.qmd)"
+        output-file: lecture-presentation.html
+
+bibliography: ../ESO-bib.bib
+
+engine: julia
+
+execute:
+    echo: true
+---
+
+# [Quick Recap from last Week]{.flow} {.title}
+
+## Energy System Design Problem Overview
+
+- **Objective**: Minimize total annual costs (investment + operational) while respecting budget constraints
+- **Decision Variables**:
+
+  - Investment variables (First Stage):
+    - Storage energy capacity ($e^{nom}_s$)
+    - Storage charging power ($p^{ch,nom}_s$)
+    - Storage discharging power ($p^{dis,nom}_s$)
+    - Wind park capacity ($p^{nom}_w$)
+    - PV park capacity ($p^{nom}_v$)
+  - Operational variables (Second Stage):
+    - Wind power output ($p_{w,t,\omega}$)
+    - PV power output ($p_{v,t,\omega}$)
+    - Grid import/export ($p^{in}_{t,\omega}$, $p^{out}_{t,\omega}$)
+    - Storage operation ($p^{ch}_{s,t,\omega}$, $p^{dis}_{s,t,\omega}$, $e_{s,t,\omega}$)
+
+- **Key Constraints**:
+
+  - Investment budget limit
+  - Power balance
+  - Component capacity limits
+  - Storage energy balance
+  - Storage energy limits
+  - Storage power limits
+
+::: {.callout-note}
+The Energy System Design problem combines investment planning (sizing) with operational optimization, enabling comprehensive energy system design. The stochastic formulation considers multiple scenarios to account for uncertainty in renewable generation, demand patterns, and price variations.
+:::
+
+## Mathematical Formulation
+
+### Objective Function
+
+$\text{Minimize} \quad \sum_{s \in \mathcal{S}} AC^{inv}_s + \sum_{w \in \mathcal{W}} AC^{inv}_w + \sum_{v \in \mathcal{V}} AC^{inv}_v + \sum_{\omega \in \Omega} \pi_{\omega} (AC^{grid,imp}_{\omega} - AR^{grid,exp}_{\omega})$
+
+### Key Constraints
+
+1. **Investment Budget**:
+
+$\sum_{s \in \mathcal{S}} (C^{E}_s e^{nom}_s + C^{P,ch}_s p^{ch,nom}_s + C^{P,dis}_s p^{dis,nom}_s) + \sum_{w \in \mathcal{W}} C^{W}_w p^{nom}_w + \sum_{v \in \mathcal{V}} C^{PV}_v p^{nom}_v \leq B^{max}$
+
+2. **Power Balance**:
+
+$\sum_{w \in \mathcal{W}} p_{w,t,\omega} + \sum_{v \in \mathcal{V}} p_{v,t,\omega} + (p^{in}_{t,\omega} - p^{out}_{t,\omega}) + \sum_{s \in \mathcal{S}} (p^{dis}_{s,t,\omega} - p^{ch}_{s,t,\omega}) = d_{t,\omega} \quad \forall t \in \mathcal{T}, \omega \in \Omega$
+
+3. **Component Capacity Limits**:
+
+$0 \leq p_{w,t,\omega} \leq f_{w,t,\omega} p^{nom}_w \quad \forall w \in \mathcal{W}, t \in \mathcal{T}, \omega \in \Omega$
+$0 \leq p_{v,t,\omega} \leq f_{v,t,\omega} p^{nom}_v \quad \forall v \in \mathcal{V}, t \in \mathcal{T}, \omega \in \Omega$
+$0 \leq p^{ch}_{s,t,\omega} \leq p^{ch,nom}_s \quad \forall s \in \mathcal{S}, t \in \mathcal{T}, \omega \in \Omega$
+$0 \leq p^{dis}_{s,t,\omega} \leq p^{dis,nom}_s \quad \forall s \in \mathcal{S}, t \in \mathcal{T}, \omega \in \Omega$
+$DoD_s e^{nom}_s \leq e_{s,t,\omega} \leq e^{nom}_s \quad \forall s \in \mathcal{S}, t \in \mathcal{T}, \omega \in \Omega$
+
+4. **Storage Energy Balance**:
+
+$e_{s,t,\omega} = (1-sdr_s)e_{s,t-1,\omega} + \eta^{ch}_s p^{ch}_{s,t,\omega} - \frac{p^{dis}_{s,t,\omega}}{\eta^{dis}_s} \quad \forall s \in \mathcal{S}, t \in \mathcal{T}, \omega \in \Omega$
+
+## Model Characteristics
+
+- Two-stage stochastic Linear Programming (LP) problem
+- Combines investment and operational decisions
+- Large-scale optimization problem
+- Requires efficient solution methods
+- Considers multiple scenarios for robust decision-making
+
+::: {.callout-tip}
+The model can be adapted to specific use cases, i.e., if a wind park already has a fixed capacity, the corresponding variable can be converted to a parameter. The stochastic formulation allows for more robust investment decisions by considering multiple scenarios.
+:::
+
+## Additional Constraints
+
+The basic model can be extended with various constraints, partly covered from previous lectures:
+
+### Generator Constraints
+- Minimum up/down times
+- Start-up and shut-down costs
+- Ramp rate limits
+- Minimum load constraints
+- Part-load efficiency curves
+
+### Storage Constraints
+- Ramp rate limits for charging/discharging
+- Mutual exclusion constraints
+- Cycle limits (daily/weekly/seasonal)
+- State of charge dependent efficiency
+- Temperature dependent operation
+- Degradation effects
+- Multiple storage technologies with different characteristics
+
+### Grid Connection
+- Maximum import/export power limits
+- Grid fees and tariffs
+- Ancillary service requirements
+
+### Renewable Generation
+- Curtailment limits
+
+### System-wide Constraints
+- Reserve requirements
+- Island operation capability
+- Multiple energy carriers
+- Environmental constraints
+- Regulatory requirements
+
+::: {.callout-note}
+These additional constraints can be included based on the specific requirements of the energy system being designed. Each constraint adds complexity but may be necessary for realistic modeling.
+:::
+
+## Implementation Insights
+
+- Data structures use NamedTuples for efficient parameter storage
+- Results are stored in DataFrames for easy analysis
+- Key metrics tracked:
+  - Total system cost
+  - Investment costs by component
+  - Operational costs
+  - Component capacities
+  - Storage operation
+  - Grid interaction
+- Sensitivity analysis capabilities:
+  - Budget variations
+  - Electricity price changes
+  - Component cost variations
+
+::: {.callout-note}
+The tutorial demonstrated how to implement and solve the stochastic design problem using Julia and JuMP, including comprehensive sensitivity analysis of key parameters such as investment budget and electricity prices.
+:::
+
+## Solutions from last Week
+
+- The tutorials from last week will again be [available on Friday]{.highlight}
+- You can access them in the project folder on Github
+- Click on the little cat icon on the bottom right
+
+. . .
+
+::: {.callout-tip}
+[You can ask questions anytime in class or via email!]{.highlight}
+:::
+
+# [Excursion: Two-Stage Stochastic Programming]{.flow} {.title}
+
+## Problem Structure vs. Solution Method
+
+A two-stage stochastic programming problem is characterized by its decision structure, not its solution method. The key aspects are:
+
+1. **Decision Stages**:
+   - First stage (here-and-now): Decisions made before uncertainty is revealed
+   - Second stage (wait-and-see): Decisions made after uncertainty is revealed
+
+2. **Information Structure**:
+   - First stage: Decisions based on known parameters and probability distributions
+   - Second stage: Decisions based on observed scenario realizations
+
+::: {.callout-note}
+The "two-stage" classification refers to the logical structure and timing of decisions, not how the problem is solved computationally.
+:::
+
+## Solution Approaches
+
+### Monolithic Approach
+- Solve the entire problem as one large optimization model
+- All constraints and variables are included in a single mathematical program
+- Advantages:
+  - Simpler implementation
+  - Direct solution using standard solvers
+  - No need for specialized algorithms
+- Disadvantages:
+  - Can become computationally challenging for large problems
+  - May require significant memory resources
+
+### Decomposition Methods
+- Break the problem into smaller subproblems
+- Examples:
+  - Benders decomposition: Iteratively solves a master problem (first stage) and subproblems (second stage) by adding cuts that approximate the second-stage cost
+  - Progressive hedging: Solves each scenario independently and iteratively adjusts solutions to achieve consensus across scenarios
+  - L-shaped method: Similar to Benders, but specifically designed for two-stage stochastic linear programs with a special structure
+- Advantages:
+  - Can handle larger problems
+  - More efficient for certain problem structures
+- Disadvantages:
+  - More complex implementation
+  - May require specialized algorithms
+
+## Energy System Design Example
+
+In our energy system design problem:
+
+### First Stage (Investment)
+- Storage capacity decisions
+- Wind park capacity
+- PV park capacity
+- Made before knowing:
+  - Renewable generation profiles
+  - Demand patterns
+  - Electricity prices
+
+### Second Stage (Operation)
+- Power dispatch decisions
+- Storage operation
+- Grid interaction
+- Made after observing:
+  - Actual renewable generation
+  - Real demand
+  - Current market prices
+
+::: {.callout-tip}
+Whether we solve this as one large optimization problem or use decomposition methods, it remains a two-stage stochastic program due to its decision structure and information flow.
+:::
+
+## Mathematical Representation
+
+The general form of a two-stage stochastic program is:
+
+$\min_{x} \quad c^T x + \mathbb{E}_{\omega}[Q(x,\omega)]$
+
+where:
+
+- $x$ represents first-stage decisions
+- $Q(x,\omega)$ represents the second-stage problem for scenario $\omega$
+- $\mathbb{E}_{\omega}$ denotes the expectation over all scenarios
+
+This structure can be solved:
+
+1. As one large optimization problem (monolithic)
+2. Using decomposition methods
+3. Through other specialized algorithms
+
+The choice of solution method depends on:
+
+- Problem size
+- Available computational resources
+- Required solution time
+- Implementation complexity
+
+::: {.callout-note}
+The two-stage structure provides a framework for modeling decision-making under uncertainty, regardless of the computational approach used to solve it.
+:::
+
+# [Introduction to Multi-Energy Systems]{.flow} {.title}
+
+## Multi-Energy Systems: Definition
+
+A multi-energy system is a system that combines multiple energy carriers (e.g. electricity, hydrogen, heat, etc.) to meet the energy demand of a specific application.
+
+## Multi-Energy Systems: Example Hydrogen Value Chain
+
+![Example case of a hydrogen value chain](H2-mes.png){width=70%}
+
+::: {.callout-note}
+The figure shows a multi-energy system with:
+
+- Renewable energy sources (PV and Wind) and grid connection
+- Electric bus bar for power distribution
+- Electrolyzer for hydrogen production
+- Hydrogen bus bar for hydrogen distribution
+- Hydrogen storage
+- Hydrogen demand
+:::
+
+## Multi-Energy System Design Problem
+
+In this lecture, we extend the Stochastic System Design problem to include investment decisions for *multi-energy systems*. This allows us to:
+
+1. Optimize technology selection over the entire energy value chain
+2. Determine optimal component sizes
+3. Balance investment and operational costs
+4. Plan local multi-energy systems holistically (e.g. electricity, hydrogen, heat, etc.)
+
+::: {.callout-note}
+Remember: The design problem combines investment planning (sizing) with operational optimization, enabling comprehensive (multi-)energy system design.
+:::
+
+## Key Components
+
+We will focus on optimizing:
+
+- Storage systems for electricity and hydrogen
+- Wind parks
+- PV parks
+- Electrolyzers
+- Electric market participation
+
+... while fullfilling a fixed hydrogen demand. Additionally, we consider a maximum investment budget.
+
+All nominal sizes will be decision variables in our optimization model.
+
+# [Mathematical Formulation of the Stochastic Design Problem for Multi-Energy Systems]{.flow} {.title}
+
+**... on the simple example of the hydrogen value chain with electricity and hydrogen as mediums**
+
+## Sets
+
+- $\mathcal{T}$ - Set of time periods indexed by $t \in \{1,2,...,|\mathcal{T}|\}$
+- $\mathcal{S}$ - Set of storage systems indexed by $s \in \{1,2,...,|\mathcal{S}|\}$
+- $\mathcal{S}_{\text{El}}$ - Subset of $\mathcal{S}$ of electricity storage systems
+- $\mathcal{S}_{\text{H2}}$ - Subset of $\mathcal{S}$ of hydrogen storage systems
+- $\mathcal{W}$ - Set of wind parks indexed by $w \in \{1,2,...,|\mathcal{W}|\}$
+- $\mathcal{V}$ - Set of PV parks indexed by $v \in \{1,2,...,|\mathcal{V}|\}$
+- $\mathcal{X}$ - Set of electrolyzers indexed by $x \in \{1,2,...,|\mathcal{X}|\}$
+- $\Omega$ - Set of scenarios indexed by $\omega \in \{1,2,...,|\Omega|\}$
+
+::: {.callout-note}
+New additions to the sets:
+
+1. $\mathcal{S}_{\text{El}}$ and $\mathcal{S}_{\text{H2}}$ to distinguish between electricity and hydrogen storage
+2. $\mathcal{X}$ for electrolyzers as a new component type
+:::
+
+## Decision Variables
+
+### Investment Variables (First Stage)
+- $e^{nom}_s$ - Nominal energy capacity of storage $s$ [MWh]
+- $p^{ch,nom}_s$ - Nominal charging power of storage $s$ [MW]
+- $p^{dis,nom}_s$ - Nominal discharging power of storage $s$ [MW]
+- $p^{nom}_w$ - Nominal power of wind park $w$ [MW]
+- $p^{nom}_v$ - Nominal power of PV park $v$ [MW]
+- $p^{nom}_x$ - Nominal power of electrolyzer $x$ [MW]
+
+### Operational Variables (Second Stage)
+- $p_{w,t,\omega}$ - Power output of wind park $w$ at time $t$ in scenario $\omega$ [MW]
+- $p_{v,t,\omega}$ - Power output of PV park $v$ at time $t$ in scenario $\omega$ [MW]
+- $p^{in}_{t,\omega}$ - Power inflow through market at time $t$ in scenario $\omega$ [MW]
+- $p^{out}_{t,\omega}$ - Power outflow through market at time $t$ in scenario $\omega$ [MW]
+- $p^{ch}_{s,t,\omega}$ - Charging power of storage $s$ at time $t$ in scenario $\omega$ [MW]
+- $p^{dis}_{s,t,\omega}$ - Discharging power of storage $s$ at time $t$ in scenario $\omega$ [MW]
+- $e_{s,t,\omega}$ - Energy level of storage $s$ at time $t$ in scenario $\omega$ [MWh]
+- $p_{x,t,\omega}$ - Power consumption of electrolyzer $x$ at time $t$ in scenario $\omega$ [MW]
+- $h_{x,t,\omega}$ - Hydrogen production of electrolyzer $x$ at time $t$ in scenario $\omega$ [MW]
+
+::: {.callout-note}
+New operational variables for the electrolyzer:
+
+1. $p_{x,t,\omega}$ for power consumption
+2. $h_{x,t,\omega}$ for hydrogen production
+:::
+
+### Annual Cost Variables
+- $AC^{inv}_s$ - Annual investment cost for storage $s$ [EUR/year]
+- $AC^{inv}_w$ - Annual investment cost for wind park $w$ [EUR/year]
+- $AC^{inv}_v$ - Annual investment cost for PV park $v$ [EUR/year]
+- $AC^{inv}_x$ - Annual investment cost for electrolyzer $x$ [EUR/year]
+- $AC^{grid,imp}_{\omega}$ - Annual grid electricity import cost in scenario $\omega$ [EUR/year]
+- $AR^{grid,exp}_{\omega}$ - Annual grid electricity export revenue in scenario $\omega$ [EUR/year]
+
+::: {.callout-note}
+New cost variable: 
+$AC^{inv}_x$ for electrolyzer investment costs
+:::
+
+## Parameters
+
+### Investment Costs (First Stage)
+- $C^{E}_s$ - Cost per MWh of energy capacity for storage $s$ [EUR/MWh]
+- $C^{P,ch}_s$ - Cost per MW of charging power capacity for storage $s$ [EUR/MW]
+- $C^{P,dis}_s$ - Cost per MW of discharging power capacity for storage $s$ [EUR/MW]
+- $C^{W}_w$ - Cost per MW of wind park $w$ [EUR/MW]
+- $C^{PV}_v$ - Cost per MW of PV park $v$ [EUR/MW]
+- $C^{X}_x$ - Cost per MW of electrolyzer $x$ [EUR/MW]
+- $F^{PVAF}$ - Present value annuity factor for investment costs
+- $B^{max}$ - Maximum investment budget [EUR]
+
+::: {.callout-note}
+New investment cost parameter:
+$C^{X}_x$ for electrolyzer capacity costs
+:::
+
+### Operational Parameters (Second Stage)
+- $\eta^{ch}_s$ - Charging efficiency of storage $s$
+- $\eta^{dis}_s$ - Discharging efficiency of storage $s$
+- $sdr_s$ - Self-discharge rate of storage $s$ per time step
+- $DoD_s$ - Depth of discharge limit for storage $s$ [%]
+- $f_{w,t,\omega}$ - Wind capacity factor at time $t$ in scenario $\omega$ for wind park $w$
+- $f_{v,t,\omega}$ - Solar capacity factor at time $t$ in scenario $\omega$ for PV park $v$
+- $d_{t,\omega}$ - Hydrogen demand at time $t$ in scenario $\omega$ [MW]
+- $c^{MP}_{t,\omega}$ - Grid electricity market price at time $t$ in scenario $\omega$ [EUR/MWh]
+- $c^{TaL}$ - Grid electricity taxes and levies (including Netzentgelt) [EUR/MWh]
+- $\beta_x$ - Conversion factor of electrolyzer $x$ [MW H2/MW El]
+- $\pi_{\omega}$ - Probability of scenario $\omega$
+
+::: {.callout-note}
+Changes in operational parameters:
+
+1. $d_{t,\omega}$ now represents hydrogen demand instead of electricity demand
+2. New parameter $\beta_x$ for electrolyzer conversion efficiency
+:::
+
+## Objective Function
+
+$\text{Minimize} \quad \sum_{s \in \mathcal{S}} AC^{inv}_s + \sum_{w \in \mathcal{W}} AC^{inv}_w + \sum_{v \in \mathcal{V}} AC^{inv}_v + \sum_{x \in \mathcal{X}} AC^{inv}_x + \sum_{\omega \in \Omega} \pi_{\omega} (AC^{grid,imp}_{\omega} - AR^{grid,exp}_{\omega})$
+
+::: {.callout-note}
+Changes in objective function:
+Added electrolyzer investment costs $\sum_{x \in \mathcal{X}} AC^{inv}_x$
+:::
+
+## Annual Cost Constraints
+
+### Investment Costs (First Stage)
+$AC^{inv}_s = \frac{C^{E}_s}{F^{PVAF}} e^{nom}_s + C^{P,ch}_s p^{ch,nom}_s + C^{P,dis}_s p^{dis,nom}_s \quad \forall s \in \mathcal{S}$
+$AC^{inv}_w = \frac{C^{W}_w}{F^{PVAF}} p^{nom}_w \quad \forall w \in \mathcal{W}$
+$AC^{inv}_v = \frac{C^{PV}_v}{F^{PVAF}} p^{nom}_v \quad \forall v \in \mathcal{V}$
+$AC^{inv}_x = \frac{C^{X}_x}{F^{PVAF}} p^{nom}_x \quad \forall x \in \mathcal{X}$
+
+### Investment Budget
+$\sum_{s \in \mathcal{S}} (C^{E}_s e^{nom}_s + C^{P,ch}_s p^{ch,nom}_s + C^{P,dis}_s p^{dis,nom}_s) + \sum_{w \in \mathcal{W}} C^{W}_w p^{nom}_w + \sum_{v \in \mathcal{V}} C^{PV}_v p^{nom}_v + \sum_{x \in \mathcal{X}} C^{X}_x p^{nom}_x \leq B^{max}$
+
+::: {.callout-note}
+Changes in investment budget:
+Added electrolyzer investment costs $\sum_{x \in \mathcal{X}} C^{X}_x p^{nom}_x$
+:::
+
+### Grid Electricity Costs (Second Stage)
+$AC^{grid,imp}_{\omega} = \sum_{t \in \mathcal{T}} (c^{MP}_{t,\omega} + c^{TaL}) p^{in}_{t,\omega} \quad \forall \omega \in \Omega$
+$AR^{grid,exp}_{\omega} = \sum_{t \in \mathcal{T}} c^{MP}_{t,\omega} p^{out}_{t,\omega} \quad \forall \omega \in \Omega$
+
+## Constraints
+
+### Power Balance (Electricity)
+$\sum_{w \in \mathcal{W}} p_{w,t,\omega} + \sum_{v \in \mathcal{V}} p_{v,t,\omega} + (p^{in}_{t,\omega} - p^{out}_{t,\omega}) + \sum_{s \in \mathcal{S}_{\text{El}}} (p^{dis}_{s,t,\omega} - p^{ch}_{s,t,\omega}) = \sum_{x \in \mathcal{X}} p_{x,t,\omega} \quad \forall t \in \mathcal{T}, \omega \in \Omega$
+
+::: {.callout-note}
+Changes in electricity balance:
+
+1. Uses $\mathcal{S}_{\text{El}}$ subset for electricity storage
+2. Right-hand side changed from demand to electrolyzer consumption
+:::
+
+### Hydrogen Balance
+$\sum_{x \in \mathcal{X}} h_{x,t,\omega} + \sum_{s \in \mathcal{S}_{\text{H2}}} (p^{dis}_{s,t,\omega} - p^{ch}_{s,t,\omega}) = d_{t,\omega} \quad \forall t \in \mathcal{T}, \omega \in \Omega$
+
+::: {.callout-note}
+New constraint:
+
+Hydrogen balance equation considering:
+
+  1. Hydrogen production from electrolyzers
+  2. Hydrogen storage operations
+  3. Hydrogen demand
+:::
+
+### Component Limits
+
+#### Wind Parks
+$0 \leq p_{w,t,\omega} \leq f_{w,t,\omega} p^{nom}_w \quad \forall w \in \mathcal{W}, t \in \mathcal{T}, \omega \in \Omega$
+
+#### PV Parks
+$0 \leq p_{v,t,\omega} \leq f_{v,t,\omega} p^{nom}_v \quad \forall v \in \mathcal{V}, t \in \mathcal{T}, \omega \in \Omega$
+
+#### Storage Systems
+$0 \leq p^{ch}_{s,t,\omega} \leq p^{ch,nom}_s \quad \forall s \in \mathcal{S}, t \in \mathcal{T}, \omega \in \Omega$
+$0 \leq p^{dis}_{s,t,\omega} \leq p^{dis,nom}_s \quad \forall s \in \mathcal{S}, t \in \mathcal{T}, \omega \in \Omega$
+$DoD_s e^{nom}_s \leq e_{s,t,\omega} \leq e^{nom}_s \quad \forall s \in \mathcal{S}, t \in \mathcal{T}, \omega \in \Omega$
+
+### Storage Energy Balance
+$e_{s,t,\omega} = (1-sdr_s)e_{s,t-1,\omega} + \eta^{ch}_s p^{ch}_{s,t,\omega} - \frac{p^{dis}_{s,t,\omega}}{\eta^{dis}_s} \quad \forall s \in \mathcal{S}, t \in \mathcal{T}, \omega \in \Omega$
+
+### Electrolyzer Constraints
+$0 \leq p_{x,t,\omega} \leq p^{nom}_x \quad \forall x \in \mathcal{X}, t \in \mathcal{T}, \omega \in \Omega$
+$h_{x,t,\omega} = \beta_x p_{x,t,\omega} \quad \forall x \in \mathcal{X}, t \in \mathcal{T}, \omega \in \Omega$
+
+::: {.callout-note}
+New constraints for electrolyzer:
+
+1. Power consumption limits
+2. Conversion relationship between power consumption and hydrogen production
+:::
+
+
+::: {.loud-slide}
+::: {.r-fit-text}
+Questions?
+:::
+:::
+
+::: footer
+:::
+
+# [Literature]{.flow} {.title}
+
+## Literature I
+
+For more interesting literature to learn more about Julia, take a look at the [literature list](../general/literature.qmd) of this course.
+
+## Literature II
+
+
