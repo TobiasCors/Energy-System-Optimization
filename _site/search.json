@@ -6234,7 +6234,7 @@
     "href": "part-09/lecture-mes.html#constraints",
     "title": "Lecture IX - Multi-Energy Systems",
     "section": "Constraints",
-    "text": "Constraints\n\nPower Balance (Electricity)\n\\(\\sum_{w \\in \\mathcal{W}} p_{w,t,\\omega} + \\sum_{v \\in \\mathcal{V}} p_{v,t,\\omega} + (p^{in}_{t,\\omega} - p^{out}_{t,\\omega}) + \\sum_{s \\in \\mathcal{S}_{\\text{El}}} (p^{dis}_{s,t,\\omega} - p^{ch}_{s,t,\\omega}) = \\sum_{x \\in \\mathcal{X}} p_{x,t,\\omega} \\quad \\forall t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\n\n\n\n\n\n\nNote\n\n\n\nChanges in electricity balance:\n\nUses \\(\\mathcal{S}_{\\text{El}}\\) subset for electricity storage\nRight-hand side changed from demand to electrolyzer consumption\n\n\n\n\n\nHydrogen Balance\n\\(\\sum_{x \\in \\mathcal{X}} h_{x,t,\\omega} + \\sum_{s \\in \\mathcal{S}_{\\text{H2}}} (p^{dis}_{s,t,\\omega} - p^{ch}_{s,t,\\omega}) = d_{t,\\omega} \\quad \\forall t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\n\n\n\n\n\n\nNote\n\n\n\nNew constraint:\nHydrogen balance equation considering:\n\nHydrogen production from electrolyzers\nHydrogen storage operations\nHydrogen demand\n\n\n\n\n\nComponent Limits\n\nWind Parks\n\\(0 \\leq p_{w,t,\\omega} \\leq f_{w,t,\\omega} p^{nom}_w \\quad \\forall w \\in \\mathcal{W}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\n\n\nPV Parks\n\\(0 \\leq p_{v,t,\\omega} \\leq f_{v,t,\\omega} p^{nom}_v \\quad \\forall v \\in \\mathcal{V}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\n\n\nStorage Systems\n\\(0 \\leq p^{ch}_{s,t,\\omega} \\leq p^{ch,nom}_s \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\) \\(0 \\leq p^{dis}_{s,t,\\omega} \\leq p^{dis,nom}_s \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\) \\(DoD_s e^{nom}_s \\leq e_{s,t,\\omega} \\leq e^{nom}_s \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\n\n\n\nStorage Energy Balance\n\\(e_{s,t,\\omega} = (1-sdr_s)e_{s,t-1,\\omega} + \\eta^{ch}_s p^{ch}_{s,t,\\omega} - \\frac{p^{dis}_{s,t,\\omega}}{\\eta^{dis}_s} \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\n\n\nElectrolyzer Constraints\n\\(0 \\leq p_{x,t,\\omega} \\leq p^{nom}_x \\quad \\forall x \\in \\mathcal{X}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\) \\(h_{x,t,\\omega} = \\beta_x p_{x,t,\\omega} \\quad \\forall x \\in \\mathcal{X}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\n\n\n\n\n\n\nNote\n\n\n\nNew constraints for electrolyzer:\n\nPower consumption limits\nConversion relationship between power consumption and hydrogen production\n\n\n\n\n\nQuestions?",
+    "text": "Constraints\n\nPower Balance (Electricity)\n\\(\\sum_{w \\in \\mathcal{W}} p_{w,t,\\omega} + \\sum_{v \\in \\mathcal{V}} p_{v,t,\\omega} + (p^{in}_{t,\\omega} - p^{out}_{t,\\omega}) + \\sum_{s \\in \\mathcal{S}_{\\text{El}}} (p^{dis}_{s,t,\\omega} - p^{ch}_{s,t,\\omega}) = \\sum_{x \\in \\mathcal{X}} p_{x,t,\\omega} \\quad \\forall t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\n\n\n\n\n\n\nNote\n\n\n\nChanges in electricity balance:\n\nUses \\(\\mathcal{S}_{\\text{El}}\\) subset for electricity storage\nRight-hand side changed from demand to electrolyzer consumption\n\n\n\n\n\nHydrogen Balance\n\\(\\sum_{x \\in \\mathcal{X}} h_{x,t,\\omega} + \\sum_{s \\in \\mathcal{S}_{\\text{H2}}} (p^{dis}_{s,t,\\omega} - p^{ch}_{s,t,\\omega}) = d_{t,\\omega} \\quad \\forall t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\n\n\n\n\n\n\nNote\n\n\n\nNew constraint:\nHydrogen balance equation considering:\n\nHydrogen production from electrolyzers\nHydrogen storage operations\nHydrogen demand\n\n\n\n\n\nComponent Limits\n\nWind Parks\n\\(0 \\leq p_{w,t,\\omega} \\leq f_{w,t,\\omega} p^{nom}_w \\quad \\forall w \\in \\mathcal{W}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\n\n\nPV Parks\n\\(0 \\leq p_{v,t,\\omega} \\leq f_{v,t,\\omega} p^{nom}_v \\quad \\forall v \\in \\mathcal{V}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\n\n\nStorage Systems\n\\(0 \\leq p^{ch}_{s,t,\\omega} \\leq p^{ch,nom}_s \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\) \\(0 \\leq p^{dis}_{s,t,\\omega} \\leq p^{dis,nom}_s \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\) \\(DoD_s e^{nom}_s \\leq e_{s,t,\\omega} \\leq e^{nom}_s \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\n\n\n\nStorage Energy Balance\n\\(e_{s,t,\\omega} = (1-sdr_s)e_{s,t-1,\\omega} + \\eta^{ch}_s p^{ch}_{s,t,\\omega} - \\frac{p^{dis}_{s,t,\\omega}}{\\eta^{dis}_s} \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\n\n\nElectrolyzer Constraints\n\\(0 \\leq p_{x,t,\\omega} \\leq p^{nom}_x \\quad \\forall x \\in \\mathcal{X}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\) \\(h_{x,t,\\omega} = \\beta_x p_{x,t,\\omega} \\quad \\forall x \\in \\mathcal{X}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\n\n\n\n\n\n\nNote\n\n\n\nNew constraints for electrolyzer:\n\nPower consumption limits\nConversion relationship between power consumption and hydrogen production",
     "crumbs": [
       "09 MES",
       "Lecture"
@@ -6256,7 +6256,7 @@
     "href": "part-09/lecture-mes.html#literature-ii",
     "title": "Lecture IX - Multi-Energy Systems",
     "section": "Literature II",
-    "text": "Literature II",
+    "text": "Literature II\n\n\nQuestions?",
     "crumbs": [
       "09 MES",
       "Lecture"
@@ -6344,7 +6344,7 @@
     "href": "part-09/lecture-presentation.html#multi-energy-systems-example-hydrogen-value-chain",
     "title": "Lecture IX - Multi-Energy Systems",
     "section": "Multi-Energy Systems: Example Hydrogen Value Chain",
-    "text": "Multi-Energy Systems: Example Hydrogen Value Chain\n\nExample of a hydrogen value chain with renewable energy sources, grid, electrolyzer, storages and hydrogen demand"
+    "text": "Multi-Energy Systems: Example Hydrogen Value Chain\n\nExample case of a hydrogen value chain\n\n\n\n\n\nNote\n\n\nThe figure shows a multi-energy system with:\n\nRenewable energy sources (PV and Wind) and grid connection\nElectric bus bar for power distribution\nElectrolyzer for hydrogen production\nHydrogen bus bar for hydrogen distribution\nHydrogen storage\nHydrogen demand"
   },
   {
     "objectID": "part-09/lecture-presentation.html#multi-energy-system-design-problem",
@@ -6372,7 +6372,7 @@
     "href": "part-09/lecture-presentation.html#decision-variables",
     "title": "Lecture IX - Multi-Energy Systems",
     "section": "Decision Variables",
-    "text": "Decision Variables\nInvestment Variables (First Stage)\n\n\\(e^{nom}_s\\) - Nominal energy capacity of storage \\(s\\) [MWh]\n\\(p^{ch,nom}_s\\) - Nominal charging power of storage \\(s\\) [MW]\n\\(p^{dis,nom}_s\\) - Nominal discharging power of storage \\(s\\) [MW]\n\\(p^{nom}_w\\) - Nominal power of wind park \\(w\\) [MW]\n\\(p^{nom}_v\\) - Nominal power of PV park \\(v\\) [MW]\n\\(p^{nom}_x\\) - Nominal power of electrolyzer \\(x\\) [MW]\n\nOperational Variables (Second Stage)\n\n\\(p_{w,t,\\omega}\\) - Power output of wind park \\(w\\) at time \\(t\\) in scenario \\(\\omega\\) [MW]\n\\(p_{v,t,\\omega}\\) - Power output of PV park \\(v\\) at time \\(t\\) in scenario \\(\\omega\\) [MW]\n\\(p^{in}_{t,\\omega}\\) - Power inflow through market at time \\(t\\) in scenario \\(\\omega\\) [MW]\n\\(p^{out}_{t,\\omega}\\) - Power outflow through market at time \\(t\\) in scenario \\(\\omega\\) [MW]\n\\(p^{ch}_{s,t,\\omega}\\) - Charging power of storage \\(s\\) at time \\(t\\) in scenario \\(\\omega\\) [MW]\n\\(p^{dis}_{s,t,\\omega}\\) - Discharging power of storage \\(s\\) at time \\(t\\) in scenario \\(\\omega\\) [MW]\n\\(e_{s,t,\\omega}\\) - Energy level of storage \\(s\\) at time \\(t\\) in scenario \\(\\omega\\) [MWh]\n\\(p_{x,t,\\omega}\\) - Power consumption of electrolyzer \\(x\\) at time \\(t\\) in scenario \\(\\omega\\) [MW]\n\\(h_{x,t,\\omega}\\) - Hydrogen production of electrolyzer \\(x\\) at time \\(t\\) in scenario \\(\\omega\\) [MW]\n\n\n\n\n\n\n\nNote\n\n\nNew operational variables for the electrolyzer: 1. \\(p_{x,t,\\omega}\\) for power consumption 2. \\(h_{x,t,\\omega}\\) for hydrogen production\n\n\n\nAnnual Cost Variables\n\n\\(AC^{inv}_s\\) - Annual investment cost for storage \\(s\\) [EUR/year]\n\\(AC^{inv}_w\\) - Annual investment cost for wind park \\(w\\) [EUR/year]\n\\(AC^{inv}_v\\) - Annual investment cost for PV park \\(v\\) [EUR/year]\n\\(AC^{inv}_x\\) - Annual investment cost for electrolyzer \\(x\\) [EUR/year]\n\\(AC^{grid,imp}_{\\omega}\\) - Annual grid electricity import cost in scenario \\(\\omega\\) [EUR/year]\n\\(AR^{grid,exp}_{\\omega}\\) - Annual grid electricity export revenue in scenario \\(\\omega\\) [EUR/year]\n\n\n\n\n\n\n\nNote\n\n\nNew cost variable: - \\(AC^{inv}_x\\) for electrolyzer investment costs"
+    "text": "Decision Variables\nInvestment Variables (First Stage)\n\n\\(e^{nom}_s\\) - Nominal energy capacity of storage \\(s\\) [MWh]\n\\(p^{ch,nom}_s\\) - Nominal charging power of storage \\(s\\) [MW]\n\\(p^{dis,nom}_s\\) - Nominal discharging power of storage \\(s\\) [MW]\n\\(p^{nom}_w\\) - Nominal power of wind park \\(w\\) [MW]\n\\(p^{nom}_v\\) - Nominal power of PV park \\(v\\) [MW]\n\\(p^{nom}_x\\) - Nominal power of electrolyzer \\(x\\) [MW]\n\nOperational Variables (Second Stage)\n\n\\(p_{w,t,\\omega}\\) - Power output of wind park \\(w\\) at time \\(t\\) in scenario \\(\\omega\\) [MW]\n\\(p_{v,t,\\omega}\\) - Power output of PV park \\(v\\) at time \\(t\\) in scenario \\(\\omega\\) [MW]\n\\(p^{in}_{t,\\omega}\\) - Power inflow through market at time \\(t\\) in scenario \\(\\omega\\) [MW]\n\\(p^{out}_{t,\\omega}\\) - Power outflow through market at time \\(t\\) in scenario \\(\\omega\\) [MW]\n\\(p^{ch}_{s,t,\\omega}\\) - Charging power of storage \\(s\\) at time \\(t\\) in scenario \\(\\omega\\) [MW]\n\\(p^{dis}_{s,t,\\omega}\\) - Discharging power of storage \\(s\\) at time \\(t\\) in scenario \\(\\omega\\) [MW]\n\\(e_{s,t,\\omega}\\) - Energy level of storage \\(s\\) at time \\(t\\) in scenario \\(\\omega\\) [MWh]\n\\(p_{x,t,\\omega}\\) - Power consumption of electrolyzer \\(x\\) at time \\(t\\) in scenario \\(\\omega\\) [MW]\n\\(h_{x,t,\\omega}\\) - Hydrogen production of electrolyzer \\(x\\) at time \\(t\\) in scenario \\(\\omega\\) [MW]\n\n\n\n\n\n\n\nNote\n\n\nNew operational variables for the electrolyzer:\n\n\\(p_{x,t,\\omega}\\) for power consumption\n\\(h_{x,t,\\omega}\\) for hydrogen production\n\n\n\n\nAnnual Cost Variables\n\n\\(AC^{inv}_s\\) - Annual investment cost for storage \\(s\\) [EUR/year]\n\\(AC^{inv}_w\\) - Annual investment cost for wind park \\(w\\) [EUR/year]\n\\(AC^{inv}_v\\) - Annual investment cost for PV park \\(v\\) [EUR/year]\n\\(AC^{inv}_x\\) - Annual investment cost for electrolyzer \\(x\\) [EUR/year]\n\\(AC^{grid,imp}_{\\omega}\\) - Annual grid electricity import cost in scenario \\(\\omega\\) [EUR/year]\n\\(AR^{grid,exp}_{\\omega}\\) - Annual grid electricity export revenue in scenario \\(\\omega\\) [EUR/year]\n\n\n\n\n\n\n\nNote\n\n\nNew cost variable: \\(AC^{inv}_x\\) for electrolyzer investment costs"
   },
   {
     "objectID": "part-09/lecture-presentation.html#parameters",
@@ -6414,7 +6414,7 @@
     "href": "part-09/lecture-presentation.html#literature-ii",
     "title": "Lecture IX - Multi-Energy Systems",
     "section": "Literature II",
-    "text": "Literature II\nFor a detailed mathematical formulation of the Unit Commitment problem, see Morales-Espana, Latorre, and Ramos (2013) and Zimmermann and Kather (2019).\n\n\n\n\nMorales-Espana, G., J. M. Latorre, and A. Ramos. 2013. “Tight and Compact MILP Formulation for the Thermal Unit Commitment Problem.” IEEE Transactions on Power Systems 28 (4): 4897–4908.\n\n\nZimmermann, Cors, T., and A. Kather. 2019. “Increasing Tightness by Introduction of Intertemporal Constraints in MILP Unit Commitment.” In NEIS 2019; Conference on Sustainable Energy Supply and Energy Storage Systems, edited by Detlef Schulz, 209–14. VDE Verl."
+    "text": "Literature II"
   },
   {
     "objectID": "part-09/hydrogen-value-chain-diagram.html",
@@ -6422,5 +6422,82 @@
     "title": "Energy System Optimization with Julia",
     "section": "",
     "text": "graph LR\n    %% Renewable Energy Sources\n    PV[🌞 PV Plant]\n    Wind[💨 Wind Power Plant]\n    Grid[⚡ Transmission Grid]\n    \n    %% Electric Bus Bar\n    ElectricBus[⚡ Electric Bus Bar]\n    \n    %% Hydrogen Components\n    Electrolyzer[🔋 Electrolyzer]\n    HydrogenBus[💧 Hydrogen Bus Bar]\n    Storage[🏭 Hydrogen Storage]\n    Demand[🏢 Hydrogen Demand]\n    \n    %% Connections\n    PV --&gt; ElectricBus\n    Wind --&gt; ElectricBus\n    Grid --&gt; ElectricBus\n    ElectricBus --&gt; Electrolyzer\n    Electrolyzer --&gt; HydrogenBus\n    HydrogenBus --&gt; Storage\n    HydrogenBus --&gt; Demand\n    \n    %% Styling\n    classDef energy fill:#f9f,stroke:#333,stroke-width:2px\n    classDef component fill:#bbf,stroke:#333,stroke-width:2px\n    classDef storage fill:#bfb,stroke:#333,stroke-width:2px\n    \n    class PV,Wind,Grid energy\n    class ElectricBus,HydrogenBus component\n    class Storage,Demand storage\n\n\n\n\n\n\nThis diagram shows a multi-energy system with: - Renewable energy sources (PV and Wind) and grid connection - Electric bus bar for power distribution - Electrolyzer for hydrogen production - Hydrogen bus bar for hydrogen distribution - Hydrogen storage and demand points\nThe pictograms help visualize each component: - 🌞 for PV plant - 💨 for wind power - ⚡ for electrical components - 🔋 for electrolyzer - 💧 for hydrogen - 🏭 for storage - 🏢 for demand"
+  },
+  {
+    "objectID": "part-09/lecture-mes.html#conceptual-foundation",
+    "href": "part-09/lecture-mes.html#conceptual-foundation",
+    "title": "Lecture IX - Multi-Energy Systems",
+    "section": "Conceptual Foundation",
+    "text": "Conceptual Foundation\nMulti-energy systems (MES) and energy hubs represent a fundamental shift in energy system design, moving from single-carrier optimization to integrated multi-carrier approaches. The energy hub concept was originally introduced by Geidl and Andersson (2007) as a framework for optimal coupling of energy infrastructures, enabling the integration of electricity, heat, gas, and other energy carriers within a unified optimization framework.\n\n\n\n\n\n\nNote\n\n\n\nThe energy hub concept provides a systematic approach to model and optimize multi-carrier energy systems, enabling the integration of renewable energy sources, storage technologies, and energy conversion processes.",
+    "crumbs": [
+      "09 MES",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-09/lecture-mes.html#recent-literature-reviews",
+    "href": "part-09/lecture-mes.html#recent-literature-reviews",
+    "title": "Lecture IX - Multi-Energy Systems",
+    "section": "Recent Literature Reviews",
+    "text": "Recent Literature Reviews\nSeveral comprehensive literature reviews have been conducted in recent years, highlighting the growing importance of multi-energy systems:\n\nUncertainty Modeling and Optimization\nRecent reviews by Jasinski et al. (2023), Lasemi et al. (2022), and Onen, Mokryani, and Zubo (2022) focus on uncertainty modeling approaches in energy hub optimization. These reviews identify three main approaches: - Stochastic Programming: Using scenario-based optimization with Monte Carlo simulation - Robust Optimization: Providing conservative but computationally efficient solutions - Hybrid Methods: Combining the advantages of both approaches\n\n\nComprehensive Framework Reviews\nPapadimitriou et al. (2023) provides a systematic review of modeling formulations, optimization methods, and market interactions in energy hubs. Ding et al. (2022) extends this analysis to include trading and control structures for handling large-scale datasets.\n\n\nHistorical Development\nEarlier reviews by Maroufmashat et al. (2019) and Son et al. (2021) identified the hydrogen economy as a major application area for energy hubs, following the original proposals by Geidl and Andersson (2007). These reviews systematically analyzed 200+ articles published between 2007-2017, establishing the foundation for current research directions.",
+    "crumbs": [
+      "09 MES",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-09/lecture-mes.html#key-research-directions",
+    "href": "part-09/lecture-mes.html#key-research-directions",
+    "title": "Lecture IX - Multi-Energy Systems",
+    "section": "Key Research Directions",
+    "text": "Key Research Directions\n\nHydrogen and Power-to-X Integration\nRecent literature identifies hydrogen and Power-to-X (P2X) technologies as critical future research directions. Kountouris et al. (2023) developed an optimization model for P2X-integrated energy hubs applied to an industrial park in Denmark, demonstrating the economic viability of hydrogen, methanol, and ammonia production.\n\n\nIndustrial Applications\nWassermann et al. (2022) addressed the planning and operation problem for hydrogen demand in refinery applications, presenting MILP model extensions for water electrolysis and cavern storage. This work demonstrates the practical application of energy hub concepts to real-world industrial decarbonization projects.\n\n\nUncertainty and Computational Challenges\nThe representation of renewable energy uncertainty is identified as a core challenge across multiple reviews. Ringkjöb, Haugan, and Solbrekke (2018), who reviewed 75 energy system modeling frameworks, conclude that high spatiotemporal resolution is essential for accurate RES representation, but comes at significant computational cost.\n\n\n\n\n\n\nNote\n\n\n\nThe trade-off between model fidelity and computational burden is a central challenge in multi-energy system optimization, particularly when considering renewable energy uncertainty.",
+    "crumbs": [
+      "09 MES",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-09/lecture-mes.html#solution-methods-and-frameworks",
+    "href": "part-09/lecture-mes.html#solution-methods-and-frameworks",
+    "title": "Lecture IX - Multi-Energy Systems",
+    "section": "Solution Methods and Frameworks",
+    "text": "Solution Methods and Frameworks\n\nDecomposition Approaches\nSeveral studies demonstrate the effectiveness of Benders decomposition for energy hub optimization. Mansouri et al. (2020), Chen et al. (2019), and Hemmati, Ghaderi, and Ghazizadeh (2018) use Benders decomposition to separate dimensioning decisions (master problem) from operational optimization (subproblems), enabling efficient solution of large-scale problems.\n\n\nAdvanced Modeling Frameworks\nRecent frameworks address computational complexity through innovative approaches:\n\nSpineOpt (Ihlemann et al. (2022)): A flexible Julia-based framework allowing variable temporal resolution per system component\nAnyMod (Göke (2021)): A pure linear model formulation designed for macro-energy system planning with full-year time series\nficus (Atabay (2017)): An industrial energy system optimization framework based on the urbs framework (Dorfner (2016))\n\n\n\nTemporal Resolution Challenges\nGonzato, Bruninx, and Delarue (2021) analyzed techniques for reducing temporal scope in expansion planning models with long-term storage, recommending against temporal reductions and advocating for full-year time series inclusion to prevent biases in system design.",
+    "crumbs": [
+      "09 MES",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-09/lecture-mes.html#hydrogen-supply-chain-integration",
+    "href": "part-09/lecture-mes.html#hydrogen-supply-chain-integration",
+    "title": "Lecture IX - Multi-Energy Systems",
+    "section": "Hydrogen Supply Chain Integration",
+    "text": "Hydrogen Supply Chain Integration\nThe integration of hydrogen supply chain network design (HSCND) with energy hub optimization represents an emerging research area. Li, Manier, and Manier (2019) provides a comprehensive review of HSCND optimization approaches, while Riera, Lima, and Knio (2023) reviews hydrogen production and supply chain modeling specifically.\n\n\n\n\n\n\nNote\n\n\n\nThe integration of hydrogen supply chain optimization with energy hub concepts enables comprehensive planning of green hydrogen value chains from production to end-use applications.",
+    "crumbs": [
+      "09 MES",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-09/lecture-mes.html#open-source-tools-and-frameworks",
+    "href": "part-09/lecture-mes.html#open-source-tools-and-frameworks",
+    "title": "Lecture IX - Multi-Energy Systems",
+    "section": "Open Source Tools and Frameworks",
+    "text": "Open Source Tools and Frameworks\nSeveral reviews assess the maturity and capabilities of open-source energy system optimization tools:\n\nGroissböck (2019) evaluates the maturity of open-source tools for serious applications\nOberle and Elsland (2019) assesses the ability of open-access models to evaluate current energy scenarios\nPfenninger, Hawkes, and Keirstead (2014) provides a broader perspective on energy systems modeling challenges",
+    "crumbs": [
+      "09 MES",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-09/lecture-mes.html#future-research-directions",
+    "href": "part-09/lecture-mes.html#future-research-directions",
+    "title": "Lecture IX - Multi-Energy Systems",
+    "section": "Future Research Directions",
+    "text": "Future Research Directions\nRecent literature reviews identify several critical future research directions:\n\nTechnology Integration: Further development of hydrogen, P2X, and CCUS technologies in integrated energy hubs\nReal-world Applications: Development of practical applications and business cases for energy hub concepts\nComputational Efficiency: Development of efficient modeling schemes and solution algorithms for uncertainty representation\nIndustrial Decarbonization: Application of energy hub concepts to hard-to-abate industrial sectors\n\n\n\n\n\n\n\nNote\n\n\n\nThe energy hub concept has evolved from a theoretical framework to a practical tool for industrial decarbonization, with growing applications in hydrogen value chains and Power-to-X systems.",
+    "crumbs": [
+      "09 MES",
+      "Lecture"
+    ]
   }
 ]

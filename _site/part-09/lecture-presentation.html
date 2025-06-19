@@ -28,27 +28,7 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
-    /* CSS for citations */
-    div.csl-bib-body { }
-    div.csl-entry {
-      clear: both;
-      margin-bottom: 0em;
-    }
-    .hanging-indent div.csl-entry {
-      margin-left:2em;
-      text-indent:-2em;
-    }
-    div.csl-left-margin {
-      min-width:2em;
-      float:left;
-    }
-    div.csl-right-inline {
-      margin-left:2em;
-      padding-left:1em;
-    }
-    div.csl-indent {
-      margin-left: 2em;
-    }  </style>
+  </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-653911d01099ef05c9ae47df4de1f73b.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
@@ -532,7 +512,28 @@ Dr.&nbsp;Tobias Cors
 <section id="multi-energy-systems-example-hydrogen-value-chain" class="slide level2">
 <h2>Multi-Energy Systems: Example Hydrogen Value Chain</h2>
 
-<img data-src="H2-mes.png" style="width:70.0%" class="r-stretch quarto-figure-center"><p class="caption">Example of a hydrogen value chain with renewable energy sources, grid, electrolyzer, storages and hydrogen demand</p></section>
+<img data-src="H2-mes.png" style="width:70.0%" class="r-stretch quarto-figure-center"><p class="caption">Example case of a hydrogen value chain</p><div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>The figure shows a multi-energy system with:</p>
+<ul>
+<li>Renewable energy sources (PV and Wind) and grid connection</li>
+<li>Electric bus bar for power distribution</li>
+<li>Electrolyzer for hydrogen production</li>
+<li>Hydrogen bus bar for hydrogen distribution</li>
+<li>Hydrogen storage</li>
+<li>Hydrogen demand</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
 <section id="multi-energy-system-design-problem" class="slide level2">
 <h2>Multi-Energy System Design Problem</h2>
 <p>In this lecture, we extend the Stochastic System Design problem to include investment decisions for <em>multi-energy systems</em>. This allows us to:</p>
@@ -636,7 +637,11 @@ Dr.&nbsp;Tobias Cors
 <p><strong>Note</strong></p>
 </div>
 <div class="callout-content">
-<p>New operational variables for the electrolyzer: 1. <span class="math inline">\(p_{x,t,\omega}\)</span> for power consumption 2. <span class="math inline">\(h_{x,t,\omega}\)</span> for hydrogen production</p>
+<p>New operational variables for the electrolyzer:</p>
+<ol type="1">
+<li><span class="math inline">\(p_{x,t,\omega}\)</span> for power consumption</li>
+<li><span class="math inline">\(h_{x,t,\omega}\)</span> for hydrogen production</li>
+</ol>
 </div>
 </div>
 </div>
@@ -658,7 +663,7 @@ Dr.&nbsp;Tobias Cors
 <p><strong>Note</strong></p>
 </div>
 <div class="callout-content">
-<p>New cost variable: - <span class="math inline">\(AC^{inv}_x\)</span> for electrolyzer investment costs</p>
+<p>New cost variable: <span class="math inline">\(AC^{inv}_x\)</span> for electrolyzer investment costs</p>
 </div>
 </div>
 </div>
@@ -848,19 +853,10 @@ Dr.&nbsp;Tobias Cors
 <h2>Literature I</h2>
 <p>For more interesting literature to learn more about Julia, take a look at the <a href="../general/literature.html">literature list</a> of this course.</p>
 </section>
-<section id="literature-ii" class="slide level2 smaller scrollable">
+<section id="literature-ii" class="slide level2">
 <h2>Literature II</h2>
-<p>For a detailed mathematical formulation of the Unit Commitment problem, see <span class="citation" data-cites="morales2013tight">Morales-Espana, Latorre, and Ramos (<a href="#/literature-ii" role="doc-biblioref" onclick="">2013</a>)</span> and <span class="citation" data-cites="zimmermann2019increasing">Zimmermann and Kather (<a href="#/literature-ii" role="doc-biblioref" onclick="">2019</a>)</span>.</p>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
-<div id="ref-morales2013tight" class="csl-entry" role="listitem">
-Morales-Espana, G., J. M. Latorre, and A. Ramos. 2013. <span>“Tight and Compact MILP Formulation for the Thermal Unit Commitment Problem.”</span> <em>IEEE Transactions on Power Systems</em> 28 (4): 4897–4908.
-</div>
-<div id="ref-zimmermann2019increasing" class="csl-entry" role="listitem">
-Zimmermann, Cors, T., and A. Kather. 2019. <span>“Increasing Tightness by Introduction of Intertemporal Constraints in MILP Unit Commitment.”</span> In <em>NEIS 2019; Conference on Sustainable Energy Supply and Energy Storage Systems</em>, edited by Detlef Schulz, 209–14. VDE Verl.
-</div>
-</div>
 </section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">

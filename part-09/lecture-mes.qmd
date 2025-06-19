@@ -508,6 +508,93 @@ New constraints for electrolyzer:
 2. Conversion relationship between power consumption and hydrogen production
 :::
 
+# [Literature Review: Multi-Energy Systems and Energy Hubs]{.flow} {.title}
+
+## Conceptual Foundation
+
+Multi-energy systems (MES) and energy hubs represent a fundamental shift in energy system design, moving from single-carrier optimization to integrated multi-carrier approaches. The energy hub concept was originally introduced by @Geidl2007b as a framework for optimal coupling of energy infrastructures, enabling the integration of electricity, heat, gas, and other energy carriers within a unified optimization framework.
+
+::: {.callout-note}
+The energy hub concept provides a systematic approach to model and optimize multi-carrier energy systems, enabling the integration of renewable energy sources, storage technologies, and energy conversion processes.
+:::
+
+## Recent Literature Reviews
+
+Several comprehensive literature reviews have been conducted in recent years, highlighting the growing importance of multi-energy systems:
+
+### Uncertainty Modeling and Optimization
+Recent reviews by @Jasinski2023, @Lasemi2022, and @Onen2022 focus on uncertainty modeling approaches in energy hub optimization. These reviews identify three main approaches:
+- **Stochastic Programming**: Using scenario-based optimization with Monte Carlo simulation
+- **Robust Optimization**: Providing conservative but computationally efficient solutions
+- **Hybrid Methods**: Combining the advantages of both approaches
+
+### Comprehensive Framework Reviews
+@Papadimitriou2023 provides a systematic review of modeling formulations, optimization methods, and market interactions in energy hubs. @Ding2022 extends this analysis to include trading and control structures for handling large-scale datasets.
+
+### Historical Development
+Earlier reviews by @Maroufmashat2019 and @Son2021 identified the hydrogen economy as a major application area for energy hubs, following the original proposals by @Geidl2007b. These reviews systematically analyzed 200+ articles published between 2007-2017, establishing the foundation for current research directions.
+
+## Key Research Directions
+
+### Hydrogen and Power-to-X Integration
+Recent literature identifies hydrogen and Power-to-X (P2X) technologies as critical future research directions. @Kountouris2023 developed an optimization model for P2X-integrated energy hubs applied to an industrial park in Denmark, demonstrating the economic viability of hydrogen, methanol, and ammonia production.
+
+### Industrial Applications
+@Wassermann2022 addressed the planning and operation problem for hydrogen demand in refinery applications, presenting MILP model extensions for water electrolysis and cavern storage. This work demonstrates the practical application of energy hub concepts to real-world industrial decarbonization projects.
+
+### Uncertainty and Computational Challenges
+The representation of renewable energy uncertainty is identified as a core challenge across multiple reviews. @Ringkjob2018, who reviewed 75 energy system modeling frameworks, conclude that high spatiotemporal resolution is essential for accurate RES representation, but comes at significant computational cost.
+
+::: {.callout-note}
+The trade-off between model fidelity and computational burden is a central challenge in multi-energy system optimization, particularly when considering renewable energy uncertainty.
+:::
+
+## Solution Methods and Frameworks
+
+### Decomposition Approaches
+Several studies demonstrate the effectiveness of Benders decomposition for energy hub optimization. @Mansouri2020, @Chen2019b, and @Hemmati2018 use Benders decomposition to separate dimensioning decisions (master problem) from operational optimization (subproblems), enabling efficient solution of large-scale problems.
+
+### Advanced Modeling Frameworks
+Recent frameworks address computational complexity through innovative approaches:
+
+- **SpineOpt** (@Ihlemann2022): A flexible Julia-based framework allowing variable temporal resolution per system component
+- **AnyMod** (@Goke2021): A pure linear model formulation designed for macro-energy system planning with full-year time series
+- **ficus** (@Atabay2017): An industrial energy system optimization framework based on the urbs framework (@Dorfner2016)
+
+### Temporal Resolution Challenges
+@Gonzato2021 analyzed techniques for reducing temporal scope in expansion planning models with long-term storage, recommending against temporal reductions and advocating for full-year time series inclusion to prevent biases in system design.
+
+## Hydrogen Supply Chain Integration
+
+The integration of hydrogen supply chain network design (HSCND) with energy hub optimization represents an emerging research area. @Li2019 provides a comprehensive review of HSCND optimization approaches, while @Riera2023 reviews hydrogen production and supply chain modeling specifically.
+
+::: {.callout-note}
+The integration of hydrogen supply chain optimization with energy hub concepts enables comprehensive planning of green hydrogen value chains from production to end-use applications.
+:::
+
+## Open Source Tools and Frameworks
+
+Several reviews assess the maturity and capabilities of open-source energy system optimization tools:
+
+- @Groissbock2019 evaluates the maturity of open-source tools for serious applications
+- @Oberle2019 assesses the ability of open-access models to evaluate current energy scenarios
+- @Pfenninger2014 provides a broader perspective on energy systems modeling challenges
+
+## Future Research Directions
+
+Recent literature reviews identify several critical future research directions:
+
+1. **Technology Integration**: Further development of hydrogen, P2X, and CCUS technologies in integrated energy hubs
+2. **Real-world Applications**: Development of practical applications and business cases for energy hub concepts
+3. **Computational Efficiency**: Development of efficient modeling schemes and solution algorithms for uncertainty representation
+4. **Industrial Decarbonization**: Application of energy hub concepts to hard-to-abate industrial sectors
+
+::: {.callout-note}
+The energy hub concept has evolved from a theoretical framework to a practical tool for industrial decarbonization, with growing applications in hydrogen value chains and Power-to-X systems.
+:::
+
+## Literature II
+
 
 ::: {.loud-slide}
 ::: {.r-fit-text}
