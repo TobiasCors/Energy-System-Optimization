@@ -28,7 +28,27 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
-  </style>
+    /* CSS for citations */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+      margin-bottom: 0em;
+    }
+    .hanging-indent div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }  </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-653911d01099ef05c9ae47df4de1f73b.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
@@ -835,6 +855,126 @@ Dr.&nbsp;Tobias Cors
 </div>
 </div>
 </div>
+</section></section>
+<section>
+<section id="literature-review-multi-energy-systems-and-energy-hubs" class="title-slide slide level1 title center">
+<h1><span class="flow">Literature Review: Multi-Energy Systems and Energy Hubs</span></h1>
+
+</section>
+<section id="conceptual-foundation" class="slide level2">
+<h2>Conceptual Foundation</h2>
+<p>Multi-energy systems (MES) and energy hubs represent a fundamental shift in energy system design, moving from single-carrier optimization to integrated multi-carrier approaches. The energy hub concept was originally introduced by <span class="citation" data-cites="Geidl2007b">Geidl and Andersson (<a href="#/literature-ii-1" role="doc-biblioref" onclick="">2007</a>)</span> as a framework for optimal coupling of energy infrastructures, enabling the integration of electricity, heat, gas, and other energy carriers within a unified optimization framework.</p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>The energy hub concept provides a systematic approach to model and optimize multi-carrier energy systems, enabling the integration of renewable energy sources, storage technologies, and energy conversion processes.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="recent-literature-reviews" class="slide level2">
+<h2>Recent Literature Reviews</h2>
+<p>Several comprehensive literature reviews have been conducted in recent years, highlighting the growing importance of multi-energy systems:</p>
+<h3 id="uncertainty-modeling-and-optimization">Uncertainty Modeling and Optimization</h3>
+<p>Recent reviews by <span class="citation" data-cites="Jasinski2023">Jasinski et al. (<a href="#/literature-ii-1" role="doc-biblioref" onclick="">2023</a>)</span>, <span class="citation" data-cites="Lasemi2022">Lasemi et al. (<a href="#/literature-ii-1" role="doc-biblioref" onclick="">2022</a>)</span>, and <span class="citation" data-cites="Onen2022">Onen, Mokryani, and Zubo (<a href="#/literature-ii-1" role="doc-biblioref" onclick="">2022</a>)</span> focus on uncertainty modeling approaches in energy hub optimization. These reviews identify three main approaches: - <strong>Stochastic Programming</strong>: Using scenario-based optimization with Monte Carlo simulation - <strong>Robust Optimization</strong>: Providing conservative but computationally efficient solutions - <strong>Hybrid Methods</strong>: Combining the advantages of both approaches</p>
+<h3 id="comprehensive-framework-reviews">Comprehensive Framework Reviews</h3>
+<p><span class="citation" data-cites="Papadimitriou2023">Papadimitriou et al. (<a href="#/literature-ii-1" role="doc-biblioref" onclick="">2023</a>)</span> provides a systematic review of modeling formulations, optimization methods, and market interactions in energy hubs. <span class="citation" data-cites="Ding2022">Ding et al. (<a href="#/literature-ii-1" role="doc-biblioref" onclick="">2022</a>)</span> extends this analysis to include trading and control structures for handling large-scale datasets.</p>
+<h3 id="historical-development">Historical Development</h3>
+<p>Earlier reviews by <span class="citation" data-cites="Maroufmashat2019">Maroufmashat et al. (<a href="#/literature-ii-1" role="doc-biblioref" onclick="">2019</a>)</span> and <span class="citation" data-cites="Son2021">Son et al. (<a href="#/literature-ii-1" role="doc-biblioref" onclick="">2021</a>)</span> identified the hydrogen economy as a major application area for energy hubs, following the original proposals by <span class="citation" data-cites="Geidl2007b">Geidl and Andersson (<a href="#/literature-ii-1" role="doc-biblioref" onclick="">2007</a>)</span>. These reviews systematically analyzed 200+ articles published between 2007-2017, establishing the foundation for current research directions.</p>
+</section>
+<section id="key-research-directions" class="slide level2">
+<h2>Key Research Directions</h2>
+<h3 id="hydrogen-and-power-to-x-integration">Hydrogen and Power-to-X Integration</h3>
+<p>Recent literature identifies hydrogen and Power-to-X (P2X) technologies as critical future research directions. <span class="citation" data-cites="Kountouris2023">Kountouris et al. (<a href="#/literature-ii-1" role="doc-biblioref" onclick="">2023</a>)</span> developed an optimization model for P2X-integrated energy hubs applied to an industrial park in Denmark, demonstrating the economic viability of hydrogen, methanol, and ammonia production.</p>
+<h3 id="industrial-applications">Industrial Applications</h3>
+<p><span class="citation" data-cites="Wassermann2022">Wassermann et al. (<a href="#/literature-ii-1" role="doc-biblioref" onclick="">2022</a>)</span> addressed the planning and operation problem for hydrogen demand in refinery applications, presenting MILP model extensions for water electrolysis and cavern storage. This work demonstrates the practical application of energy hub concepts to real-world industrial decarbonization projects.</p>
+<h3 id="uncertainty-and-computational-challenges">Uncertainty and Computational Challenges</h3>
+<p>The representation of renewable energy uncertainty is identified as a core challenge across multiple reviews. <span class="citation" data-cites="Ringkjob2018">Ringkjöb, Haugan, and Solbrekke (<a href="#/literature-ii-1" role="doc-biblioref" onclick="">2018</a>)</span>, who reviewed 75 energy system modeling frameworks, conclude that high spatiotemporal resolution is essential for accurate RES representation, but comes at significant computational cost.</p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>The trade-off between model fidelity and computational burden is a central challenge in multi-energy system optimization, particularly when considering renewable energy uncertainty.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="solution-methods-and-frameworks" class="slide level2">
+<h2>Solution Methods and Frameworks</h2>
+<h3 id="decomposition-approaches">Decomposition Approaches</h3>
+<p>Several studies demonstrate the effectiveness of Benders decomposition for energy hub optimization. <span class="citation" data-cites="Mansouri2020">Mansouri et al. (<a href="#/literature-ii-1" role="doc-biblioref" onclick="">2020</a>)</span>, <span class="citation" data-cites="Chen2019b">Chen et al. (<a href="#/literature-ii-1" role="doc-biblioref" onclick="">2019</a>)</span>, and <span class="citation" data-cites="Hemmati2018">Hemmati, Ghaderi, and Ghazizadeh (<a href="#/literature-ii-1" role="doc-biblioref" onclick="">2018</a>)</span> use Benders decomposition to separate dimensioning decisions (master problem) from operational optimization (subproblems), enabling efficient solution of large-scale problems.</p>
+<h3 id="advanced-modeling-frameworks">Advanced Modeling Frameworks</h3>
+<p>Recent frameworks address computational complexity through innovative approaches:</p>
+<ul>
+<li><strong>SpineOpt</strong> (<span class="citation" data-cites="Ihlemann2022">Ihlemann et al. (<a href="#/literature-ii-1" role="doc-biblioref" onclick="">2022</a>)</span>): A flexible Julia-based framework allowing variable temporal resolution per system component</li>
+<li><strong>AnyMod</strong> (<span class="citation" data-cites="Goke2021">Göke (<a href="#/literature-ii-1" role="doc-biblioref" onclick="">2021</a>)</span>): A pure linear model formulation designed for macro-energy system planning with full-year time series</li>
+<li><strong>ficus</strong> (<span class="citation" data-cites="Atabay2017">Atabay (<a href="#/literature-ii-1" role="doc-biblioref" onclick="">2017</a>)</span>): An industrial energy system optimization framework based on the urbs framework (<span class="citation" data-cites="Dorfner2016">Dorfner (<a href="#/literature-ii-1" role="doc-biblioref" onclick="">2016</a>)</span>)</li>
+</ul>
+<h3 id="temporal-resolution-challenges">Temporal Resolution Challenges</h3>
+<p><span class="citation" data-cites="Gonzato2021">Gonzato, Bruninx, and Delarue (<a href="#/literature-ii-1" role="doc-biblioref" onclick="">2021</a>)</span> analyzed techniques for reducing temporal scope in expansion planning models with long-term storage, recommending against temporal reductions and advocating for full-year time series inclusion to prevent biases in system design.</p>
+</section>
+<section id="hydrogen-supply-chain-integration" class="slide level2">
+<h2>Hydrogen Supply Chain Integration</h2>
+<p>The integration of hydrogen supply chain network design (HSCND) with energy hub optimization represents an emerging research area. <span class="citation" data-cites="Li2019">Li, Manier, and Manier (<a href="#/literature-ii-1" role="doc-biblioref" onclick="">2019</a>)</span> provides a comprehensive review of HSCND optimization approaches, while <span class="citation" data-cites="Riera2023">Riera, Lima, and Knio (<a href="#/literature-ii-1" role="doc-biblioref" onclick="">2023</a>)</span> reviews hydrogen production and supply chain modeling specifically.</p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>The integration of hydrogen supply chain optimization with energy hub concepts enables comprehensive planning of green hydrogen value chains from production to end-use applications.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="open-source-tools-and-frameworks" class="slide level2">
+<h2>Open Source Tools and Frameworks</h2>
+<p>Several reviews assess the maturity and capabilities of open-source energy system optimization tools:</p>
+<ul>
+<li><span class="citation" data-cites="Groissbock2019">Groissböck (<a href="#/literature-ii-1" role="doc-biblioref" onclick="">2019</a>)</span> evaluates the maturity of open-source tools for serious applications</li>
+<li><span class="citation" data-cites="Oberle2019">Oberle and Elsland (<a href="#/literature-ii-1" role="doc-biblioref" onclick="">2019</a>)</span> assesses the ability of open-access models to evaluate current energy scenarios</li>
+<li><span class="citation" data-cites="Pfenninger2014">Pfenninger, Hawkes, and Keirstead (<a href="#/literature-ii-1" role="doc-biblioref" onclick="">2014</a>)</span> provides a broader perspective on energy systems modeling challenges</li>
+</ul>
+</section>
+<section id="future-research-directions" class="slide level2">
+<h2>Future Research Directions</h2>
+<p>Recent literature reviews identify several critical future research directions:</p>
+<ol type="1">
+<li><strong>Technology Integration</strong>: Further development of hydrogen, P2X, and CCUS technologies in integrated energy hubs</li>
+<li><strong>Real-world Applications</strong>: Development of practical applications and business cases for energy hub concepts</li>
+<li><strong>Computational Efficiency</strong>: Development of efficient modeling schemes and solution algorithms for uncertainty representation</li>
+<li><strong>Industrial Decarbonization</strong>: Application of energy hub concepts to hard-to-abate industrial sectors</li>
+</ol>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>The energy hub concept has evolved from a theoretical framework to a practical tool for industrial decarbonization, with growing applications in hydrogen value chains and Power-to-X systems.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="literature-ii" class="slide level2">
+<h2>Literature II</h2>
 <div class="loud-slide">
 <div class="r-fit-text">
 <p>Questions?</p>
@@ -853,10 +993,84 @@ Dr.&nbsp;Tobias Cors
 <h2>Literature I</h2>
 <p>For more interesting literature to learn more about Julia, take a look at the <a href="../general/literature.html">literature list</a> of this course.</p>
 </section>
-<section id="literature-ii" class="slide level2">
+<section id="literature-ii-1" class="slide level2 smaller scrollable">
 <h2>Literature II</h2>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-Atabay2017" class="csl-entry" role="listitem">
+Atabay, Dennis. 2017. <span>“An Open-Source Model for Optimal Design and Operation of Industrial Energy Systems.”</span> <em>Energy</em> 121: 803–21. <a href="https://doi.org/10.1016/j.energy.2017.01.030">https://doi.org/10.1016/j.energy.2017.01.030</a>.
+</div>
+<div id="ref-Chen2019b" class="csl-entry" role="listitem">
+Chen, Cong, Hongbin Sun, Xinwei Shen, Ye Guo, Qinglai Guo, and Tian Xia. 2019. <span>“Two-Stage Robust Planning-Operation Co-Optimization of Energy Hub Considering Precise Energy Storage Economic Model.”</span> <em>Applied Energy</em> 252: 113372. <a href="https://doi.org/10.1016/j.apenergy.2019.113372">https://doi.org/10.1016/j.apenergy.2019.113372</a>.
+</div>
+<div id="ref-Ding2022" class="csl-entry" role="listitem">
+Ding, Tao, Wenhao Jia, Mohammad Shahidehpour, Ouzhu Han, Yuge Sun, and Ziyu Zhang. 2022. <span>“Review of Optimization Methods for Energy Hub Planning, Operation, Trading, and Control.”</span> <em>IEEE Transactions on Sustainable Energy</em> 13 (3): 1802–18. <a href="https://doi.org/10.1109/tste.2022.3172004">https://doi.org/10.1109/tste.2022.3172004</a>.
+</div>
+<div id="ref-Dorfner2016" class="csl-entry" role="listitem">
+Dorfner, Johannes. 2016. <span>“<a href="">Open Source Modelling and Optimisation of Energy Infrastructure at Urban Scale</a>.”</span> PhD thesis, Technische Universität München.
+</div>
+<div id="ref-Geidl2007b" class="csl-entry" role="listitem">
+Geidl, Martin, and Goran Andersson. 2007. <span>“<a href="">Optimal Coupling of Energy Infrastructures</a>.”</span> <em>IEEE Lausanne Power Tech</em>, 1398–1403.
+</div>
+<div id="ref-Goke2021" class="csl-entry" role="listitem">
+Göke, Leonard. 2021. <span>“A Graph-Based Formulation for Modeling Macro-Energy Systems.”</span> <em>Applied Energy</em> 301: 117377. <a href="https://doi.org/10.1016/j.apenergy.2021.117377">https://doi.org/10.1016/j.apenergy.2021.117377</a>.
+</div>
+<div id="ref-Gonzato2021" class="csl-entry" role="listitem">
+Gonzato, Sebastian, Kenneth Bruninx, and Erik Delarue. 2021. <span>“Long Term Storage in Generation Expansion Planning Models with a Reduced Temporal Scope.”</span> <em>Applied Energy</em> 298: 117168. <a href="https://doi.org/10.1016/j.apenergy.2021.117168">https://doi.org/10.1016/j.apenergy.2021.117168</a>.
+</div>
+<div id="ref-Groissbock2019" class="csl-entry" role="listitem">
+Groissböck, Markus. 2019. <span>“Are Open Source Energy System Optimization Tools Mature Enough for Serious Use.”</span> <em>Renewable and Sustainable Energy Reviews</em> 102: 234–48. <a href="https://doi.org/10.1016/j.rser.2018.11.020">https://doi.org/10.1016/j.rser.2018.11.020</a>.
+</div>
+<div id="ref-Hemmati2018" class="csl-entry" role="listitem">
+Hemmati, S, SF Ghaderi, and MS Ghazizadeh. 2018. <span>“Sustainable Energy Hub Design Under Uncertainty Using Benders Decomposition Method.”</span> <em>Energy</em> 143: 1029–47. <a href="https://doi.org/10.1016/j.energy.2017.11.052">https://doi.org/10.1016/j.energy.2017.11.052</a>.
+</div>
+<div id="ref-Ihlemann2022" class="csl-entry" role="listitem">
+Ihlemann, Maren, Iasonas Kouveliotis-Lysikatos, Jiangyi Huang, Joseph Dillon, Ciara O’Dwyer, Topi Rasku, Manuel Marin, Kris Poncelet, and Juha Kiviluoma. 2022. <span>“SpineOpt: A Flexible Open-Source Energy System Modelling Framework.”</span> <em>Energy Strategy Reviews</em> 43: 100902. <a href="https://doi.org/10.1016/j.esr.2022.100902">https://doi.org/10.1016/j.esr.2022.100902</a>.
+</div>
+<div id="ref-Jasinski2023" class="csl-entry" role="listitem">
+Jasinski, Michal, Arsalan Najafi, Omid Homaee, Mostafa Kermani, Georgios Tsaousoglou, Zbigniew Leonowicz, and Tomas Novak. 2023. <span>“Operation and Planning of Energy Hubs Under Uncertainty—a Review of Mathematical Optimization Approaches.”</span> <em>IEEE Access</em> 11: 7208–28. <a href="https://doi.org/10.1109/access.2023.3237649">https://doi.org/10.1109/access.2023.3237649</a>.
+</div>
+<div id="ref-Kountouris2023" class="csl-entry" role="listitem">
+Kountouris, Ioannis, Lissy Langer, Rasmus Bramstoft, Marie Münster, and Dogan Keles. 2023. <span>“Power-to-x in Energy Hubs: A Danish Case Study of Renewable Fuel Production.”</span> <em>Energy Policy</em> 175: 113439. <a href="https://doi.org/10.1016/j.enpol.2023.113439">https://doi.org/10.1016/j.enpol.2023.113439</a>.
+</div>
+<div id="ref-Lasemi2022" class="csl-entry" role="listitem">
+Lasemi, Mohammad Ali, Ahmad Arabkoohsar, Amin Hajizadeh, and Behnam Mohammadi-ivatloo. 2022. <span>“A Comprehensive Review on Optimization Challenges of Smart Energy Hubs Under Uncertainty Factors.”</span> <em>Renewable and Sustainable Energy Reviews</em> 160: 112320. <a href="https://doi.org/10.1016/j.rser.2022.112320">https://doi.org/10.1016/j.rser.2022.112320</a>.
+</div>
+<div id="ref-Li2019" class="csl-entry" role="listitem">
+Li, Lei, Hervé Manier, and Marie-Ange Manier. 2019. <span>“Hydrogen Supply Chain Network Design: An Optimization-Oriented Review.”</span> <em>Renewable and Sustainable Energy Reviews</em> 103: 342–60. <a href="https://doi.org/10.1016/j.rser.2018.12.060">https://doi.org/10.1016/j.rser.2018.12.060</a>.
+</div>
+<div id="ref-Mansouri2020" class="csl-entry" role="listitem">
+Mansouri, SA, A Ahmarinejad, M Ansarian, MS Javadi, and JPS Catalao. 2020. <span>“<a href="">Stochastic Planning and Operation of Energy Hubs Considering Demand Response Programs Using Benders Decomposition Approach</a>.”</span> <em>International Journal of Electrical Power &amp; Energy Systems</em> 120: 106030.
+</div>
+<div id="ref-Maroufmashat2019" class="csl-entry" role="listitem">
+Maroufmashat, Taqvi, Miragha, Fowler, and Elkamel. 2019. <span>“Modeling and Optimization of Energy Hubs: A Comprehensive Review.”</span> <em>Inventions</em> 4 (3): 50. <a href="https://doi.org/10.3390/inventions4030050">https://doi.org/10.3390/inventions4030050</a>.
+</div>
+<div id="ref-Oberle2019" class="csl-entry" role="listitem">
+Oberle, Stella, and Rainer Elsland. 2019. <span>“Are Open Access Models Able to Assess Today’s Energy Scenarios.”</span> <em>Energy Strategy Reviews</em> 26: 100396. <a href="https://doi.org/10.1016/j.esr.2019.100396">https://doi.org/10.1016/j.esr.2019.100396</a>.
+</div>
+<div id="ref-Onen2022" class="csl-entry" role="listitem">
+Onen, Patrick Sunday, Geev Mokryani, and Rana H. A. Zubo. 2022. <span>“Planning of Multi-Vector Energy Systems with High Penetration of Renewable Energy Source: A Comprehensive Review.”</span> <em>Energies</em> 15 (15): 5717. <a href="https://doi.org/10.3390/en15155717">https://doi.org/10.3390/en15155717</a>.
+</div>
+<div id="ref-Papadimitriou2023" class="csl-entry" role="listitem">
+Papadimitriou, Christina, Marialaura Di Somma, Chrysanthos Charalambous, Martina Caliano, Valeria Palladino, Andrés Felipe Cortés Borray, Amaia González-Garrido, Nerea Ruiz, and Giorgio Graditi. 2023. <span>“A Comprehensive Review of the Design and Operation Optimization of Energy Hubs and Their Interaction with the Markets and External Networks.”</span> <em>Energies</em> 16 (10): 4018. <a href="https://doi.org/10.3390/en16104018">https://doi.org/10.3390/en16104018</a>.
+</div>
+<div id="ref-Pfenninger2014" class="csl-entry" role="listitem">
+Pfenninger, Stefan, Adam Hawkes, and James Keirstead. 2014. <span>“Energy Systems Modeling for Twenty-First Century Energy Challenges.”</span> <em>Renewable and Sustainable Energy Reviews</em> 33: 74–86. <a href="https://doi.org/10.1016/j.rser.2014.02.003">https://doi.org/10.1016/j.rser.2014.02.003</a>.
+</div>
+<div id="ref-Riera2023" class="csl-entry" role="listitem">
+Riera, Jefferson A., Ricardo M. Lima, and Omar M. Knio. 2023. <span>“A Review of Hydrogen Production and Supply Chain Modeling and Optimization.”</span> <em>International Journal of Hydrogen Energy</em>. <a href="https://doi.org/10.1016/j.ijhydene.2022.12.242">https://doi.org/10.1016/j.ijhydene.2022.12.242</a>.
+</div>
+<div id="ref-Ringkjob2018" class="csl-entry" role="listitem">
+Ringkjöb, Hans-Kristian, Peter M. Haugan, and Ida Marie Solbrekke. 2018. <span>“A Review of Modelling Tools for Energy and Electricity Systems with Large Shares of Variable Renewables.”</span> <em>Renewable and Sustainable Energy Reviews</em> 96: 440–59. <a href="https://doi.org/10.1016/j.rser.2018.08.002">https://doi.org/10.1016/j.rser.2018.08.002</a>.
+</div>
+<div id="ref-Son2021" class="csl-entry" role="listitem">
+Son, Yeong-Geon, Byeong-Chan Oh, Moses Amoasi Acquah, Rui Fan, Dong-Min Kim, and Sung-Yul Kim. 2021. <span>“Multi Energy System with an Associated Energy Hub: A Review.”</span> <em>IEEE Access</em> 9: 127753–66. <a href="https://doi.org/10.1109/access.2021.3108142">https://doi.org/10.1109/access.2021.3108142</a>.
+</div>
+<div id="ref-Wassermann2022" class="csl-entry" role="listitem">
+Wassermann, Timo, Henry Mühlenbrock, Philipp Kenkel, Jorg Thöming, and Edwin Zondervan. 2022. <span>“3 Optimization of Hydrogen Supply from Renewable Electricity Including Cavern Storage.”</span> In <em>Process Systems Engineering: For a Smooth Energy Transition</em>, edited by Zondervan Edwin, 55–96. Berlin, Boston: De Gruyter. <a href="https://doi.org/10.1515/9783110705201-003">https://doi.org/10.1515/9783110705201-003</a>.
+</div>
+</div>
 </section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">

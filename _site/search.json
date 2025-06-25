@@ -6400,7 +6400,7 @@
     "href": "part-09/lecture-presentation.html#constraints",
     "title": "Lecture IX - Multi-Energy Systems",
     "section": "Constraints",
-    "text": "Constraints\nPower Balance (Electricity)\n\\(\\sum_{w \\in \\mathcal{W}} p_{w,t,\\omega} + \\sum_{v \\in \\mathcal{V}} p_{v,t,\\omega} + (p^{in}_{t,\\omega} - p^{out}_{t,\\omega}) + \\sum_{s \\in \\mathcal{S}_{\\text{El}}} (p^{dis}_{s,t,\\omega} - p^{ch}_{s,t,\\omega}) = \\sum_{x \\in \\mathcal{X}} p_{x,t,\\omega} \\quad \\forall t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\n\n\n\n\n\n\nNote\n\n\nChanges in electricity balance:\n\nUses \\(\\mathcal{S}_{\\text{El}}\\) subset for electricity storage\nRight-hand side changed from demand to electrolyzer consumption\n\n\n\n\nHydrogen Balance\n\\(\\sum_{x \\in \\mathcal{X}} h_{x,t,\\omega} + \\sum_{s \\in \\mathcal{S}_{\\text{H2}}} (p^{dis}_{s,t,\\omega} - p^{ch}_{s,t,\\omega}) = d_{t,\\omega} \\quad \\forall t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\n\n\n\n\n\n\nNote\n\n\nNew constraint:\nHydrogen balance equation considering:\n\nHydrogen production from electrolyzers\nHydrogen storage operations\nHydrogen demand\n\n\n\n\nComponent Limits\nWind Parks\n\\(0 \\leq p_{w,t,\\omega} \\leq f_{w,t,\\omega} p^{nom}_w \\quad \\forall w \\in \\mathcal{W}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\nPV Parks\n\\(0 \\leq p_{v,t,\\omega} \\leq f_{v,t,\\omega} p^{nom}_v \\quad \\forall v \\in \\mathcal{V}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\nStorage Systems\n\\(0 \\leq p^{ch}_{s,t,\\omega} \\leq p^{ch,nom}_s \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\) \\(0 \\leq p^{dis}_{s,t,\\omega} \\leq p^{dis,nom}_s \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\) \\(DoD_s e^{nom}_s \\leq e_{s,t,\\omega} \\leq e^{nom}_s \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\nStorage Energy Balance\n\\(e_{s,t,\\omega} = (1-sdr_s)e_{s,t-1,\\omega} + \\eta^{ch}_s p^{ch}_{s,t,\\omega} - \\frac{p^{dis}_{s,t,\\omega}}{\\eta^{dis}_s} \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\nElectrolyzer Constraints\n\\(0 \\leq p_{x,t,\\omega} \\leq p^{nom}_x \\quad \\forall x \\in \\mathcal{X}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\) \\(h_{x,t,\\omega} = \\beta_x p_{x,t,\\omega} \\quad \\forall x \\in \\mathcal{X}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\n\n\n\n\n\n\nNote\n\n\nNew constraints for electrolyzer:\n\nPower consumption limits\nConversion relationship between power consumption and hydrogen production\n\n\n\n\n\n\nQuestions?"
+    "text": "Constraints\nPower Balance (Electricity)\n\\(\\sum_{w \\in \\mathcal{W}} p_{w,t,\\omega} + \\sum_{v \\in \\mathcal{V}} p_{v,t,\\omega} + (p^{in}_{t,\\omega} - p^{out}_{t,\\omega}) + \\sum_{s \\in \\mathcal{S}_{\\text{El}}} (p^{dis}_{s,t,\\omega} - p^{ch}_{s,t,\\omega}) = \\sum_{x \\in \\mathcal{X}} p_{x,t,\\omega} \\quad \\forall t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\n\n\n\n\n\n\nNote\n\n\nChanges in electricity balance:\n\nUses \\(\\mathcal{S}_{\\text{El}}\\) subset for electricity storage\nRight-hand side changed from demand to electrolyzer consumption\n\n\n\n\nHydrogen Balance\n\\(\\sum_{x \\in \\mathcal{X}} h_{x,t,\\omega} + \\sum_{s \\in \\mathcal{S}_{\\text{H2}}} (p^{dis}_{s,t,\\omega} - p^{ch}_{s,t,\\omega}) = d_{t,\\omega} \\quad \\forall t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\n\n\n\n\n\n\nNote\n\n\nNew constraint:\nHydrogen balance equation considering:\n\nHydrogen production from electrolyzers\nHydrogen storage operations\nHydrogen demand\n\n\n\n\nComponent Limits\nWind Parks\n\\(0 \\leq p_{w,t,\\omega} \\leq f_{w,t,\\omega} p^{nom}_w \\quad \\forall w \\in \\mathcal{W}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\nPV Parks\n\\(0 \\leq p_{v,t,\\omega} \\leq f_{v,t,\\omega} p^{nom}_v \\quad \\forall v \\in \\mathcal{V}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\nStorage Systems\n\\(0 \\leq p^{ch}_{s,t,\\omega} \\leq p^{ch,nom}_s \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\) \\(0 \\leq p^{dis}_{s,t,\\omega} \\leq p^{dis,nom}_s \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\) \\(DoD_s e^{nom}_s \\leq e_{s,t,\\omega} \\leq e^{nom}_s \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\nStorage Energy Balance\n\\(e_{s,t,\\omega} = (1-sdr_s)e_{s,t-1,\\omega} + \\eta^{ch}_s p^{ch}_{s,t,\\omega} - \\frac{p^{dis}_{s,t,\\omega}}{\\eta^{dis}_s} \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\nElectrolyzer Constraints\n\\(0 \\leq p_{x,t,\\omega} \\leq p^{nom}_x \\quad \\forall x \\in \\mathcal{X}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\) \\(h_{x,t,\\omega} = \\beta_x p_{x,t,\\omega} \\quad \\forall x \\in \\mathcal{X}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\n\n\n\n\n\n\nNote\n\n\nNew constraints for electrolyzer:\n\nPower consumption limits\nConversion relationship between power consumption and hydrogen production"
   },
   {
     "objectID": "part-09/lecture-presentation.html#literature-i",
@@ -6414,7 +6414,7 @@
     "href": "part-09/lecture-presentation.html#literature-ii",
     "title": "Lecture IX - Multi-Energy Systems",
     "section": "Literature II",
-    "text": "Literature II"
+    "text": "Literature II\n\n\nQuestions?"
   },
   {
     "objectID": "part-09/hydrogen-value-chain-diagram.html",
@@ -6497,6 +6497,348 @@
     "text": "Future Research Directions\nRecent literature reviews identify several critical future research directions:\n\nTechnology Integration: Further development of hydrogen, P2X, and CCUS technologies in integrated energy hubs\nReal-world Applications: Development of practical applications and business cases for energy hub concepts\nComputational Efficiency: Development of efficient modeling schemes and solution algorithms for uncertainty representation\nIndustrial Decarbonization: Application of energy hub concepts to hard-to-abate industrial sectors\n\n\n\n\n\n\n\nNote\n\n\n\nThe energy hub concept has evolved from a theoretical framework to a practical tool for industrial decarbonization, with growing applications in hydrogen value chains and Power-to-X systems.",
     "crumbs": [
       "09 MES",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-09/lecture-presentation.html#conceptual-foundation",
+    "href": "part-09/lecture-presentation.html#conceptual-foundation",
+    "title": "Lecture IX - Multi-Energy Systems",
+    "section": "Conceptual Foundation",
+    "text": "Conceptual Foundation\nMulti-energy systems (MES) and energy hubs represent a fundamental shift in energy system design, moving from single-carrier optimization to integrated multi-carrier approaches. The energy hub concept was originally introduced by Geidl and Andersson (2007) as a framework for optimal coupling of energy infrastructures, enabling the integration of electricity, heat, gas, and other energy carriers within a unified optimization framework.\n\n\n\n\n\n\nNote\n\n\nThe energy hub concept provides a systematic approach to model and optimize multi-carrier energy systems, enabling the integration of renewable energy sources, storage technologies, and energy conversion processes."
+  },
+  {
+    "objectID": "part-09/lecture-presentation.html#recent-literature-reviews",
+    "href": "part-09/lecture-presentation.html#recent-literature-reviews",
+    "title": "Lecture IX - Multi-Energy Systems",
+    "section": "Recent Literature Reviews",
+    "text": "Recent Literature Reviews\nSeveral comprehensive literature reviews have been conducted in recent years, highlighting the growing importance of multi-energy systems:\nUncertainty Modeling and Optimization\nRecent reviews by Jasinski et al. (2023), Lasemi et al. (2022), and Onen, Mokryani, and Zubo (2022) focus on uncertainty modeling approaches in energy hub optimization. These reviews identify three main approaches: - Stochastic Programming: Using scenario-based optimization with Monte Carlo simulation - Robust Optimization: Providing conservative but computationally efficient solutions - Hybrid Methods: Combining the advantages of both approaches\nComprehensive Framework Reviews\nPapadimitriou et al. (2023) provides a systematic review of modeling formulations, optimization methods, and market interactions in energy hubs. Ding et al. (2022) extends this analysis to include trading and control structures for handling large-scale datasets.\nHistorical Development\nEarlier reviews by Maroufmashat et al. (2019) and Son et al. (2021) identified the hydrogen economy as a major application area for energy hubs, following the original proposals by Geidl and Andersson (2007). These reviews systematically analyzed 200+ articles published between 2007-2017, establishing the foundation for current research directions."
+  },
+  {
+    "objectID": "part-09/lecture-presentation.html#key-research-directions",
+    "href": "part-09/lecture-presentation.html#key-research-directions",
+    "title": "Lecture IX - Multi-Energy Systems",
+    "section": "Key Research Directions",
+    "text": "Key Research Directions\nHydrogen and Power-to-X Integration\nRecent literature identifies hydrogen and Power-to-X (P2X) technologies as critical future research directions. Kountouris et al. (2023) developed an optimization model for P2X-integrated energy hubs applied to an industrial park in Denmark, demonstrating the economic viability of hydrogen, methanol, and ammonia production.\nIndustrial Applications\nWassermann et al. (2022) addressed the planning and operation problem for hydrogen demand in refinery applications, presenting MILP model extensions for water electrolysis and cavern storage. This work demonstrates the practical application of energy hub concepts to real-world industrial decarbonization projects.\nUncertainty and Computational Challenges\nThe representation of renewable energy uncertainty is identified as a core challenge across multiple reviews. Ringkjöb, Haugan, and Solbrekke (2018), who reviewed 75 energy system modeling frameworks, conclude that high spatiotemporal resolution is essential for accurate RES representation, but comes at significant computational cost.\n\n\n\n\n\n\nNote\n\n\nThe trade-off between model fidelity and computational burden is a central challenge in multi-energy system optimization, particularly when considering renewable energy uncertainty."
+  },
+  {
+    "objectID": "part-09/lecture-presentation.html#solution-methods-and-frameworks",
+    "href": "part-09/lecture-presentation.html#solution-methods-and-frameworks",
+    "title": "Lecture IX - Multi-Energy Systems",
+    "section": "Solution Methods and Frameworks",
+    "text": "Solution Methods and Frameworks\nDecomposition Approaches\nSeveral studies demonstrate the effectiveness of Benders decomposition for energy hub optimization. Mansouri et al. (2020), Chen et al. (2019), and Hemmati, Ghaderi, and Ghazizadeh (2018) use Benders decomposition to separate dimensioning decisions (master problem) from operational optimization (subproblems), enabling efficient solution of large-scale problems.\nAdvanced Modeling Frameworks\nRecent frameworks address computational complexity through innovative approaches:\n\nSpineOpt (Ihlemann et al. (2022)): A flexible Julia-based framework allowing variable temporal resolution per system component\nAnyMod (Göke (2021)): A pure linear model formulation designed for macro-energy system planning with full-year time series\nficus (Atabay (2017)): An industrial energy system optimization framework based on the urbs framework (Dorfner (2016))\n\nTemporal Resolution Challenges\nGonzato, Bruninx, and Delarue (2021) analyzed techniques for reducing temporal scope in expansion planning models with long-term storage, recommending against temporal reductions and advocating for full-year time series inclusion to prevent biases in system design."
+  },
+  {
+    "objectID": "part-09/lecture-presentation.html#hydrogen-supply-chain-integration",
+    "href": "part-09/lecture-presentation.html#hydrogen-supply-chain-integration",
+    "title": "Lecture IX - Multi-Energy Systems",
+    "section": "Hydrogen Supply Chain Integration",
+    "text": "Hydrogen Supply Chain Integration\nThe integration of hydrogen supply chain network design (HSCND) with energy hub optimization represents an emerging research area. Li, Manier, and Manier (2019) provides a comprehensive review of HSCND optimization approaches, while Riera, Lima, and Knio (2023) reviews hydrogen production and supply chain modeling specifically.\n\n\n\n\n\n\nNote\n\n\nThe integration of hydrogen supply chain optimization with energy hub concepts enables comprehensive planning of green hydrogen value chains from production to end-use applications."
+  },
+  {
+    "objectID": "part-09/lecture-presentation.html#open-source-tools-and-frameworks",
+    "href": "part-09/lecture-presentation.html#open-source-tools-and-frameworks",
+    "title": "Lecture IX - Multi-Energy Systems",
+    "section": "Open Source Tools and Frameworks",
+    "text": "Open Source Tools and Frameworks\nSeveral reviews assess the maturity and capabilities of open-source energy system optimization tools:\n\nGroissböck (2019) evaluates the maturity of open-source tools for serious applications\nOberle and Elsland (2019) assesses the ability of open-access models to evaluate current energy scenarios\nPfenninger, Hawkes, and Keirstead (2014) provides a broader perspective on energy systems modeling challenges"
+  },
+  {
+    "objectID": "part-09/lecture-presentation.html#future-research-directions",
+    "href": "part-09/lecture-presentation.html#future-research-directions",
+    "title": "Lecture IX - Multi-Energy Systems",
+    "section": "Future Research Directions",
+    "text": "Future Research Directions\nRecent literature reviews identify several critical future research directions:\n\nTechnology Integration: Further development of hydrogen, P2X, and CCUS technologies in integrated energy hubs\nReal-world Applications: Development of practical applications and business cases for energy hub concepts\nComputational Efficiency: Development of efficient modeling schemes and solution algorithms for uncertainty representation\nIndustrial Decarbonization: Application of energy hub concepts to hard-to-abate industrial sectors\n\n\n\n\n\n\n\nNote\n\n\nThe energy hub concept has evolved from a theoretical framework to a practical tool for industrial decarbonization, with growing applications in hydrogen value chains and Power-to-X systems."
+  },
+  {
+    "objectID": "part-09/lecture-presentation.html#literature-ii-1",
+    "href": "part-09/lecture-presentation.html#literature-ii-1",
+    "title": "Lecture IX - Multi-Energy Systems",
+    "section": "Literature II",
+    "text": "Literature II\n\n\n\n\nAtabay, Dennis. 2017. “An Open-Source Model for Optimal Design and Operation of Industrial Energy Systems.” Energy 121: 803–21. https://doi.org/10.1016/j.energy.2017.01.030.\n\n\nChen, Cong, Hongbin Sun, Xinwei Shen, Ye Guo, Qinglai Guo, and Tian Xia. 2019. “Two-Stage Robust Planning-Operation Co-Optimization of Energy Hub Considering Precise Energy Storage Economic Model.” Applied Energy 252: 113372. https://doi.org/10.1016/j.apenergy.2019.113372.\n\n\nDing, Tao, Wenhao Jia, Mohammad Shahidehpour, Ouzhu Han, Yuge Sun, and Ziyu Zhang. 2022. “Review of Optimization Methods for Energy Hub Planning, Operation, Trading, and Control.” IEEE Transactions on Sustainable Energy 13 (3): 1802–18. https://doi.org/10.1109/tste.2022.3172004.\n\n\nDorfner, Johannes. 2016. “Open Source Modelling and Optimisation of Energy Infrastructure at Urban Scale.” PhD thesis, Technische Universität München.\n\n\nGeidl, Martin, and Goran Andersson. 2007. “Optimal Coupling of Energy Infrastructures.” IEEE Lausanne Power Tech, 1398–1403.\n\n\nGöke, Leonard. 2021. “A Graph-Based Formulation for Modeling Macro-Energy Systems.” Applied Energy 301: 117377. https://doi.org/10.1016/j.apenergy.2021.117377.\n\n\nGonzato, Sebastian, Kenneth Bruninx, and Erik Delarue. 2021. “Long Term Storage in Generation Expansion Planning Models with a Reduced Temporal Scope.” Applied Energy 298: 117168. https://doi.org/10.1016/j.apenergy.2021.117168.\n\n\nGroissböck, Markus. 2019. “Are Open Source Energy System Optimization Tools Mature Enough for Serious Use.” Renewable and Sustainable Energy Reviews 102: 234–48. https://doi.org/10.1016/j.rser.2018.11.020.\n\n\nHemmati, S, SF Ghaderi, and MS Ghazizadeh. 2018. “Sustainable Energy Hub Design Under Uncertainty Using Benders Decomposition Method.” Energy 143: 1029–47. https://doi.org/10.1016/j.energy.2017.11.052.\n\n\nIhlemann, Maren, Iasonas Kouveliotis-Lysikatos, Jiangyi Huang, Joseph Dillon, Ciara O’Dwyer, Topi Rasku, Manuel Marin, Kris Poncelet, and Juha Kiviluoma. 2022. “SpineOpt: A Flexible Open-Source Energy System Modelling Framework.” Energy Strategy Reviews 43: 100902. https://doi.org/10.1016/j.esr.2022.100902.\n\n\nJasinski, Michal, Arsalan Najafi, Omid Homaee, Mostafa Kermani, Georgios Tsaousoglou, Zbigniew Leonowicz, and Tomas Novak. 2023. “Operation and Planning of Energy Hubs Under Uncertainty—a Review of Mathematical Optimization Approaches.” IEEE Access 11: 7208–28. https://doi.org/10.1109/access.2023.3237649.\n\n\nKountouris, Ioannis, Lissy Langer, Rasmus Bramstoft, Marie Münster, and Dogan Keles. 2023. “Power-to-x in Energy Hubs: A Danish Case Study of Renewable Fuel Production.” Energy Policy 175: 113439. https://doi.org/10.1016/j.enpol.2023.113439.\n\n\nLasemi, Mohammad Ali, Ahmad Arabkoohsar, Amin Hajizadeh, and Behnam Mohammadi-ivatloo. 2022. “A Comprehensive Review on Optimization Challenges of Smart Energy Hubs Under Uncertainty Factors.” Renewable and Sustainable Energy Reviews 160: 112320. https://doi.org/10.1016/j.rser.2022.112320.\n\n\nLi, Lei, Hervé Manier, and Marie-Ange Manier. 2019. “Hydrogen Supply Chain Network Design: An Optimization-Oriented Review.” Renewable and Sustainable Energy Reviews 103: 342–60. https://doi.org/10.1016/j.rser.2018.12.060.\n\n\nMansouri, SA, A Ahmarinejad, M Ansarian, MS Javadi, and JPS Catalao. 2020. “Stochastic Planning and Operation of Energy Hubs Considering Demand Response Programs Using Benders Decomposition Approach.” International Journal of Electrical Power & Energy Systems 120: 106030.\n\n\nMaroufmashat, Taqvi, Miragha, Fowler, and Elkamel. 2019. “Modeling and Optimization of Energy Hubs: A Comprehensive Review.” Inventions 4 (3): 50. https://doi.org/10.3390/inventions4030050.\n\n\nOberle, Stella, and Rainer Elsland. 2019. “Are Open Access Models Able to Assess Today’s Energy Scenarios.” Energy Strategy Reviews 26: 100396. https://doi.org/10.1016/j.esr.2019.100396.\n\n\nOnen, Patrick Sunday, Geev Mokryani, and Rana H. A. Zubo. 2022. “Planning of Multi-Vector Energy Systems with High Penetration of Renewable Energy Source: A Comprehensive Review.” Energies 15 (15): 5717. https://doi.org/10.3390/en15155717.\n\n\nPapadimitriou, Christina, Marialaura Di Somma, Chrysanthos Charalambous, Martina Caliano, Valeria Palladino, Andrés Felipe Cortés Borray, Amaia González-Garrido, Nerea Ruiz, and Giorgio Graditi. 2023. “A Comprehensive Review of the Design and Operation Optimization of Energy Hubs and Their Interaction with the Markets and External Networks.” Energies 16 (10): 4018. https://doi.org/10.3390/en16104018.\n\n\nPfenninger, Stefan, Adam Hawkes, and James Keirstead. 2014. “Energy Systems Modeling for Twenty-First Century Energy Challenges.” Renewable and Sustainable Energy Reviews 33: 74–86. https://doi.org/10.1016/j.rser.2014.02.003.\n\n\nRiera, Jefferson A., Ricardo M. Lima, and Omar M. Knio. 2023. “A Review of Hydrogen Production and Supply Chain Modeling and Optimization.” International Journal of Hydrogen Energy. https://doi.org/10.1016/j.ijhydene.2022.12.242.\n\n\nRingkjöb, Hans-Kristian, Peter M. Haugan, and Ida Marie Solbrekke. 2018. “A Review of Modelling Tools for Energy and Electricity Systems with Large Shares of Variable Renewables.” Renewable and Sustainable Energy Reviews 96: 440–59. https://doi.org/10.1016/j.rser.2018.08.002.\n\n\nSon, Yeong-Geon, Byeong-Chan Oh, Moses Amoasi Acquah, Rui Fan, Dong-Min Kim, and Sung-Yul Kim. 2021. “Multi Energy System with an Associated Energy Hub: A Review.” IEEE Access 9: 127753–66. https://doi.org/10.1109/access.2021.3108142.\n\n\nWassermann, Timo, Henry Mühlenbrock, Philipp Kenkel, Jorg Thöming, and Edwin Zondervan. 2022. “3 Optimization of Hydrogen Supply from Renewable Electricity Including Cavern Storage.” In Process Systems Engineering: For a Smooth Energy Transition, edited by Zondervan Edwin, 55–96. Berlin, Boston: De Gruyter. https://doi.org/10.1515/9783110705201-003."
+  },
+  {
+    "objectID": "part-10/lecture-intermission.html",
+    "href": "part-10/lecture-intermission.html",
+    "title": "Lecture X - Intermission: Exam Preparation",
+    "section": "",
+    "text": "Today’s lecture is a little bit different\nManage your expectations\nGive you a better idea of what to expect from the exam\nWe will go through some examples together!\n\n\n\n\n\nDuration: 90 minutes\nTotal Points: 60 points\nStructure: Three parts (Modeling, Theory, Programming)\nAllowed: One handwritten DIN A4 sheet\n\n. . .\n\n\n\n\n\n\nImportant\n\n\n\nYou can take a handwritten DIN A4 sheet of paper with you!\nEach point corresponds to approximately 1.5 minutes of work!\n\n\n\n\n\n\nPart I: Energy System Modeling (30 points)\nPart II: Theory and Concepts (15 points)\n\nPart III: Julia Programming (15 points)\n\n\n\n\n\n\n\n\n\n\nBefore starting the exam:\n\n\n\n\nReview modeling notation conventions\nPractice writing sets, parameters, and variables\nReview common constraint patterns\nPractice Julia syntax\nPrepare your DIN A4 cheat sheet",
+    "crumbs": [
+      "10 Intermission",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-10/lecture-intermission.html#todays-lecture",
+    "href": "part-10/lecture-intermission.html#todays-lecture",
+    "title": "Lecture X - Intermission: Exam Preparation",
+    "section": "",
+    "text": "Today’s lecture is a little bit different\nManage your expectations\nGive you a better idea of what to expect from the exam\nWe will go through some examples together!",
+    "crumbs": [
+      "10 Intermission",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-10/lecture-intermission.html#energy-system-optimization-exam",
+    "href": "part-10/lecture-intermission.html#energy-system-optimization-exam",
+    "title": "Lecture X - Intermission: Exam Preparation",
+    "section": "",
+    "text": "Duration: 90 minutes\nTotal Points: 60 points\nStructure: Three parts (Modeling, Theory, Programming)\nAllowed: One handwritten DIN A4 sheet\n\n. . .\n\n\n\n\n\n\nImportant\n\n\n\nYou can take a handwritten DIN A4 sheet of paper with you!\nEach point corresponds to approximately 1.5 minutes of work!",
+    "crumbs": [
+      "10 Intermission",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-10/lecture-intermission.html#exam-structure",
+    "href": "part-10/lecture-intermission.html#exam-structure",
+    "title": "Lecture X - Intermission: Exam Preparation",
+    "section": "",
+    "text": "Part I: Energy System Modeling (30 points)\nPart II: Theory and Concepts (15 points)\n\nPart III: Julia Programming (15 points)",
+    "crumbs": [
+      "10 Intermission",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-10/lecture-intermission.html#exam-preparation-checklist",
+    "href": "part-10/lecture-intermission.html#exam-preparation-checklist",
+    "title": "Lecture X - Intermission: Exam Preparation",
+    "section": "",
+    "text": "Before starting the exam:\n\n\n\n\nReview modeling notation conventions\nPractice writing sets, parameters, and variables\nReview common constraint patterns\nPractice Julia syntax\nPrepare your DIN A4 cheat sheet",
+    "crumbs": [
+      "10 Intermission",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-10/lecture-intermission.html#energy-system-modeling",
+    "href": "part-10/lecture-intermission.html#energy-system-modeling",
+    "title": "Lecture X - Intermission: Exam Preparation",
+    "section": "Energy System Modeling",
+    "text": "Energy System Modeling",
+    "crumbs": [
+      "10 Intermission",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-10/lecture-intermission.html#a-8-points",
+    "href": "part-10/lecture-intermission.html#a-8-points",
+    "title": "Lecture X - Intermission: Exam Preparation",
+    "section": "1.a (8 Points)",
+    "text": "1.a (8 Points)\nA power system operator needs to optimize the economic dispatch of thermal generators to meet electricity demand. The system consists of:\n\nMultiple thermal generators with different variable costs\nWind turbines with forecasted power output\nA single aggregated demand that must be met\n\nEach generator has minimum and maximum power output limits. The wind turbines have zero variable cost but their output is limited by the forecast.\nDefine all sets, parameters, and variables required to model this Economic Dispatch problem. Use clear notation and explicitly state which elements are sets, parameters, and variables.\n\n# Your answer here\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|",
+    "crumbs": [
+      "10 Intermission",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-10/lecture-intermission.html#b-4-points",
+    "href": "part-10/lecture-intermission.html#b-4-points",
+    "title": "Lecture X - Intermission: Exam Preparation",
+    "section": "1.b (4 Points)",
+    "text": "1.b (4 Points)\nBased on your notation from 1.a, write the objective function for the Economic Dispatch problem.\n\n# Your answer here\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|",
+    "crumbs": [
+      "10 Intermission",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-10/lecture-intermission.html#c-6-points",
+    "href": "part-10/lecture-intermission.html#c-6-points",
+    "title": "Lecture X - Intermission: Exam Preparation",
+    "section": "1.c (6 Points)",
+    "text": "1.c (6 Points)\nWrite all necessary constraints for the Economic Dispatch problem using your notation from 1.a.\n\n# Your answer here\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|",
+    "crumbs": [
+      "10 Intermission",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-10/lecture-intermission.html#d-6-points",
+    "href": "part-10/lecture-intermission.html#d-6-points",
+    "title": "Lecture X - Intermission: Exam Preparation",
+    "section": "1.d (6 Points)",
+    "text": "1.d (6 Points)\nNow extend the Economic Dispatch model to include Unit Commitment decisions. The generators can be turned on/off and have additional start-up costs.\nDefine the additional sets, parameters, and variables needed for the Unit Commitment problem.\n\n# Your answer here\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|",
+    "crumbs": [
+      "10 Intermission",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-10/lecture-intermission.html#e-6-points",
+    "href": "part-10/lecture-intermission.html#e-6-points",
+    "title": "Lecture X - Intermission: Exam Preparation",
+    "section": "1.e (6 Points)",
+    "text": "1.e (6 Points)\nWrite the objective function and start-up variable definition for the Unit Commitment problem using your notation from 1.d. In addition, consider that generator 1 and 2 use the same grid connection which is currently limited so that they cannot be on at the same time. Due to personnel reasons the startup of generator 3 has to be at least 3 timesteps away from startup of generator 4.\n\n# Your answer here\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|",
+    "crumbs": [
+      "10 Intermission",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-10/lecture-intermission.html#theory-and-concepts",
+    "href": "part-10/lecture-intermission.html#theory-and-concepts",
+    "title": "Lecture X - Intermission: Exam Preparation",
+    "section": "Theory and Concepts",
+    "text": "Theory and Concepts",
+    "crumbs": [
+      "10 Intermission",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-10/lecture-intermission.html#a-3-points",
+    "href": "part-10/lecture-intermission.html#a-3-points",
+    "title": "Lecture X - Intermission: Exam Preparation",
+    "section": "2.a (3 Points)",
+    "text": "2.a (3 Points)\nWhat is the main difference between Economic Dispatch and Unit Commitment problems? Explain in 2-3 sentences.\n\n# Your answer here\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|",
+    "crumbs": [
+      "10 Intermission",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-10/lecture-intermission.html#b-3-points",
+    "href": "part-10/lecture-intermission.html#b-3-points",
+    "title": "Lecture X - Intermission: Exam Preparation",
+    "section": "2.b (3 Points)",
+    "text": "2.b (3 Points)\nExplain what a “tight formulation” means in the context of Mixed-Integer Linear Programming (MILP) problems like Unit Commitment.\n\n# Your answer here\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|",
+    "crumbs": [
+      "10 Intermission",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-10/lecture-intermission.html#c-3-points",
+    "href": "part-10/lecture-intermission.html#c-3-points",
+    "title": "Lecture X - Intermission: Exam Preparation",
+    "section": "2.c (3 Points)",
+    "text": "2.c (3 Points)\nWhat is the purpose of storage systems in energy system optimization? Name three key constraints that are typically included in storage modeling.\n\n# Your answer here\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|",
+    "crumbs": [
+      "10 Intermission",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-10/lecture-intermission.html#d-3-points",
+    "href": "part-10/lecture-intermission.html#d-3-points",
+    "title": "Lecture X - Intermission: Exam Preparation",
+    "section": "2.d (3 Points)",
+    "text": "2.d (3 Points)\nExplain the concept of “two-stage stochastic programming” in the context of energy system design problems.\n\n# Your answer here\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|",
+    "crumbs": [
+      "10 Intermission",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-10/lecture-intermission.html#e-3-points",
+    "href": "part-10/lecture-intermission.html#e-3-points",
+    "title": "Lecture X - Intermission: Exam Preparation",
+    "section": "2.e (3 Points)",
+    "text": "2.e (3 Points)\nWhat are the main advantages of using Julia and JuMP for energy system optimization compared to other programming languages and modeling frameworks?\n\n# Your answer here\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|",
+    "crumbs": [
+      "10 Intermission",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-10/lecture-intermission.html#julia-programming",
+    "href": "part-10/lecture-intermission.html#julia-programming",
+    "title": "Lecture X - Intermission: Exam Preparation",
+    "section": "Julia Programming",
+    "text": "Julia Programming",
+    "crumbs": [
+      "10 Intermission",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-10/lecture-intermission.html#hints",
+    "href": "part-10/lecture-intermission.html#hints",
+    "title": "Lecture X - Intermission: Exam Preparation",
+    "section": "Hints",
+    "text": "Hints\n\n\n\n\n\n\nProgramming Tips\n\n\n\n\nPay attention to variable names and consistency\nCheck for proper package imports\nVerify array indexing\nRemember to use the correct comparison operators\nMake sure to use proper JuMP syntax",
+    "crumbs": [
+      "10 Intermission",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-10/lecture-intermission.html#a-8-points-1",
+    "href": "part-10/lecture-intermission.html#a-8-points-1",
+    "title": "Lecture X - Intermission: Exam Preparation",
+    "section": "3.a (8 Points)",
+    "text": "3.a (8 Points)\nThe following Julia code contains four errors related to implementing an Economic Dispatch model. Identify and briefly describe each error.\n# Load the necessary packages\nusing JuMP\nusing HiGHS\n\n# Define the size of the problem instance\nnrGenerators = length(generatorCosts)\nnrWindTurbines = length(windForecast)\n\n# Create model instance\ndispatch = Model(HiGHS.Optimizer)\n\n# Define variables\n@variable(dispatch_model, p_g[g = 1:nrGenerators] &gt;= 0)\n@variable(dispatch_model, p_w[w = 1:nrWindTurbines] &gt;= 0)\n\n# Define objective\n@objective(dispatch_model, Max, \n    sum(generatorCosts[g] * p_g[g] for g in 1:nrGenerators)\n    )\n\n# Define the constraints\n@constraint(dispatch_model, \n    power_balance, \n    sum(p_g[g] for g in 1:nrGenerators) + sum(p_w[w] for w in 1:nrWindTurbines) === demand\n    )\n\n@constraint(dispatch_model,\n    generator_limits[g=1:nrGenerators], \n    p_g[g] &lt;= maxPower[g]\n    )\n\n@constraint(dispatch_model,\n    wind_limits[w=1:nrWindTurbines], \n    p_w[w] &lt;= windForecast[w]\n    )\n\n# Start optimization\nsolve_model(dispatch_model)\n\n# Your answer here\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|",
+    "crumbs": [
+      "10 Intermission",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-10/lecture-intermission.html#b-4-points-1",
+    "href": "part-10/lecture-intermission.html#b-4-points-1",
+    "title": "Lecture X - Intermission: Exam Preparation",
+    "section": "3.b (4 Points)",
+    "text": "3.b (4 Points)\nWrite the Julia code to define a binary variable for generator commitment status in a Unit Commitment model. The variable should indicate whether generator g is on at time t.\n\n# Your answer here\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|",
+    "crumbs": [
+      "10 Intermission",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-10/lecture-intermission.html#c-3-points-1",
+    "href": "part-10/lecture-intermission.html#c-3-points-1",
+    "title": "Lecture X - Intermission: Exam Preparation",
+    "section": "3.c (3 Points)",
+    "text": "3.c (3 Points)\nWrite the Julia constraint that links generator power output to its commitment status, ensuring that if a generator is off (u[g,t] = 0), its power output must be zero.\n\n# Your answer here\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|",
+    "crumbs": [
+      "10 Intermission",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-10/lecture-intermission.html#key-takeaways",
+    "href": "part-10/lecture-intermission.html#key-takeaways",
+    "title": "Lecture X - Intermission: Exam Preparation",
+    "section": "Key Takeaways",
+    "text": "Key Takeaways\n\n\n\n\n\n\nRemember\n\n\n\n\nTime management is crucial (1.5 minutes per point)\nRead questions carefully\nShow your mathematical work clearly\nUse your cheat sheet strategically\nDouble-check your Julia syntax",
+    "crumbs": [
+      "10 Intermission",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-10/lecture-intermission.html#the-end",
+    "href": "part-10/lecture-intermission.html#the-end",
+    "title": "Lecture X - Intermission: Exam Preparation",
+    "section": "The end",
+    "text": "The end\n\n\n\n\n\n\nGood luck with your exam!\n\n\n\nThis test exam covers the main concepts from the Energy System Optimization course. Make sure to review the course materials and practice implementing the models in Julia.",
+    "crumbs": [
+      "10 Intermission",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-10/lecture-intermission.html#section",
+    "href": "part-10/lecture-intermission.html#section",
+    "title": "Lecture X - Intermission: Exam Preparation",
+    "section": "",
+    "text": "Questions?",
+    "crumbs": [
+      "10 Intermission",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-10/lecture-intermission.html#literature-1",
+    "href": "part-10/lecture-intermission.html#literature-1",
+    "title": "Lecture X - Intermission: Exam Preparation",
+    "section": "Literature",
+    "text": "Literature\nFor more information about energy system optimization and Julia programming, refer to the course materials and the literature list in the general section of this course.",
+    "crumbs": [
+      "10 Intermission",
       "Lecture"
     ]
   }

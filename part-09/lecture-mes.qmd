@@ -549,6 +549,17 @@ The representation of renewable energy uncertainty is identified as a core chall
 The trade-off between model fidelity and computational burden is a central challenge in multi-energy system optimization, particularly when considering renewable energy uncertainty.
 :::
 
+### Integrated Framework for Green Hydrogen Value Chains
+Recent research by @Cors2024 in @Cors2024diss addresses the critical gap in computationally tractable modeling for green hydrogen value chains (GHVCs) under uncertainty. The work presents a highly adaptable stochastic optimization framework that combines:
+
+- **Multi-medium, multi-energy system optimization** integrating electricity, hydrogen, and derivatives
+- **Integrated approach** combining system component dimensioning, operation optimization, and storage strategy
+- **Pure linear model formulation** enabled by novel linearization techniques, allowing extensive uncertainty consideration
+- **Decomposition methods** for incorporating renewable energy supply uncertainties into decision processes
+- **Real-world application** to industrial alliances including offshore wind parks, electrolyzers, methanol synthesis, cement plants, and refineries
+
+The framework demonstrates significant cost reductions through enabled risk management and addresses the research gap of computationally tractable models while maintaining high representational fidelity and uncertainty consideration.
+
 ## Solution Methods and Frameworks
 
 ### Decomposition Approaches
@@ -560,6 +571,7 @@ Recent frameworks address computational complexity through innovative approaches
 - **SpineOpt** (@Ihlemann2022): A flexible Julia-based framework allowing variable temporal resolution per system component
 - **AnyMod** (@Goke2021): A pure linear model formulation designed for macro-energy system planning with full-year time series
 - **ficus** (@Atabay2017): An industrial energy system optimization framework based on the urbs framework (@Dorfner2016)
+- **DRAF** (@Fleschutz2022): An open-source Python decision support tool for decarbonizing local multi-energy systems using multi-objective mixed-integer linear programming, featuring demand-side flexibility, electrification, and renewable energy integration
 
 ### Temporal Resolution Challenges
 @Gonzato2021 analyzed techniques for reducing temporal scope in expansion planning models with long-term storage, recommending against temporal reductions and advocating for full-year time series inclusion to prevent biases in system design.
@@ -592,9 +604,6 @@ Recent literature reviews identify several critical future research directions:
 ::: {.callout-note}
 The energy hub concept has evolved from a theoretical framework to a practical tool for industrial decarbonization, with growing applications in hydrogen value chains and Power-to-X systems.
 :::
-
-## Literature II
-
 
 ::: {.loud-slide}
 ::: {.r-fit-text}
