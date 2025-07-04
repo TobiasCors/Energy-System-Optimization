@@ -101,10 +101,12 @@ Define all sets, parameters, and variables required to model this Economic Dispa
 **Solution**
 
 **Sets:**
+
 - $g \in \mathcal{G}$ : Set of thermal generators
 - $w \in \mathcal{W}$ : Set of wind turbines
 
 **Parameters:**
+
 - $c^{var}_g$ : Variable cost of generator $g$ [€/MWh]
 - $p^{\min}_g$ : Minimum power output of generator $g$ [MW]
 - $p^{\max}_g$ : Maximum power output of generator $g$ [MW]
@@ -112,6 +114,7 @@ Define all sets, parameters, and variables required to model this Economic Dispa
 - $d^f$ : Forecasted demand [MW]
 
 **Variables:**
+
 - $p_g$ : Power output of thermal generator $g$ [MW]
 - $p_w$ : Power output of wind turbine $w$ [MW]
 
@@ -241,12 +244,15 @@ Define the additional sets, parameters, and variables needed for the Unit Commit
 **Solution**
 
 **Additional Sets:**
+
 - $t \in \mathcal{T}$ : Set of time periods
 
 **Additional Parameters:**
+
 - $c^{start}_g$ : Start-up cost of generator $g$ [€]
 
 **Additional Variables:**
+
 - $u_{g,t}$ : Binary variable indicating if generator $g$ is on at time $t$
 - $v_{g,t}$ : Binary variable indicating if generator $g$ starts up at time $t$
 
@@ -302,7 +308,9 @@ $$
 **(d) Startup of Generator 3 has to be at least 3 timesteps away from startup of generator 4:**
 $$
 \sum_{\tau \in [t, \min(t+3,|\mathcal{T}|)]} v_{3,\tau} \leq (1 -v_{4,t}) M \quad \forall t \in \mathcal{T} \quad \text{with} \quad M = |\mathcal{T}|
+$$
 
+$$
 \sum_{\tau \in [t-1, \max(t-3,1)]} v_{3,\tau} \leq (1 -v_{4,t}) M \quad \forall t \in \mathcal{T} \quad \text{with} \quad M = |\mathcal{T}|
 $$
 

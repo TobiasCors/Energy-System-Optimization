@@ -6627,7 +6627,7 @@
     "href": "part-10/lecture-intermission.html#a-8-points",
     "title": "Lecture X - Intermission: Exam Preparation",
     "section": "1.a (8 Points)",
-    "text": "1.a (8 Points)\nA power system operator needs to optimize the economic dispatch of thermal generators to meet electricity demand. The system consists of:\n\nMultiple thermal generators with different variable costs\nWind turbines with forecasted power output\nA single aggregated demand that must be met\n\nEach generator has minimum and maximum power output limits. The wind turbines have zero variable cost but their output is limited by the forecast.\nDefine all sets, parameters, and variables required to model this Economic Dispatch problem. Use clear notation and explicitly state which elements are sets, parameters, and variables.\n\n# Your answer here\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|",
+    "text": "1.a (8 Points)\nA power system operator needs to optimize the economic dispatch of thermal generators to meet electricity demand. The system consists of:\n\nMultiple thermal generators with different variable costs\nWind turbines with forecasted power output\nA single aggregated demand that must be met\n\nEach generator has minimum and maximum power output limits. The wind turbines have zero variable cost but their output is limited by the forecast.\nDefine all sets, parameters, and variables required to model this Economic Dispatch problem. Use clear notation and explicitly state which elements are sets, parameters, and variables.",
     "crumbs": [
       "10 Intermission",
       "Lecture"
@@ -6638,7 +6638,7 @@
     "href": "part-10/lecture-intermission.html#b-4-points",
     "title": "Lecture X - Intermission: Exam Preparation",
     "section": "1.b (4 Points)",
-    "text": "1.b (4 Points)\nBased on your notation from 1.a, write the objective function for the Economic Dispatch problem.\n\n# Your answer here\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|",
+    "text": "1.b (4 Points)\nBased on your notation from 1.a, write the objective function for the Economic Dispatch problem.",
     "crumbs": [
       "10 Intermission",
       "Lecture"
@@ -6649,7 +6649,7 @@
     "href": "part-10/lecture-intermission.html#c-6-points",
     "title": "Lecture X - Intermission: Exam Preparation",
     "section": "1.c (6 Points)",
-    "text": "1.c (6 Points)\nWrite all necessary constraints for the Economic Dispatch problem using your notation from 1.a.\n\n# Your answer here\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|",
+    "text": "1.c (6 Points)\nWrite all necessary constraints for the Economic Dispatch problem using your notation from 1.a.",
     "crumbs": [
       "10 Intermission",
       "Lecture"
@@ -6660,7 +6660,7 @@
     "href": "part-10/lecture-intermission.html#d-6-points",
     "title": "Lecture X - Intermission: Exam Preparation",
     "section": "1.d (6 Points)",
-    "text": "1.d (6 Points)\nNow extend the Economic Dispatch model to include Unit Commitment decisions. The generators can be turned on/off and have additional start-up costs.\nDefine the additional sets, parameters, and variables needed for the Unit Commitment problem.\n\n# Your answer here\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|",
+    "text": "1.d (6 Points)\nNow extend the Economic Dispatch model to include Unit Commitment decisions. The generators can be turned on/off and have additional start-up costs.\nDefine the additional sets, parameters, and variables needed for the Unit Commitment problem.",
     "crumbs": [
       "10 Intermission",
       "Lecture"
@@ -6671,7 +6671,7 @@
     "href": "part-10/lecture-intermission.html#e-6-points",
     "title": "Lecture X - Intermission: Exam Preparation",
     "section": "1.e (6 Points)",
-    "text": "1.e (6 Points)\nWrite the objective function and start-up variable definition for the Unit Commitment problem using your notation from 1.d. In addition, consider that generator 1 and 2 use the same grid connection which is currently limited so that they cannot be on at the same time. Due to personnel reasons the startup of generator 3 has to be at least 3 timesteps away from startup of generator 4.\n\n# Your answer here\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|",
+    "text": "1.e (6 Points)\nWrite the objective function and start-up variable definition for the Unit Commitment problem using your notation from 1.d. In addition, consider that generator 1 and 2 use the same grid connection which is currently limited so that they cannot be on at the same time. Due to personnel reasons the startup of generator 3 has to be at least 3 timesteps away from startup of generator 4.",
     "crumbs": [
       "10 Intermission",
       "Lecture"
@@ -6693,7 +6693,7 @@
     "href": "part-10/lecture-intermission.html#a-3-points",
     "title": "Lecture X - Intermission: Exam Preparation",
     "section": "2.a (3 Points)",
-    "text": "2.a (3 Points)\nWhat is the main difference between Economic Dispatch and Unit Commitment problems? Explain in 2-3 sentences.\n\n# Your answer here\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|",
+    "text": "2.a (3 Points)\nWhat is the main difference between Economic Dispatch and Unit Commitment problems? Explain in 2-3 sentences.",
     "crumbs": [
       "10 Intermission",
       "Lecture"
@@ -6704,7 +6704,7 @@
     "href": "part-10/lecture-intermission.html#b-3-points",
     "title": "Lecture X - Intermission: Exam Preparation",
     "section": "2.b (3 Points)",
-    "text": "2.b (3 Points)\nExplain what a “tight formulation” means in the context of Mixed-Integer Linear Programming (MILP) problems like Unit Commitment.\n\n# Your answer here\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|",
+    "text": "2.b (3 Points)\nExplain what a “tight formulation” means in the context of Mixed-Integer Linear Programming (MILP) problems like Unit Commitment.",
     "crumbs": [
       "10 Intermission",
       "Lecture"
@@ -6715,7 +6715,7 @@
     "href": "part-10/lecture-intermission.html#c-3-points",
     "title": "Lecture X - Intermission: Exam Preparation",
     "section": "2.c (3 Points)",
-    "text": "2.c (3 Points)\nWhat is the purpose of storage systems in energy system optimization? Name three key constraints that are typically included in storage modeling.\n\n# Your answer here\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|",
+    "text": "2.c (3 Points)\nWhat is the purpose of storage systems in energy system optimization? Name three key constraints that are typically included in storage modeling.",
     "crumbs": [
       "10 Intermission",
       "Lecture"
@@ -6726,7 +6726,7 @@
     "href": "part-10/lecture-intermission.html#d-3-points",
     "title": "Lecture X - Intermission: Exam Preparation",
     "section": "2.d (3 Points)",
-    "text": "2.d (3 Points)\nExplain the concept of “two-stage stochastic programming” in the context of energy system design problems.\n\n# Your answer here\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|",
+    "text": "2.d (3 Points)\nExplain the concept of “two-stage stochastic programming” in the context of energy system design problems.",
     "crumbs": [
       "10 Intermission",
       "Lecture"
@@ -6737,7 +6737,7 @@
     "href": "part-10/lecture-intermission.html#e-3-points",
     "title": "Lecture X - Intermission: Exam Preparation",
     "section": "2.e (3 Points)",
-    "text": "2.e (3 Points)\nWhat are the main advantages of using Julia and JuMP for energy system optimization compared to other programming languages and modeling frameworks?\n\n# Your answer here\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|",
+    "text": "2.e (3 Points)\nWhat are the main advantages of using Julia and JuMP for energy system optimization compared to other programming languages and modeling frameworks?",
     "crumbs": [
       "10 Intermission",
       "Lecture"
@@ -6770,7 +6770,7 @@
     "href": "part-10/lecture-intermission.html#a-8-points-1",
     "title": "Lecture X - Intermission: Exam Preparation",
     "section": "3.a (8 Points)",
-    "text": "3.a (8 Points)\nThe following Julia code contains four errors related to implementing an Economic Dispatch model. Identify and briefly describe each error.\n# Load the necessary packages\nusing JuMP\nusing HiGHS\n\n# Define the size of the problem instance\nnrGenerators = length(generatorCosts)\nnrWindTurbines = length(windForecast)\n\n# Create model instance\ndispatch = Model(HiGHS.Optimizer)\n\n# Define variables\n@variable(dispatch_model, p_g[g = 1:nrGenerators] &gt;= 0)\n@variable(dispatch_model, p_w[w = 1:nrWindTurbines] &gt;= 0)\n\n# Define objective\n@objective(dispatch_model, Max, \n    sum(generatorCosts[g] * p_g[g] for g in 1:nrGenerators)\n    )\n\n# Define the constraints\n@constraint(dispatch_model, \n    power_balance, \n    sum(p_g[g] for g in 1:nrGenerators) + sum(p_w[w] for w in 1:nrWindTurbines) === demand\n    )\n\n@constraint(dispatch_model,\n    generator_limits[g=1:nrGenerators], \n    p_g[g] &lt;= maxPower[g]\n    )\n\n@constraint(dispatch_model,\n    wind_limits[w=1:nrWindTurbines], \n    p_w[w] &lt;= windForecast[w]\n    )\n\n# Start optimization\nsolve_model(dispatch_model)\n\n# Your answer here\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|",
+    "text": "3.a (8 Points)\nThe following Julia code contains four errors related to implementing an Economic Dispatch model. Identify and briefly describe each error.\n# Load the necessary packages\nusing JuMP\nusing HiGHS\n\n# Define the size of the problem instance\nnrGenerators = length(generatorCosts)\nnrWindTurbines = length(windForecast)\n\n# Create model instance\ndispatch = Model(HiGHS.Optimizer)\n\n# Define variables\n@variable(dispatch_model, p_g[g = 1:nrGenerators] &gt;= 0)\n@variable(dispatch_model, p_w[w = 1:nrWindTurbines] &gt;= 0)\n\n# Define objective\n@objective(dispatch_model, Max, \n    sum(generatorCosts[g] * p_g[g] for g in 1:nrGenerators)\n    )\n\n# Define the constraints\n@constraint(dispatch_model, \n    power_balance, \n    sum(p_g[g] for g in 1:nrGenerators) + sum(p_w[w] for w in 1:nrWindTurbines) === demand\n    )\n\n@constraint(dispatch_model,\n    generator_limits[g=1:nrGenerators], \n    p_g[g] &lt;= maxPower[g]\n    )\n\n@constraint(dispatch_model,\n    wind_limits[w=1:nrWindTurbines], \n    p_w[w] &lt;= windForecast[w]\n    )\n\n# Start optimization\nsolve_model(dispatch_model)",
     "crumbs": [
       "10 Intermission",
       "Lecture"
@@ -6781,7 +6781,7 @@
     "href": "part-10/lecture-intermission.html#b-4-points-1",
     "title": "Lecture X - Intermission: Exam Preparation",
     "section": "3.b (4 Points)",
-    "text": "3.b (4 Points)\nWrite the Julia code to define a binary variable for generator commitment status in a Unit Commitment model. The variable should indicate whether generator g is on at time t.\n\n# Your answer here\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|",
+    "text": "3.b (4 Points)\nWrite the Julia code to define a binary variable for generator commitment status in a Unit Commitment model. The variable should indicate whether generator g is on at time t.",
     "crumbs": [
       "10 Intermission",
       "Lecture"
@@ -6792,7 +6792,7 @@
     "href": "part-10/lecture-intermission.html#c-3-points-1",
     "title": "Lecture X - Intermission: Exam Preparation",
     "section": "3.c (3 Points)",
-    "text": "3.c (3 Points)\nWrite the Julia constraint that links generator power output to its commitment status, ensuring that if a generator is off (u[g,t] = 0), its power output must be zero.\n\n# Your answer here\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|",
+    "text": "3.c (3 Points)\nWrite the Julia constraint that links generator power output to its commitment status, ensuring that if a generator is off (u[g,t] = 0), its power output must be zero.",
     "crumbs": [
       "10 Intermission",
       "Lecture"
@@ -6841,5 +6841,180 @@
       "10 Intermission",
       "Lecture"
     ]
+  },
+  {
+    "objectID": "part-10/lecture-presentation.html#todays-lecture",
+    "href": "part-10/lecture-presentation.html#todays-lecture",
+    "title": "Lecture X - Intermission: Exam Preparation",
+    "section": "Today’s lecture",
+    "text": "Today’s lecture\n\nToday’s lecture is a little bit different\nManage your expectations\nGive you a better idea of what to expect from the exam\nWe will go through some examples together!"
+  },
+  {
+    "objectID": "part-10/lecture-presentation.html#energy-system-optimization-exam",
+    "href": "part-10/lecture-presentation.html#energy-system-optimization-exam",
+    "title": "Lecture X - Intermission: Exam Preparation",
+    "section": "Energy System Optimization Exam",
+    "text": "Energy System Optimization Exam\n\nDuration: 90 minutes\nTotal Points: 60 points\nStructure: Three parts (Modeling, Theory, Programming)\nAllowed: One handwritten DIN A4 sheet\n\n\n\n\n\n\n\n\nImportant\n\n\nYou can take a handwritten DIN A4 sheet of paper with you!\nEach point corresponds to approximately 1.5 minutes of work!"
+  },
+  {
+    "objectID": "part-10/lecture-presentation.html#exam-structure",
+    "href": "part-10/lecture-presentation.html#exam-structure",
+    "title": "Lecture X - Intermission: Exam Preparation",
+    "section": "Exam Structure",
+    "text": "Exam Structure\n\nPart I: Energy System Modeling (30 points)\nPart II: Theory and Concepts (15 points)\n\nPart III: Julia Programming (15 points)"
+  },
+  {
+    "objectID": "part-10/lecture-presentation.html#exam-preparation-checklist",
+    "href": "part-10/lecture-presentation.html#exam-preparation-checklist",
+    "title": "Lecture X - Intermission: Exam Preparation",
+    "section": "Exam Preparation Checklist",
+    "text": "Exam Preparation Checklist\n\n\n\n\n\n\nBefore starting the exam:\n\n\n\nReview modeling notation conventions\nPractice writing sets, parameters, and variables\nReview common constraint patterns\nPractice Julia syntax\nPrepare your DIN A4 cheat sheet"
+  },
+  {
+    "objectID": "part-10/lecture-presentation.html#energy-system-modeling",
+    "href": "part-10/lecture-presentation.html#energy-system-modeling",
+    "title": "Lecture X - Intermission: Exam Preparation",
+    "section": "Energy System Modeling",
+    "text": "Energy System Modeling"
+  },
+  {
+    "objectID": "part-10/lecture-presentation.html#a-8-points",
+    "href": "part-10/lecture-presentation.html#a-8-points",
+    "title": "Lecture X - Intermission: Exam Preparation",
+    "section": "1.a (8 Points)",
+    "text": "1.a (8 Points)\nA power system operator needs to optimize the economic dispatch of thermal generators to meet electricity demand. The system consists of:\n\nMultiple thermal generators with different variable costs\nWind turbines with forecasted power output\nA single aggregated demand that must be met\n\nEach generator has minimum and maximum power output limits. The wind turbines have zero variable cost but their output is limited by the forecast.\nDefine all sets, parameters, and variables required to model this Economic Dispatch problem. Use clear notation and explicitly state which elements are sets, parameters, and variables."
+  },
+  {
+    "objectID": "part-10/lecture-presentation.html#b-4-points",
+    "href": "part-10/lecture-presentation.html#b-4-points",
+    "title": "Lecture X - Intermission: Exam Preparation",
+    "section": "1.b (4 Points)",
+    "text": "1.b (4 Points)\nBased on your notation from 1.a, write the objective function for the Economic Dispatch problem."
+  },
+  {
+    "objectID": "part-10/lecture-presentation.html#c-6-points",
+    "href": "part-10/lecture-presentation.html#c-6-points",
+    "title": "Lecture X - Intermission: Exam Preparation",
+    "section": "1.c (6 Points)",
+    "text": "1.c (6 Points)\nWrite all necessary constraints for the Economic Dispatch problem using your notation from 1.a."
+  },
+  {
+    "objectID": "part-10/lecture-presentation.html#d-6-points",
+    "href": "part-10/lecture-presentation.html#d-6-points",
+    "title": "Lecture X - Intermission: Exam Preparation",
+    "section": "1.d (6 Points)",
+    "text": "1.d (6 Points)\nNow extend the Economic Dispatch model to include Unit Commitment decisions. The generators can be turned on/off and have additional start-up costs.\nDefine the additional sets, parameters, and variables needed for the Unit Commitment problem."
+  },
+  {
+    "objectID": "part-10/lecture-presentation.html#e-6-points",
+    "href": "part-10/lecture-presentation.html#e-6-points",
+    "title": "Lecture X - Intermission: Exam Preparation",
+    "section": "1.e (6 Points)",
+    "text": "1.e (6 Points)\nWrite the objective function and start-up variable definition for the Unit Commitment problem using your notation from 1.d. In addition, consider that generator 1 and 2 use the same grid connection which is currently limited so that they cannot be on at the same time. Due to personnel reasons the startup of generator 3 has to be at least 3 timesteps away from startup of generator 4."
+  },
+  {
+    "objectID": "part-10/lecture-presentation.html#theory-and-concepts",
+    "href": "part-10/lecture-presentation.html#theory-and-concepts",
+    "title": "Lecture X - Intermission: Exam Preparation",
+    "section": "Theory and Concepts",
+    "text": "Theory and Concepts"
+  },
+  {
+    "objectID": "part-10/lecture-presentation.html#a-3-points",
+    "href": "part-10/lecture-presentation.html#a-3-points",
+    "title": "Lecture X - Intermission: Exam Preparation",
+    "section": "2.a (3 Points)",
+    "text": "2.a (3 Points)\nWhat is the main difference between Economic Dispatch and Unit Commitment problems? Explain in 2-3 sentences."
+  },
+  {
+    "objectID": "part-10/lecture-presentation.html#b-3-points",
+    "href": "part-10/lecture-presentation.html#b-3-points",
+    "title": "Lecture X - Intermission: Exam Preparation",
+    "section": "2.b (3 Points)",
+    "text": "2.b (3 Points)\nExplain what a “tight formulation” means in the context of Mixed-Integer Linear Programming (MILP) problems like Unit Commitment."
+  },
+  {
+    "objectID": "part-10/lecture-presentation.html#c-3-points",
+    "href": "part-10/lecture-presentation.html#c-3-points",
+    "title": "Lecture X - Intermission: Exam Preparation",
+    "section": "2.c (3 Points)",
+    "text": "2.c (3 Points)\nWhat is the purpose of storage systems in energy system optimization? Name three key constraints that are typically included in storage modeling."
+  },
+  {
+    "objectID": "part-10/lecture-presentation.html#d-3-points",
+    "href": "part-10/lecture-presentation.html#d-3-points",
+    "title": "Lecture X - Intermission: Exam Preparation",
+    "section": "2.d (3 Points)",
+    "text": "2.d (3 Points)\nExplain the concept of “two-stage stochastic programming” in the context of energy system design problems."
+  },
+  {
+    "objectID": "part-10/lecture-presentation.html#e-3-points",
+    "href": "part-10/lecture-presentation.html#e-3-points",
+    "title": "Lecture X - Intermission: Exam Preparation",
+    "section": "2.e (3 Points)",
+    "text": "2.e (3 Points)\nWhat are the main advantages of using Julia and JuMP for energy system optimization compared to other programming languages and modeling frameworks?"
+  },
+  {
+    "objectID": "part-10/lecture-presentation.html#julia-programming",
+    "href": "part-10/lecture-presentation.html#julia-programming",
+    "title": "Lecture X - Intermission: Exam Preparation",
+    "section": "Julia Programming",
+    "text": "Julia Programming"
+  },
+  {
+    "objectID": "part-10/lecture-presentation.html#hints",
+    "href": "part-10/lecture-presentation.html#hints",
+    "title": "Lecture X - Intermission: Exam Preparation",
+    "section": "Hints",
+    "text": "Hints\n\n\n\n\n\n\nProgramming Tips\n\n\n\nPay attention to variable names and consistency\nCheck for proper package imports\nVerify array indexing\nRemember to use the correct comparison operators\nMake sure to use proper JuMP syntax"
+  },
+  {
+    "objectID": "part-10/lecture-presentation.html#a-8-points-1",
+    "href": "part-10/lecture-presentation.html#a-8-points-1",
+    "title": "Lecture X - Intermission: Exam Preparation",
+    "section": "3.a (8 Points)",
+    "text": "3.a (8 Points)\nThe following Julia code contains four errors related to implementing an Economic Dispatch model. Identify and briefly describe each error.\n# Load the necessary packages\nusing JuMP\nusing HiGHS\n\n# Define the size of the problem instance\nnrGenerators = length(generatorCosts)\nnrWindTurbines = length(windForecast)\n\n# Create model instance\ndispatch = Model(HiGHS.Optimizer)\n\n# Define variables\n@variable(dispatch_model, p_g[g = 1:nrGenerators] &gt;= 0)\n@variable(dispatch_model, p_w[w = 1:nrWindTurbines] &gt;= 0)\n\n# Define objective\n@objective(dispatch_model, Max, \n    sum(generatorCosts[g] * p_g[g] for g in 1:nrGenerators)\n    )\n\n# Define the constraints\n@constraint(dispatch_model, \n    power_balance, \n    sum(p_g[g] for g in 1:nrGenerators) + sum(p_w[w] for w in 1:nrWindTurbines) === demand\n    )\n\n@constraint(dispatch_model,\n    generator_limits[g=1:nrGenerators], \n    p_g[g] &lt;= maxPower[g]\n    )\n\n@constraint(dispatch_model,\n    wind_limits[w=1:nrWindTurbines], \n    p_w[w] &lt;= windForecast[w]\n    )\n\n# Start optimization\nsolve_model(dispatch_model)"
+  },
+  {
+    "objectID": "part-10/lecture-presentation.html#b-4-points-1",
+    "href": "part-10/lecture-presentation.html#b-4-points-1",
+    "title": "Lecture X - Intermission: Exam Preparation",
+    "section": "3.b (4 Points)",
+    "text": "3.b (4 Points)\nWrite the Julia code to define a binary variable for generator commitment status in a Unit Commitment model. The variable should indicate whether generator g is on at time t."
+  },
+  {
+    "objectID": "part-10/lecture-presentation.html#c-3-points-1",
+    "href": "part-10/lecture-presentation.html#c-3-points-1",
+    "title": "Lecture X - Intermission: Exam Preparation",
+    "section": "3.c (3 Points)",
+    "text": "3.c (3 Points)\nWrite the Julia constraint that links generator power output to its commitment status, ensuring that if a generator is off (u[g,t] = 0), its power output must be zero."
+  },
+  {
+    "objectID": "part-10/lecture-presentation.html#key-takeaways",
+    "href": "part-10/lecture-presentation.html#key-takeaways",
+    "title": "Lecture X - Intermission: Exam Preparation",
+    "section": "Key Takeaways",
+    "text": "Key Takeaways\n\n\n\n\n\n\nRemember\n\n\n\nTime management is crucial (1.5 minutes per point)\nRead questions carefully\nShow your mathematical work clearly\nUse your cheat sheet strategically\nDouble-check your Julia syntax"
+  },
+  {
+    "objectID": "part-10/lecture-presentation.html#the-end",
+    "href": "part-10/lecture-presentation.html#the-end",
+    "title": "Lecture X - Intermission: Exam Preparation",
+    "section": "The end",
+    "text": "The end\n\n\n\n\n\n\nGood luck with your exam!\n\n\nThis test exam covers the main concepts from the Energy System Optimization course. Make sure to review the course materials and practice implementing the models in Julia."
+  },
+  {
+    "objectID": "part-10/lecture-presentation.html#section",
+    "href": "part-10/lecture-presentation.html#section",
+    "title": "Lecture X - Intermission: Exam Preparation",
+    "section": "",
+    "text": "Questions?"
+  },
+  {
+    "objectID": "part-10/lecture-presentation.html#literature-1",
+    "href": "part-10/lecture-presentation.html#literature-1",
+    "title": "Lecture X - Intermission: Exam Preparation",
+    "section": "Literature",
+    "text": "Literature\nFor more information about energy system optimization and Julia programming, refer to the course materials and the literature list in the general section of this course."
   }
 ]
