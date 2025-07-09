@@ -7016,5 +7016,646 @@
     "title": "Lecture X - Intermission: Exam Preparation",
     "section": "Literature",
     "text": "Literature\nFor more information about energy system optimization and Julia programming, refer to the course materials and the literature list in the general section of this course."
+  },
+  {
+    "objectID": "part-11/lecture-framework.html",
+    "href": "part-11/lecture-framework.html",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "",
+    "text": "Objective: Minimize total annual costs (investment + operational) while respecting budget constraints for multi-energy systems\nDecision Variables:\n\nInvestment variables (First Stage):\n\nStorage energy capacity (\\(e^{nom}_s\\)) for both electricity and hydrogen storage\nStorage charging power (\\(p^{ch,nom}_s\\)) for both energy carriers\nStorage discharging power (\\(p^{dis,nom}_s\\)) for both energy carriers\nWind park capacity (\\(p^{nom}_w\\))\nPV park capacity (\\(p^{nom}_v\\))\nElectrolyzer capacity (\\(p^{nom}_x\\))\n\nOperational variables (Second Stage):\n\nWind power output (\\(p_{w,t,\\omega}\\))\nPV power output (\\(p_{v,t,\\omega}\\))\nGrid import/export (\\(p^{in}_{t,\\omega}\\), \\(p^{out}_{t,\\omega}\\))\nStorage operation (\\(p^{ch}_{s,t,\\omega}\\), \\(p^{dis}_{s,t,\\omega}\\), \\(e_{s,t,\\omega}\\))\nElectrolyzer operation (\\(p_{x,t,\\omega}\\), \\(h_{x,t,\\omega}\\))\n\n\nKey Constraints:\n\nInvestment budget limit\nElectricity power balance\nHydrogen balance\nComponent capacity limits\nStorage energy balance\nStorage energy limits\nStorage power limits\nElectrolyzer conversion constraints\n\n\n\n\n\n\n\n\nNote\n\n\n\nThe Multi-Energy System Design problem extends the basic energy system design by incorporating multiple energy carriers (electricity and hydrogen) and energy conversion technologies (electrolyzers). The stochastic formulation considers multiple scenarios to account for uncertainty in renewable generation, demand patterns, and price variations across different energy carriers.\n\n\n\n\n\n\n\n\\(\\text{Minimize} \\quad \\sum_{s \\in \\mathcal{S}} AC^{inv}_s + \\sum_{w \\in \\mathcal{W}} AC^{inv}_w + \\sum_{v \\in \\mathcal{V}} AC^{inv}_v + \\sum_{x \\in \\mathcal{X}} AC^{inv}_x + \\sum_{\\omega \\in \\Omega} \\pi_{\\omega} (AC^{grid,imp}_{\\omega} - AR^{grid,exp}_{\\omega})\\)\n\n\n\n\nInvestment Budget:\n\n\\(\\sum_{s \\in \\mathcal{S}} (C^{E}_s e^{nom}_s + C^{P,ch}_s p^{ch,nom}_s + C^{P,dis}_s p^{dis,nom}_s) + \\sum_{w \\in \\mathcal{W}} C^{W}_w p^{nom}_w + \\sum_{v \\in \\mathcal{V}} C^{PV}_v p^{nom}_v + \\sum_{x \\in \\mathcal{X}} C^{X}_x p^{nom}_x \\leq B^{max}\\)\n\nElectricity Power Balance:\n\n\\(\\sum_{w \\in \\mathcal{W}} p_{w,t,\\omega} + \\sum_{v \\in \\mathcal{V}} p_{v,t,\\omega} + (p^{in}_{t,\\omega} - p^{out}_{t,\\omega}) + \\sum_{s \\in \\mathcal{S}_{\\text{El}}} (p^{dis}_{s,t,\\omega} - p^{ch}_{s,t,\\omega}) = \\sum_{x \\in \\mathcal{X}} p_{x,t,\\omega} \\quad \\forall t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\n\nHydrogen Balance:\n\n\\(\\sum_{x \\in \\mathcal{X}} h_{x,t,\\omega} + \\sum_{s \\in \\mathcal{S}_{\\text{H2}}} (p^{dis}_{s,t,\\omega} - p^{ch}_{s,t,\\omega}) = d_{t,\\omega} \\quad \\forall t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\n\nComponent Capacity Limits:\n\n\\(0 \\leq p_{w,t,\\omega} \\leq f_{w,t,\\omega} p^{nom}_w \\quad \\forall w \\in \\mathcal{W}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\) \\(0 \\leq p_{v,t,\\omega} \\leq f_{v,t,\\omega} p^{nom}_v \\quad \\forall v \\in \\mathcal{V}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\) \\(0 \\leq p^{ch}_{s,t,\\omega} \\leq p^{ch,nom}_s \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\) \\(0 \\leq p^{dis}_{s,t,\\omega} \\leq p^{dis,nom}_s \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\) \\(DoD_s e^{nom}_s \\leq e_{s,t,\\omega} \\leq e^{nom}_s \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\n\nStorage Energy Balance:\n\n\\(e_{s,t,\\omega} = (1-sdr_s)e_{s,t-1,\\omega} + \\eta^{ch}_s p^{ch}_{s,t,\\omega} - \\frac{p^{dis}_{s,t,\\omega}}{\\eta^{dis}_s} \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\n\nElectrolyzer Constraints:\n\n\\(0 \\leq p_{x,t,\\omega} \\leq p^{nom}_x \\quad \\forall x \\in \\mathcal{X}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\) \\(h_{x,t,\\omega} = \\beta_x p_{x,t,\\omega} \\quad \\forall x \\in \\mathcal{X}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\n\n\n\n\n\nTwo-stage stochastic Linear Programming (LP) problem for multi-energy systems\nCombines investment and operational decisions across multiple energy carriers\nLarge-scale optimization problem with energy conversion technologies\nRequires efficient solution methods\nConsiders multiple scenarios for robust decision-making\nIntegrates electricity and hydrogen value chains\n\n\n\n\n\n\n\nTip\n\n\n\nThe multi-energy system model can be adapted to specific use cases, i.e., if certain components already have fixed capacities, the corresponding variables can be converted to parameters. The stochastic formulation allows for more robust investment decisions by considering multiple scenarios across different energy carriers.\n\n\n\n\n\n\n\n\nElectrolyzers: Convert electricity to hydrogen with efficiency \\(\\beta_x\\)\nHydrogen Storage: Separate storage systems for hydrogen with different characteristics\nEnergy Conversion: Explicit modeling of energy carrier conversion processes\n\n\n\n\n\nHydrogen Balance: Ensures hydrogen demand is met through production and storage\nElectrolyzer Operation: Links electricity consumption to hydrogen production\nMulti-Carrier Storage: Distinguishes between electricity (\\(\\mathcal{S}_{\\text{El}}\\)) and hydrogen (\\(\\mathcal{S}_{\\text{H2}}\\)) storage\n\n\n\n\n\nElectricity Balance: Now includes electrolyzer consumption instead of direct demand\nInvestment Budget: Includes electrolyzer investment costs\nObjective Function: Includes electrolyzer annualized investment costs\n\n\n\n\n\n\n\nNote\n\n\n\nThese extensions enable comprehensive optimization of energy value chains, allowing for optimal sizing and operation of systems that convert between the different energy carriers while considering uncertainty and operational constraints.\n\n\n\n\n\n\n\nThe tutorials from last week will again be available on Friday\nYou can access them in the project folder on Github\nClick on the little cat icon on the bottom right\n\n. . .\n\n\n\n\n\n\nTip\n\n\n\nYou can ask questions anytime in class or via email!",
+    "crumbs": [
+      "11 Framework",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-11/lecture-framework.html#multi-energy-system-design-problem-overview",
+    "href": "part-11/lecture-framework.html#multi-energy-system-design-problem-overview",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "",
+    "text": "Objective: Minimize total annual costs (investment + operational) while respecting budget constraints for multi-energy systems\nDecision Variables:\n\nInvestment variables (First Stage):\n\nStorage energy capacity (\\(e^{nom}_s\\)) for both electricity and hydrogen storage\nStorage charging power (\\(p^{ch,nom}_s\\)) for both energy carriers\nStorage discharging power (\\(p^{dis,nom}_s\\)) for both energy carriers\nWind park capacity (\\(p^{nom}_w\\))\nPV park capacity (\\(p^{nom}_v\\))\nElectrolyzer capacity (\\(p^{nom}_x\\))\n\nOperational variables (Second Stage):\n\nWind power output (\\(p_{w,t,\\omega}\\))\nPV power output (\\(p_{v,t,\\omega}\\))\nGrid import/export (\\(p^{in}_{t,\\omega}\\), \\(p^{out}_{t,\\omega}\\))\nStorage operation (\\(p^{ch}_{s,t,\\omega}\\), \\(p^{dis}_{s,t,\\omega}\\), \\(e_{s,t,\\omega}\\))\nElectrolyzer operation (\\(p_{x,t,\\omega}\\), \\(h_{x,t,\\omega}\\))\n\n\nKey Constraints:\n\nInvestment budget limit\nElectricity power balance\nHydrogen balance\nComponent capacity limits\nStorage energy balance\nStorage energy limits\nStorage power limits\nElectrolyzer conversion constraints\n\n\n\n\n\n\n\n\nNote\n\n\n\nThe Multi-Energy System Design problem extends the basic energy system design by incorporating multiple energy carriers (electricity and hydrogen) and energy conversion technologies (electrolyzers). The stochastic formulation considers multiple scenarios to account for uncertainty in renewable generation, demand patterns, and price variations across different energy carriers.",
+    "crumbs": [
+      "11 Framework",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-11/lecture-framework.html#mathematical-formulation",
+    "href": "part-11/lecture-framework.html#mathematical-formulation",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "",
+    "text": "\\(\\text{Minimize} \\quad \\sum_{s \\in \\mathcal{S}} AC^{inv}_s + \\sum_{w \\in \\mathcal{W}} AC^{inv}_w + \\sum_{v \\in \\mathcal{V}} AC^{inv}_v + \\sum_{x \\in \\mathcal{X}} AC^{inv}_x + \\sum_{\\omega \\in \\Omega} \\pi_{\\omega} (AC^{grid,imp}_{\\omega} - AR^{grid,exp}_{\\omega})\\)\n\n\n\n\nInvestment Budget:\n\n\\(\\sum_{s \\in \\mathcal{S}} (C^{E}_s e^{nom}_s + C^{P,ch}_s p^{ch,nom}_s + C^{P,dis}_s p^{dis,nom}_s) + \\sum_{w \\in \\mathcal{W}} C^{W}_w p^{nom}_w + \\sum_{v \\in \\mathcal{V}} C^{PV}_v p^{nom}_v + \\sum_{x \\in \\mathcal{X}} C^{X}_x p^{nom}_x \\leq B^{max}\\)\n\nElectricity Power Balance:\n\n\\(\\sum_{w \\in \\mathcal{W}} p_{w,t,\\omega} + \\sum_{v \\in \\mathcal{V}} p_{v,t,\\omega} + (p^{in}_{t,\\omega} - p^{out}_{t,\\omega}) + \\sum_{s \\in \\mathcal{S}_{\\text{El}}} (p^{dis}_{s,t,\\omega} - p^{ch}_{s,t,\\omega}) = \\sum_{x \\in \\mathcal{X}} p_{x,t,\\omega} \\quad \\forall t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\n\nHydrogen Balance:\n\n\\(\\sum_{x \\in \\mathcal{X}} h_{x,t,\\omega} + \\sum_{s \\in \\mathcal{S}_{\\text{H2}}} (p^{dis}_{s,t,\\omega} - p^{ch}_{s,t,\\omega}) = d_{t,\\omega} \\quad \\forall t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\n\nComponent Capacity Limits:\n\n\\(0 \\leq p_{w,t,\\omega} \\leq f_{w,t,\\omega} p^{nom}_w \\quad \\forall w \\in \\mathcal{W}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\) \\(0 \\leq p_{v,t,\\omega} \\leq f_{v,t,\\omega} p^{nom}_v \\quad \\forall v \\in \\mathcal{V}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\) \\(0 \\leq p^{ch}_{s,t,\\omega} \\leq p^{ch,nom}_s \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\) \\(0 \\leq p^{dis}_{s,t,\\omega} \\leq p^{dis,nom}_s \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\) \\(DoD_s e^{nom}_s \\leq e_{s,t,\\omega} \\leq e^{nom}_s \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\n\nStorage Energy Balance:\n\n\\(e_{s,t,\\omega} = (1-sdr_s)e_{s,t-1,\\omega} + \\eta^{ch}_s p^{ch}_{s,t,\\omega} - \\frac{p^{dis}_{s,t,\\omega}}{\\eta^{dis}_s} \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\n\nElectrolyzer Constraints:\n\n\\(0 \\leq p_{x,t,\\omega} \\leq p^{nom}_x \\quad \\forall x \\in \\mathcal{X}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\) \\(h_{x,t,\\omega} = \\beta_x p_{x,t,\\omega} \\quad \\forall x \\in \\mathcal{X}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)",
+    "crumbs": [
+      "11 Framework",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-11/lecture-framework.html#model-characteristics",
+    "href": "part-11/lecture-framework.html#model-characteristics",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "",
+    "text": "Two-stage stochastic Linear Programming (LP) problem for multi-energy systems\nCombines investment and operational decisions across multiple energy carriers\nLarge-scale optimization problem with energy conversion technologies\nRequires efficient solution methods\nConsiders multiple scenarios for robust decision-making\nIntegrates electricity and hydrogen value chains\n\n\n\n\n\n\n\nTip\n\n\n\nThe multi-energy system model can be adapted to specific use cases, i.e., if certain components already have fixed capacities, the corresponding variables can be converted to parameters. The stochastic formulation allows for more robust investment decisions by considering multiple scenarios across different energy carriers.",
+    "crumbs": [
+      "11 Framework",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-11/lecture-framework.html#key-extensions-from-single-energy-systems",
+    "href": "part-11/lecture-framework.html#key-extensions-from-single-energy-systems",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "",
+    "text": "Electrolyzers: Convert electricity to hydrogen with efficiency \\(\\beta_x\\)\nHydrogen Storage: Separate storage systems for hydrogen with different characteristics\nEnergy Conversion: Explicit modeling of energy carrier conversion processes\n\n\n\n\n\nHydrogen Balance: Ensures hydrogen demand is met through production and storage\nElectrolyzer Operation: Links electricity consumption to hydrogen production\nMulti-Carrier Storage: Distinguishes between electricity (\\(\\mathcal{S}_{\\text{El}}\\)) and hydrogen (\\(\\mathcal{S}_{\\text{H2}}\\)) storage\n\n\n\n\n\nElectricity Balance: Now includes electrolyzer consumption instead of direct demand\nInvestment Budget: Includes electrolyzer investment costs\nObjective Function: Includes electrolyzer annualized investment costs\n\n\n\n\n\n\n\nNote\n\n\n\nThese extensions enable comprehensive optimization of energy value chains, allowing for optimal sizing and operation of systems that convert between the different energy carriers while considering uncertainty and operational constraints.",
+    "crumbs": [
+      "11 Framework",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-11/lecture-framework.html#solutions-from-last-week",
+    "href": "part-11/lecture-framework.html#solutions-from-last-week",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "",
+    "text": "The tutorials from last week will again be available on Friday\nYou can access them in the project folder on Github\nClick on the little cat icon on the bottom right\n\n. . .\n\n\n\n\n\n\nTip\n\n\n\nYou can ask questions anytime in class or via email!",
+    "crumbs": [
+      "11 Framework",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-11/lecture-framework.html#what-are-big-m-constraints",
+    "href": "part-11/lecture-framework.html#what-are-big-m-constraints",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "What are Big M Constraints?",
+    "text": "What are Big M Constraints?\nBig M constraints are a fundamental modeling technique in Mixed-Integer Linear Programming (MILP) used to create conditional relationships between continuous and binary variables. The “M” represents a large constant that acts as an upper bound, allowing constraints to be “turned on” or “turned off” based on binary variable values.\n\n\n\n\n\n\nNote\n\n\n\nBig M constraints enable the modeling of complex logical relationships and conditional constraints that would otherwise be difficult to express in linear programming formulations.",
+    "crumbs": [
+      "11 Framework",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-11/lecture-framework.html#basic-concept",
+    "href": "part-11/lecture-framework.html#basic-concept",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Basic Concept",
+    "text": "Basic Concept\nThe general form of a big M constraint is:\n\\(f(x) \\leq M (1 - y)\\)\nwhere:\n\n\\(f(x)\\) is a function of continuous variables\n\\(M\\) is a large constant (the “big M”)\n\\(y\\) is a binary variable (0 or 1)\n\nLogic: When \\(y = 1\\), the constraint becomes \\(f(x) \\leq 0\\) (active). When \\(y = 0\\), the constraint becomes \\(f(x) \\leq M\\) (inactive, since \\(M\\) is large).",
+    "crumbs": [
+      "11 Framework",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-11/lecture-framework.html#example-from-unit-commitment-startup-timing-constraints",
+    "href": "part-11/lecture-framework.html#example-from-unit-commitment-startup-timing-constraints",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Example from Unit Commitment: Startup Timing Constraints",
+    "text": "Example from Unit Commitment: Startup Timing Constraints\nConsider the constraint from the intermission lecture where generator 3 and generator 4 cannot start up within 3 time periods of each other:\n\\(\\sum_{\\tau \\in [t, \\min(t+3,|\\mathcal{T}|)]} v_{3,\\tau} \\leq (1 - v_{4,t}) M \\quad \\forall t \\in \\mathcal{T}\\)\n\\(\\sum_{\\tau \\in [t-1, \\max(t-3,1)]} v_{3,\\tau} \\leq (1 - v_{4,t}) M \\quad \\forall t \\in \\mathcal{T}\\)\n\nHow it Works:\n\nWhen \\(v_{4,t} = 1\\) (generator 4 starts at time \\(t\\)):\n\nThe right-hand side becomes \\((1-1) M = 0\\)\nThe constraint forces \\(\\sum v_{3,\\tau} \\leq 0\\)\nThis means generator 3 cannot start in the specified time windows\n\nWhen \\(v_{4,t} = 0\\) (generator 4 does not start at time \\(t\\)):\n\nThe right-hand side becomes \\((1-0) M = M\\)\nThe constraint becomes \\(\\sum v_{3,\\tau} \\leq M\\)\nSince \\(M\\) is large, this constraint is effectively not limiting the startup of generator 3 and hence not active\n\n\n\n\n\n\n\n\nTip\n\n\n\nThe choice of \\(M\\) is crucial: it must be large enough to make constraints inactive when needed, but not so large that it causes numerical issues in the solver.",
+    "crumbs": [
+      "11 Framework",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-11/lecture-framework.html#choosing-the-right-big-m-value",
+    "href": "part-11/lecture-framework.html#choosing-the-right-big-m-value",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Choosing the Right Big M Value",
+    "text": "Choosing the Right Big M Value\n\nGuidelines for Selecting M:\n\nUpper Bound: \\(M\\) should be an upper bound on the left-hand side expression\nTightness: Choose the smallest possible value that still works\nNumerical Stability: Avoid extremely large values that can cause solver issues\n\n\n\nExample Calculation:\nFor the startup timing constraint, a good choice for \\(M\\) would be:\n\n\\(M = |\\mathcal{T}|\\) (total number of time periods)\nThis ensures that even if all startup variables were 1, the constraint would still be satisfied when inactive\nConsidering that the fastest startup variable sequence is 1-0-1-0-…, M could be set to 2 here.",
+    "crumbs": [
+      "11 Framework",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-11/lecture-framework.html#advantages-and-disadvantages",
+    "href": "part-11/lecture-framework.html#advantages-and-disadvantages",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Advantages and Disadvantages",
+    "text": "Advantages and Disadvantages\n\nAdvantages:\n\nFlexibility: Enables modeling of complex logical relationships\nLinear Formulation: Maintains linearity of the optimization problem\nWide Applicability: Can be used in many different contexts\n\n\n\nDisadvantages:\n\nNumerical Issues: Poor choice of \\(M\\) can cause solver difficulties\nWeak Relaxation: Can lead to weak linear programming relaxations\nSolution Quality: May result in slower convergence",
+    "crumbs": [
+      "11 Framework",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-11/lecture-framework.html#alternative-approaches",
+    "href": "part-11/lecture-framework.html#alternative-approaches",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Alternative Approaches",
+    "text": "Alternative Approaches\n\n1. Indicator Constraints\nIndicator constraints replace big M constraints with direct logical relationships. They are best suited for simple binary conditions where you have clear “if-then” relationships.\nBig M approach:\n\\(p_g \\leq p_g^{max} u_g\\)\nIndicator constraint approach:\n@constraint(model, u_g =&gt; {p_g &lt;= p_g_max})  # If generator is ON, then power ≤ max\n@constraint(model, !u_g =&gt; {p_g == 0})       # If generator is OFF, then power = 0\nWhen to use: Simple binary logic (on/off, yes/no, active/inactive)\nKey characteristic: Direct logical statements without mutual exclusivity requirements\nAdvantages:\n\nNo need to choose M values\nOften leads to tighter formulations\nMore intuitive modeling\nBetter numerical stability\n\nDisadvantages:\n\nNot all solvers support indicator constraints\nMay require specialized solvers\n\n\n\n2. Disjunctive Programming\nDisjunctive programming handles complex multi-state conditions where exactly one state must be active. It uses special ordered sets (SOS1) to enforce mutual exclusivity.\nExample: A generator can operate in exactly one of three modes: off, minimum load, or full load.\nBig M approach:\n\\(p_g \\leq (1 - u_g^{off}) + p_g^{min} u_g^{min} + p_g^{max} u_g^{max}\\)\n\\(p_g \\geq (1 - u_g^{off}) + p_g^{min} u_g^{min} + p_g^{max} u_g^{max}\\)\n\\(u_g^{off} + u_g^{min} + u_g^{max} \\leq 1\\)\nDisjunctive approach:\n# SOS1 ensures exactly one binary variable is 1, others are 0\n@constraint(model, [u_g_off, u_g_min, u_g_max] in MOI.SOS1(3))\n@constraint(model, u_g_off =&gt; {p_g == 0})                       # State 1: Off\n@constraint(model, u_g_min =&gt; {p_g == p_g_min})                 # State 2: Minimum load\n@constraint(model, u_g_max =&gt; {p_g == p_g_max})                 # State 3: Full load\nWhen to use: Multiple mutually exclusive states or operational modes Key characteristic: Enforces that exactly one state is active at a time\nAdvantages:\n\nMore structured for complex logical relationships\nCan lead to better formulations\nEasier to understand complex constraints\nEnforces mutual exclusivity automatically\n\nDisadvantages:\n\nMore complex implementation\nMay not be supported by all solvers\n\n\n\nKey Differences Between Approaches 1 and 2:\n\n\n\n\n\n\n\n\nAspect\nIndicator Constraints\nDisjunctive Programming\n\n\n\n\nComplexity\nSimple binary logic\nMultiple states\n\n\nMutual Exclusivity\nNot enforced\nAutomatically enforced\n\n\nUse Case\n“If A, then B”\n“Must be in exactly one of states A, B, C”\n\n\nImplementation\nDirect logical statements\nSOS1 constraints\n\n\nExample\nGenerator on/off\nGenerator off/min/max modes\n\n\n\n\n\n3. Reformulation\nSometimes big M constraints can be reformulated using additional variables or constraints that are more efficient or numerically stable.\nExample: Instead of using big M for minimum up time constraints, use a different approach.\nBig M approach:\n\\(\\sum_{t'=t}^{t+T^{min}-1} u_{g,t'} \\geq T^{min} v_{g,t}\\)\nReformulation approach:\n# Use a continuous variable to track remaining minimum up time\n@variable(model, 0 &lt;= remaining_up_time[g, t] &lt;= T_min)\n@constraint(model, remaining_up_time[g, t] &lt;= T_min * u_g[t])\n@constraint(model, remaining_up_time[g, t] &lt;= remaining_up_time[g, t-1] - 1 + T_min * v_g[t])\n@constraint(model, remaining_up_time[g, t] &gt;= 0)\nAdvantages:\n\nOften more numerically stable\nCan provide tighter formulations\nMay lead to faster solution times\n\nDisadvantages:\n\nMore complex to implement\nRequires more variables and constraints\nMay not always be possible\n\n\n\n\n\n\n\nNote\n\n\n\nBig M constraints are a powerful tool in MILP modeling, but they should be used carefully with appropriate values for \\(M\\) to ensure both correctness and computational efficiency.",
+    "crumbs": [
+      "11 Framework",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-11/lecture-framework.html#practical-tips",
+    "href": "part-11/lecture-framework.html#practical-tips",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Practical Tips",
+    "text": "Practical Tips\n\nDocument your choice of M: Always explain why you chose a particular value\nTest with small instances: Verify that your constraints work as expected\nConsider solver-specific features: Some solvers have built-in support for certain constraint types\nMonitor solution times: If the problem is slow to solve, consider if big M constraints are the bottleneck",
+    "crumbs": [
+      "11 Framework",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-11/lecture-framework.html#multi-energy-systems-definition",
+    "href": "part-11/lecture-framework.html#multi-energy-systems-definition",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Multi-Energy Systems: Definition",
+    "text": "Multi-Energy Systems: Definition\nA multi-energy system is a system that combines multiple energy carriers (e.g. electricity, hydrogen, heat, etc.) to meet the energy demand of a specific application.",
+    "crumbs": [
+      "11 Framework",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-11/lecture-framework.html#multi-energy-systems-example-hydrogen-value-chain",
+    "href": "part-11/lecture-framework.html#multi-energy-systems-example-hydrogen-value-chain",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Multi-Energy Systems: Example Hydrogen Value Chain",
+    "text": "Multi-Energy Systems: Example Hydrogen Value Chain\n\n\n\nExample case of a hydrogen value chain\n\n\n\n\n\n\n\n\nNote\n\n\n\nThe figure shows a multi-energy system with:\n\nRenewable energy sources (PV and Wind) and grid connection\nElectric bus bar for power distribution\nElectrolyzer for hydrogen production\nHydrogen bus bar for hydrogen distribution\nHydrogen storage\nHydrogen demand",
+    "crumbs": [
+      "11 Framework",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-11/lecture-framework.html#multi-energy-system-design-problem",
+    "href": "part-11/lecture-framework.html#multi-energy-system-design-problem",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Multi-Energy System Design Problem",
+    "text": "Multi-Energy System Design Problem\nIn this lecture, we extend the Stochastic System Design problem to include investment decisions for multi-energy systems. This allows us to:\n\nOptimize technology selection over the entire energy value chain\nDetermine optimal component sizes\nBalance investment and operational costs\nPlan local multi-energy systems holistically (e.g. electricity, hydrogen, heat, etc.)\n\n\n\n\n\n\n\nNote\n\n\n\nRemember: The design problem combines investment planning (sizing) with operational optimization, enabling comprehensive (multi-)energy system design.",
+    "crumbs": [
+      "11 Framework",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-11/lecture-framework.html#key-components",
+    "href": "part-11/lecture-framework.html#key-components",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Key Components",
+    "text": "Key Components\nWe will focus on optimizing:\n\nStorage systems for electricity and hydrogen\nWind parks\nPV parks\nElectrolyzers\nElectric market participation\n\n… while fullfilling a fixed hydrogen demand. Additionally, we consider a maximum investment budget.\nAll nominal sizes will be decision variables in our optimization model.",
+    "crumbs": [
+      "11 Framework",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-11/lecture-framework.html#sets",
+    "href": "part-11/lecture-framework.html#sets",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Sets",
+    "text": "Sets\n\n\\(\\mathcal{T}\\) - Set of time periods indexed by \\(t \\in \\{1,2,...,|\\mathcal{T}|\\}\\)\n\\(\\mathcal{E}\\) - Set of energy carriers/fuels indexed by \\(e \\in \\{1,2,...,|\\mathcal{E}|\\}\\)\n\\(\\mathcal{E}^D\\) - Subset of energy carriers associated with demand constraints\n\\(\\mathcal{G}\\) - Set of dispatchable technology units indexed by \\(g \\in \\{1,2,...,|\\mathcal{G}|\\}\\)\n\\(\\mathcal{G}^S\\) - Subset of storage technology units\n\\(\\mathcal{G}^{UC}\\) - Subset of technology units with unit commitment constraints\n\\(\\mathcal{G}^{Var}\\) - Subset of variable energy technology units (e.g., wind, solar)\n\\(\\mathcal{G}^R\\) - Subset of technology units with ramping constraints\n\\(\\mathcal{E}_g^{In}\\) - Mapping set of feedstock fuels to technology \\(g\\)\n\\(\\mathcal{E}_g^{Out}\\) - Mapping set of produced fuels from technology \\(g\\)\n\\(\\Omega\\) - Set of scenarios indexed by \\(\\omega \\in \\{1,2,...,|\\Omega|\\}\\)\n\n\n\n\n\n\n\nNote\n\n\n\nThe general framework uses technology-agnostic sets that can represent any energy conversion technology (electrolyzers, fuel cells, heat pumps, etc.) and any energy carrier (electricity, hydrogen, heat, natural gas, etc.).",
+    "crumbs": [
+      "11 Framework",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-11/lecture-framework.html#decision-variables",
+    "href": "part-11/lecture-framework.html#decision-variables",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Decision Variables",
+    "text": "Decision Variables\n\nInvestment Variables (First Stage)\n\n\\(P_g^{nom}\\) - Nominal capacity of technology \\(g\\) [MW or appropriate unit]\n\\(SOC_g^{nom}\\) - Nominal energy capacity of storage technology \\(g\\) [MWh or appropriate unit]\n\n\n\nOperational Variables (Second Stage)\n\n\\(x_{g,e,t,\\omega}^{in}\\) - Amount of feedstock fuel \\(e\\) consumed in technology \\(g\\) at time \\(t\\) in scenario \\(\\omega\\)\n\\(x_{g,e,t,\\omega}^{out}\\) - Amount of produced fuel \\(e\\) from technology \\(g\\) at time \\(t\\) in scenario \\(\\omega\\)\n\\(x_{g,t,\\omega}^{total}\\) - Total activity level of technology \\(g\\) at time \\(t\\) in scenario \\(\\omega\\)\n\\(f_{e,t,\\omega}^{buy}\\) - Flow of fuel \\(e\\) bought at time \\(t\\) in scenario \\(\\omega\\)\n\\(f_{e,t,\\omega}^{sell}\\) - Flow of fuel \\(e\\) sold at time \\(t\\) in scenario \\(\\omega\\)\n\\(soc_{g,t,\\omega}\\) - State of charge of storage technology \\(g\\) at time \\(t\\) in scenario \\(\\omega\\)\n\n\n\nBinary Variables (for Unit Commitment)\n\n\\(u_{g,t,\\omega}\\) - Binary indicating online/offline status of technology \\(g\\) at time \\(t\\) in scenario \\(\\omega\\)\n\\(v_{g,t,\\omega}\\) - Binary indicating startup of technology \\(g\\) at time \\(t\\) in scenario \\(\\omega\\)\n\\(o_{g,t,\\omega}\\) - Binary indicating charging/discharging status of storage technology \\(g\\) at time \\(t\\) in scenario \\(\\omega\\)\n\n\n\nCost Variables\n\n\\(AC_g^{inv}\\) - Annual investment cost for technology \\(g\\) [EUR/year]\n\\(c_{g,t,\\omega}^{start}\\) - Startup cost of technology \\(g\\) at time \\(t\\) in scenario \\(\\omega\\)",
+    "crumbs": [
+      "11 Framework",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-11/lecture-framework.html#parameters",
+    "href": "part-11/lecture-framework.html#parameters",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Parameters",
+    "text": "Parameters\n\nInvestment Costs (First Stage)\n\n\\(C_g^{inv}\\) - Investment cost per unit capacity for technology \\(g\\) [EUR/MW or appropriate unit]\n\\(C_g^{SOC}\\) - Investment cost per unit energy capacity for storage technology \\(g\\) [EUR/MWh or appropriate unit]\n\\(F^{PVAF}\\) - Present value annuity factor for investment costs\n\\(B^{max}\\) - Maximum investment budget [EUR]\n\n\n\nOperational Parameters (Second Stage)\n\n\\(\\sigma_{g,e}^{in}\\) - Percentage of fuel \\(e\\) used as feedstock in technology \\(g\\)\n\\(\\sigma_{g,e}^{out}\\) - Percentage of fuel \\(e\\) produced by technology \\(g\\)\n\\(\\Theta_g\\) - Conversion efficiency ratio of technology \\(g\\) (output/input ratio)\n\\(C_g^{var}\\) - Variable operating cost of technology \\(g\\) [EUR/unit]\n\\(C_g^{start}\\) - Startup cost of technology \\(g\\) [EUR]\n\\(D_{e,t,\\omega}\\) - Demand of energy carrier \\(e\\) at time \\(t\\) in scenario \\(\\omega\\)\n\\(P_g^{max}\\) - Maximum production level of technology \\(g\\)\n\\(P_g^{min}\\) - Minimum production level of technology \\(g\\)\n\\(\\pi_{e,t,\\omega}^{buy}\\) - Price of fuel \\(e\\) bought at time \\(t\\) in scenario \\(\\omega\\)\n\\(\\pi_{e,t,\\omega}^{sell}\\) - Price of fuel \\(e\\) sold at time \\(t\\) in scenario \\(\\omega\\)\n\\(SOC_g^{init}\\) - Initial state of charge of storage technology \\(g\\)\n\\(SOC_g^{max}\\) - Maximum state of charge of storage technology \\(g\\)\n\\(\\pi_{\\omega}^{prob}\\) - Probability of scenario \\(\\omega\\)",
+    "crumbs": [
+      "11 Framework",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-11/lecture-framework.html#objective-function-1",
+    "href": "part-11/lecture-framework.html#objective-function-1",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Objective Function",
+    "text": "Objective Function\n\nMaximize the following components:\n\\(\\text{Maximize}\\)\nRevenue from selling energy carriers:\n\\(\\sum_{\\omega \\in \\Omega} \\pi_{\\omega}^{prob} \\sum_{e \\in \\mathcal{E}} \\sum_{t \\in \\mathcal{T}} \\pi_{e,t,\\omega}^{sell} f_{e,t,\\omega}^{sell}\\)\nCosts of buying energy carriers:\n\\(-\\sum_{\\omega \\in \\Omega} \\pi_{\\omega}^{prob} \\sum_{e \\in \\mathcal{E}} \\sum_{t \\in \\mathcal{T}} \\pi_{e,t,\\omega}^{buy} f_{e,t,\\omega}^{buy}\\)\nVariable operating costs:\n\\(-\\sum_{\\omega \\in \\Omega} \\pi_{\\omega}^{prob} \\sum_{g \\in \\mathcal{G}} \\sum_{t \\in \\mathcal{T}} C_g^{var} x_{g,t,\\omega}^{total}\\)\nStartup costs:\n\\(-\\sum_{\\omega \\in \\Omega} \\pi_{\\omega}^{prob} \\sum_{g \\in \\mathcal{G}^{UC}} \\sum_{t \\in \\mathcal{T}} c_{g,t,\\omega}^{start}\\)\nInvestment costs:\n\\(-\\sum_{g \\in \\mathcal{G}} AC_g^{inv}\\)\n\n\n\n\n\n\nNote\n\n\n\nThe objective maximizes profit: revenue from selling energy carriers minus costs of buying energy carriers, variable operating costs, startup costs, and investment costs.",
+    "crumbs": [
+      "11 Framework",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-11/lecture-framework.html#investment-cost-constraints",
+    "href": "part-11/lecture-framework.html#investment-cost-constraints",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Investment Cost Constraints",
+    "text": "Investment Cost Constraints\n\\(AC_g^{inv} = \\frac{C_g^{inv}}{F^{PVAF}} P_g^{nom} \\quad \\forall g \\in \\mathcal{G} \\setminus \\mathcal{G}^S\\)\n\\(AC_g^{inv} = \\frac{C_g^{inv}}{F^{PVAF}} P_g^{nom} + \\frac{C_g^{SOC}}{F^{PVAF}} SOC_g^{nom} \\quad \\forall g \\in \\mathcal{G}^S\\)\n\nInvestment Budget\n\\(\\sum_{g \\in \\mathcal{G}} AC_g^{inv} \\leq B^{max}\\)",
+    "crumbs": [
+      "11 Framework",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-11/lecture-framework.html#energy-conversion-constraints",
+    "href": "part-11/lecture-framework.html#energy-conversion-constraints",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Energy Conversion Constraints",
+    "text": "Energy Conversion Constraints\n\nInput-Output Relationships\n\\(x_{g,e,t,\\omega}^{in} = \\sigma_{g,e}^{in} x_{g,t,\\omega}^{total} \\quad \\forall g \\in \\mathcal{G}, e \\in \\mathcal{E}_g^{In}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\n\\(x_{g,e,t,\\omega}^{out} = \\sigma_{g,e}^{out} \\Theta_g x_{g,t,\\omega}^{total} \\quad \\forall g \\in \\mathcal{G} \\setminus \\mathcal{G}^S, e \\in \\mathcal{E}_g^{Out}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\n\n\nTechnology Capacity Limits\n\\(P_g^{min} u_{g,t,\\omega} \\leq x_{g,t,\\omega}^{total} \\leq P_g^{max} u_{g,t,\\omega} \\quad \\forall g \\in \\mathcal{G} \\setminus \\mathcal{G}^S, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\n\n\nVariable Energy Technologies\n\\(0 \\leq x_{g,t,\\omega}^{total} \\leq f_{g,t,\\omega} P_g^{nom} \\quad \\forall g \\in \\mathcal{G}^{Var}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\nwhere \\(f_{g,t,\\omega}\\) is the capacity factor for variable technology \\(g\\).",
+    "crumbs": [
+      "11 Framework",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-11/lecture-framework.html#storage-constraints",
+    "href": "part-11/lecture-framework.html#storage-constraints",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Storage Constraints",
+    "text": "Storage Constraints\n\nState of Charge Balance\n\\(soc_{g,t,\\omega} = soc_{g,t-1,\\omega} + \\Theta_g x_{g,t,\\omega}^{total} - \\sum_{e \\in \\mathcal{E}_g^{Out}} \\sigma_{g,e}^{out} x_{g,e,t,\\omega}^{out} \\quad \\forall g \\in \\mathcal{G}^S, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\n\n\nStorage Capacity Limits\n\\(0 \\leq soc_{g,t,\\omega} \\leq SOC_g^{max} \\quad \\forall g \\in \\mathcal{G}^S, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\n\n\nInitial and Final State\n\\(soc_{g,t=0,\\omega} = soc_{g,t=|\\mathcal{T}|,\\omega} = SOC_g^{init} \\quad \\forall g \\in \\mathcal{G}^S, \\omega \\in \\Omega\\)\n\n\nCharging/Discharging Mutual Exclusion\n\\(P_g^{min} o_{g,t,\\omega} \\leq x_{g,t,\\omega}^{total} \\leq P_g^{max} o_{g,t,\\omega} \\quad \\forall g \\in \\mathcal{G}^S, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\n\\(P_g^{min} (1-o_{g,t,\\omega}) \\leq \\sum_{e \\in \\mathcal{E}_g^{Out}} \\sigma_{g,e}^{out} x_{g,e,t,\\omega}^{out} \\leq P_g^{max} (1-o_{g,t,\\omega}) \\quad \\forall g \\in \\mathcal{G}^S, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)",
+    "crumbs": [
+      "11 Framework",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-11/lecture-framework.html#energy-balance-constraints",
+    "href": "part-11/lecture-framework.html#energy-balance-constraints",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Energy Balance Constraints",
+    "text": "Energy Balance Constraints\n\nEnergy Carrier Balance\n\\(\\sum_{g \\in \\mathcal{G}} x_{g,e,t,\\omega}^{out} + f_{e,t,\\omega}^{buy} = \\sum_{g \\in \\mathcal{G}} x_{g,e,t,\\omega}^{in} + f_{e,t,\\omega}^{sell} + D_{e,t,\\omega} \\quad \\forall e \\in \\mathcal{E}^D, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)",
+    "crumbs": [
+      "11 Framework",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-11/lecture-framework.html#unit-commitment-constraints-if-applicable",
+    "href": "part-11/lecture-framework.html#unit-commitment-constraints-if-applicable",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Unit Commitment Constraints (if applicable)",
+    "text": "Unit Commitment Constraints (if applicable)\n\nStartup Variable Definition\n\\(v_{g,t,\\omega} \\geq u_{g,t,\\omega} - u_{g,t-1,\\omega} \\quad \\forall g \\in \\mathcal{G}^{UC}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\n\n\nStartup Cost\n\\(c_{g,t,\\omega}^{start} \\geq C_g^{start} v_{g,t,\\omega} \\quad \\forall g \\in \\mathcal{G}^{UC}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\n\n\n\n\n\n\nNote\n\n\n\nThis general framework can be specialized to specific applications by:\n\nDefining appropriate energy carriers in \\(\\mathcal{E}\\)\nSpecifying technology types in \\(\\mathcal{G}\\)\nSetting conversion parameters \\(\\sigma_{g,e}^{in}\\), \\(\\sigma_{g,e}^{out}\\), and \\(\\Theta_g\\)\nAdding application-specific constraints as needed\n\n\n\n\n\nQuestions?",
+    "crumbs": [
+      "11 Framework",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-11/lecture-framework.html#conceptual-foundation",
+    "href": "part-11/lecture-framework.html#conceptual-foundation",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Conceptual Foundation",
+    "text": "Conceptual Foundation\nMulti-energy systems (MES) and energy hubs represent a fundamental shift in energy system design, moving from single-carrier optimization to integrated multi-carrier approaches. The energy hub concept was originally introduced by Geidl and Andersson (2007) as a framework for optimal coupling of energy infrastructures, enabling the integration of electricity, heat, gas, and other energy carriers within a unified optimization framework.\n\n\n\n\n\n\nNote\n\n\n\nThe energy hub concept provides a systematic approach to model and optimize multi-carrier energy systems, enabling the integration of renewable energy sources, storage technologies, and energy conversion processes.",
+    "crumbs": [
+      "11 Framework",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-11/lecture-framework.html#recent-literature-reviews",
+    "href": "part-11/lecture-framework.html#recent-literature-reviews",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Recent Literature Reviews",
+    "text": "Recent Literature Reviews\nSeveral comprehensive literature reviews have been conducted in recent years, highlighting the growing importance of multi-energy systems:\n\nUncertainty Modeling and Optimization\nRecent reviews by Jasinski et al. (2023), Lasemi et al. (2022), and Onen, Mokryani, and Zubo (2022) focus on uncertainty modeling approaches in energy hub optimization. These reviews identify three main approaches: - Stochastic Programming: Using scenario-based optimization with Monte Carlo simulation - Robust Optimization: Providing conservative but computationally efficient solutions - Hybrid Methods: Combining the advantages of both approaches\n\n\nComprehensive Framework Reviews\nPapadimitriou et al. (2023) provides a systematic review of modeling formulations, optimization methods, and market interactions in energy hubs. Ding et al. (2022) extends this analysis to include trading and control structures for handling large-scale datasets.\n\n\nHistorical Development\nEarlier reviews by Maroufmashat et al. (2019) and Son et al. (2021) identified the hydrogen economy as a major application area for energy hubs, following the original proposals by Geidl and Andersson (2007). These reviews systematically analyzed 200+ articles published between 2007-2017, establishing the foundation for current research directions.",
+    "crumbs": [
+      "11 Framework",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-11/lecture-framework.html#key-research-directions",
+    "href": "part-11/lecture-framework.html#key-research-directions",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Key Research Directions",
+    "text": "Key Research Directions\n\nHydrogen and Power-to-X Integration\nRecent literature identifies hydrogen and Power-to-X (P2X) technologies as critical future research directions. Kountouris et al. (2023) developed an optimization model for P2X-integrated energy hubs applied to an industrial park in Denmark, demonstrating the economic viability of hydrogen, methanol, and ammonia production.\n\n\nIndustrial Applications\nWassermann et al. (2022) addressed the planning and operation problem for hydrogen demand in refinery applications, presenting MILP model extensions for water electrolysis and cavern storage. This work demonstrates the practical application of energy hub concepts to real-world industrial decarbonization projects.\n\n\nUncertainty and Computational Challenges\nThe representation of renewable energy uncertainty is identified as a core challenge across multiple reviews. Ringkjöb, Haugan, and Solbrekke (2018), who reviewed 75 energy system modeling frameworks, conclude that high spatiotemporal resolution is essential for accurate RES representation, but comes at significant computational cost.\n\n\n\n\n\n\nNote\n\n\n\nThe trade-off between model fidelity and computational burden is a central challenge in multi-energy system optimization, particularly when considering renewable energy uncertainty.\n\n\n\n\nIntegrated Framework for Green Hydrogen Value Chains\nRecent research by Cors et al. (2024) in Cors (2024) addresses the critical gap in computationally tractable modeling for green hydrogen value chains (GHVCs) under uncertainty. The work presents a highly adaptable stochastic optimization framework that combines:\n\nMulti-medium, multi-energy system optimization integrating electricity, hydrogen, and derivatives\nIntegrated approach combining system component dimensioning, operation optimization, and storage strategy\nPure linear model formulation enabled by novel linearization techniques, allowing extensive uncertainty consideration\nDecomposition methods for incorporating renewable energy supply uncertainties into decision processes\nReal-world application to industrial alliances including offshore wind parks, electrolyzers, methanol synthesis, cement plants, and refineries\n\nThe framework demonstrates significant cost reductions through enabled risk management and addresses the research gap of computationally tractable models while maintaining high representational fidelity and uncertainty consideration.",
+    "crumbs": [
+      "11 Framework",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-11/lecture-framework.html#solution-methods-and-frameworks",
+    "href": "part-11/lecture-framework.html#solution-methods-and-frameworks",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Solution Methods and Frameworks",
+    "text": "Solution Methods and Frameworks\n\nDecomposition Approaches\nSeveral studies demonstrate the effectiveness of Benders decomposition for energy hub optimization. Mansouri et al. (2020), Chen et al. (2019), and Hemmati, Ghaderi, and Ghazizadeh (2018) use Benders decomposition to separate dimensioning decisions (master problem) from operational optimization (subproblems), enabling efficient solution of large-scale problems.\n\n\nAdvanced Modeling Frameworks\nRecent frameworks address computational complexity through innovative approaches:\n\nSpineOpt (Ihlemann et al. (2022)): A flexible Julia-based framework allowing variable temporal resolution per system component\nAnyMod (Göke (2021)): A pure linear model formulation designed for macro-energy system planning with full-year time series\nficus (Atabay (2017)): An industrial energy system optimization framework based on the urbs framework (Dorfner (2016))\nDRAF (Fleschutz et al. (2022)): An open-source Python decision support tool for decarbonizing local multi-energy systems using multi-objective mixed-integer linear programming, featuring demand-side flexibility, electrification, and renewable energy integration\n\n\n\nTemporal Resolution Challenges\nGonzato, Bruninx, and Delarue (2021) analyzed techniques for reducing temporal scope in expansion planning models with long-term storage, recommending against temporal reductions and advocating for full-year time series inclusion to prevent biases in system design.",
+    "crumbs": [
+      "11 Framework",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-11/lecture-framework.html#hydrogen-supply-chain-integration",
+    "href": "part-11/lecture-framework.html#hydrogen-supply-chain-integration",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Hydrogen Supply Chain Integration",
+    "text": "Hydrogen Supply Chain Integration\nThe integration of hydrogen supply chain network design (HSCND) with energy hub optimization represents an emerging research area. Li, Manier, and Manier (2019) provides a comprehensive review of HSCND optimization approaches, while Riera, Lima, and Knio (2023) reviews hydrogen production and supply chain modeling specifically.\n\n\n\n\n\n\nNote\n\n\n\nThe integration of hydrogen supply chain optimization with energy hub concepts enables comprehensive planning of green hydrogen value chains from production to end-use applications.",
+    "crumbs": [
+      "11 Framework",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-11/lecture-framework.html#open-source-tools-and-frameworks",
+    "href": "part-11/lecture-framework.html#open-source-tools-and-frameworks",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Open Source Tools and Frameworks",
+    "text": "Open Source Tools and Frameworks\nSeveral reviews assess the maturity and capabilities of open-source energy system optimization tools:\n\nGroissböck (2019) evaluates the maturity of open-source tools for serious applications\nOberle and Elsland (2019) assesses the ability of open-access models to evaluate current energy scenarios\nPfenninger, Hawkes, and Keirstead (2014) provides a broader perspective on energy systems modeling challenges",
+    "crumbs": [
+      "11 Framework",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-11/lecture-framework.html#future-research-directions",
+    "href": "part-11/lecture-framework.html#future-research-directions",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Future Research Directions",
+    "text": "Future Research Directions\nRecent literature reviews identify several critical future research directions:\n\nTechnology Integration: Further development of hydrogen, P2X, and CCUS technologies in integrated energy hubs\nReal-world Applications: Development of practical applications and business cases for energy hub concepts\nComputational Efficiency: Development of efficient modeling schemes and solution algorithms for uncertainty representation\nIndustrial Decarbonization: Application of energy hub concepts to hard-to-abate industrial sectors\n\n\n\n\n\n\n\nNote\n\n\n\nThe energy hub concept has evolved from a theoretical framework to a practical tool for industrial decarbonization, with growing applications in hydrogen value chains and Power-to-X systems.\n\n\n\n\nQuestions?",
+    "crumbs": [
+      "11 Framework",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-11/lecture-framework.html#literature-i",
+    "href": "part-11/lecture-framework.html#literature-i",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Literature I",
+    "text": "Literature I\nFor more interesting literature to learn more about Julia, take a look at the literature list of this course.",
+    "crumbs": [
+      "11 Framework",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-11/lecture-presentation.html#multi-energy-system-design-problem-overview",
+    "href": "part-11/lecture-presentation.html#multi-energy-system-design-problem-overview",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Multi-Energy System Design Problem Overview",
+    "text": "Multi-Energy System Design Problem Overview\n\nObjective: Minimize total annual costs (investment + operational) while respecting budget constraints for multi-energy systems\nDecision Variables:\n\nInvestment variables (First Stage):\n\nStorage energy capacity (\\(e^{nom}_s\\)) for both electricity and hydrogen storage\nStorage charging power (\\(p^{ch,nom}_s\\)) for both energy carriers\nStorage discharging power (\\(p^{dis,nom}_s\\)) for both energy carriers\nWind park capacity (\\(p^{nom}_w\\))\nPV park capacity (\\(p^{nom}_v\\))\nElectrolyzer capacity (\\(p^{nom}_x\\))\n\nOperational variables (Second Stage):\n\nWind power output (\\(p_{w,t,\\omega}\\))\nPV power output (\\(p_{v,t,\\omega}\\))\nGrid import/export (\\(p^{in}_{t,\\omega}\\), \\(p^{out}_{t,\\omega}\\))\nStorage operation (\\(p^{ch}_{s,t,\\omega}\\), \\(p^{dis}_{s,t,\\omega}\\), \\(e_{s,t,\\omega}\\))\nElectrolyzer operation (\\(p_{x,t,\\omega}\\), \\(h_{x,t,\\omega}\\))\n\n\nKey Constraints:\n\nInvestment budget limit\nElectricity power balance\nHydrogen balance\nComponent capacity limits\nStorage energy balance\nStorage energy limits\nStorage power limits\nElectrolyzer conversion constraints\n\n\n\n\n\n\n\n\nNote\n\n\nThe Multi-Energy System Design problem extends the basic energy system design by incorporating multiple energy carriers (electricity and hydrogen) and energy conversion technologies (electrolyzers). The stochastic formulation considers multiple scenarios to account for uncertainty in renewable generation, demand patterns, and price variations across different energy carriers."
+  },
+  {
+    "objectID": "part-11/lecture-presentation.html#mathematical-formulation",
+    "href": "part-11/lecture-presentation.html#mathematical-formulation",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Mathematical Formulation",
+    "text": "Mathematical Formulation\nObjective Function\n\\(\\text{Minimize} \\quad \\sum_{s \\in \\mathcal{S}} AC^{inv}_s + \\sum_{w \\in \\mathcal{W}} AC^{inv}_w + \\sum_{v \\in \\mathcal{V}} AC^{inv}_v + \\sum_{x \\in \\mathcal{X}} AC^{inv}_x + \\sum_{\\omega \\in \\Omega} \\pi_{\\omega} (AC^{grid,imp}_{\\omega} - AR^{grid,exp}_{\\omega})\\)\nKey Constraints\n\nInvestment Budget:\n\n\\(\\sum_{s \\in \\mathcal{S}} (C^{E}_s e^{nom}_s + C^{P,ch}_s p^{ch,nom}_s + C^{P,dis}_s p^{dis,nom}_s) + \\sum_{w \\in \\mathcal{W}} C^{W}_w p^{nom}_w + \\sum_{v \\in \\mathcal{V}} C^{PV}_v p^{nom}_v + \\sum_{x \\in \\mathcal{X}} C^{X}_x p^{nom}_x \\leq B^{max}\\)\n\nElectricity Power Balance:\n\n\\(\\sum_{w \\in \\mathcal{W}} p_{w,t,\\omega} + \\sum_{v \\in \\mathcal{V}} p_{v,t,\\omega} + (p^{in}_{t,\\omega} - p^{out}_{t,\\omega}) + \\sum_{s \\in \\mathcal{S}_{\\text{El}}} (p^{dis}_{s,t,\\omega} - p^{ch}_{s,t,\\omega}) = \\sum_{x \\in \\mathcal{X}} p_{x,t,\\omega} \\quad \\forall t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\n\nHydrogen Balance:\n\n\\(\\sum_{x \\in \\mathcal{X}} h_{x,t,\\omega} + \\sum_{s \\in \\mathcal{S}_{\\text{H2}}} (p^{dis}_{s,t,\\omega} - p^{ch}_{s,t,\\omega}) = d_{t,\\omega} \\quad \\forall t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\n\nComponent Capacity Limits:\n\n\\(0 \\leq p_{w,t,\\omega} \\leq f_{w,t,\\omega} p^{nom}_w \\quad \\forall w \\in \\mathcal{W}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\) \\(0 \\leq p_{v,t,\\omega} \\leq f_{v,t,\\omega} p^{nom}_v \\quad \\forall v \\in \\mathcal{V}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\) \\(0 \\leq p^{ch}_{s,t,\\omega} \\leq p^{ch,nom}_s \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\) \\(0 \\leq p^{dis}_{s,t,\\omega} \\leq p^{dis,nom}_s \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\) \\(DoD_s e^{nom}_s \\leq e_{s,t,\\omega} \\leq e^{nom}_s \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\n\nStorage Energy Balance:\n\n\\(e_{s,t,\\omega} = (1-sdr_s)e_{s,t-1,\\omega} + \\eta^{ch}_s p^{ch}_{s,t,\\omega} - \\frac{p^{dis}_{s,t,\\omega}}{\\eta^{dis}_s} \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\n\nElectrolyzer Constraints:\n\n\\(0 \\leq p_{x,t,\\omega} \\leq p^{nom}_x \\quad \\forall x \\in \\mathcal{X}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\) \\(h_{x,t,\\omega} = \\beta_x p_{x,t,\\omega} \\quad \\forall x \\in \\mathcal{X}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)"
+  },
+  {
+    "objectID": "part-11/lecture-presentation.html#model-characteristics",
+    "href": "part-11/lecture-presentation.html#model-characteristics",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Model Characteristics",
+    "text": "Model Characteristics\n\nTwo-stage stochastic Linear Programming (LP) problem for multi-energy systems\nCombines investment and operational decisions across multiple energy carriers\nLarge-scale optimization problem with energy conversion technologies\nRequires efficient solution methods\nConsiders multiple scenarios for robust decision-making\nIntegrates electricity and hydrogen value chains\n\n\n\n\n\n\n\nTip\n\n\nThe multi-energy system model can be adapted to specific use cases, i.e., if certain components already have fixed capacities, the corresponding variables can be converted to parameters. The stochastic formulation allows for more robust investment decisions by considering multiple scenarios across different energy carriers."
+  },
+  {
+    "objectID": "part-11/lecture-presentation.html#key-extensions-from-single-energy-systems",
+    "href": "part-11/lecture-presentation.html#key-extensions-from-single-energy-systems",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Key Extensions from Single-Energy Systems",
+    "text": "Key Extensions from Single-Energy Systems\nNew Components\n\nElectrolyzers: Convert electricity to hydrogen with efficiency \\(\\beta_x\\)\nHydrogen Storage: Separate storage systems for hydrogen with different characteristics\nEnergy Conversion: Explicit modeling of energy carrier conversion processes\n\nNew Constraints\n\nHydrogen Balance: Ensures hydrogen demand is met through production and storage\nElectrolyzer Operation: Links electricity consumption to hydrogen production\nMulti-Carrier Storage: Distinguishes between electricity (\\(\\mathcal{S}_{\\text{El}}\\)) and hydrogen (\\(\\mathcal{S}_{\\text{H2}}\\)) storage\n\nModified Constraints\n\nElectricity Balance: Now includes electrolyzer consumption instead of direct demand\nInvestment Budget: Includes electrolyzer investment costs\nObjective Function: Includes electrolyzer annualized investment costs\n\n\n\n\n\n\n\nNote\n\n\nThese extensions enable comprehensive optimization of energy value chains, allowing for optimal sizing and operation of systems that convert between the different energy carriers while considering uncertainty and operational constraints."
+  },
+  {
+    "objectID": "part-11/lecture-presentation.html#solutions-from-last-week",
+    "href": "part-11/lecture-presentation.html#solutions-from-last-week",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Solutions from last Week",
+    "text": "Solutions from last Week\n\nThe tutorials from last week will again be available on Friday\nYou can access them in the project folder on Github\nClick on the little cat icon on the bottom right\n\n\n\n\n\n\n\n\nTip\n\n\nYou can ask questions anytime in class or via email!"
+  },
+  {
+    "objectID": "part-11/lecture-presentation.html#what-are-big-m-constraints",
+    "href": "part-11/lecture-presentation.html#what-are-big-m-constraints",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "What are Big M Constraints?",
+    "text": "What are Big M Constraints?\nBig M constraints are a fundamental modeling technique in Mixed-Integer Linear Programming (MILP) used to create conditional relationships between continuous and binary variables. The “M” represents a large constant that acts as an upper bound, allowing constraints to be “turned on” or “turned off” based on binary variable values.\n\n\n\n\n\n\nNote\n\n\nBig M constraints enable the modeling of complex logical relationships and conditional constraints that would otherwise be difficult to express in linear programming formulations."
+  },
+  {
+    "objectID": "part-11/lecture-presentation.html#basic-concept",
+    "href": "part-11/lecture-presentation.html#basic-concept",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Basic Concept",
+    "text": "Basic Concept\nThe general form of a big M constraint is:\n\\(f(x) \\leq M (1 - y)\\)\nwhere:\n\n\\(f(x)\\) is a function of continuous variables\n\\(M\\) is a large constant (the “big M”)\n\\(y\\) is a binary variable (0 or 1)\n\nLogic: When \\(y = 1\\), the constraint becomes \\(f(x) \\leq 0\\) (active). When \\(y = 0\\), the constraint becomes \\(f(x) \\leq M\\) (inactive, since \\(M\\) is large)."
+  },
+  {
+    "objectID": "part-11/lecture-presentation.html#example-from-unit-commitment-startup-timing-constraints",
+    "href": "part-11/lecture-presentation.html#example-from-unit-commitment-startup-timing-constraints",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Example from Unit Commitment: Startup Timing Constraints",
+    "text": "Example from Unit Commitment: Startup Timing Constraints\nConsider the constraint from the intermission lecture where generator 3 and generator 4 cannot start up within 3 time periods of each other:\n\\(\\sum_{\\tau \\in [t, \\min(t+3,|\\mathcal{T}|)]} v_{3,\\tau} \\leq (1 - v_{4,t}) M \\quad \\forall t \\in \\mathcal{T}\\)\n\\(\\sum_{\\tau \\in [t-1, \\max(t-3,1)]} v_{3,\\tau} \\leq (1 - v_{4,t}) M \\quad \\forall t \\in \\mathcal{T}\\)\nHow it Works:\n\nWhen \\(v_{4,t} = 1\\) (generator 4 starts at time \\(t\\)):\n\nThe right-hand side becomes \\((1-1) M = 0\\)\nThe constraint forces \\(\\sum v_{3,\\tau} \\leq 0\\)\nThis means generator 3 cannot start in the specified time windows\n\nWhen \\(v_{4,t} = 0\\) (generator 4 does not start at time \\(t\\)):\n\nThe right-hand side becomes \\((1-0) M = M\\)\nThe constraint becomes \\(\\sum v_{3,\\tau} \\leq M\\)\nSince \\(M\\) is large, this constraint is effectively not limiting the startup of generator 3 and hence not active\n\n\n\n\n\n\n\n\nTip\n\n\nThe choice of \\(M\\) is crucial: it must be large enough to make constraints inactive when needed, but not so large that it causes numerical issues in the solver."
+  },
+  {
+    "objectID": "part-11/lecture-presentation.html#choosing-the-right-big-m-value",
+    "href": "part-11/lecture-presentation.html#choosing-the-right-big-m-value",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Choosing the Right Big M Value",
+    "text": "Choosing the Right Big M Value\nGuidelines for Selecting M:\n\nUpper Bound: \\(M\\) should be an upper bound on the left-hand side expression\nTightness: Choose the smallest possible value that still works\nNumerical Stability: Avoid extremely large values that can cause solver issues\n\nExample Calculation:\nFor the startup timing constraint, a good choice for \\(M\\) would be:\n\n\\(M = |\\mathcal{T}|\\) (total number of time periods)\nThis ensures that even if all startup variables were 1, the constraint would still be satisfied when inactive\nConsidering that the fastest startup variable sequence is 1-0-1-0-…, M could be set to 2 here."
+  },
+  {
+    "objectID": "part-11/lecture-presentation.html#advantages-and-disadvantages",
+    "href": "part-11/lecture-presentation.html#advantages-and-disadvantages",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Advantages and Disadvantages",
+    "text": "Advantages and Disadvantages\nAdvantages:\n\nFlexibility: Enables modeling of complex logical relationships\nLinear Formulation: Maintains linearity of the optimization problem\nWide Applicability: Can be used in many different contexts\n\nDisadvantages:\n\nNumerical Issues: Poor choice of \\(M\\) can cause solver difficulties\nWeak Relaxation: Can lead to weak linear programming relaxations\nSolution Quality: May result in slower convergence"
+  },
+  {
+    "objectID": "part-11/lecture-presentation.html#alternative-approaches",
+    "href": "part-11/lecture-presentation.html#alternative-approaches",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Alternative Approaches",
+    "text": "Alternative Approaches\n1. Indicator Constraints\nIndicator constraints replace big M constraints with direct logical relationships. They are best suited for simple binary conditions where you have clear “if-then” relationships.\nBig M approach:\n\\(p_g \\leq p_g^{max} u_g\\)\nIndicator constraint approach:\n@constraint(model, u_g =&gt; {p_g &lt;= p_g_max})  # If generator is ON, then power ≤ max\n@constraint(model, !u_g =&gt; {p_g == 0})       # If generator is OFF, then power = 0\nWhen to use: Simple binary logic (on/off, yes/no, active/inactive)\nKey characteristic: Direct logical statements without mutual exclusivity requirements\nAdvantages:\n\nNo need to choose M values\nOften leads to tighter formulations\nMore intuitive modeling\nBetter numerical stability\n\nDisadvantages:\n\nNot all solvers support indicator constraints\nMay require specialized solvers\n\n2. Disjunctive Programming\nDisjunctive programming handles complex multi-state conditions where exactly one state must be active. It uses special ordered sets (SOS1) to enforce mutual exclusivity.\nExample: A generator can operate in exactly one of three modes: off, minimum load, or full load.\nBig M approach:\n\\(p_g \\leq (1 - u_g^{off}) + p_g^{min} u_g^{min} + p_g^{max} u_g^{max}\\)\n\\(p_g \\geq (1 - u_g^{off}) + p_g^{min} u_g^{min} + p_g^{max} u_g^{max}\\)\n\\(u_g^{off} + u_g^{min} + u_g^{max} \\leq 1\\)\nDisjunctive approach:\n# SOS1 ensures exactly one binary variable is 1, others are 0\n@constraint(model, [u_g_off, u_g_min, u_g_max] in MOI.SOS1(3))\n@constraint(model, u_g_off =&gt; {p_g == 0})                       # State 1: Off\n@constraint(model, u_g_min =&gt; {p_g == p_g_min})                 # State 2: Minimum load\n@constraint(model, u_g_max =&gt; {p_g == p_g_max})                 # State 3: Full load\nWhen to use: Multiple mutually exclusive states or operational modes Key characteristic: Enforces that exactly one state is active at a time\nAdvantages:\n\nMore structured for complex logical relationships\nCan lead to better formulations\nEasier to understand complex constraints\nEnforces mutual exclusivity automatically\n\nDisadvantages:\n\nMore complex implementation\nMay not be supported by all solvers\n\nKey Differences Between Approaches 1 and 2:\n\n\n\n\n\n\n\n\nAspect\nIndicator Constraints\nDisjunctive Programming\n\n\n\n\nComplexity\nSimple binary logic\nMultiple states\n\n\nMutual Exclusivity\nNot enforced\nAutomatically enforced\n\n\nUse Case\n“If A, then B”\n“Must be in exactly one of states A, B, C”\n\n\nImplementation\nDirect logical statements\nSOS1 constraints\n\n\nExample\nGenerator on/off\nGenerator off/min/max modes\n\n\n\n3. Reformulation\nSometimes big M constraints can be reformulated using additional variables or constraints that are more efficient or numerically stable.\nExample: Instead of using big M for minimum up time constraints, use a different approach.\nBig M approach:\n\\(\\sum_{t'=t}^{t+T^{min}-1} u_{g,t'} \\geq T^{min} v_{g,t}\\)\nReformulation approach:\n# Use a continuous variable to track remaining minimum up time\n@variable(model, 0 &lt;= remaining_up_time[g, t] &lt;= T_min)\n@constraint(model, remaining_up_time[g, t] &lt;= T_min * u_g[t])\n@constraint(model, remaining_up_time[g, t] &lt;= remaining_up_time[g, t-1] - 1 + T_min * v_g[t])\n@constraint(model, remaining_up_time[g, t] &gt;= 0)\nAdvantages:\n\nOften more numerically stable\nCan provide tighter formulations\nMay lead to faster solution times\n\nDisadvantages:\n\nMore complex to implement\nRequires more variables and constraints\nMay not always be possible\n\n\n\n\n\n\n\nNote\n\n\nBig M constraints are a powerful tool in MILP modeling, but they should be used carefully with appropriate values for \\(M\\) to ensure both correctness and computational efficiency."
+  },
+  {
+    "objectID": "part-11/lecture-presentation.html#practical-tips",
+    "href": "part-11/lecture-presentation.html#practical-tips",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Practical Tips",
+    "text": "Practical Tips\n\nDocument your choice of M: Always explain why you chose a particular value\nTest with small instances: Verify that your constraints work as expected\nConsider solver-specific features: Some solvers have built-in support for certain constraint types\nMonitor solution times: If the problem is slow to solve, consider if big M constraints are the bottleneck"
+  },
+  {
+    "objectID": "part-11/lecture-presentation.html#multi-energy-systems-definition",
+    "href": "part-11/lecture-presentation.html#multi-energy-systems-definition",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Multi-Energy Systems: Definition",
+    "text": "Multi-Energy Systems: Definition\nA multi-energy system is a system that combines multiple energy carriers (e.g. electricity, hydrogen, heat, etc.) to meet the energy demand of a specific application."
+  },
+  {
+    "objectID": "part-11/lecture-presentation.html#multi-energy-systems-example-hydrogen-value-chain",
+    "href": "part-11/lecture-presentation.html#multi-energy-systems-example-hydrogen-value-chain",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Multi-Energy Systems: Example Hydrogen Value Chain",
+    "text": "Multi-Energy Systems: Example Hydrogen Value Chain\n\nExample case of a hydrogen value chain\n\n\n\n\n\nNote\n\n\nThe figure shows a multi-energy system with:\n\nRenewable energy sources (PV and Wind) and grid connection\nElectric bus bar for power distribution\nElectrolyzer for hydrogen production\nHydrogen bus bar for hydrogen distribution\nHydrogen storage\nHydrogen demand"
+  },
+  {
+    "objectID": "part-11/lecture-presentation.html#multi-energy-system-design-problem",
+    "href": "part-11/lecture-presentation.html#multi-energy-system-design-problem",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Multi-Energy System Design Problem",
+    "text": "Multi-Energy System Design Problem\nIn this lecture, we extend the Stochastic System Design problem to include investment decisions for multi-energy systems. This allows us to:\n\nOptimize technology selection over the entire energy value chain\nDetermine optimal component sizes\nBalance investment and operational costs\nPlan local multi-energy systems holistically (e.g. electricity, hydrogen, heat, etc.)\n\n\n\n\n\n\n\nNote\n\n\nRemember: The design problem combines investment planning (sizing) with operational optimization, enabling comprehensive (multi-)energy system design."
+  },
+  {
+    "objectID": "part-11/lecture-presentation.html#key-components",
+    "href": "part-11/lecture-presentation.html#key-components",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Key Components",
+    "text": "Key Components\nWe will focus on optimizing:\n\nStorage systems for electricity and hydrogen\nWind parks\nPV parks\nElectrolyzers\nElectric market participation\n\n… while fullfilling a fixed hydrogen demand. Additionally, we consider a maximum investment budget.\nAll nominal sizes will be decision variables in our optimization model."
+  },
+  {
+    "objectID": "part-11/lecture-presentation.html#sets",
+    "href": "part-11/lecture-presentation.html#sets",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Sets",
+    "text": "Sets\n\n\\(\\mathcal{T}\\) - Set of time periods indexed by \\(t \\in \\{1,2,...,|\\mathcal{T}|\\}\\)\n\\(\\mathcal{E}\\) - Set of energy carriers/fuels indexed by \\(e \\in \\{1,2,...,|\\mathcal{E}|\\}\\)\n\\(\\mathcal{E}^D\\) - Subset of energy carriers associated with demand constraints\n\\(\\mathcal{G}\\) - Set of dispatchable technology units indexed by \\(g \\in \\{1,2,...,|\\mathcal{G}|\\}\\)\n\\(\\mathcal{G}^S\\) - Subset of storage technology units\n\\(\\mathcal{G}^{UC}\\) - Subset of technology units with unit commitment constraints\n\\(\\mathcal{G}^{Var}\\) - Subset of variable energy technology units (e.g., wind, solar)\n\\(\\mathcal{G}^R\\) - Subset of technology units with ramping constraints\n\\(\\mathcal{E}_g^{In}\\) - Mapping set of feedstock fuels to technology \\(g\\)\n\\(\\mathcal{E}_g^{Out}\\) - Mapping set of produced fuels from technology \\(g\\)\n\\(\\Omega\\) - Set of scenarios indexed by \\(\\omega \\in \\{1,2,...,|\\Omega|\\}\\)\n\n\n\n\n\n\n\nNote\n\n\nThe general framework uses technology-agnostic sets that can represent any energy conversion technology (electrolyzers, fuel cells, heat pumps, etc.) and any energy carrier (electricity, hydrogen, heat, natural gas, etc.)."
+  },
+  {
+    "objectID": "part-11/lecture-presentation.html#decision-variables",
+    "href": "part-11/lecture-presentation.html#decision-variables",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Decision Variables",
+    "text": "Decision Variables\nInvestment Variables (First Stage)\n\n\\(P_g^{nom}\\) - Nominal capacity of technology \\(g\\) [MW or appropriate unit]\n\\(SOC_g^{nom}\\) - Nominal energy capacity of storage technology \\(g\\) [MWh or appropriate unit]\n\nOperational Variables (Second Stage)\n\n\\(x_{g,e,t,\\omega}^{in}\\) - Amount of feedstock fuel \\(e\\) consumed in technology \\(g\\) at time \\(t\\) in scenario \\(\\omega\\)\n\\(x_{g,e,t,\\omega}^{out}\\) - Amount of produced fuel \\(e\\) from technology \\(g\\) at time \\(t\\) in scenario \\(\\omega\\)\n\\(x_{g,t,\\omega}^{total}\\) - Total activity level of technology \\(g\\) at time \\(t\\) in scenario \\(\\omega\\)\n\\(f_{e,t,\\omega}^{buy}\\) - Flow of fuel \\(e\\) bought at time \\(t\\) in scenario \\(\\omega\\)\n\\(f_{e,t,\\omega}^{sell}\\) - Flow of fuel \\(e\\) sold at time \\(t\\) in scenario \\(\\omega\\)\n\\(soc_{g,t,\\omega}\\) - State of charge of storage technology \\(g\\) at time \\(t\\) in scenario \\(\\omega\\)\n\nBinary Variables (for Unit Commitment)\n\n\\(u_{g,t,\\omega}\\) - Binary indicating online/offline status of technology \\(g\\) at time \\(t\\) in scenario \\(\\omega\\)\n\\(v_{g,t,\\omega}\\) - Binary indicating startup of technology \\(g\\) at time \\(t\\) in scenario \\(\\omega\\)\n\\(o_{g,t,\\omega}\\) - Binary indicating charging/discharging status of storage technology \\(g\\) at time \\(t\\) in scenario \\(\\omega\\)\n\nCost Variables\n\n\\(AC_g^{inv}\\) - Annual investment cost for technology \\(g\\) [EUR/year]\n\\(c_{g,t,\\omega}^{start}\\) - Startup cost of technology \\(g\\) at time \\(t\\) in scenario \\(\\omega\\)"
+  },
+  {
+    "objectID": "part-11/lecture-presentation.html#parameters",
+    "href": "part-11/lecture-presentation.html#parameters",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Parameters",
+    "text": "Parameters\nInvestment Costs (First Stage)\n\n\\(C_g^{inv}\\) - Investment cost per unit capacity for technology \\(g\\) [EUR/MW or appropriate unit]\n\\(C_g^{SOC}\\) - Investment cost per unit energy capacity for storage technology \\(g\\) [EUR/MWh or appropriate unit]\n\\(F^{PVAF}\\) - Present value annuity factor for investment costs\n\\(B^{max}\\) - Maximum investment budget [EUR]\n\nOperational Parameters (Second Stage)\n\n\\(\\sigma_{g,e}^{in}\\) - Percentage of fuel \\(e\\) used as feedstock in technology \\(g\\)\n\\(\\sigma_{g,e}^{out}\\) - Percentage of fuel \\(e\\) produced by technology \\(g\\)\n\\(\\Theta_g\\) - Conversion efficiency ratio of technology \\(g\\) (output/input ratio)\n\\(C_g^{var}\\) - Variable operating cost of technology \\(g\\) [EUR/unit]\n\\(C_g^{start}\\) - Startup cost of technology \\(g\\) [EUR]\n\\(D_{e,t,\\omega}\\) - Demand of energy carrier \\(e\\) at time \\(t\\) in scenario \\(\\omega\\)\n\\(P_g^{max}\\) - Maximum production level of technology \\(g\\)\n\\(P_g^{min}\\) - Minimum production level of technology \\(g\\)\n\\(\\pi_{e,t,\\omega}^{buy}\\) - Price of fuel \\(e\\) bought at time \\(t\\) in scenario \\(\\omega\\)\n\\(\\pi_{e,t,\\omega}^{sell}\\) - Price of fuel \\(e\\) sold at time \\(t\\) in scenario \\(\\omega\\)\n\\(SOC_g^{init}\\) - Initial state of charge of storage technology \\(g\\)\n\\(SOC_g^{max}\\) - Maximum state of charge of storage technology \\(g\\)\n\\(\\pi_{\\omega}^{prob}\\) - Probability of scenario \\(\\omega\\)"
+  },
+  {
+    "objectID": "part-11/lecture-presentation.html#objective-function-1",
+    "href": "part-11/lecture-presentation.html#objective-function-1",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Objective Function",
+    "text": "Objective Function\n\\(\\text{Maximize} \\quad \\sum_{\\omega \\in \\Omega} \\pi_{\\omega}^{prob} \\left( \\sum_{e \\in \\mathcal{E}} \\sum_{t \\in \\mathcal{T}} \\pi_{e,t,\\omega}^{sell} f_{e,t,\\omega}^{sell} - \\sum_{e \\in \\mathcal{E}} \\sum_{t \\in \\mathcal{T}} \\pi_{e,t,\\omega}^{buy} f_{e,t,\\omega}^{buy} - \\sum_{g \\in \\mathcal{G}} \\sum_{t \\in \\mathcal{T}} C_g^{var} x_{g,t,\\omega}^{total} - \\sum_{g \\in \\mathcal{G}^{UC}} \\sum_{t \\in \\mathcal{T}} c_{g,t,\\omega}^{start} \\right) - \\sum_{g \\in \\mathcal{G}} AC_g^{inv}\\)\n\n\n\n\n\n\nNote\n\n\nThe objective maximizes profit: revenue from selling energy carriers minus costs of buying energy carriers, variable operating costs, startup costs, and investment costs."
+  },
+  {
+    "objectID": "part-11/lecture-presentation.html#investment-cost-constraints",
+    "href": "part-11/lecture-presentation.html#investment-cost-constraints",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Investment Cost Constraints",
+    "text": "Investment Cost Constraints\n\\(AC_g^{inv} = \\frac{C_g^{inv}}{F^{PVAF}} P_g^{nom} \\quad \\forall g \\in \\mathcal{G} \\setminus \\mathcal{G}^S\\)\n\\(AC_g^{inv} = \\frac{C_g^{inv}}{F^{PVAF}} P_g^{nom} + \\frac{C_g^{SOC}}{F^{PVAF}} SOC_g^{nom} \\quad \\forall g \\in \\mathcal{G}^S\\)\nInvestment Budget\n\\(\\sum_{g \\in \\mathcal{G}} AC_g^{inv} \\leq B^{max}\\)"
+  },
+  {
+    "objectID": "part-11/lecture-presentation.html#energy-conversion-constraints",
+    "href": "part-11/lecture-presentation.html#energy-conversion-constraints",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Energy Conversion Constraints",
+    "text": "Energy Conversion Constraints\nInput-Output Relationships\n\\(x_{g,e,t,\\omega}^{in} = \\sigma_{g,e}^{in} x_{g,t,\\omega}^{total} \\quad \\forall g \\in \\mathcal{G}, e \\in \\mathcal{E}_g^{In}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\n\\(x_{g,e,t,\\omega}^{out} = \\sigma_{g,e}^{out} \\Theta_g x_{g,t,\\omega}^{total} \\quad \\forall g \\in \\mathcal{G} \\setminus \\mathcal{G}^S, e \\in \\mathcal{E}_g^{Out}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\nTechnology Capacity Limits\n\\(P_g^{min} u_{g,t,\\omega} \\leq x_{g,t,\\omega}^{total} \\leq P_g^{max} u_{g,t,\\omega} \\quad \\forall g \\in \\mathcal{G} \\setminus \\mathcal{G}^S, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\nVariable Energy Technologies\n\\(0 \\leq x_{g,t,\\omega}^{total} \\leq f_{g,t,\\omega} P_g^{nom} \\quad \\forall g \\in \\mathcal{G}^{Var}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\nwhere \\(f_{g,t,\\omega}\\) is the capacity factor for variable technology \\(g\\)."
+  },
+  {
+    "objectID": "part-11/lecture-presentation.html#storage-constraints",
+    "href": "part-11/lecture-presentation.html#storage-constraints",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Storage Constraints",
+    "text": "Storage Constraints\nState of Charge Balance\n\\(soc_{g,t,\\omega} = soc_{g,t-1,\\omega} + \\Theta_g x_{g,t,\\omega}^{total} - \\sum_{e \\in \\mathcal{E}_g^{Out}} \\sigma_{g,e}^{out} x_{g,e,t,\\omega}^{out} \\quad \\forall g \\in \\mathcal{G}^S, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\nStorage Capacity Limits\n\\(0 \\leq soc_{g,t,\\omega} \\leq SOC_g^{max} \\quad \\forall g \\in \\mathcal{G}^S, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\nInitial and Final State\n\\(soc_{g,t=0,\\omega} = soc_{g,t=|\\mathcal{T}|,\\omega} = SOC_g^{init} \\quad \\forall g \\in \\mathcal{G}^S, \\omega \\in \\Omega\\)\nCharging/Discharging Mutual Exclusion\n\\(P_g^{min} o_{g,t,\\omega} \\leq x_{g,t,\\omega}^{total} \\leq P_g^{max} o_{g,t,\\omega} \\quad \\forall g \\in \\mathcal{G}^S, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\n\\(P_g^{min} (1-o_{g,t,\\omega}) \\leq \\sum_{e \\in \\mathcal{E}_g^{Out}} \\sigma_{g,e}^{out} x_{g,e,t,\\omega}^{out} \\leq P_g^{max} (1-o_{g,t,\\omega}) \\quad \\forall g \\in \\mathcal{G}^S, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)"
+  },
+  {
+    "objectID": "part-11/lecture-presentation.html#energy-balance-constraints",
+    "href": "part-11/lecture-presentation.html#energy-balance-constraints",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Energy Balance Constraints",
+    "text": "Energy Balance Constraints\nEnergy Carrier Balance\n\\(\\sum_{g \\in \\mathcal{G}} x_{g,e,t,\\omega}^{out} + f_{e,t,\\omega}^{buy} = \\sum_{g \\in \\mathcal{G}} x_{g,e,t,\\omega}^{in} + f_{e,t,\\omega}^{sell} + D_{e,t,\\omega} \\quad \\forall e \\in \\mathcal{E}^D, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)"
+  },
+  {
+    "objectID": "part-11/lecture-presentation.html#unit-commitment-constraints-if-applicable",
+    "href": "part-11/lecture-presentation.html#unit-commitment-constraints-if-applicable",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Unit Commitment Constraints (if applicable)",
+    "text": "Unit Commitment Constraints (if applicable)\nStartup Variable Definition\n\\(v_{g,t,\\omega} \\geq u_{g,t,\\omega} - u_{g,t-1,\\omega} \\quad \\forall g \\in \\mathcal{G}^{UC}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\nStartup Cost\n\\(c_{g,t,\\omega}^{start} \\geq C_g^{start} v_{g,t,\\omega} \\quad \\forall g \\in \\mathcal{G}^{UC}, t \\in \\mathcal{T}, \\omega \\in \\Omega\\)\n\n\n\n\n\n\nNote\n\n\nThis general framework can be specialized to specific applications by:\n\nDefining appropriate energy carriers in \\(\\mathcal{E}\\)\nSpecifying technology types in \\(\\mathcal{G}\\)\nSetting conversion parameters \\(\\sigma_{g,e}^{in}\\), \\(\\sigma_{g,e}^{out}\\), and \\(\\Theta_g\\)\nAdding application-specific constraints as needed\n\n\n\n\n\n\nQuestions?"
+  },
+  {
+    "objectID": "part-11/lecture-presentation.html#conceptual-foundation",
+    "href": "part-11/lecture-presentation.html#conceptual-foundation",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Conceptual Foundation",
+    "text": "Conceptual Foundation\nMulti-energy systems (MES) and energy hubs represent a fundamental shift in energy system design, moving from single-carrier optimization to integrated multi-carrier approaches. The energy hub concept was originally introduced by Geidl and Andersson (2007) as a framework for optimal coupling of energy infrastructures, enabling the integration of electricity, heat, gas, and other energy carriers within a unified optimization framework.\n\n\n\n\n\n\nNote\n\n\nThe energy hub concept provides a systematic approach to model and optimize multi-carrier energy systems, enabling the integration of renewable energy sources, storage technologies, and energy conversion processes."
+  },
+  {
+    "objectID": "part-11/lecture-presentation.html#recent-literature-reviews",
+    "href": "part-11/lecture-presentation.html#recent-literature-reviews",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Recent Literature Reviews",
+    "text": "Recent Literature Reviews\nSeveral comprehensive literature reviews have been conducted in recent years, highlighting the growing importance of multi-energy systems:\nUncertainty Modeling and Optimization\nRecent reviews by Jasinski et al. (2023), Lasemi et al. (2022), and Onen, Mokryani, and Zubo (2022) focus on uncertainty modeling approaches in energy hub optimization. These reviews identify three main approaches: - Stochastic Programming: Using scenario-based optimization with Monte Carlo simulation - Robust Optimization: Providing conservative but computationally efficient solutions - Hybrid Methods: Combining the advantages of both approaches\nComprehensive Framework Reviews\nPapadimitriou et al. (2023) provides a systematic review of modeling formulations, optimization methods, and market interactions in energy hubs. Ding et al. (2022) extends this analysis to include trading and control structures for handling large-scale datasets.\nHistorical Development\nEarlier reviews by Maroufmashat et al. (2019) and Son et al. (2021) identified the hydrogen economy as a major application area for energy hubs, following the original proposals by Geidl and Andersson (2007). These reviews systematically analyzed 200+ articles published between 2007-2017, establishing the foundation for current research directions."
+  },
+  {
+    "objectID": "part-11/lecture-presentation.html#key-research-directions",
+    "href": "part-11/lecture-presentation.html#key-research-directions",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Key Research Directions",
+    "text": "Key Research Directions\nHydrogen and Power-to-X Integration\nRecent literature identifies hydrogen and Power-to-X (P2X) technologies as critical future research directions. Kountouris et al. (2023) developed an optimization model for P2X-integrated energy hubs applied to an industrial park in Denmark, demonstrating the economic viability of hydrogen, methanol, and ammonia production.\nIndustrial Applications\nWassermann et al. (2022) addressed the planning and operation problem for hydrogen demand in refinery applications, presenting MILP model extensions for water electrolysis and cavern storage. This work demonstrates the practical application of energy hub concepts to real-world industrial decarbonization projects.\nUncertainty and Computational Challenges\nThe representation of renewable energy uncertainty is identified as a core challenge across multiple reviews. Ringkjöb, Haugan, and Solbrekke (2018), who reviewed 75 energy system modeling frameworks, conclude that high spatiotemporal resolution is essential for accurate RES representation, but comes at significant computational cost.\n\n\n\n\n\n\nNote\n\n\nThe trade-off between model fidelity and computational burden is a central challenge in multi-energy system optimization, particularly when considering renewable energy uncertainty.\n\n\n\nIntegrated Framework for Green Hydrogen Value Chains\nRecent research by Cors et al. (2024) in Cors (2024) addresses the critical gap in computationally tractable modeling for green hydrogen value chains (GHVCs) under uncertainty. The work presents a highly adaptable stochastic optimization framework that combines:\n\nMulti-medium, multi-energy system optimization integrating electricity, hydrogen, and derivatives\nIntegrated approach combining system component dimensioning, operation optimization, and storage strategy\nPure linear model formulation enabled by novel linearization techniques, allowing extensive uncertainty consideration\nDecomposition methods for incorporating renewable energy supply uncertainties into decision processes\nReal-world application to industrial alliances including offshore wind parks, electrolyzers, methanol synthesis, cement plants, and refineries\n\nThe framework demonstrates significant cost reductions through enabled risk management and addresses the research gap of computationally tractable models while maintaining high representational fidelity and uncertainty consideration."
+  },
+  {
+    "objectID": "part-11/lecture-presentation.html#solution-methods-and-frameworks",
+    "href": "part-11/lecture-presentation.html#solution-methods-and-frameworks",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Solution Methods and Frameworks",
+    "text": "Solution Methods and Frameworks\nDecomposition Approaches\nSeveral studies demonstrate the effectiveness of Benders decomposition for energy hub optimization. Mansouri et al. (2020), Chen et al. (2019), and Hemmati, Ghaderi, and Ghazizadeh (2018) use Benders decomposition to separate dimensioning decisions (master problem) from operational optimization (subproblems), enabling efficient solution of large-scale problems.\nAdvanced Modeling Frameworks\nRecent frameworks address computational complexity through innovative approaches:\n\nSpineOpt (Ihlemann et al. (2022)): A flexible Julia-based framework allowing variable temporal resolution per system component\nAnyMod (Göke (2021)): A pure linear model formulation designed for macro-energy system planning with full-year time series\nficus (Atabay (2017)): An industrial energy system optimization framework based on the urbs framework (Dorfner (2016))\nDRAF (Fleschutz et al. (2022)): An open-source Python decision support tool for decarbonizing local multi-energy systems using multi-objective mixed-integer linear programming, featuring demand-side flexibility, electrification, and renewable energy integration\n\nTemporal Resolution Challenges\nGonzato, Bruninx, and Delarue (2021) analyzed techniques for reducing temporal scope in expansion planning models with long-term storage, recommending against temporal reductions and advocating for full-year time series inclusion to prevent biases in system design."
+  },
+  {
+    "objectID": "part-11/lecture-presentation.html#hydrogen-supply-chain-integration",
+    "href": "part-11/lecture-presentation.html#hydrogen-supply-chain-integration",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Hydrogen Supply Chain Integration",
+    "text": "Hydrogen Supply Chain Integration\nThe integration of hydrogen supply chain network design (HSCND) with energy hub optimization represents an emerging research area. Li, Manier, and Manier (2019) provides a comprehensive review of HSCND optimization approaches, while Riera, Lima, and Knio (2023) reviews hydrogen production and supply chain modeling specifically.\n\n\n\n\n\n\nNote\n\n\nThe integration of hydrogen supply chain optimization with energy hub concepts enables comprehensive planning of green hydrogen value chains from production to end-use applications."
+  },
+  {
+    "objectID": "part-11/lecture-presentation.html#open-source-tools-and-frameworks",
+    "href": "part-11/lecture-presentation.html#open-source-tools-and-frameworks",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Open Source Tools and Frameworks",
+    "text": "Open Source Tools and Frameworks\nSeveral reviews assess the maturity and capabilities of open-source energy system optimization tools:\n\nGroissböck (2019) evaluates the maturity of open-source tools for serious applications\nOberle and Elsland (2019) assesses the ability of open-access models to evaluate current energy scenarios\nPfenninger, Hawkes, and Keirstead (2014) provides a broader perspective on energy systems modeling challenges"
+  },
+  {
+    "objectID": "part-11/lecture-presentation.html#future-research-directions",
+    "href": "part-11/lecture-presentation.html#future-research-directions",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Future Research Directions",
+    "text": "Future Research Directions\nRecent literature reviews identify several critical future research directions:\n\nTechnology Integration: Further development of hydrogen, P2X, and CCUS technologies in integrated energy hubs\nReal-world Applications: Development of practical applications and business cases for energy hub concepts\nComputational Efficiency: Development of efficient modeling schemes and solution algorithms for uncertainty representation\nIndustrial Decarbonization: Application of energy hub concepts to hard-to-abate industrial sectors\n\n\n\n\n\n\n\nNote\n\n\nThe energy hub concept has evolved from a theoretical framework to a practical tool for industrial decarbonization, with growing applications in hydrogen value chains and Power-to-X systems.\n\n\n\n\n\nQuestions?"
+  },
+  {
+    "objectID": "part-11/lecture-presentation.html#literature-i",
+    "href": "part-11/lecture-presentation.html#literature-i",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Literature I",
+    "text": "Literature I\nFor more interesting literature to learn more about Julia, take a look at the literature list of this course."
+  },
+  {
+    "objectID": "part-11/lecture-presentation.html#literature-ii",
+    "href": "part-11/lecture-presentation.html#literature-ii",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Literature II",
+    "text": "Literature II"
+  },
+  {
+    "objectID": "part-11/lecture-framework.html#framework-for-multi-energy-system-design-problem",
+    "href": "part-11/lecture-framework.html#framework-for-multi-energy-system-design-problem",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Framework for Multi-Energy System Design Problem",
+    "text": "Framework for Multi-Energy System Design Problem\nIn this lecture, we reformulate the Stochastic Multi-Energy System Design problem to be applicable to a wide range of energy system applications only by changing the sets and parameters. This allows us to:\n\nAdapt the model to the specific energy system application by changing the sets and parameters\nOptimize technology selection over the entire energy value chain\nDetermine optimal component sizes\nBalance investment and operational costs\nPlan local multi-energy systems holistically (e.g. electricity, hydrogen, heat, etc.)\n\n\n\n\n\n\n\nNote\n\n\n\nRemember: The design problem combines investment planning (sizing) with operational optimization, enabling comprehensive (multi-)energy system design.",
+    "crumbs": [
+      "11 Framework",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-11/lecture-framework.html#literature-ii",
+    "href": "part-11/lecture-framework.html#literature-ii",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Literature II",
+    "text": "Literature II",
+    "crumbs": [
+      "11 Framework",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-11/lecture-presentation.html#framework-for-multi-energy-system-design-problem",
+    "href": "part-11/lecture-presentation.html#framework-for-multi-energy-system-design-problem",
+    "title": "Lecture XI - Framework for Multi-Energy System Optimization",
+    "section": "Framework for Multi-Energy System Design Problem",
+    "text": "Framework for Multi-Energy System Design Problem\nIn this lecture, we reformulate the Stochastic Multi-Energy System Design problem to be applicable to a wide range of energy system applications only by changing the sets and parameters. This allows us to:\n\nAdapt the model to the specific energy system application by changing the sets and parameters\nOptimize technology selection over the entire energy value chain\nDetermine optimal component sizes\nBalance investment and operational costs\nPlan local multi-energy systems holistically (e.g. electricity, hydrogen, heat, etc.)\n\n\n\n\n\n\n\nNote\n\n\nRemember: The design problem combines investment planning (sizing) with operational optimization, enabling comprehensive (multi-)energy system design."
   }
 ]

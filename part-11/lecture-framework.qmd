@@ -1,0 +1,572 @@
+---
+title: "Lecture XI - Framework for Multi-Energy System Optimization"
+subtitle: "Energy System Optimization with Julia"
+author: "Dr. Tobias Cors"
+institute: "Hamburg University of Applied Science - Summer 2025"
+title-slide-attributes:
+    data-background-color: "#025259"
+html-math-method:
+  method: mathjax
+  url: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+
+format:
+    html:
+        theme: [litera, ../styles.scss]
+        include-in-header: 
+            text: |
+                \usepackage{tikz}
+                \usepackage{pgfplots}
+                \pgfplotsset{compat=1.18}
+    revealjs:
+        theme: [default, ../styles.scss]
+        transition: slide
+        transition-speed: fast
+        highlight-style: arrow
+        slide-number: true
+        code-copy: true
+        code-link: true
+        preview-links: auto
+        footer: " {{< meta title >}} | {{< meta author >}} | [Home](lecture-mes.qmd)"
+        output-file: lecture-presentation.html
+
+bibliography: ../ESO-bib.bib
+
+engine: julia
+
+execute:
+    echo: true
+---
+
+# [Quick Recap from last Week]{.flow} {.title}
+
+## Multi-Energy System Design Problem Overview
+
+- **Objective**: Minimize total annual costs (investment + operational) while respecting budget constraints for multi-energy systems
+- **Decision Variables**:
+
+  - Investment variables (First Stage):
+    - Storage energy capacity ($e^{nom}_s$) for both electricity and hydrogen storage
+    - Storage charging power ($p^{ch,nom}_s$) for both energy carriers
+    - Storage discharging power ($p^{dis,nom}_s$) for both energy carriers
+    - Wind park capacity ($p^{nom}_w$)
+    - PV park capacity ($p^{nom}_v$)
+    - Electrolyzer capacity ($p^{nom}_x$)
+  - Operational variables (Second Stage):
+    - Wind power output ($p_{w,t,\omega}$)
+    - PV power output ($p_{v,t,\omega}$)
+    - Grid import/export ($p^{in}_{t,\omega}$, $p^{out}_{t,\omega}$)
+    - Storage operation ($p^{ch}_{s,t,\omega}$, $p^{dis}_{s,t,\omega}$, $e_{s,t,\omega}$)
+    - Electrolyzer operation ($p_{x,t,\omega}$, $h_{x,t,\omega}$)
+
+- **Key Constraints**:
+
+  - Investment budget limit
+  - Electricity power balance
+  - Hydrogen balance
+  - Component capacity limits
+  - Storage energy balance
+  - Storage energy limits
+  - Storage power limits
+  - Electrolyzer conversion constraints
+
+::: {.callout-note}
+The Multi-Energy System Design problem extends the basic energy system design by incorporating multiple energy carriers (electricity and hydrogen) and energy conversion technologies (electrolyzers). The stochastic formulation considers multiple scenarios to account for uncertainty in renewable generation, demand patterns, and price variations across different energy carriers.
+:::
+
+## Mathematical Formulation
+
+### Objective Function
+
+$\text{Minimize} \quad \sum_{s \in \mathcal{S}} AC^{inv}_s + \sum_{w \in \mathcal{W}} AC^{inv}_w + \sum_{v \in \mathcal{V}} AC^{inv}_v + \sum_{x \in \mathcal{X}} AC^{inv}_x + \sum_{\omega \in \Omega} \pi_{\omega} (AC^{grid,imp}_{\omega} - AR^{grid,exp}_{\omega})$
+
+### Key Constraints
+
+1. **Investment Budget**:
+
+$\sum_{s \in \mathcal{S}} (C^{E}_s e^{nom}_s + C^{P,ch}_s p^{ch,nom}_s + C^{P,dis}_s p^{dis,nom}_s) + \sum_{w \in \mathcal{W}} C^{W}_w p^{nom}_w + \sum_{v \in \mathcal{V}} C^{PV}_v p^{nom}_v + \sum_{x \in \mathcal{X}} C^{X}_x p^{nom}_x \leq B^{max}$
+
+2. **Electricity Power Balance**:
+
+$\sum_{w \in \mathcal{W}} p_{w,t,\omega} + \sum_{v \in \mathcal{V}} p_{v,t,\omega} + (p^{in}_{t,\omega} - p^{out}_{t,\omega}) + \sum_{s \in \mathcal{S}_{\text{El}}} (p^{dis}_{s,t,\omega} - p^{ch}_{s,t,\omega}) = \sum_{x \in \mathcal{X}} p_{x,t,\omega} \quad \forall t \in \mathcal{T}, \omega \in \Omega$
+
+3. **Hydrogen Balance**:
+
+$\sum_{x \in \mathcal{X}} h_{x,t,\omega} + \sum_{s \in \mathcal{S}_{\text{H2}}} (p^{dis}_{s,t,\omega} - p^{ch}_{s,t,\omega}) = d_{t,\omega} \quad \forall t \in \mathcal{T}, \omega \in \Omega$
+
+4. **Component Capacity Limits**:
+
+$0 \leq p_{w,t,\omega} \leq f_{w,t,\omega} p^{nom}_w \quad \forall w \in \mathcal{W}, t \in \mathcal{T}, \omega \in \Omega$
+$0 \leq p_{v,t,\omega} \leq f_{v,t,\omega} p^{nom}_v \quad \forall v \in \mathcal{V}, t \in \mathcal{T}, \omega \in \Omega$
+$0 \leq p^{ch}_{s,t,\omega} \leq p^{ch,nom}_s \quad \forall s \in \mathcal{S}, t \in \mathcal{T}, \omega \in \Omega$
+$0 \leq p^{dis}_{s,t,\omega} \leq p^{dis,nom}_s \quad \forall s \in \mathcal{S}, t \in \mathcal{T}, \omega \in \Omega$
+$DoD_s e^{nom}_s \leq e_{s,t,\omega} \leq e^{nom}_s \quad \forall s \in \mathcal{S}, t \in \mathcal{T}, \omega \in \Omega$
+
+5. **Storage Energy Balance**:
+
+$e_{s,t,\omega} = (1-sdr_s)e_{s,t-1,\omega} + \eta^{ch}_s p^{ch}_{s,t,\omega} - \frac{p^{dis}_{s,t,\omega}}{\eta^{dis}_s} \quad \forall s \in \mathcal{S}, t \in \mathcal{T}, \omega \in \Omega$
+
+6. **Electrolyzer Constraints**:
+
+$0 \leq p_{x,t,\omega} \leq p^{nom}_x \quad \forall x \in \mathcal{X}, t \in \mathcal{T}, \omega \in \Omega$
+$h_{x,t,\omega} = \beta_x p_{x,t,\omega} \quad \forall x \in \mathcal{X}, t \in \mathcal{T}, \omega \in \Omega$
+
+## Model Characteristics
+
+- Two-stage stochastic Linear Programming (LP) problem for multi-energy systems
+- Combines investment and operational decisions across multiple energy carriers
+- Large-scale optimization problem with energy conversion technologies
+- Requires efficient solution methods
+- Considers multiple scenarios for robust decision-making
+- Integrates electricity and hydrogen value chains
+
+::: {.callout-tip}
+The multi-energy system model can be adapted to specific use cases, i.e., if certain components already have fixed capacities, the corresponding variables can be converted to parameters. The stochastic formulation allows for more robust investment decisions by considering multiple scenarios across different energy carriers.
+:::
+
+## Key Extensions from Single-Energy Systems
+
+### New Components
+- **Electrolyzers**: Convert electricity to hydrogen with efficiency $\beta_x$
+- **Hydrogen Storage**: Separate storage systems for hydrogen with different characteristics
+- **Energy Conversion**: Explicit modeling of energy carrier conversion processes
+
+### New Constraints
+- **Hydrogen Balance**: Ensures hydrogen demand is met through production and storage
+- **Electrolyzer Operation**: Links electricity consumption to hydrogen production
+- **Multi-Carrier Storage**: Distinguishes between electricity ($\mathcal{S}_{\text{El}}$) and hydrogen ($\mathcal{S}_{\text{H2}}$) storage
+
+### Modified Constraints
+- **Electricity Balance**: Now includes electrolyzer consumption instead of direct demand
+- **Investment Budget**: Includes electrolyzer investment costs
+- **Objective Function**: Includes electrolyzer annualized investment costs
+
+::: {.callout-note}
+These extensions enable comprehensive optimization of energy value chains, allowing for optimal sizing and operation of systems that convert between the different energy carriers while considering uncertainty and operational constraints.
+:::
+
+## Solutions from last Week
+
+- The tutorials from last week will again be [available on Friday]{.highlight}
+- You can access them in the project folder on Github
+- Click on the little cat icon on the bottom right
+
+. . .
+
+::: {.callout-tip}
+[You can ask questions anytime in class or via email!]{.highlight}
+:::
+
+# [Excursion: Big M Constraints in Mixed-Integer Programming]{.flow} {.title}
+
+## What are Big M Constraints?
+
+Big M constraints are a fundamental modeling technique in Mixed-Integer Linear Programming (MILP) used to create conditional relationships between continuous and binary variables. The "M" represents a large constant that acts as an upper bound, allowing constraints to be "turned on" or "turned off" based on binary variable values.
+
+::: {.callout-note}
+Big M constraints enable the modeling of complex logical relationships and conditional constraints that would otherwise be difficult to express in linear programming formulations.
+:::
+
+## Basic Concept
+
+The general form of a big M constraint is:
+
+$f(x) \leq M (1 - y)$
+
+where:
+
+- $f(x)$ is a function of continuous variables
+- $M$ is a large constant (the "big M")
+- $y$ is a binary variable (0 or 1)
+
+**Logic**: When $y = 1$, the constraint becomes $f(x) \leq 0$ (active). When $y = 0$, the constraint becomes $f(x) \leq M$ (inactive, since $M$ is large).
+
+## Example from Unit Commitment: Startup Timing Constraints
+
+Consider the constraint from the intermission lecture where generator 3 and generator 4 cannot start up within 3 time periods of each other:
+
+$\sum_{\tau \in [t, \min(t+3,|\mathcal{T}|)]} v_{3,\tau} \leq (1 - v_{4,t}) M \quad \forall t \in \mathcal{T}$
+
+$\sum_{\tau \in [t-1, \max(t-3,1)]} v_{3,\tau} \leq (1 - v_{4,t}) M \quad \forall t \in \mathcal{T}$
+
+### How it Works:
+
+1. **When $v_{4,t} = 1$** (generator 4 starts at time $t$):
+   - The right-hand side becomes $(1-1) M = 0$
+   - The constraint forces $\sum v_{3,\tau} \leq 0$
+   - This means generator 3 cannot start in the specified time windows
+
+2. **When $v_{4,t} = 0$** (generator 4 does not start at time $t$):
+   - The right-hand side becomes $(1-0) M = M$
+   - The constraint becomes $\sum v_{3,\tau} \leq M$
+   - Since $M$ is large, this constraint is effectively not limiting the startup of generator 3 and hence not active
+
+::: {.callout-tip}
+The choice of $M$ is crucial: it must be large enough to make constraints inactive when needed, but not so large that it causes numerical issues in the solver.
+:::
+
+## Choosing the Right Big M Value
+
+### Guidelines for Selecting M:
+
+1. **Upper Bound**: $M$ should be an upper bound on the left-hand side expression
+2. **Tightness**: Choose the smallest possible value that still works
+3. **Numerical Stability**: Avoid extremely large values that can cause solver issues
+
+### Example Calculation:
+For the startup timing constraint, a good choice for $M$ would be:
+
+- $M = |\mathcal{T}|$ (total number of time periods)
+- This ensures that even if all startup variables were 1, the constraint would still be satisfied when inactive
+- Considering that the fastest startup variable sequence is 1-0-1-0-..., M could be set to 2 here.
+
+## Advantages and Disadvantages
+
+### Advantages:
+- **Flexibility**: Enables modeling of complex logical relationships
+- **Linear Formulation**: Maintains linearity of the optimization problem
+- **Wide Applicability**: Can be used in many different contexts
+
+### Disadvantages:
+- **Numerical Issues**: Poor choice of $M$ can cause solver difficulties
+- **Weak Relaxation**: Can lead to weak linear programming relaxations
+- **Solution Quality**: May result in slower convergence
+
+## Alternative Approaches
+
+### 1. Indicator Constraints
+Indicator constraints replace big M constraints with direct logical relationships. They are best suited for **simple binary conditions** where you have clear "if-then" relationships.
+
+**Big M approach:**
+
+$p_g \leq p_g^{max} u_g$
+
+**Indicator constraint approach:**
+```julia
+@constraint(model, u_g => {p_g <= p_g_max})  # If generator is ON, then power ≤ max
+@constraint(model, !u_g => {p_g == 0})       # If generator is OFF, then power = 0
+```
+
+**When to use**: Simple binary logic (on/off, yes/no, active/inactive)
+
+**Key characteristic**: Direct logical statements without mutual exclusivity requirements
+
+**Advantages:**
+
+- No need to choose M values
+- Often leads to tighter formulations
+- More intuitive modeling
+- Better numerical stability
+
+**Disadvantages:**
+
+- Not all solvers support indicator constraints
+- May require specialized solvers
+
+### 2. Disjunctive Programming
+Disjunctive programming handles **complex multi-state conditions** where exactly one state must be active. It uses special ordered sets (SOS1) to enforce mutual exclusivity.
+
+**Example**: A generator can operate in exactly one of three modes: off, minimum load, or full load.
+
+**Big M approach:**
+
+$p_g \leq (1 - u_g^{off}) + p_g^{min} u_g^{min} + p_g^{max} u_g^{max}$
+
+$p_g \geq (1 - u_g^{off}) + p_g^{min} u_g^{min} + p_g^{max} u_g^{max}$
+
+$u_g^{off} + u_g^{min} + u_g^{max} \leq 1$
+
+**Disjunctive approach:**
+```julia
+# SOS1 ensures exactly one binary variable is 1, others are 0
+@constraint(model, [u_g_off, u_g_min, u_g_max] in MOI.SOS1(3))
+@constraint(model, u_g_off => {p_g == 0})                       # State 1: Off
+@constraint(model, u_g_min => {p_g == p_g_min})                 # State 2: Minimum load
+@constraint(model, u_g_max => {p_g == p_g_max})                 # State 3: Full load
+```
+
+**When to use**: Multiple mutually exclusive states or operational modes
+**Key characteristic**: Enforces that exactly one state is active at a time
+
+**Advantages:**
+
+- More structured for complex logical relationships
+- Can lead to better formulations
+- Easier to understand complex constraints
+- Enforces mutual exclusivity automatically
+
+**Disadvantages:**
+
+- More complex implementation
+- May not be supported by all solvers
+
+### Key Differences Between Approaches 1 and 2:
+
+| Aspect | Indicator Constraints | Disjunctive Programming |
+|--------|----------------------|-------------------------|
+| **Complexity** | Simple binary logic | Multiple states |
+| **Mutual Exclusivity** | Not enforced | Automatically enforced |
+| **Use Case** | "If A, then B" | "Must be in exactly one of states A, B, C" |
+| **Implementation** | Direct logical statements | SOS1 constraints |
+| **Example** | Generator on/off | Generator off/min/max modes |
+
+### 3. Reformulation
+Sometimes big M constraints can be reformulated using additional variables or constraints that are more efficient or numerically stable.
+
+**Example**: Instead of using big M for minimum up time constraints, use a different approach.
+
+**Big M approach:**
+
+$\sum_{t'=t}^{t+T^{min}-1} u_{g,t'} \geq T^{min} v_{g,t}$
+
+**Reformulation approach:**
+```julia
+# Use a continuous variable to track remaining minimum up time
+@variable(model, 0 <= remaining_up_time[g, t] <= T_min)
+@constraint(model, remaining_up_time[g, t] <= T_min * u_g[t])
+@constraint(model, remaining_up_time[g, t] <= remaining_up_time[g, t-1] - 1 + T_min * v_g[t])
+@constraint(model, remaining_up_time[g, t] >= 0)
+```
+
+**Advantages:**
+
+- Often more numerically stable
+- Can provide tighter formulations
+- May lead to faster solution times
+
+**Disadvantages:**
+
+- More complex to implement
+- Requires more variables and constraints
+- May not always be possible
+
+::: {.callout-note}
+Big M constraints are a powerful tool in MILP modeling, but they should be used carefully with appropriate values for $M$ to ensure both correctness and computational efficiency.
+:::
+
+## Practical Tips
+
+1. **Document your choice of M**: Always explain why you chose a particular value
+2. **Test with small instances**: Verify that your constraints work as expected
+3. **Consider solver-specific features**: Some solvers have built-in support for certain constraint types
+4. **Monitor solution times**: If the problem is slow to solve, consider if big M constraints are the bottleneck
+
+# [Recap: Introduction to Multi-Energy Systems]{.flow} {.title}
+
+## Multi-Energy Systems: Definition
+
+A multi-energy system is a system that combines multiple energy carriers (e.g. electricity, hydrogen, heat, etc.) to meet the energy demand of a specific application.
+
+## Multi-Energy Systems: Example Hydrogen Value Chain
+
+![Example case of a hydrogen value chain](H2-mes.png){width=70%}
+
+::: {.callout-note}
+The figure shows a multi-energy system with:
+
+- Renewable energy sources (PV and Wind) and grid connection
+- Electric bus bar for power distribution
+- Electrolyzer for hydrogen production
+- Hydrogen bus bar for hydrogen distribution
+- Hydrogen storage
+- Hydrogen demand
+:::
+
+## Framework for Multi-Energy System Design Problem
+
+In this lecture, we reformulate the Stochastic Multi-Energy System Design problem to be applicable to a wide range of energy system applications *only by changing the sets and parameters*. This allows us to:
+
+1. Adapt the model to the specific energy system application by changing the sets and parameters
+2. Optimize technology selection over the entire energy value chain
+3. Determine optimal component sizes
+4. Balance investment and operational costs
+5. Plan local multi-energy systems holistically (e.g. electricity, hydrogen, heat, etc.)
+
+::: {.callout-note}
+Remember: The design problem combines investment planning (sizing) with operational optimization, enabling comprehensive (multi-)energy system design.
+:::
+
+# [Mathematical Formulation of the General Multi-Energy System Framework]{.flow} {.title}
+
+**... extending the stochastic design problem to a general multi-energy system framework**
+
+## Sets
+
+- $\mathcal{T}$ - Set of time periods indexed by $t \in \{1,2,...,|\mathcal{T}|\}$
+- $\mathcal{E}$ - Set of energy carriers/fuels indexed by $e \in \{1,2,...,|\mathcal{E}|\}$
+- $\mathcal{E}^D$ - Subset of energy carriers associated with demand constraints
+- $\mathcal{G}$ - Set of dispatchable technology units indexed by $g \in \{1,2,...,|\mathcal{G}|\}$
+- $\mathcal{G}^S$ - Subset of storage technology units
+- $\mathcal{G}^{UC}$ - Subset of technology units with unit commitment constraints
+- $\mathcal{G}^{Var}$ - Subset of variable energy technology units (e.g., wind, solar)
+- $\mathcal{G}^R$ - Subset of technology units with ramping constraints
+- $\mathcal{E}_g^{In}$ - Mapping set of feedstock fuels to technology $g$
+- $\mathcal{E}_g^{Out}$ - Mapping set of produced fuels from technology $g$
+- $\Omega$ - Set of scenarios indexed by $\omega \in \{1,2,...,|\Omega|\}$
+
+::: {.callout-note}
+The general framework uses technology-agnostic sets that can represent any energy conversion technology (electrolyzers, fuel cells, heat pumps, etc.) and any energy carrier (electricity, hydrogen, heat, natural gas, etc.).
+:::
+
+## Decision Variables
+
+### Investment Variables (First Stage)
+- $P_g^{nom}$ - Nominal capacity of technology $g$ [MW or appropriate unit]
+- $SOC_g^{nom}$ - Nominal energy capacity of storage technology $g$ [MWh or appropriate unit]
+
+### Operational Variables (Second Stage)
+- $x_{g,e,t,\omega}^{in}$ - Amount of feedstock fuel $e$ consumed in technology $g$ at time $t$ in scenario $\omega$
+- $x_{g,e,t,\omega}^{out}$ - Amount of produced fuel $e$ from technology $g$ at time $t$ in scenario $\omega$
+- $x_{g,t,\omega}^{total}$ - Total activity level of technology $g$ at time $t$ in scenario $\omega$
+- $f_{e,t,\omega}^{buy}$ - Flow of fuel $e$ bought at time $t$ in scenario $\omega$
+- $f_{e,t,\omega}^{sell}$ - Flow of fuel $e$ sold at time $t$ in scenario $\omega$
+- $soc_{g,t,\omega}$ - State of charge of storage technology $g$ at time $t$ in scenario $\omega$
+
+### Binary Variables (for Unit Commitment)
+- $u_{g,t,\omega}$ - Binary indicating online/offline status of technology $g$ at time $t$ in scenario $\omega$
+- $v_{g,t,\omega}$ - Binary indicating startup of technology $g$ at time $t$ in scenario $\omega$
+- $o_{g,t,\omega}$ - Binary indicating charging/discharging status of storage technology $g$ at time $t$ in scenario $\omega$
+
+### Cost Variables
+- $AC_g^{inv}$ - Annual investment cost for technology $g$ [EUR/year]
+- $c_{g,t,\omega}^{start}$ - Startup cost of technology $g$ at time $t$ in scenario $\omega$
+
+## Parameters
+
+### Investment Costs (First Stage)
+- $C_g^{inv}$ - Investment cost per unit capacity for technology $g$ [EUR/MW or appropriate unit]
+- $C_g^{SOC}$ - Investment cost per unit energy capacity for storage technology $g$ [EUR/MWh or appropriate unit]
+- $F^{PVAF}$ - Present value annuity factor for investment costs
+- $B^{max}$ - Maximum investment budget [EUR]
+
+### Operational Parameters (Second Stage)
+- $\sigma_{g,e}^{in}$ - Percentage of fuel $e$ used as feedstock in technology $g$
+- $\sigma_{g,e}^{out}$ - Percentage of fuel $e$ produced by technology $g$
+- $\Theta_g$ - Conversion efficiency ratio of technology $g$ (output/input ratio)
+- $C_g^{var}$ - Variable operating cost of technology $g$ [EUR/unit]
+- $C_g^{start}$ - Startup cost of technology $g$ [EUR]
+- $D_{e,t,\omega}$ - Demand of energy carrier $e$ at time $t$ in scenario $\omega$
+- $P_g^{max}$ - Maximum production level of technology $g$
+- $P_g^{min}$ - Minimum production level of technology $g$
+- $\pi_{e,t,\omega}^{buy}$ - Price of fuel $e$ bought at time $t$ in scenario $\omega$
+- $\pi_{e,t,\omega}^{sell}$ - Price of fuel $e$ sold at time $t$ in scenario $\omega$
+- $SOC_g^{init}$ - Initial state of charge of storage technology $g$
+- $SOC_g^{max}$ - Maximum state of charge of storage technology $g$
+- $\pi_{\omega}^{prob}$ - Probability of scenario $\omega$
+
+## Objective Function
+<!-- 
+$\text{Maximize} \quad \sum_{\omega \in \Omega} \pi_{\omega}^{prob} \left( \sum_{e \in \mathcal{E}} \sum_{t \in \mathcal{T}} \pi_{e,t,\omega}^{sell} f_{e,t,\omega}^{sell} \right.$
+
+$\left. - \sum_{e \in \mathcal{E}} \sum_{t \in \mathcal{T}} \pi_{e,t,\omega}^{buy} f_{e,t,\omega}^{buy} - \sum_{g \in \mathcal{G}} \sum_{t \in \mathcal{T}} C_g^{var} x_{g,t,\omega}^{total} \right.$
+
+$\left. - \sum_{g \in \mathcal{G}^{UC}} \sum_{t \in \mathcal{T}} c_{g,t,\omega}^{start} \right) - \sum_{g \in \mathcal{G}} AC_g^{inv}$ -->
+
+**Maximize the following components:**
+
+$\text{Maximize}$
+
+**Revenue from selling energy carriers:**
+
+$\sum_{\omega \in \Omega} \pi_{\omega}^{prob} \sum_{e \in \mathcal{E}} \sum_{t \in \mathcal{T}} \pi_{e,t,\omega}^{sell} f_{e,t,\omega}^{sell}$
+
+**Costs of buying energy carriers:**
+
+$-\sum_{\omega \in \Omega} \pi_{\omega}^{prob} \sum_{e \in \mathcal{E}} \sum_{t \in \mathcal{T}} \pi_{e,t,\omega}^{buy} f_{e,t,\omega}^{buy}$
+
+**Variable operating costs:**
+
+$-\sum_{\omega \in \Omega} \pi_{\omega}^{prob} \sum_{g \in \mathcal{G}} \sum_{t \in \mathcal{T}} C_g^{var} x_{g,t,\omega}^{total}$
+
+**Startup costs:**
+
+$-\sum_{\omega \in \Omega} \pi_{\omega}^{prob} \sum_{g \in \mathcal{G}^{UC}} \sum_{t \in \mathcal{T}} c_{g,t,\omega}^{start}$
+
+**Investment costs:**
+
+$-\sum_{g \in \mathcal{G}} AC_g^{inv}$
+
+::: {.callout-note}
+The objective maximizes profit: revenue from selling energy carriers minus costs of buying energy carriers, variable operating costs, startup costs, and investment costs.
+:::
+
+## Investment Cost Constraints
+
+$AC_g^{inv} = \frac{C_g^{inv}}{F^{PVAF}} P_g^{nom} \quad \forall g \in \mathcal{G} \setminus \mathcal{G}^S$
+
+$AC_g^{inv} = \frac{C_g^{inv}}{F^{PVAF}} P_g^{nom} + \frac{C_g^{SOC}}{F^{PVAF}} SOC_g^{nom} \quad \forall g \in \mathcal{G}^S$
+
+### Investment Budget
+$\sum_{g \in \mathcal{G}} AC_g^{inv} \leq B^{max}$
+
+## Energy Conversion Constraints
+
+### Input-Output Relationships
+$x_{g,e,t,\omega}^{in} = \sigma_{g,e}^{in} x_{g,t,\omega}^{total} \quad \forall g \in \mathcal{G}, e \in \mathcal{E}_g^{In}, t \in \mathcal{T}, \omega \in \Omega$
+
+$x_{g,e,t,\omega}^{out} = \sigma_{g,e}^{out} \Theta_g x_{g,t,\omega}^{total} \quad \forall g \in \mathcal{G} \setminus \mathcal{G}^S, e \in \mathcal{E}_g^{Out}, t \in \mathcal{T}, \omega \in \Omega$
+
+### Technology Capacity Limits
+$P_g^{min} u_{g,t,\omega} \leq x_{g,t,\omega}^{total} \leq P_g^{max} u_{g,t,\omega} \quad \forall g \in \mathcal{G} \setminus \mathcal{G}^S, t \in \mathcal{T}, \omega \in \Omega$
+
+### Variable Energy Technologies
+$0 \leq x_{g,t,\omega}^{total} \leq f_{g,t,\omega} P_g^{nom} \quad \forall g \in \mathcal{G}^{Var}, t \in \mathcal{T}, \omega \in \Omega$
+
+where $f_{g,t,\omega}$ is the capacity factor for variable technology $g$.
+
+## Storage Constraints
+
+### State of Charge Balance
+$soc_{g,t,\omega} = soc_{g,t-1,\omega} + \Theta_g x_{g,t,\omega}^{total} - \sum_{e \in \mathcal{E}_g^{Out}} \sigma_{g,e}^{out} x_{g,e,t,\omega}^{out} \quad \forall g \in \mathcal{G}^S, t \in \mathcal{T}, \omega \in \Omega$
+
+### Storage Capacity Limits
+$0 \leq soc_{g,t,\omega} \leq SOC_g^{max} \quad \forall g \in \mathcal{G}^S, t \in \mathcal{T}, \omega \in \Omega$
+
+### Initial and Final State
+$soc_{g,t=0,\omega} = soc_{g,t=|\mathcal{T}|,\omega} = SOC_g^{init} \quad \forall g \in \mathcal{G}^S, \omega \in \Omega$
+
+### Charging/Discharging Mutual Exclusion
+$P_g^{min} o_{g,t,\omega} \leq x_{g,t,\omega}^{total} \leq P_g^{max} o_{g,t,\omega} \quad \forall g \in \mathcal{G}^S, t \in \mathcal{T}, \omega \in \Omega$
+
+$P_g^{min} (1-o_{g,t,\omega}) \leq \sum_{e \in \mathcal{E}_g^{Out}} \sigma_{g,e}^{out} x_{g,e,t,\omega}^{out} \leq P_g^{max} (1-o_{g,t,\omega}) \quad \forall g \in \mathcal{G}^S, t \in \mathcal{T}, \omega \in \Omega$
+
+## Energy Balance Constraints
+
+### Energy Carrier Balance
+$\sum_{g \in \mathcal{G}} x_{g,e,t,\omega}^{out} + f_{e,t,\omega}^{buy} = \sum_{g \in \mathcal{G}} x_{g,e,t,\omega}^{in} + f_{e,t,\omega}^{sell} + D_{e,t,\omega} \quad \forall e \in \mathcal{E}^D, t \in \mathcal{T}, \omega \in \Omega$
+
+## Unit Commitment Constraints (if applicable)
+
+### Startup Variable Definition
+$v_{g,t,\omega} \geq u_{g,t,\omega} - u_{g,t-1,\omega} \quad \forall g \in \mathcal{G}^{UC}, t \in \mathcal{T}, \omega \in \Omega$
+
+### Startup Cost
+$c_{g,t,\omega}^{start} \geq C_g^{start} v_{g,t,\omega} \quad \forall g \in \mathcal{G}^{UC}, t \in \mathcal{T}, \omega \in \Omega$
+
+::: {.callout-note}
+This general framework can be specialized to specific applications by:
+
+1. Defining appropriate energy carriers in $\mathcal{E}$
+2. Specifying technology types in $\mathcal{G}$
+3. Setting conversion parameters $\sigma_{g,e}^{in}$, $\sigma_{g,e}^{out}$, and $\Theta_g$
+4. Adding application-specific constraints as needed
+:::
+
+
+::: {.loud-slide}
+::: {.r-fit-text}
+Questions?
+:::
+:::
+
+::: footer
+:::
+
+# [Literature]{.flow} {.title}
+
+## Literature I
+
+For more interesting literature to learn more about Julia, take a look at the [literature list](../general/literature.qmd) of this course.
+
+## Literature II
+
+

@@ -1,0 +1,1838 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.41">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Dr.&nbsp;Tobias Cors">
+
+<title>Lecture XI - Framework for Multi-Energy System Optimization – Energy System Optimization with Julia</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-48ffa3e5b9d089919c6712c39e5b00f2.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-535f1e98bdee6bd367c8658371e9dbec.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script defer="" data-domain="TobiasCors.github.io/energy-system-optimization" src="https://plausible.io/js/script.file-downloads.outbound-links.js"></script>
+<script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
+</head><body class="nav-sidebar floating">\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+
+
+
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../part-11/lecture-framework.html">11 Framework</a></li><li class="breadcrumb-item"><a href="../part-11/lecture-framework.html">Lecture</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+      <a href="../index.html" class="sidebar-logo-link">
+      <img src="https://images.unsplash.com/photo-1617228679684-890412dc57a5?q=80&amp;w=3270&amp;auto=format&amp;fit=crop&amp;ixlib=rb-4.0.3&amp;ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../general/syllabus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Syllabus</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+ <span class="menu-text">***</span>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../part-01/lecture-introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">01 Introduction</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
+ <span class="menu-text">02 First Steps</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../part-02/lecture-firststeps.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../part-02/tutorial-02-01-variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">01 - Variables</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../part-02/tutorial-02-02-vectors.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">02 - Vectors</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../part-02/tutorial-02-03-comparisons.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">03 - Comparisons</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../part-02/tutorial-02-04-loops.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">04 - Loops</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../part-02/tutorial-02-05-dicts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">05 - Dictionaries</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
+ <span class="menu-text">03 Data</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../part-03/lecture-packages.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../part-03/tutorial-03-01-functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">01 - Functions</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../part-03/tutorial-03-02-handling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">02 - Packages</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../part-03/tutorial-03-03-DataFrames.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">03 - DataFrames</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../part-03/tutorial-03-04-IO.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">04 - Input and Output</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../part-03/tutorial-03-05-Plotting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">05 - Plotting</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+ <span class="menu-text">04 Optimization</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../part-04/lecture-jump.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../part-04/tutorial-04-01-jump.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">01 - JuMP</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../part-04/tutorial-04-02-bounds.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">02 - Bounds</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../part-04/tutorial-04-03-constraints.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">03 - Constraints</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../part-04/tutorial-04-04-advanced.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">04 - Advanced</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../part-04/tutorial-04-05-transport.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">05 - Transport</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
+ <span class="menu-text">05 Dispatch</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../part-05/lecture-dispatch.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../part-05/tutorial-dispatch.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tutorial</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
+ <span class="menu-text">06 Commitment</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../part-06/lecture-commitment.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../part-06/tutorial-commitment.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tutorial</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false">
+ <span class="menu-text">07 Storage</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../part-07/lecture-storage.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../part-07/tutorial-storage.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tutorial</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="false">
+ <span class="menu-text">08 Design</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../part-08/lecture-design.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../part-08/tutorial-design.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tutorial</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="false">
+ <span class="menu-text">09 MES</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../part-09/lecture-mes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="false">
+ <span class="menu-text">10 Intermission</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../part-10/lecture-intermission.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="true">
+ <span class="menu-text">11 Framework</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../part-11/lecture-framework.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Lecture</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+ <span class="menu-text">***</span>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" role="navigation" aria-expanded="false">
+ <span class="menu-text">Cheatsheets</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-11" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../general/cheatsheet-julia.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Julia</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../general/cheatsheet-jump.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">JuMP</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../general/faq.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">FAQs</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../general/literature.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Literature</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#quick-recap-from-last-week" id="toc-quick-recap-from-last-week" class="nav-link active" data-scroll-target="#quick-recap-from-last-week"><span class="flow">Quick Recap from last Week</span></a>
+  <ul class="collapse">
+  <li><a href="#multi-energy-system-design-problem-overview" id="toc-multi-energy-system-design-problem-overview" class="nav-link" data-scroll-target="#multi-energy-system-design-problem-overview">Multi-Energy System Design Problem Overview</a></li>
+  <li><a href="#mathematical-formulation" id="toc-mathematical-formulation" class="nav-link" data-scroll-target="#mathematical-formulation">Mathematical Formulation</a>
+  <ul class="collapse">
+  <li><a href="#objective-function" id="toc-objective-function" class="nav-link" data-scroll-target="#objective-function">Objective Function</a></li>
+  <li><a href="#key-constraints" id="toc-key-constraints" class="nav-link" data-scroll-target="#key-constraints">Key Constraints</a></li>
+  </ul></li>
+  <li><a href="#model-characteristics" id="toc-model-characteristics" class="nav-link" data-scroll-target="#model-characteristics">Model Characteristics</a></li>
+  <li><a href="#key-extensions-from-single-energy-systems" id="toc-key-extensions-from-single-energy-systems" class="nav-link" data-scroll-target="#key-extensions-from-single-energy-systems">Key Extensions from Single-Energy Systems</a>
+  <ul class="collapse">
+  <li><a href="#new-components" id="toc-new-components" class="nav-link" data-scroll-target="#new-components">New Components</a></li>
+  <li><a href="#new-constraints" id="toc-new-constraints" class="nav-link" data-scroll-target="#new-constraints">New Constraints</a></li>
+  <li><a href="#modified-constraints" id="toc-modified-constraints" class="nav-link" data-scroll-target="#modified-constraints">Modified Constraints</a></li>
+  </ul></li>
+  <li><a href="#solutions-from-last-week" id="toc-solutions-from-last-week" class="nav-link" data-scroll-target="#solutions-from-last-week">Solutions from last Week</a></li>
+  </ul></li>
+  <li><a href="#excursion-big-m-constraints-in-mixed-integer-programming" id="toc-excursion-big-m-constraints-in-mixed-integer-programming" class="nav-link" data-scroll-target="#excursion-big-m-constraints-in-mixed-integer-programming"><span class="flow">Excursion: Big M Constraints in Mixed-Integer Programming</span></a>
+  <ul class="collapse">
+  <li><a href="#what-are-big-m-constraints" id="toc-what-are-big-m-constraints" class="nav-link" data-scroll-target="#what-are-big-m-constraints">What are Big M Constraints?</a></li>
+  <li><a href="#basic-concept" id="toc-basic-concept" class="nav-link" data-scroll-target="#basic-concept">Basic Concept</a></li>
+  <li><a href="#example-from-unit-commitment-startup-timing-constraints" id="toc-example-from-unit-commitment-startup-timing-constraints" class="nav-link" data-scroll-target="#example-from-unit-commitment-startup-timing-constraints">Example from Unit Commitment: Startup Timing Constraints</a>
+  <ul class="collapse">
+  <li><a href="#how-it-works" id="toc-how-it-works" class="nav-link" data-scroll-target="#how-it-works">How it Works:</a></li>
+  </ul></li>
+  <li><a href="#choosing-the-right-big-m-value" id="toc-choosing-the-right-big-m-value" class="nav-link" data-scroll-target="#choosing-the-right-big-m-value">Choosing the Right Big M Value</a>
+  <ul class="collapse">
+  <li><a href="#guidelines-for-selecting-m" id="toc-guidelines-for-selecting-m" class="nav-link" data-scroll-target="#guidelines-for-selecting-m">Guidelines for Selecting M:</a></li>
+  <li><a href="#example-calculation" id="toc-example-calculation" class="nav-link" data-scroll-target="#example-calculation">Example Calculation:</a></li>
+  </ul></li>
+  <li><a href="#advantages-and-disadvantages" id="toc-advantages-and-disadvantages" class="nav-link" data-scroll-target="#advantages-and-disadvantages">Advantages and Disadvantages</a>
+  <ul class="collapse">
+  <li><a href="#advantages" id="toc-advantages" class="nav-link" data-scroll-target="#advantages">Advantages:</a></li>
+  <li><a href="#disadvantages" id="toc-disadvantages" class="nav-link" data-scroll-target="#disadvantages">Disadvantages:</a></li>
+  </ul></li>
+  <li><a href="#alternative-approaches" id="toc-alternative-approaches" class="nav-link" data-scroll-target="#alternative-approaches">Alternative Approaches</a>
+  <ul class="collapse">
+  <li><a href="#indicator-constraints" id="toc-indicator-constraints" class="nav-link" data-scroll-target="#indicator-constraints">1. Indicator Constraints</a></li>
+  <li><a href="#disjunctive-programming" id="toc-disjunctive-programming" class="nav-link" data-scroll-target="#disjunctive-programming">2. Disjunctive Programming</a></li>
+  <li><a href="#key-differences-between-approaches-1-and-2" id="toc-key-differences-between-approaches-1-and-2" class="nav-link" data-scroll-target="#key-differences-between-approaches-1-and-2">Key Differences Between Approaches 1 and 2:</a></li>
+  <li><a href="#reformulation" id="toc-reformulation" class="nav-link" data-scroll-target="#reformulation">3. Reformulation</a></li>
+  </ul></li>
+  <li><a href="#practical-tips" id="toc-practical-tips" class="nav-link" data-scroll-target="#practical-tips">Practical Tips</a></li>
+  </ul></li>
+  <li><a href="#recap-introduction-to-multi-energy-systems" id="toc-recap-introduction-to-multi-energy-systems" class="nav-link" data-scroll-target="#recap-introduction-to-multi-energy-systems"><span class="flow">Recap: Introduction to Multi-Energy Systems</span></a>
+  <ul class="collapse">
+  <li><a href="#multi-energy-systems-definition" id="toc-multi-energy-systems-definition" class="nav-link" data-scroll-target="#multi-energy-systems-definition">Multi-Energy Systems: Definition</a></li>
+  <li><a href="#multi-energy-systems-example-hydrogen-value-chain" id="toc-multi-energy-systems-example-hydrogen-value-chain" class="nav-link" data-scroll-target="#multi-energy-systems-example-hydrogen-value-chain">Multi-Energy Systems: Example Hydrogen Value Chain</a></li>
+  <li><a href="#framework-for-multi-energy-system-design-problem" id="toc-framework-for-multi-energy-system-design-problem" class="nav-link" data-scroll-target="#framework-for-multi-energy-system-design-problem">Framework for Multi-Energy System Design Problem</a></li>
+  </ul></li>
+  <li><a href="#mathematical-formulation-of-the-general-multi-energy-system-framework" id="toc-mathematical-formulation-of-the-general-multi-energy-system-framework" class="nav-link" data-scroll-target="#mathematical-formulation-of-the-general-multi-energy-system-framework"><span class="flow">Mathematical Formulation of the General Multi-Energy System Framework</span></a>
+  <ul class="collapse">
+  <li><a href="#sets" id="toc-sets" class="nav-link" data-scroll-target="#sets">Sets</a></li>
+  <li><a href="#decision-variables" id="toc-decision-variables" class="nav-link" data-scroll-target="#decision-variables">Decision Variables</a>
+  <ul class="collapse">
+  <li><a href="#investment-variables-first-stage" id="toc-investment-variables-first-stage" class="nav-link" data-scroll-target="#investment-variables-first-stage">Investment Variables (First Stage)</a></li>
+  <li><a href="#operational-variables-second-stage" id="toc-operational-variables-second-stage" class="nav-link" data-scroll-target="#operational-variables-second-stage">Operational Variables (Second Stage)</a></li>
+  <li><a href="#binary-variables-for-unit-commitment" id="toc-binary-variables-for-unit-commitment" class="nav-link" data-scroll-target="#binary-variables-for-unit-commitment">Binary Variables (for Unit Commitment)</a></li>
+  <li><a href="#cost-variables" id="toc-cost-variables" class="nav-link" data-scroll-target="#cost-variables">Cost Variables</a></li>
+  </ul></li>
+  <li><a href="#parameters" id="toc-parameters" class="nav-link" data-scroll-target="#parameters">Parameters</a>
+  <ul class="collapse">
+  <li><a href="#investment-costs-first-stage" id="toc-investment-costs-first-stage" class="nav-link" data-scroll-target="#investment-costs-first-stage">Investment Costs (First Stage)</a></li>
+  <li><a href="#operational-parameters-second-stage" id="toc-operational-parameters-second-stage" class="nav-link" data-scroll-target="#operational-parameters-second-stage">Operational Parameters (Second Stage)</a></li>
+  </ul></li>
+  <li><a href="#objective-function-1" id="toc-objective-function-1" class="nav-link" data-scroll-target="#objective-function-1">Objective Function</a></li>
+  <li><a href="#investment-cost-constraints" id="toc-investment-cost-constraints" class="nav-link" data-scroll-target="#investment-cost-constraints">Investment Cost Constraints</a>
+  <ul class="collapse">
+  <li><a href="#investment-budget" id="toc-investment-budget" class="nav-link" data-scroll-target="#investment-budget">Investment Budget</a></li>
+  </ul></li>
+  <li><a href="#energy-conversion-constraints" id="toc-energy-conversion-constraints" class="nav-link" data-scroll-target="#energy-conversion-constraints">Energy Conversion Constraints</a>
+  <ul class="collapse">
+  <li><a href="#input-output-relationships" id="toc-input-output-relationships" class="nav-link" data-scroll-target="#input-output-relationships">Input-Output Relationships</a></li>
+  <li><a href="#technology-capacity-limits" id="toc-technology-capacity-limits" class="nav-link" data-scroll-target="#technology-capacity-limits">Technology Capacity Limits</a></li>
+  <li><a href="#variable-energy-technologies" id="toc-variable-energy-technologies" class="nav-link" data-scroll-target="#variable-energy-technologies">Variable Energy Technologies</a></li>
+  </ul></li>
+  <li><a href="#storage-constraints" id="toc-storage-constraints" class="nav-link" data-scroll-target="#storage-constraints">Storage Constraints</a>
+  <ul class="collapse">
+  <li><a href="#state-of-charge-balance" id="toc-state-of-charge-balance" class="nav-link" data-scroll-target="#state-of-charge-balance">State of Charge Balance</a></li>
+  <li><a href="#storage-capacity-limits" id="toc-storage-capacity-limits" class="nav-link" data-scroll-target="#storage-capacity-limits">Storage Capacity Limits</a></li>
+  <li><a href="#initial-and-final-state" id="toc-initial-and-final-state" class="nav-link" data-scroll-target="#initial-and-final-state">Initial and Final State</a></li>
+  <li><a href="#chargingdischarging-mutual-exclusion" id="toc-chargingdischarging-mutual-exclusion" class="nav-link" data-scroll-target="#chargingdischarging-mutual-exclusion">Charging/Discharging Mutual Exclusion</a></li>
+  </ul></li>
+  <li><a href="#energy-balance-constraints" id="toc-energy-balance-constraints" class="nav-link" data-scroll-target="#energy-balance-constraints">Energy Balance Constraints</a>
+  <ul class="collapse">
+  <li><a href="#energy-carrier-balance" id="toc-energy-carrier-balance" class="nav-link" data-scroll-target="#energy-carrier-balance">Energy Carrier Balance</a></li>
+  </ul></li>
+  <li><a href="#unit-commitment-constraints-if-applicable" id="toc-unit-commitment-constraints-if-applicable" class="nav-link" data-scroll-target="#unit-commitment-constraints-if-applicable">Unit Commitment Constraints (if applicable)</a>
+  <ul class="collapse">
+  <li><a href="#startup-variable-definition" id="toc-startup-variable-definition" class="nav-link" data-scroll-target="#startup-variable-definition">Startup Variable Definition</a></li>
+  <li><a href="#startup-cost" id="toc-startup-cost" class="nav-link" data-scroll-target="#startup-cost">Startup Cost</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#literature" id="toc-literature" class="nav-link" data-scroll-target="#literature"><span class="flow">Literature</span></a>
+  <ul class="collapse">
+  <li><a href="#literature-i" id="toc-literature-i" class="nav-link" data-scroll-target="#literature-i">Literature I</a></li>
+  <li><a href="#literature-ii" id="toc-literature-ii" class="nav-link" data-scroll-target="#literature-ii">Literature II</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/edit/main/part-11/lecture-framework.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/blob/main/part-11/lecture-framework.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="lecture-presentation.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../part-11/lecture-framework.html">11 Framework</a></li><li class="breadcrumb-item"><a href="../part-11/lecture-framework.html">Lecture</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Lecture XI - Framework for Multi-Energy System Optimization</h1>
+<p class="subtitle lead">Energy System Optimization with Julia</p>
+</div>
+
+
+<div class="quarto-title-meta-author">
+  <div class="quarto-title-meta-heading">Author</div>
+  <div class="quarto-title-meta-heading">Affiliation</div>
+  
+    <div class="quarto-title-meta-contents">
+    <p class="author">Dr.&nbsp;Tobias Cors </p>
+  </div>
+  <div class="quarto-title-meta-contents">
+        <p class="affiliation">
+            Hamburg University of Applied Science - Summer 2025
+          </p>
+      </div>
+  </div>
+
+<div class="quarto-title-meta">
+
+      
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="quick-recap-from-last-week" class="level1 title">
+<h1 class="title"><span class="flow">Quick Recap from last Week</span></h1>
+<section id="multi-energy-system-design-problem-overview" class="level2">
+<h2 class="anchored" data-anchor-id="multi-energy-system-design-problem-overview">Multi-Energy System Design Problem Overview</h2>
+<ul>
+<li><p><strong>Objective</strong>: Minimize total annual costs (investment + operational) while respecting budget constraints for multi-energy systems</p></li>
+<li><p><strong>Decision Variables</strong>:</p>
+<ul>
+<li>Investment variables (First Stage):
+<ul>
+<li>Storage energy capacity (<span class="math inline">\(e^{nom}_s\)</span>) for both electricity and hydrogen storage</li>
+<li>Storage charging power (<span class="math inline">\(p^{ch,nom}_s\)</span>) for both energy carriers</li>
+<li>Storage discharging power (<span class="math inline">\(p^{dis,nom}_s\)</span>) for both energy carriers</li>
+<li>Wind park capacity (<span class="math inline">\(p^{nom}_w\)</span>)</li>
+<li>PV park capacity (<span class="math inline">\(p^{nom}_v\)</span>)</li>
+<li>Electrolyzer capacity (<span class="math inline">\(p^{nom}_x\)</span>)</li>
+</ul></li>
+<li>Operational variables (Second Stage):
+<ul>
+<li>Wind power output (<span class="math inline">\(p_{w,t,\omega}\)</span>)</li>
+<li>PV power output (<span class="math inline">\(p_{v,t,\omega}\)</span>)</li>
+<li>Grid import/export (<span class="math inline">\(p^{in}_{t,\omega}\)</span>, <span class="math inline">\(p^{out}_{t,\omega}\)</span>)</li>
+<li>Storage operation (<span class="math inline">\(p^{ch}_{s,t,\omega}\)</span>, <span class="math inline">\(p^{dis}_{s,t,\omega}\)</span>, <span class="math inline">\(e_{s,t,\omega}\)</span>)</li>
+<li>Electrolyzer operation (<span class="math inline">\(p_{x,t,\omega}\)</span>, <span class="math inline">\(h_{x,t,\omega}\)</span>)</li>
+</ul></li>
+</ul></li>
+<li><p><strong>Key Constraints</strong>:</p>
+<ul>
+<li>Investment budget limit</li>
+<li>Electricity power balance</li>
+<li>Hydrogen balance</li>
+<li>Component capacity limits</li>
+<li>Storage energy balance</li>
+<li>Storage energy limits</li>
+<li>Storage power limits</li>
+<li>Electrolyzer conversion constraints</li>
+</ul></li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The Multi-Energy System Design problem extends the basic energy system design by incorporating multiple energy carriers (electricity and hydrogen) and energy conversion technologies (electrolyzers). The stochastic formulation considers multiple scenarios to account for uncertainty in renewable generation, demand patterns, and price variations across different energy carriers.</p>
+</div>
+</div>
+</section>
+<section id="mathematical-formulation" class="level2">
+<h2 class="anchored" data-anchor-id="mathematical-formulation">Mathematical Formulation</h2>
+<section id="objective-function" class="level3">
+<h3 class="anchored" data-anchor-id="objective-function">Objective Function</h3>
+<p><span class="math inline">\(\text{Minimize} \quad \sum_{s \in \mathcal{S}} AC^{inv}_s + \sum_{w \in \mathcal{W}} AC^{inv}_w + \sum_{v \in \mathcal{V}} AC^{inv}_v + \sum_{x \in \mathcal{X}} AC^{inv}_x + \sum_{\omega \in \Omega} \pi_{\omega} (AC^{grid,imp}_{\omega} - AR^{grid,exp}_{\omega})\)</span></p>
+</section>
+<section id="key-constraints" class="level3">
+<h3 class="anchored" data-anchor-id="key-constraints">Key Constraints</h3>
+<ol type="1">
+<li><strong>Investment Budget</strong>:</li>
+</ol>
+<p><span class="math inline">\(\sum_{s \in \mathcal{S}} (C^{E}_s e^{nom}_s + C^{P,ch}_s p^{ch,nom}_s + C^{P,dis}_s p^{dis,nom}_s) + \sum_{w \in \mathcal{W}} C^{W}_w p^{nom}_w + \sum_{v \in \mathcal{V}} C^{PV}_v p^{nom}_v + \sum_{x \in \mathcal{X}} C^{X}_x p^{nom}_x \leq B^{max}\)</span></p>
+<ol start="2" type="1">
+<li><strong>Electricity Power Balance</strong>:</li>
+</ol>
+<p><span class="math inline">\(\sum_{w \in \mathcal{W}} p_{w,t,\omega} + \sum_{v \in \mathcal{V}} p_{v,t,\omega} + (p^{in}_{t,\omega} - p^{out}_{t,\omega}) + \sum_{s \in \mathcal{S}_{\text{El}}} (p^{dis}_{s,t,\omega} - p^{ch}_{s,t,\omega}) = \sum_{x \in \mathcal{X}} p_{x,t,\omega} \quad \forall t \in \mathcal{T}, \omega \in \Omega\)</span></p>
+<ol start="3" type="1">
+<li><strong>Hydrogen Balance</strong>:</li>
+</ol>
+<p><span class="math inline">\(\sum_{x \in \mathcal{X}} h_{x,t,\omega} + \sum_{s \in \mathcal{S}_{\text{H2}}} (p^{dis}_{s,t,\omega} - p^{ch}_{s,t,\omega}) = d_{t,\omega} \quad \forall t \in \mathcal{T}, \omega \in \Omega\)</span></p>
+<ol start="4" type="1">
+<li><strong>Component Capacity Limits</strong>:</li>
+</ol>
+<p><span class="math inline">\(0 \leq p_{w,t,\omega} \leq f_{w,t,\omega} p^{nom}_w \quad \forall w \in \mathcal{W}, t \in \mathcal{T}, \omega \in \Omega\)</span> <span class="math inline">\(0 \leq p_{v,t,\omega} \leq f_{v,t,\omega} p^{nom}_v \quad \forall v \in \mathcal{V}, t \in \mathcal{T}, \omega \in \Omega\)</span> <span class="math inline">\(0 \leq p^{ch}_{s,t,\omega} \leq p^{ch,nom}_s \quad \forall s \in \mathcal{S}, t \in \mathcal{T}, \omega \in \Omega\)</span> <span class="math inline">\(0 \leq p^{dis}_{s,t,\omega} \leq p^{dis,nom}_s \quad \forall s \in \mathcal{S}, t \in \mathcal{T}, \omega \in \Omega\)</span> <span class="math inline">\(DoD_s e^{nom}_s \leq e_{s,t,\omega} \leq e^{nom}_s \quad \forall s \in \mathcal{S}, t \in \mathcal{T}, \omega \in \Omega\)</span></p>
+<ol start="5" type="1">
+<li><strong>Storage Energy Balance</strong>:</li>
+</ol>
+<p><span class="math inline">\(e_{s,t,\omega} = (1-sdr_s)e_{s,t-1,\omega} + \eta^{ch}_s p^{ch}_{s,t,\omega} - \frac{p^{dis}_{s,t,\omega}}{\eta^{dis}_s} \quad \forall s \in \mathcal{S}, t \in \mathcal{T}, \omega \in \Omega\)</span></p>
+<ol start="6" type="1">
+<li><strong>Electrolyzer Constraints</strong>:</li>
+</ol>
+<p><span class="math inline">\(0 \leq p_{x,t,\omega} \leq p^{nom}_x \quad \forall x \in \mathcal{X}, t \in \mathcal{T}, \omega \in \Omega\)</span> <span class="math inline">\(h_{x,t,\omega} = \beta_x p_{x,t,\omega} \quad \forall x \in \mathcal{X}, t \in \mathcal{T}, \omega \in \Omega\)</span></p>
+</section>
+</section>
+<section id="model-characteristics" class="level2">
+<h2 class="anchored" data-anchor-id="model-characteristics">Model Characteristics</h2>
+<ul>
+<li>Two-stage stochastic Linear Programming (LP) problem for multi-energy systems</li>
+<li>Combines investment and operational decisions across multiple energy carriers</li>
+<li>Large-scale optimization problem with energy conversion technologies</li>
+<li>Requires efficient solution methods</li>
+<li>Considers multiple scenarios for robust decision-making</li>
+<li>Integrates electricity and hydrogen value chains</li>
+</ul>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The multi-energy system model can be adapted to specific use cases, i.e., if certain components already have fixed capacities, the corresponding variables can be converted to parameters. The stochastic formulation allows for more robust investment decisions by considering multiple scenarios across different energy carriers.</p>
+</div>
+</div>
+</section>
+<section id="key-extensions-from-single-energy-systems" class="level2">
+<h2 class="anchored" data-anchor-id="key-extensions-from-single-energy-systems">Key Extensions from Single-Energy Systems</h2>
+<section id="new-components" class="level3">
+<h3 class="anchored" data-anchor-id="new-components">New Components</h3>
+<ul>
+<li><strong>Electrolyzers</strong>: Convert electricity to hydrogen with efficiency <span class="math inline">\(\beta_x\)</span></li>
+<li><strong>Hydrogen Storage</strong>: Separate storage systems for hydrogen with different characteristics</li>
+<li><strong>Energy Conversion</strong>: Explicit modeling of energy carrier conversion processes</li>
+</ul>
+</section>
+<section id="new-constraints" class="level3">
+<h3 class="anchored" data-anchor-id="new-constraints">New Constraints</h3>
+<ul>
+<li><strong>Hydrogen Balance</strong>: Ensures hydrogen demand is met through production and storage</li>
+<li><strong>Electrolyzer Operation</strong>: Links electricity consumption to hydrogen production</li>
+<li><strong>Multi-Carrier Storage</strong>: Distinguishes between electricity (<span class="math inline">\(\mathcal{S}_{\text{El}}\)</span>) and hydrogen (<span class="math inline">\(\mathcal{S}_{\text{H2}}\)</span>) storage</li>
+</ul>
+</section>
+<section id="modified-constraints" class="level3">
+<h3 class="anchored" data-anchor-id="modified-constraints">Modified Constraints</h3>
+<ul>
+<li><strong>Electricity Balance</strong>: Now includes electrolyzer consumption instead of direct demand</li>
+<li><strong>Investment Budget</strong>: Includes electrolyzer investment costs</li>
+<li><strong>Objective Function</strong>: Includes electrolyzer annualized investment costs</li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>These extensions enable comprehensive optimization of energy value chains, allowing for optimal sizing and operation of systems that convert between the different energy carriers while considering uncertainty and operational constraints.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="solutions-from-last-week" class="level2">
+<h2 class="anchored" data-anchor-id="solutions-from-last-week">Solutions from last Week</h2>
+<ul>
+<li>The tutorials from last week will again be <span class="highlight">available on Friday</span></li>
+<li>You can access them in the project folder on Github</li>
+<li>Click on the little cat icon on the bottom right</li>
+</ul>
+<p>. . .</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="highlight">You can ask questions anytime in class or via email!</span></p>
+</div>
+</div>
+</section>
+</section>
+<section id="excursion-big-m-constraints-in-mixed-integer-programming" class="level1 title">
+<h1 class="title"><span class="flow">Excursion: Big M Constraints in Mixed-Integer Programming</span></h1>
+<section id="what-are-big-m-constraints" class="level2">
+<h2 class="anchored" data-anchor-id="what-are-big-m-constraints">What are Big M Constraints?</h2>
+<p>Big M constraints are a fundamental modeling technique in Mixed-Integer Linear Programming (MILP) used to create conditional relationships between continuous and binary variables. The “M” represents a large constant that acts as an upper bound, allowing constraints to be “turned on” or “turned off” based on binary variable values.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Big M constraints enable the modeling of complex logical relationships and conditional constraints that would otherwise be difficult to express in linear programming formulations.</p>
+</div>
+</div>
+</section>
+<section id="basic-concept" class="level2">
+<h2 class="anchored" data-anchor-id="basic-concept">Basic Concept</h2>
+<p>The general form of a big M constraint is:</p>
+<p><span class="math inline">\(f(x) \leq M (1 - y)\)</span></p>
+<p>where:</p>
+<ul>
+<li><span class="math inline">\(f(x)\)</span> is a function of continuous variables</li>
+<li><span class="math inline">\(M\)</span> is a large constant (the “big M”)</li>
+<li><span class="math inline">\(y\)</span> is a binary variable (0 or 1)</li>
+</ul>
+<p><strong>Logic</strong>: When <span class="math inline">\(y = 1\)</span>, the constraint becomes <span class="math inline">\(f(x) \leq 0\)</span> (active). When <span class="math inline">\(y = 0\)</span>, the constraint becomes <span class="math inline">\(f(x) \leq M\)</span> (inactive, since <span class="math inline">\(M\)</span> is large).</p>
+</section>
+<section id="example-from-unit-commitment-startup-timing-constraints" class="level2">
+<h2 class="anchored" data-anchor-id="example-from-unit-commitment-startup-timing-constraints">Example from Unit Commitment: Startup Timing Constraints</h2>
+<p>Consider the constraint from the intermission lecture where generator 3 and generator 4 cannot start up within 3 time periods of each other:</p>
+<p><span class="math inline">\(\sum_{\tau \in [t, \min(t+3,|\mathcal{T}|)]} v_{3,\tau} \leq (1 - v_{4,t}) M \quad \forall t \in \mathcal{T}\)</span></p>
+<p><span class="math inline">\(\sum_{\tau \in [t-1, \max(t-3,1)]} v_{3,\tau} \leq (1 - v_{4,t}) M \quad \forall t \in \mathcal{T}\)</span></p>
+<section id="how-it-works" class="level3">
+<h3 class="anchored" data-anchor-id="how-it-works">How it Works:</h3>
+<ol type="1">
+<li><strong>When <span class="math inline">\(v_{4,t} = 1\)</span></strong> (generator 4 starts at time <span class="math inline">\(t\)</span>):
+<ul>
+<li>The right-hand side becomes <span class="math inline">\((1-1) M = 0\)</span></li>
+<li>The constraint forces <span class="math inline">\(\sum v_{3,\tau} \leq 0\)</span></li>
+<li>This means generator 3 cannot start in the specified time windows</li>
+</ul></li>
+<li><strong>When <span class="math inline">\(v_{4,t} = 0\)</span></strong> (generator 4 does not start at time <span class="math inline">\(t\)</span>):
+<ul>
+<li>The right-hand side becomes <span class="math inline">\((1-0) M = M\)</span></li>
+<li>The constraint becomes <span class="math inline">\(\sum v_{3,\tau} \leq M\)</span></li>
+<li>Since <span class="math inline">\(M\)</span> is large, this constraint is effectively not limiting the startup of generator 3 and hence not active</li>
+</ul></li>
+</ol>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The choice of <span class="math inline">\(M\)</span> is crucial: it must be large enough to make constraints inactive when needed, but not so large that it causes numerical issues in the solver.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="choosing-the-right-big-m-value" class="level2">
+<h2 class="anchored" data-anchor-id="choosing-the-right-big-m-value">Choosing the Right Big M Value</h2>
+<section id="guidelines-for-selecting-m" class="level3">
+<h3 class="anchored" data-anchor-id="guidelines-for-selecting-m">Guidelines for Selecting M:</h3>
+<ol type="1">
+<li><strong>Upper Bound</strong>: <span class="math inline">\(M\)</span> should be an upper bound on the left-hand side expression</li>
+<li><strong>Tightness</strong>: Choose the smallest possible value that still works</li>
+<li><strong>Numerical Stability</strong>: Avoid extremely large values that can cause solver issues</li>
+</ol>
+</section>
+<section id="example-calculation" class="level3">
+<h3 class="anchored" data-anchor-id="example-calculation">Example Calculation:</h3>
+<p>For the startup timing constraint, a good choice for <span class="math inline">\(M\)</span> would be:</p>
+<ul>
+<li><span class="math inline">\(M = |\mathcal{T}|\)</span> (total number of time periods)</li>
+<li>This ensures that even if all startup variables were 1, the constraint would still be satisfied when inactive</li>
+<li>Considering that the fastest startup variable sequence is 1-0-1-0-…, M could be set to 2 here.</li>
+</ul>
+</section>
+</section>
+<section id="advantages-and-disadvantages" class="level2">
+<h2 class="anchored" data-anchor-id="advantages-and-disadvantages">Advantages and Disadvantages</h2>
+<section id="advantages" class="level3">
+<h3 class="anchored" data-anchor-id="advantages">Advantages:</h3>
+<ul>
+<li><strong>Flexibility</strong>: Enables modeling of complex logical relationships</li>
+<li><strong>Linear Formulation</strong>: Maintains linearity of the optimization problem</li>
+<li><strong>Wide Applicability</strong>: Can be used in many different contexts</li>
+</ul>
+</section>
+<section id="disadvantages" class="level3">
+<h3 class="anchored" data-anchor-id="disadvantages">Disadvantages:</h3>
+<ul>
+<li><strong>Numerical Issues</strong>: Poor choice of <span class="math inline">\(M\)</span> can cause solver difficulties</li>
+<li><strong>Weak Relaxation</strong>: Can lead to weak linear programming relaxations</li>
+<li><strong>Solution Quality</strong>: May result in slower convergence</li>
+</ul>
+</section>
+</section>
+<section id="alternative-approaches" class="level2">
+<h2 class="anchored" data-anchor-id="alternative-approaches">Alternative Approaches</h2>
+<section id="indicator-constraints" class="level3">
+<h3 class="anchored" data-anchor-id="indicator-constraints">1. Indicator Constraints</h3>
+<p>Indicator constraints replace big M constraints with direct logical relationships. They are best suited for <strong>simple binary conditions</strong> where you have clear “if-then” relationships.</p>
+<p><strong>Big M approach:</strong></p>
+<p><span class="math inline">\(p_g \leq p_g^{max} u_g\)</span></p>
+<p><strong>Indicator constraint approach:</strong></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="pp">@constraint</span>(model, u_g <span class="op">=&gt;</span> {p_g <span class="op">&lt;=</span> p_g_max})  <span class="co"># If generator is ON, then power ≤ max</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@constraint</span>(model, !u_g <span class="op">=&gt;</span> {p_g <span class="op">==</span> <span class="fl">0</span>})       <span class="co"># If generator is OFF, then power = 0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>When to use</strong>: Simple binary logic (on/off, yes/no, active/inactive)</p>
+<p><strong>Key characteristic</strong>: Direct logical statements without mutual exclusivity requirements</p>
+<p><strong>Advantages:</strong></p>
+<ul>
+<li>No need to choose M values</li>
+<li>Often leads to tighter formulations</li>
+<li>More intuitive modeling</li>
+<li>Better numerical stability</li>
+</ul>
+<p><strong>Disadvantages:</strong></p>
+<ul>
+<li>Not all solvers support indicator constraints</li>
+<li>May require specialized solvers</li>
+</ul>
+</section>
+<section id="disjunctive-programming" class="level3">
+<h3 class="anchored" data-anchor-id="disjunctive-programming">2. Disjunctive Programming</h3>
+<p>Disjunctive programming handles <strong>complex multi-state conditions</strong> where exactly one state must be active. It uses special ordered sets (SOS1) to enforce mutual exclusivity.</p>
+<p><strong>Example</strong>: A generator can operate in exactly one of three modes: off, minimum load, or full load.</p>
+<p><strong>Big M approach:</strong></p>
+<p><span class="math inline">\(p_g \leq (1 - u_g^{off}) + p_g^{min} u_g^{min} + p_g^{max} u_g^{max}\)</span></p>
+<p><span class="math inline">\(p_g \geq (1 - u_g^{off}) + p_g^{min} u_g^{min} + p_g^{max} u_g^{max}\)</span></p>
+<p><span class="math inline">\(u_g^{off} + u_g^{min} + u_g^{max} \leq 1\)</span></p>
+<p><strong>Disjunctive approach:</strong></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># SOS1 ensures exactly one binary variable is 1, others are 0</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@constraint</span>(model, [u_g_off, u_g_min, u_g_max] <span class="kw">in</span> MOI.<span class="fu">SOS1</span>(<span class="fl">3</span>))</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="pp">@constraint</span>(model, u_g_off <span class="op">=&gt;</span> {p_g <span class="op">==</span> <span class="fl">0</span>})                       <span class="co"># State 1: Off</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="pp">@constraint</span>(model, u_g_min <span class="op">=&gt;</span> {p_g <span class="op">==</span> p_g_min})                 <span class="co"># State 2: Minimum load</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="pp">@constraint</span>(model, u_g_max <span class="op">=&gt;</span> {p_g <span class="op">==</span> p_g_max})                 <span class="co"># State 3: Full load</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>When to use</strong>: Multiple mutually exclusive states or operational modes <strong>Key characteristic</strong>: Enforces that exactly one state is active at a time</p>
+<p><strong>Advantages:</strong></p>
+<ul>
+<li>More structured for complex logical relationships</li>
+<li>Can lead to better formulations</li>
+<li>Easier to understand complex constraints</li>
+<li>Enforces mutual exclusivity automatically</li>
+</ul>
+<p><strong>Disadvantages:</strong></p>
+<ul>
+<li>More complex implementation</li>
+<li>May not be supported by all solvers</li>
+</ul>
+</section>
+<section id="key-differences-between-approaches-1-and-2" class="level3">
+<h3 class="anchored" data-anchor-id="key-differences-between-approaches-1-and-2">Key Differences Between Approaches 1 and 2:</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 40%">
+<col style="width: 45%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Aspect</th>
+<th>Indicator Constraints</th>
+<th>Disjunctive Programming</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Complexity</strong></td>
+<td>Simple binary logic</td>
+<td>Multiple states</td>
+</tr>
+<tr class="even">
+<td><strong>Mutual Exclusivity</strong></td>
+<td>Not enforced</td>
+<td>Automatically enforced</td>
+</tr>
+<tr class="odd">
+<td><strong>Use Case</strong></td>
+<td>“If A, then B”</td>
+<td>“Must be in exactly one of states A, B, C”</td>
+</tr>
+<tr class="even">
+<td><strong>Implementation</strong></td>
+<td>Direct logical statements</td>
+<td>SOS1 constraints</td>
+</tr>
+<tr class="odd">
+<td><strong>Example</strong></td>
+<td>Generator on/off</td>
+<td>Generator off/min/max modes</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="reformulation" class="level3">
+<h3 class="anchored" data-anchor-id="reformulation">3. Reformulation</h3>
+<p>Sometimes big M constraints can be reformulated using additional variables or constraints that are more efficient or numerically stable.</p>
+<p><strong>Example</strong>: Instead of using big M for minimum up time constraints, use a different approach.</p>
+<p><strong>Big M approach:</strong></p>
+<p><span class="math inline">\(\sum_{t'=t}^{t+T^{min}-1} u_{g,t'} \geq T^{min} v_{g,t}\)</span></p>
+<p><strong>Reformulation approach:</strong></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use a continuous variable to track remaining minimum up time</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@variable</span>(model, <span class="fl">0</span> <span class="op">&lt;=</span> remaining_up_time[g, t] <span class="op">&lt;=</span> T_min)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="pp">@constraint</span>(model, remaining_up_time[g, t] <span class="op">&lt;=</span> T_min <span class="op">*</span> u_g[t])</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="pp">@constraint</span>(model, remaining_up_time[g, t] <span class="op">&lt;=</span> remaining_up_time[g, t<span class="op">-</span><span class="fl">1</span>] <span class="op">-</span> <span class="fl">1</span> <span class="op">+</span> T_min <span class="op">*</span> v_g[t])</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="pp">@constraint</span>(model, remaining_up_time[g, t] <span class="op">&gt;=</span> <span class="fl">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Advantages:</strong></p>
+<ul>
+<li>Often more numerically stable</li>
+<li>Can provide tighter formulations</li>
+<li>May lead to faster solution times</li>
+</ul>
+<p><strong>Disadvantages:</strong></p>
+<ul>
+<li>More complex to implement</li>
+<li>Requires more variables and constraints</li>
+<li>May not always be possible</li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Big M constraints are a powerful tool in MILP modeling, but they should be used carefully with appropriate values for <span class="math inline">\(M\)</span> to ensure both correctness and computational efficiency.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="practical-tips" class="level2">
+<h2 class="anchored" data-anchor-id="practical-tips">Practical Tips</h2>
+<ol type="1">
+<li><strong>Document your choice of M</strong>: Always explain why you chose a particular value</li>
+<li><strong>Test with small instances</strong>: Verify that your constraints work as expected</li>
+<li><strong>Consider solver-specific features</strong>: Some solvers have built-in support for certain constraint types</li>
+<li><strong>Monitor solution times</strong>: If the problem is slow to solve, consider if big M constraints are the bottleneck</li>
+</ol>
+</section>
+</section>
+<section id="recap-introduction-to-multi-energy-systems" class="level1 title">
+<h1 class="title"><span class="flow">Recap: Introduction to Multi-Energy Systems</span></h1>
+<section id="multi-energy-systems-definition" class="level2">
+<h2 class="anchored" data-anchor-id="multi-energy-systems-definition">Multi-Energy Systems: Definition</h2>
+<p>A multi-energy system is a system that combines multiple energy carriers (e.g.&nbsp;electricity, hydrogen, heat, etc.) to meet the energy demand of a specific application.</p>
+</section>
+<section id="multi-energy-systems-example-hydrogen-value-chain" class="level2">
+<h2 class="anchored" data-anchor-id="multi-energy-systems-example-hydrogen-value-chain">Multi-Energy Systems: Example Hydrogen Value Chain</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="H2-mes.png" class="img-fluid figure-img" style="width:70.0%"></p>
+<figcaption>Example case of a hydrogen value chain</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The figure shows a multi-energy system with:</p>
+<ul>
+<li>Renewable energy sources (PV and Wind) and grid connection</li>
+<li>Electric bus bar for power distribution</li>
+<li>Electrolyzer for hydrogen production</li>
+<li>Hydrogen bus bar for hydrogen distribution</li>
+<li>Hydrogen storage</li>
+<li>Hydrogen demand</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="framework-for-multi-energy-system-design-problem" class="level2">
+<h2 class="anchored" data-anchor-id="framework-for-multi-energy-system-design-problem">Framework for Multi-Energy System Design Problem</h2>
+<p>In this lecture, we reformulate the Stochastic Multi-Energy System Design problem to be applicable to a wide range of energy system applications <em>only by changing the sets and parameters</em>. This allows us to:</p>
+<ol type="1">
+<li>Adapt the model to the specific energy system application by changing the sets and parameters</li>
+<li>Optimize technology selection over the entire energy value chain</li>
+<li>Determine optimal component sizes</li>
+<li>Balance investment and operational costs</li>
+<li>Plan local multi-energy systems holistically (e.g.&nbsp;electricity, hydrogen, heat, etc.)</li>
+</ol>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Remember: The design problem combines investment planning (sizing) with operational optimization, enabling comprehensive (multi-)energy system design.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="mathematical-formulation-of-the-general-multi-energy-system-framework" class="level1 title">
+<h1 class="title"><span class="flow">Mathematical Formulation of the General Multi-Energy System Framework</span></h1>
+<p><strong>… extending the stochastic design problem to a general multi-energy system framework</strong></p>
+<section id="sets" class="level2">
+<h2 class="anchored" data-anchor-id="sets">Sets</h2>
+<ul>
+<li><span class="math inline">\(\mathcal{T}\)</span> - Set of time periods indexed by <span class="math inline">\(t \in \{1,2,...,|\mathcal{T}|\}\)</span></li>
+<li><span class="math inline">\(\mathcal{E}\)</span> - Set of energy carriers/fuels indexed by <span class="math inline">\(e \in \{1,2,...,|\mathcal{E}|\}\)</span></li>
+<li><span class="math inline">\(\mathcal{E}^D\)</span> - Subset of energy carriers associated with demand constraints</li>
+<li><span class="math inline">\(\mathcal{G}\)</span> - Set of dispatchable technology units indexed by <span class="math inline">\(g \in \{1,2,...,|\mathcal{G}|\}\)</span></li>
+<li><span class="math inline">\(\mathcal{G}^S\)</span> - Subset of storage technology units</li>
+<li><span class="math inline">\(\mathcal{G}^{UC}\)</span> - Subset of technology units with unit commitment constraints</li>
+<li><span class="math inline">\(\mathcal{G}^{Var}\)</span> - Subset of variable energy technology units (e.g., wind, solar)</li>
+<li><span class="math inline">\(\mathcal{G}^R\)</span> - Subset of technology units with ramping constraints</li>
+<li><span class="math inline">\(\mathcal{E}_g^{In}\)</span> - Mapping set of feedstock fuels to technology <span class="math inline">\(g\)</span></li>
+<li><span class="math inline">\(\mathcal{E}_g^{Out}\)</span> - Mapping set of produced fuels from technology <span class="math inline">\(g\)</span></li>
+<li><span class="math inline">\(\Omega\)</span> - Set of scenarios indexed by <span class="math inline">\(\omega \in \{1,2,...,|\Omega|\}\)</span></li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The general framework uses technology-agnostic sets that can represent any energy conversion technology (electrolyzers, fuel cells, heat pumps, etc.) and any energy carrier (electricity, hydrogen, heat, natural gas, etc.).</p>
+</div>
+</div>
+</section>
+<section id="decision-variables" class="level2">
+<h2 class="anchored" data-anchor-id="decision-variables">Decision Variables</h2>
+<section id="investment-variables-first-stage" class="level3">
+<h3 class="anchored" data-anchor-id="investment-variables-first-stage">Investment Variables (First Stage)</h3>
+<ul>
+<li><span class="math inline">\(P_g^{nom}\)</span> - Nominal capacity of technology <span class="math inline">\(g\)</span> [MW or appropriate unit]</li>
+<li><span class="math inline">\(SOC_g^{nom}\)</span> - Nominal energy capacity of storage technology <span class="math inline">\(g\)</span> [MWh or appropriate unit]</li>
+</ul>
+</section>
+<section id="operational-variables-second-stage" class="level3">
+<h3 class="anchored" data-anchor-id="operational-variables-second-stage">Operational Variables (Second Stage)</h3>
+<ul>
+<li><span class="math inline">\(x_{g,e,t,\omega}^{in}\)</span> - Amount of feedstock fuel <span class="math inline">\(e\)</span> consumed in technology <span class="math inline">\(g\)</span> at time <span class="math inline">\(t\)</span> in scenario <span class="math inline">\(\omega\)</span></li>
+<li><span class="math inline">\(x_{g,e,t,\omega}^{out}\)</span> - Amount of produced fuel <span class="math inline">\(e\)</span> from technology <span class="math inline">\(g\)</span> at time <span class="math inline">\(t\)</span> in scenario <span class="math inline">\(\omega\)</span></li>
+<li><span class="math inline">\(x_{g,t,\omega}^{total}\)</span> - Total activity level of technology <span class="math inline">\(g\)</span> at time <span class="math inline">\(t\)</span> in scenario <span class="math inline">\(\omega\)</span></li>
+<li><span class="math inline">\(f_{e,t,\omega}^{buy}\)</span> - Flow of fuel <span class="math inline">\(e\)</span> bought at time <span class="math inline">\(t\)</span> in scenario <span class="math inline">\(\omega\)</span></li>
+<li><span class="math inline">\(f_{e,t,\omega}^{sell}\)</span> - Flow of fuel <span class="math inline">\(e\)</span> sold at time <span class="math inline">\(t\)</span> in scenario <span class="math inline">\(\omega\)</span></li>
+<li><span class="math inline">\(soc_{g,t,\omega}\)</span> - State of charge of storage technology <span class="math inline">\(g\)</span> at time <span class="math inline">\(t\)</span> in scenario <span class="math inline">\(\omega\)</span></li>
+</ul>
+</section>
+<section id="binary-variables-for-unit-commitment" class="level3">
+<h3 class="anchored" data-anchor-id="binary-variables-for-unit-commitment">Binary Variables (for Unit Commitment)</h3>
+<ul>
+<li><span class="math inline">\(u_{g,t,\omega}\)</span> - Binary indicating online/offline status of technology <span class="math inline">\(g\)</span> at time <span class="math inline">\(t\)</span> in scenario <span class="math inline">\(\omega\)</span></li>
+<li><span class="math inline">\(v_{g,t,\omega}\)</span> - Binary indicating startup of technology <span class="math inline">\(g\)</span> at time <span class="math inline">\(t\)</span> in scenario <span class="math inline">\(\omega\)</span></li>
+<li><span class="math inline">\(o_{g,t,\omega}\)</span> - Binary indicating charging/discharging status of storage technology <span class="math inline">\(g\)</span> at time <span class="math inline">\(t\)</span> in scenario <span class="math inline">\(\omega\)</span></li>
+</ul>
+</section>
+<section id="cost-variables" class="level3">
+<h3 class="anchored" data-anchor-id="cost-variables">Cost Variables</h3>
+<ul>
+<li><span class="math inline">\(AC_g^{inv}\)</span> - Annual investment cost for technology <span class="math inline">\(g\)</span> [EUR/year]</li>
+<li><span class="math inline">\(c_{g,t,\omega}^{start}\)</span> - Startup cost of technology <span class="math inline">\(g\)</span> at time <span class="math inline">\(t\)</span> in scenario <span class="math inline">\(\omega\)</span></li>
+</ul>
+</section>
+</section>
+<section id="parameters" class="level2">
+<h2 class="anchored" data-anchor-id="parameters">Parameters</h2>
+<section id="investment-costs-first-stage" class="level3">
+<h3 class="anchored" data-anchor-id="investment-costs-first-stage">Investment Costs (First Stage)</h3>
+<ul>
+<li><span class="math inline">\(C_g^{inv}\)</span> - Investment cost per unit capacity for technology <span class="math inline">\(g\)</span> [EUR/MW or appropriate unit]</li>
+<li><span class="math inline">\(C_g^{SOC}\)</span> - Investment cost per unit energy capacity for storage technology <span class="math inline">\(g\)</span> [EUR/MWh or appropriate unit]</li>
+<li><span class="math inline">\(F^{PVAF}\)</span> - Present value annuity factor for investment costs</li>
+<li><span class="math inline">\(B^{max}\)</span> - Maximum investment budget [EUR]</li>
+</ul>
+</section>
+<section id="operational-parameters-second-stage" class="level3">
+<h3 class="anchored" data-anchor-id="operational-parameters-second-stage">Operational Parameters (Second Stage)</h3>
+<ul>
+<li><span class="math inline">\(\sigma_{g,e}^{in}\)</span> - Percentage of fuel <span class="math inline">\(e\)</span> used as feedstock in technology <span class="math inline">\(g\)</span></li>
+<li><span class="math inline">\(\sigma_{g,e}^{out}\)</span> - Percentage of fuel <span class="math inline">\(e\)</span> produced by technology <span class="math inline">\(g\)</span></li>
+<li><span class="math inline">\(\Theta_g\)</span> - Conversion efficiency ratio of technology <span class="math inline">\(g\)</span> (output/input ratio)</li>
+<li><span class="math inline">\(C_g^{var}\)</span> - Variable operating cost of technology <span class="math inline">\(g\)</span> [EUR/unit]</li>
+<li><span class="math inline">\(C_g^{start}\)</span> - Startup cost of technology <span class="math inline">\(g\)</span> [EUR]</li>
+<li><span class="math inline">\(D_{e,t,\omega}\)</span> - Demand of energy carrier <span class="math inline">\(e\)</span> at time <span class="math inline">\(t\)</span> in scenario <span class="math inline">\(\omega\)</span></li>
+<li><span class="math inline">\(P_g^{max}\)</span> - Maximum production level of technology <span class="math inline">\(g\)</span></li>
+<li><span class="math inline">\(P_g^{min}\)</span> - Minimum production level of technology <span class="math inline">\(g\)</span></li>
+<li><span class="math inline">\(\pi_{e,t,\omega}^{buy}\)</span> - Price of fuel <span class="math inline">\(e\)</span> bought at time <span class="math inline">\(t\)</span> in scenario <span class="math inline">\(\omega\)</span></li>
+<li><span class="math inline">\(\pi_{e,t,\omega}^{sell}\)</span> - Price of fuel <span class="math inline">\(e\)</span> sold at time <span class="math inline">\(t\)</span> in scenario <span class="math inline">\(\omega\)</span></li>
+<li><span class="math inline">\(SOC_g^{init}\)</span> - Initial state of charge of storage technology <span class="math inline">\(g\)</span></li>
+<li><span class="math inline">\(SOC_g^{max}\)</span> - Maximum state of charge of storage technology <span class="math inline">\(g\)</span></li>
+<li><span class="math inline">\(\pi_{\omega}^{prob}\)</span> - Probability of scenario <span class="math inline">\(\omega\)</span></li>
+</ul>
+</section>
+</section>
+<section id="objective-function-1" class="level2">
+<h2 class="anchored" data-anchor-id="objective-function-1">Objective Function</h2>
+<!-- 
+$\text{Maximize} \quad \sum_{\omega \in \Omega} \pi_{\omega}^{prob} \left( \sum_{e \in \mathcal{E}} \sum_{t \in \mathcal{T}} \pi_{e,t,\omega}^{sell} f_{e,t,\omega}^{sell} \right.$
+
+$\left. - \sum_{e \in \mathcal{E}} \sum_{t \in \mathcal{T}} \pi_{e,t,\omega}^{buy} f_{e,t,\omega}^{buy} - \sum_{g \in \mathcal{G}} \sum_{t \in \mathcal{T}} C_g^{var} x_{g,t,\omega}^{total} \right.$
+
+$\left. - \sum_{g \in \mathcal{G}^{UC}} \sum_{t \in \mathcal{T}} c_{g,t,\omega}^{start} \right) - \sum_{g \in \mathcal{G}} AC_g^{inv}$ -->
+<p><strong>Maximize the following components:</strong></p>
+<p><span class="math inline">\(\text{Maximize}\)</span></p>
+<p><strong>Revenue from selling energy carriers:</strong></p>
+<p><span class="math inline">\(\sum_{\omega \in \Omega} \pi_{\omega}^{prob} \sum_{e \in \mathcal{E}} \sum_{t \in \mathcal{T}} \pi_{e,t,\omega}^{sell} f_{e,t,\omega}^{sell}\)</span></p>
+<p><strong>Costs of buying energy carriers:</strong></p>
+<p><span class="math inline">\(-\sum_{\omega \in \Omega} \pi_{\omega}^{prob} \sum_{e \in \mathcal{E}} \sum_{t \in \mathcal{T}} \pi_{e,t,\omega}^{buy} f_{e,t,\omega}^{buy}\)</span></p>
+<p><strong>Variable operating costs:</strong></p>
+<p><span class="math inline">\(-\sum_{\omega \in \Omega} \pi_{\omega}^{prob} \sum_{g \in \mathcal{G}} \sum_{t \in \mathcal{T}} C_g^{var} x_{g,t,\omega}^{total}\)</span></p>
+<p><strong>Startup costs:</strong></p>
+<p><span class="math inline">\(-\sum_{\omega \in \Omega} \pi_{\omega}^{prob} \sum_{g \in \mathcal{G}^{UC}} \sum_{t \in \mathcal{T}} c_{g,t,\omega}^{start}\)</span></p>
+<p><strong>Investment costs:</strong></p>
+<p><span class="math inline">\(-\sum_{g \in \mathcal{G}} AC_g^{inv}\)</span></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The objective maximizes profit: revenue from selling energy carriers minus costs of buying energy carriers, variable operating costs, startup costs, and investment costs.</p>
+</div>
+</div>
+</section>
+<section id="investment-cost-constraints" class="level2">
+<h2 class="anchored" data-anchor-id="investment-cost-constraints">Investment Cost Constraints</h2>
+<p><span class="math inline">\(AC_g^{inv} = \frac{C_g^{inv}}{F^{PVAF}} P_g^{nom} \quad \forall g \in \mathcal{G} \setminus \mathcal{G}^S\)</span></p>
+<p><span class="math inline">\(AC_g^{inv} = \frac{C_g^{inv}}{F^{PVAF}} P_g^{nom} + \frac{C_g^{SOC}}{F^{PVAF}} SOC_g^{nom} \quad \forall g \in \mathcal{G}^S\)</span></p>
+<section id="investment-budget" class="level3">
+<h3 class="anchored" data-anchor-id="investment-budget">Investment Budget</h3>
+<p><span class="math inline">\(\sum_{g \in \mathcal{G}} AC_g^{inv} \leq B^{max}\)</span></p>
+</section>
+</section>
+<section id="energy-conversion-constraints" class="level2">
+<h2 class="anchored" data-anchor-id="energy-conversion-constraints">Energy Conversion Constraints</h2>
+<section id="input-output-relationships" class="level3">
+<h3 class="anchored" data-anchor-id="input-output-relationships">Input-Output Relationships</h3>
+<p><span class="math inline">\(x_{g,e,t,\omega}^{in} = \sigma_{g,e}^{in} x_{g,t,\omega}^{total} \quad \forall g \in \mathcal{G}, e \in \mathcal{E}_g^{In}, t \in \mathcal{T}, \omega \in \Omega\)</span></p>
+<p><span class="math inline">\(x_{g,e,t,\omega}^{out} = \sigma_{g,e}^{out} \Theta_g x_{g,t,\omega}^{total} \quad \forall g \in \mathcal{G} \setminus \mathcal{G}^S, e \in \mathcal{E}_g^{Out}, t \in \mathcal{T}, \omega \in \Omega\)</span></p>
+</section>
+<section id="technology-capacity-limits" class="level3">
+<h3 class="anchored" data-anchor-id="technology-capacity-limits">Technology Capacity Limits</h3>
+<p><span class="math inline">\(P_g^{min} u_{g,t,\omega} \leq x_{g,t,\omega}^{total} \leq P_g^{max} u_{g,t,\omega} \quad \forall g \in \mathcal{G} \setminus \mathcal{G}^S, t \in \mathcal{T}, \omega \in \Omega\)</span></p>
+</section>
+<section id="variable-energy-technologies" class="level3">
+<h3 class="anchored" data-anchor-id="variable-energy-technologies">Variable Energy Technologies</h3>
+<p><span class="math inline">\(0 \leq x_{g,t,\omega}^{total} \leq f_{g,t,\omega} P_g^{nom} \quad \forall g \in \mathcal{G}^{Var}, t \in \mathcal{T}, \omega \in \Omega\)</span></p>
+<p>where <span class="math inline">\(f_{g,t,\omega}\)</span> is the capacity factor for variable technology <span class="math inline">\(g\)</span>.</p>
+</section>
+</section>
+<section id="storage-constraints" class="level2">
+<h2 class="anchored" data-anchor-id="storage-constraints">Storage Constraints</h2>
+<section id="state-of-charge-balance" class="level3">
+<h3 class="anchored" data-anchor-id="state-of-charge-balance">State of Charge Balance</h3>
+<p><span class="math inline">\(soc_{g,t,\omega} = soc_{g,t-1,\omega} + \Theta_g x_{g,t,\omega}^{total} - \sum_{e \in \mathcal{E}_g^{Out}} \sigma_{g,e}^{out} x_{g,e,t,\omega}^{out} \quad \forall g \in \mathcal{G}^S, t \in \mathcal{T}, \omega \in \Omega\)</span></p>
+</section>
+<section id="storage-capacity-limits" class="level3">
+<h3 class="anchored" data-anchor-id="storage-capacity-limits">Storage Capacity Limits</h3>
+<p><span class="math inline">\(0 \leq soc_{g,t,\omega} \leq SOC_g^{max} \quad \forall g \in \mathcal{G}^S, t \in \mathcal{T}, \omega \in \Omega\)</span></p>
+</section>
+<section id="initial-and-final-state" class="level3">
+<h3 class="anchored" data-anchor-id="initial-and-final-state">Initial and Final State</h3>
+<p><span class="math inline">\(soc_{g,t=0,\omega} = soc_{g,t=|\mathcal{T}|,\omega} = SOC_g^{init} \quad \forall g \in \mathcal{G}^S, \omega \in \Omega\)</span></p>
+</section>
+<section id="chargingdischarging-mutual-exclusion" class="level3">
+<h3 class="anchored" data-anchor-id="chargingdischarging-mutual-exclusion">Charging/Discharging Mutual Exclusion</h3>
+<p><span class="math inline">\(P_g^{min} o_{g,t,\omega} \leq x_{g,t,\omega}^{total} \leq P_g^{max} o_{g,t,\omega} \quad \forall g \in \mathcal{G}^S, t \in \mathcal{T}, \omega \in \Omega\)</span></p>
+<p><span class="math inline">\(P_g^{min} (1-o_{g,t,\omega}) \leq \sum_{e \in \mathcal{E}_g^{Out}} \sigma_{g,e}^{out} x_{g,e,t,\omega}^{out} \leq P_g^{max} (1-o_{g,t,\omega}) \quad \forall g \in \mathcal{G}^S, t \in \mathcal{T}, \omega \in \Omega\)</span></p>
+</section>
+</section>
+<section id="energy-balance-constraints" class="level2">
+<h2 class="anchored" data-anchor-id="energy-balance-constraints">Energy Balance Constraints</h2>
+<section id="energy-carrier-balance" class="level3">
+<h3 class="anchored" data-anchor-id="energy-carrier-balance">Energy Carrier Balance</h3>
+<p><span class="math inline">\(\sum_{g \in \mathcal{G}} x_{g,e,t,\omega}^{out} + f_{e,t,\omega}^{buy} = \sum_{g \in \mathcal{G}} x_{g,e,t,\omega}^{in} + f_{e,t,\omega}^{sell} + D_{e,t,\omega} \quad \forall e \in \mathcal{E}^D, t \in \mathcal{T}, \omega \in \Omega\)</span></p>
+</section>
+</section>
+<section id="unit-commitment-constraints-if-applicable" class="level2">
+<h2 class="anchored" data-anchor-id="unit-commitment-constraints-if-applicable">Unit Commitment Constraints (if applicable)</h2>
+<section id="startup-variable-definition" class="level3">
+<h3 class="anchored" data-anchor-id="startup-variable-definition">Startup Variable Definition</h3>
+<p><span class="math inline">\(v_{g,t,\omega} \geq u_{g,t,\omega} - u_{g,t-1,\omega} \quad \forall g \in \mathcal{G}^{UC}, t \in \mathcal{T}, \omega \in \Omega\)</span></p>
+</section>
+<section id="startup-cost" class="level3">
+<h3 class="anchored" data-anchor-id="startup-cost">Startup Cost</h3>
+<p><span class="math inline">\(c_{g,t,\omega}^{start} \geq C_g^{start} v_{g,t,\omega} \quad \forall g \in \mathcal{G}^{UC}, t \in \mathcal{T}, \omega \in \Omega\)</span></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This general framework can be specialized to specific applications by:</p>
+<ol type="1">
+<li>Defining appropriate energy carriers in <span class="math inline">\(\mathcal{E}\)</span></li>
+<li>Specifying technology types in <span class="math inline">\(\mathcal{G}\)</span></li>
+<li>Setting conversion parameters <span class="math inline">\(\sigma_{g,e}^{in}\)</span>, <span class="math inline">\(\sigma_{g,e}^{out}\)</span>, and <span class="math inline">\(\Theta_g\)</span></li>
+<li>Adding application-specific constraints as needed</li>
+</ol>
+</div>
+</div>
+<div class="loud-slide">
+<div class="r-fit-text">
+<p>Questions?</p>
+</div>
+</div>
+<div class="footer">
+
+</div>
+</section>
+</section>
+</section>
+<section id="literature" class="level1 title">
+<h1 class="title"><span class="flow">Literature</span></h1>
+<section id="literature-i" class="level2">
+<h2 class="anchored" data-anchor-id="literature-i">Literature I</h2>
+<p>For more interesting literature to learn more about Julia, take a look at the <a href="../general/literature.html">literature list</a> of this course.</p>
+</section>
+<section id="literature-ii" class="level2">
+<h2 class="anchored" data-anchor-id="literature-ii">Literature II</h2>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/TobiasCors\.github\.io\/Energy-System-Optimization");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>Energy System Optimization with Julia, Tobias Cors<br>CC BY-NC-SA 4.0</p>
+<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/edit/main/part-11/lecture-framework.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/blob/main/part-11/lecture-framework.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/TobiasCors/Energy-System-Optimization">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://linkedin.com/in/tobias-cors">
+      <i class="bi bi-linkedin" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
