@@ -757,7 +757,24 @@ Dr.&nbsp;Tobias Cors
 </section>
 <section id="objective-function-1" class="slide level2">
 <h2>Objective Function</h2>
-<p><span class="math inline">\(\text{Maximize} \quad \sum_{\omega \in \Omega} \pi_{\omega}^{prob} \left( \sum_{e \in \mathcal{E}} \sum_{t \in \mathcal{T}} \pi_{e,t,\omega}^{sell} f_{e,t,\omega}^{sell} - \sum_{e \in \mathcal{E}} \sum_{t \in \mathcal{T}} \pi_{e,t,\omega}^{buy} f_{e,t,\omega}^{buy} - \sum_{g \in \mathcal{G}} \sum_{t \in \mathcal{T}} C_g^{var} x_{g,t,\omega}^{total} - \sum_{g \in \mathcal{G}^{UC}} \sum_{t \in \mathcal{T}} c_{g,t,\omega}^{start} \right) - \sum_{g \in \mathcal{G}} AC_g^{inv}\)</span></p>
+<!-- 
+$\text{Maximize} \quad \sum_{\omega \in \Omega} \pi_{\omega}^{prob} \left( \sum_{e \in \mathcal{E}} \sum_{t \in \mathcal{T}} \pi_{e,t,\omega}^{sell} f_{e,t,\omega}^{sell} \right.$
+
+$\left. - \sum_{e \in \mathcal{E}} \sum_{t \in \mathcal{T}} \pi_{e,t,\omega}^{buy} f_{e,t,\omega}^{buy} - \sum_{g \in \mathcal{G}} \sum_{t \in \mathcal{T}} C_g^{var} x_{g,t,\omega}^{total} \right.$
+
+$\left. - \sum_{g \in \mathcal{G}^{UC}} \sum_{t \in \mathcal{T}} c_{g,t,\omega}^{start} \right) - \sum_{g \in \mathcal{G}} AC_g^{inv}$ -->
+<p><strong>Maximize the following components:</strong></p>
+<p><span class="math inline">\(\text{Maximize}\)</span></p>
+<p><strong>Revenue from selling energy carriers:</strong></p>
+<p><span class="math inline">\(\sum_{\omega \in \Omega} \pi_{\omega}^{prob} \sum_{e \in \mathcal{E}} \sum_{t \in \mathcal{T}} \pi_{e,t,\omega}^{sell} f_{e,t,\omega}^{sell}\)</span></p>
+<p><strong>Costs of buying energy carriers:</strong></p>
+<p><span class="math inline">\(-\sum_{\omega \in \Omega} \pi_{\omega}^{prob} \sum_{e \in \mathcal{E}} \sum_{t \in \mathcal{T}} \pi_{e,t,\omega}^{buy} f_{e,t,\omega}^{buy}\)</span></p>
+<p><strong>Variable operating costs:</strong></p>
+<p><span class="math inline">\(-\sum_{\omega \in \Omega} \pi_{\omega}^{prob} \sum_{g \in \mathcal{G}} \sum_{t \in \mathcal{T}} C_g^{var} x_{g,t,\omega}^{total}\)</span></p>
+<p><strong>Startup costs:</strong></p>
+<p><span class="math inline">\(-\sum_{\omega \in \Omega} \pi_{\omega}^{prob} \sum_{g \in \mathcal{G}^{UC}} \sum_{t \in \mathcal{T}} c_{g,t,\omega}^{start}\)</span></p>
+<p><strong>Investment costs:</strong></p>
+<p><span class="math inline">\(-\sum_{g \in \mathcal{G}} AC_g^{inv}\)</span></p>
 <div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">

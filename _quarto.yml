@@ -15,7 +15,7 @@ project:
     - part-09/*.qmd
     - part-10/*.qmd
     - part-11/*.qmd
-    # - part-12/*.qmd
+    - part-12/*.qmd
     # - part-13/*.qmd
 website:
   title: "Energy System Optimization with Julia"
@@ -120,12 +120,10 @@ website:
             href: part-11/lecture-framework.qmd
       #     - text: "Tutorial"
       #       href: part-11/tutorial-distancing.qmd
-      # - section: "12 Metro"
-      #   contents:
-      #     - text: "Lecture"
-      #       href: part-12/lecture-rail.qmd
-      #     - text: "Tutorial"
-      #       href: part-12/tutorial-rail.qmd
+      - section: "12 Repetition"
+        contents:
+          - text: "Lecture"
+            href: part-12/lecture-repetition.qmd
       # - section: "13 Recap"
       #   contents:
       #     - text: "Lecture"

@@ -7529,7 +7529,7 @@
     "href": "part-11/lecture-presentation.html#objective-function-1",
     "title": "Lecture XI - Framework for Multi-Energy System Optimization",
     "section": "Objective Function",
-    "text": "Objective Function\n\\(\\text{Maximize} \\quad \\sum_{\\omega \\in \\Omega} \\pi_{\\omega}^{prob} \\left( \\sum_{e \\in \\mathcal{E}} \\sum_{t \\in \\mathcal{T}} \\pi_{e,t,\\omega}^{sell} f_{e,t,\\omega}^{sell} - \\sum_{e \\in \\mathcal{E}} \\sum_{t \\in \\mathcal{T}} \\pi_{e,t,\\omega}^{buy} f_{e,t,\\omega}^{buy} - \\sum_{g \\in \\mathcal{G}} \\sum_{t \\in \\mathcal{T}} C_g^{var} x_{g,t,\\omega}^{total} - \\sum_{g \\in \\mathcal{G}^{UC}} \\sum_{t \\in \\mathcal{T}} c_{g,t,\\omega}^{start} \\right) - \\sum_{g \\in \\mathcal{G}} AC_g^{inv}\\)\n\n\n\n\n\n\nNote\n\n\nThe objective maximizes profit: revenue from selling energy carriers minus costs of buying energy carriers, variable operating costs, startup costs, and investment costs."
+    "text": "Objective Function\n\nMaximize the following components:\n\\(\\text{Maximize}\\)\nRevenue from selling energy carriers:\n\\(\\sum_{\\omega \\in \\Omega} \\pi_{\\omega}^{prob} \\sum_{e \\in \\mathcal{E}} \\sum_{t \\in \\mathcal{T}} \\pi_{e,t,\\omega}^{sell} f_{e,t,\\omega}^{sell}\\)\nCosts of buying energy carriers:\n\\(-\\sum_{\\omega \\in \\Omega} \\pi_{\\omega}^{prob} \\sum_{e \\in \\mathcal{E}} \\sum_{t \\in \\mathcal{T}} \\pi_{e,t,\\omega}^{buy} f_{e,t,\\omega}^{buy}\\)\nVariable operating costs:\n\\(-\\sum_{\\omega \\in \\Omega} \\pi_{\\omega}^{prob} \\sum_{g \\in \\mathcal{G}} \\sum_{t \\in \\mathcal{T}} C_g^{var} x_{g,t,\\omega}^{total}\\)\nStartup costs:\n\\(-\\sum_{\\omega \\in \\Omega} \\pi_{\\omega}^{prob} \\sum_{g \\in \\mathcal{G}^{UC}} \\sum_{t \\in \\mathcal{T}} c_{g,t,\\omega}^{start}\\)\nInvestment costs:\n\\(-\\sum_{g \\in \\mathcal{G}} AC_g^{inv}\\)\n\n\n\n\n\n\nNote\n\n\nThe objective maximizes profit: revenue from selling energy carriers minus costs of buying energy carriers, variable operating costs, startup costs, and investment costs."
   },
   {
     "objectID": "part-11/lecture-presentation.html#investment-cost-constraints",
@@ -7657,5 +7657,790 @@
     "title": "Lecture XI - Framework for Multi-Energy System Optimization",
     "section": "Framework for Multi-Energy System Design Problem",
     "text": "Framework for Multi-Energy System Design Problem\nIn this lecture, we reformulate the Stochastic Multi-Energy System Design problem to be applicable to a wide range of energy system applications only by changing the sets and parameters. This allows us to:\n\nAdapt the model to the specific energy system application by changing the sets and parameters\nOptimize technology selection over the entire energy value chain\nDetermine optimal component sizes\nBalance investment and operational costs\nPlan local multi-energy systems holistically (e.g. electricity, hydrogen, heat, etc.)\n\n\n\n\n\n\n\nNote\n\n\nRemember: The design problem combines investment planning (sizing) with operational optimization, enabling comprehensive (multi-)energy system design."
+  },
+  {
+    "objectID": "part-12/lecture-repetition.html",
+    "href": "part-12/lecture-repetition.html",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "",
+    "text": "This course has been organized into three main parts:\n\nPart I: Introduction to Julia and Modelling (Lectures I-IV)\nPart II: Energy System Optimization with Basic Models (Lectures V-VIII)\nPart III: Energy System Optimization with Advanced Models (Lectures IX-XI)\n\n. . .\n\n\n\n\n\n\nTip\n\n\n\nThis repetition lecture will help you consolidate your understanding of all key concepts covered throughout the course.",
+    "crumbs": [
+      "12 Repetition",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-12/lecture-repetition.html#what-we-have-covered",
+    "href": "part-12/lecture-repetition.html#what-we-have-covered",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "",
+    "text": "This course has been organized into three main parts:\n\nPart I: Introduction to Julia and Modelling (Lectures I-IV)\nPart II: Energy System Optimization with Basic Models (Lectures V-VIII)\nPart III: Energy System Optimization with Advanced Models (Lectures IX-XI)\n\n. . .\n\n\n\n\n\n\nTip\n\n\n\nThis repetition lecture will help you consolidate your understanding of all key concepts covered throughout the course.",
+    "crumbs": [
+      "12 Repetition",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-12/lecture-repetition.html#lecture-i-welcome-and-introduction",
+    "href": "part-12/lecture-repetition.html#lecture-i-welcome-and-introduction",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "Lecture I: Welcome and Introduction",
+    "text": "Lecture I: Welcome and Introduction\n\nCourse Objectives\n\nUnderstanding and applying optimization to real-world problems\nLearning to recognize and solve problem structures\nEnergy system optimization applications\n\n\n\nKey Topics Covered\n\nCourse structure and assignments\nEnergy system optimization applications\nJulia programming language introduction\nReal-world applications in operations research",
+    "crumbs": [
+      "12 Repetition",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-12/lecture-repetition.html#lecture-ii-first-steps-in-julia",
+    "href": "part-12/lecture-repetition.html#lecture-ii-first-steps-in-julia",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "Lecture II: First Steps in Julia",
+    "text": "Lecture II: First Steps in Julia\n\nCore Programming Concepts\n\nVariables: Assignment and data types\nVectors: Creation, indexing, and manipulation\nComparisons: Boolean operations and conditional logic\nLoops: for and while loops for iteration\nDictionaries: Key-value data structures\n\n\n\nTechnical Setup\n\nJulia installation and configuration\nVS Code setup with Julia extension\nIJulia for Jupyter notebooks\nAssignment submission process",
+    "crumbs": [
+      "12 Repetition",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-12/lecture-repetition.html#lecture-iii-packages-and-data-management",
+    "href": "part-12/lecture-repetition.html#lecture-iii-packages-and-data-management",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "Lecture III: Packages and Data Management",
+    "text": "Lecture III: Packages and Data Management\n\nAdvanced Julia Concepts\n\nFunctions: Definition, arguments, and return values\nPackages: Installation and usage with using and import\nDataFrames: Tabular data manipulation\nInput/Output: File reading and writing operations\nPlotting: Data visualization with Plots.jl\n\n\n\nKey Skills Developed\n\nPackage management with Pkg\nData manipulation with DataFrames.jl\nFile I/O operations with CSV.jl\nBasic plotting and visualization",
+    "crumbs": [
+      "12 Repetition",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-12/lecture-repetition.html#lecture-iv-modelling-with-jump",
+    "href": "part-12/lecture-repetition.html#lecture-iv-modelling-with-jump",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "Lecture IV: Modelling with JuMP",
+    "text": "Lecture IV: Modelling with JuMP\n\nMathematical Optimization Foundation\n\nJuMP Framework: Optimization modeling in Julia\nVariables: Declaration with bounds and types\nConstraints: Equality and inequality constraints\nObjective Functions: Linear and nonlinear objectives\nSolvers: Integration with various optimization solvers\n\n\n\nModeling Skills\n\nProblem formulation in mathematical notation\nTranslation to JuMP code\nSolver selection and parameter setting\nSolution analysis and interpretation",
+    "crumbs": [
+      "12 Repetition",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-12/lecture-repetition.html#lecture-v-economic-dispatch-problem",
+    "href": "part-12/lecture-repetition.html#lecture-v-economic-dispatch-problem",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "Lecture V: Economic Dispatch Problem",
+    "text": "Lecture V: Economic Dispatch Problem\n\nProblem Definition\n\nObjective: Minimize electricity generation costs\nConstraints: Demand satisfaction, generator limits, renewable integration\nDecision Variables: Power output of thermal generators and renewables\n\n\n\nMathematical Formulation\nSets:\n\n\\(\\mathcal{G}\\) - Set of thermal generators\n\\(\\mathcal{W}\\) - Set of wind turbines\n\nParameters:\n\n\\(c^{var}_g\\) - Variable cost of generator \\(g\\)\n\\(p^{\\min}_g, p^{\\max}_g\\) - Power limits of generator \\(g\\)\n\\(p^{f}_w\\) - Forecasted wind power\n\\(d^f\\) - Forecasted demand\n\nDecision Variables:\n\n\\(p_g\\) - Power output of generator \\(g\\)\n\\(p_w\\) - Power output of wind turbine \\(w\\)\n\nObjective:\n\\(\\min \\sum_{g \\in \\mathcal{G}} c^{var}_g p_g + \\sum_{w \\in \\mathcal{W}} c^{var}_w p_w\\)\nConstraints:\n\nPower balance: \\(\\sum_{g \\in \\mathcal{G}} p_g + \\sum_{w \\in \\mathcal{W}} p_w = d^f\\)\nGenerator limits: \\(p^{\\min}_g \\leq p_g \\leq p^{\\max}_g \\quad \\forall g \\in \\mathcal{G}\\)\nWind limits: \\(0 \\leq p_w \\leq p^{f}_w \\quad \\forall w \\in \\mathcal{W}\\)",
+    "crumbs": [
+      "12 Repetition",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-12/lecture-repetition.html#lecture-vi-unit-commitment-problem",
+    "href": "part-12/lecture-repetition.html#lecture-vi-unit-commitment-problem",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "Lecture VI: Unit Commitment Problem",
+    "text": "Lecture VI: Unit Commitment Problem\n\nProblem Extension\n\nBinary Variables: Startup/shutdown decisions\nTime Dimension: Multi-period optimization\nAdditional Constraints: Minimum up/down times, ramp rates\n\n\n\nKey Modeling Concepts\n\nBinary Variables: \\(v_{g,t}\\) (startup), \\(u_{g,t}\\) (commitment)\nMinimum Up/Down Times: Prevent rapid cycling\nRamp Rate Limits: Constrain power change rates\nStartup Costs: Additional costs for starting generators\n\n\n\nMathematical Extensions\nAdditional Sets:\n\n\\(\\mathcal{T}\\) - Set of time periods\n\nAdditional Variables:\n\n\\(v_{g,t}\\) - Binary startup variable\n\\(u_{g,t}\\) - Binary commitment variable\n\nAdditional Constraints:\n\nMinimum up time: \\(\\sum_{\\tau=t}^{t+UT_g-1} u_{g,\\tau} \\geq UT_g v_{g,t}\\)\nMinimum down time: \\(\\sum_{\\tau=t}^{t+DT_g-1} (1-u_{g,\\tau}) \\geq DT_g (1-u_{g,t-1})\\)\nRamp rate: \\(p_{g,t} - p_{g,t-1} \\leq RampUp_g u_{g,t}\\)",
+    "crumbs": [
+      "12 Repetition",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-12/lecture-repetition.html#lecture-vii-storage-systems",
+    "href": "part-12/lecture-repetition.html#lecture-vii-storage-systems",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "Lecture VII: Storage Systems",
+    "text": "Lecture VII: Storage Systems\n\nStorage Modeling Concepts\n\nEnergy Balance: Storage level evolution over time\nPower Limits: Charging and discharging rate constraints\nEfficiency: Energy conversion losses\nState of Charge: Energy level constraints\n\n\n\nMathematical Formulation\nSets:\n\n\\(\\mathcal{S}\\) - Set of storage systems\n\nVariables:\n\n\\(e_{s,t}\\) - Energy level of storage \\(s\\) at time \\(t\\)\n\\(p^{ch}_{s,t}\\) - Charging power of storage \\(s\\) at time \\(t\\)\n\\(p^{dis}_{s,t}\\) - Discharging power of storage \\(s\\) at time \\(t\\)\n\nConstraints:\n\nEnergy balance: \\(e_{s,t} = e_{s,t-1} + \\eta^{ch}_s p^{ch}_{s,t} - \\frac{p^{dis}_{s,t}}{\\eta^{dis}_s}\\)\nEnergy limits: \\(E^{\\min}_s \\leq e_{s,t} \\leq E^{\\max}_s\\)\nPower limits: \\(0 \\leq p^{ch}_{s,t} \\leq P^{ch,\\max}_s\\), \\(0 \\leq p^{dis}_{s,t} \\leq P^{dis,\\max}_s\\)",
+    "crumbs": [
+      "12 Repetition",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-12/lecture-repetition.html#lecture-viii-investment-planning",
+    "href": "part-12/lecture-repetition.html#lecture-viii-investment-planning",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "Lecture VIII: Investment Planning",
+    "text": "Lecture VIII: Investment Planning\n\nLong-term Planning Problem\n\nInvestment Decisions: Capacity expansion decisions\nMulti-period Optimization: Long-term planning horizon\nCost Components: Investment, operational, and maintenance costs\n\n\n\nKey Concepts\n\nAnnualized Costs: Converting investment costs to annual equivalents\nCapacity Planning: Optimal sizing of generation and storage\nEconomic Analysis: Cost-benefit evaluation of investments\nSystem Reliability: Ensuring adequate capacity margins",
+    "crumbs": [
+      "12 Repetition",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-12/lecture-repetition.html#lecture-ix-multi-energy-systems",
+    "href": "part-12/lecture-repetition.html#lecture-ix-multi-energy-systems",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "Lecture IX: Multi-Energy Systems",
+    "text": "Lecture IX: Multi-Energy Systems\n\nSystem Integration\n\nMultiple Energy Carriers: Electricity, heat, hydrogen, etc.\nEnergy Conversion: Technologies linking different carriers\nSystem Optimization: Coordinated optimization across carriers\n\n\n\nKey Components\n\nElectrolyzers: Electricity to hydrogen conversion\nHeat Pumps: Electricity to heat conversion\nCombined Heat and Power: Simultaneous electricity and heat generation\nEnergy Storage: Multiple storage types for different carriers\n\n\n\nMathematical Extensions\nAdditional Sets:\n\n\\(\\mathcal{C}\\) - Set of energy carriers\n\\(\\mathcal{X}\\) - Set of conversion technologies\n\nAdditional Variables:\n\n\\(h_{x,t}\\) - Hydrogen production from electrolyzer \\(x\\)\n\\(q_{chp,t}\\) - Heat production from CHP unit\n\nAdditional Constraints:\n\nHydrogen balance: \\(\\sum_{x \\in \\mathcal{X}} h_{x,t} = d^{H2}_t\\)\nHeat balance: \\(\\sum_{chp \\in \\mathcal{CHP}} q_{chp,t} = d^{Heat}_t\\)",
+    "crumbs": [
+      "12 Repetition",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-12/lecture-repetition.html#lecture-x-uncertainty-modeling-and-renewable-integration",
+    "href": "part-12/lecture-repetition.html#lecture-x-uncertainty-modeling-and-renewable-integration",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "Lecture X: Uncertainty Modeling and Renewable Integration",
+    "text": "Lecture X: Uncertainty Modeling and Renewable Integration\n\nStochastic Programming\n\nScenarios: Multiple possible realizations of uncertain parameters\nTwo-Stage Problems: Here-and-now vs. wait-and-see decisions\nRisk Management: Robust optimization approaches\n\n\n\nUncertainty Sources\n\nRenewable Generation: Wind and solar power variability\nDemand Patterns: Load forecasting uncertainty\nPrice Volatility: Energy market price fluctuations\nWeather Conditions: Temperature and weather impacts\n\n\n\nMathematical Framework\nSets:\n\n\\(\\Omega\\) - Set of scenarios\n\\(\\pi_{\\omega}\\) - Probability of scenario \\(\\omega\\)\n\nTwo-Stage Structure:\n\nFirst Stage: Investment decisions (here-and-now)\nSecond Stage: Operational decisions (wait-and-see)\n\nObjective:\n\\(\\min \\sum_{i} C^{inv}_i x_i + \\sum_{\\omega \\in \\Omega} \\pi_{\\omega} \\sum_{t} C^{op}_{t,\\omega} y_{t,\\omega}\\)",
+    "crumbs": [
+      "12 Repetition",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-12/lecture-repetition.html#lecture-xi-framework-for-multi-energy-system-optimization",
+    "href": "part-12/lecture-repetition.html#lecture-xi-framework-for-multi-energy-system-optimization",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "Lecture XI: Framework for Multi-Energy System Optimization",
+    "text": "Lecture XI: Framework for Multi-Energy System Optimization\n\nComprehensive Framework\n\nMulti-Carrier Integration: Electricity and hydrogen systems\nStochastic Formulation: Uncertainty in renewable generation and demand\nInvestment and Operations: Combined planning and operational optimization\n\n\n\nAdvanced Modeling Concepts\n\nBig M Constraints: Conditional constraint modeling\nMixed-Integer Programming: Binary variables for discrete decisions\nLarge-Scale Optimization: Efficient solution methods\nScenario Generation: Creating representative uncertainty scenarios\n\n\n\nFramework Components\nInvestment Variables:\n\nStorage capacities: \\(e^{nom}_s\\), \\(p^{ch,nom}_s\\), \\(p^{dis,nom}_s\\)\nGeneration capacities: \\(p^{nom}_w\\), \\(p^{nom}_v\\)\nConversion capacities: \\(p^{nom}_x\\)\n\nOperational Variables:\n\nPower outputs: \\(p_{w,t,\\omega}\\), \\(p_{v,t,\\omega}\\)\nStorage operation: \\(p^{ch}_{s,t,\\omega}\\), \\(p^{dis}_{s,t,\\omega}\\), \\(e_{s,t,\\omega}\\)\nConversion operation: \\(p_{x,t,\\omega}\\), \\(h_{x,t,\\omega}\\)",
+    "crumbs": [
+      "12 Repetition",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-12/lecture-repetition.html#optimization-problem-structure",
+    "href": "part-12/lecture-repetition.html#optimization-problem-structure",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "Optimization Problem Structure",
+    "text": "Optimization Problem Structure\n\nGeneral Form\n\\(\\min f(x)\\)\nsubject to:\n\\(g_i(x) \\leq 0 \\quad \\forall i \\in \\mathcal{I}\\) \\(h_j(x) = 0 \\quad \\forall j \\in \\mathcal{J}\\) \\(x \\in \\mathcal{X}\\)\n\n\nProblem Types\n\nLinear Programming (LP): Linear objective and constraints\nMixed-Integer Linear Programming (MILP): Linear with binary variables\nNonlinear Programming (NLP): Nonlinear objective or constraints\nStochastic Programming: Multiple scenarios with probabilities",
+    "crumbs": [
+      "12 Repetition",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-12/lecture-repetition.html#constraint-types",
+    "href": "part-12/lecture-repetition.html#constraint-types",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "Constraint Types",
+    "text": "Constraint Types\n\nEquality Constraints\n\nPower balance: \\(\\sum_{g} p_g = d\\)\nEnergy balance: \\(e_t = e_{t-1} + p^{ch}_t - p^{dis}_t\\)\n\n\n\nInequality Constraints\n\nCapacity limits: \\(p_g \\leq p^{\\max}_g\\)\nRamp rates: \\(p_{g,t} - p_{g,t-1} \\leq RampUp_g\\)\n\n\n\nBinary Variable Constraints\n\nMinimum up time: \\(\\sum_{\\tau=t}^{t+UT-1} u_{\\tau} \\geq UT \\cdot v_t\\)\nLogical constraints: \\(p_g \\leq p^{\\max}_g \\cdot u_g\\)",
+    "crumbs": [
+      "12 Repetition",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-12/lecture-repetition.html#solution-methods",
+    "href": "part-12/lecture-repetition.html#solution-methods",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "Solution Methods",
+    "text": "Solution Methods\n\nSolver Types\n\nLP Solvers: HiGHS, GLPK, Gurobi\nMILP Solvers: Gurobi, CPLEX, HiGHS\nNLP Solvers: IPOPT, KNITRO\n\n\n\nSolution Analysis\n\nFeasibility: Check if solution satisfies all constraints\nOptimality: Verify solution is globally optimal\nSensitivity: Analyze impact of parameter changes",
+    "crumbs": [
+      "12 Repetition",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-12/lecture-repetition.html#core-programming-concepts-1",
+    "href": "part-12/lecture-repetition.html#core-programming-concepts-1",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "Core Programming Concepts",
+    "text": "Core Programming Concepts\n\nData Types and Structures\n# Variables and basic types\nx = 5.0          # Float64\ny = [1, 2, 3]    # Vector{Int64}\nz = Dict(\"a\" =&gt; 1, \"b\" =&gt; 2)  # Dict{String, Int64}\n\n# Arrays and matrices\nA = [1 2; 3 4]   # Matrix\nB = zeros(3, 3)  # 3x3 zero matrix\n\n\nControl Structures\n# Loops\nfor i in 1:10\n    println(i)\nend\n\n# Conditionals\nif x &gt; 0\n    println(\"Positive\")\nelseif x &lt; 0\n    println(\"Negative\")\nelse\n    println(\"Zero\")\nend\n\n\nFunctions\n# Function definition\nfunction calculate_cost(power, cost_rate)\n    return power * cost_rate\nend\n\n# Anonymous functions\nf = x -&gt; x^2 + 2*x + 1",
+    "crumbs": [
+      "12 Repetition",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-12/lecture-repetition.html#data-management",
+    "href": "part-12/lecture-repetition.html#data-management",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "Data Management",
+    "text": "Data Management\n\nDataFrames\nusing DataFrames\n\n# Create DataFrame\ndf = DataFrame(\n    generator = [\"G1\", \"G2\", \"G3\"],\n    capacity = [100, 150, 200],\n    cost = [50, 60, 45]\n)\n\n# Access and manipulate\ndf.capacity[1] = 120\ndf[!, :efficiency] = [0.8, 0.85, 0.9]\n\n\nFile I/O\nusing CSV\n\n# Read CSV file\ndata = CSV.read(\"generators.csv\", DataFrame)\n\n# Write CSV file\nCSV.write(\"results.csv\", results_df)",
+    "crumbs": [
+      "12 Repetition",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-12/lecture-repetition.html#optimization-with-jump",
+    "href": "part-12/lecture-repetition.html#optimization-with-jump",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "Optimization with JuMP",
+    "text": "Optimization with JuMP\n\nBasic Model Structure\nusing JuMP, HiGHS\n\n# Create model\nmodel = Model(HiGHS.Optimizer)\n\n# Variables\n@variable(model, p[g] &gt;= 0)  # Power output\n@variable(model, u[g, t], Bin)  # Binary commitment\n\n# Objective\n@objective(model, Min, sum(cost[g] * p[g] for g in generators))\n\n# Constraints\n@constraint(model, power_balance[t in time], \n    sum(p[g] for g in generators) == demand[t])\n\n# Solve\noptimize!(model)\n\n\nAdvanced Modeling\n# Conditional constraints with Big M\n@constraint(model, p[g] &lt;= max_power[g] * u[g])\n\n# Minimum up time constraints\n@constraint(model, min_up_time[g, t], \n    sum(u[g, tau] for tau in t:t+min_up[g]-1) &gt;= min_up[g] * v[g, t])",
+    "crumbs": [
+      "12 Repetition",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-12/lecture-repetition.html#real-world-problem-types",
+    "href": "part-12/lecture-repetition.html#real-world-problem-types",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "Real-World Problem Types",
+    "text": "Real-World Problem Types\n\nGeneration Planning\n\nEconomic Dispatch: Optimal power generation for given demand\nUnit Commitment: Optimal generator scheduling with startup/shutdown\nGeneration Expansion: Long-term capacity planning\n\n\n\nStorage Integration\n\nBattery Storage: Short-term energy storage\nPumped Hydro: Large-scale energy storage\nThermal Storage: Heat storage for district heating\n\n\n\nRenewable Integration\n\nWind Power: Variable generation with forecasting\nSolar Power: Diurnal patterns and weather dependence\nGrid Integration: Balancing variable renewable energy\n\n\n\nMulti-Energy Systems\n\nPower-to-Gas: Hydrogen production from electricity\nDistrict Heating: Combined heat and power systems\nTransport Integration: Electric vehicle charging",
+    "crumbs": [
+      "12 Repetition",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-12/lecture-repetition.html#industry-applications",
+    "href": "part-12/lecture-repetition.html#industry-applications",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "Industry Applications",
+    "text": "Industry Applications\n\nPower System Operations\n\nDay-ahead Markets: 24-hour ahead generation scheduling\nReal-time Balancing: Minute-to-minute power balance\nAncillary Services: Frequency regulation and reserves\n\n\n\nEnergy Planning\n\nInvestment Planning: Long-term capacity expansion\nPolicy Analysis: Impact of carbon pricing and regulations\nTechnology Assessment: Comparison of different energy technologies\n\n\n\nResearch Applications\n\nAcademic Research: Novel optimization algorithms\nIndustry Collaboration: Real-world problem solving\nPolicy Support: Evidence-based energy policy design",
+    "crumbs": [
+      "12 Repetition",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-12/lecture-repetition.html#key-areas-to-review",
+    "href": "part-12/lecture-repetition.html#key-areas-to-review",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "Key Areas to Review",
+    "text": "Key Areas to Review\n\nMathematical Modeling\n\nProblem Formulation: Converting word problems to mathematical models\nConstraint Types: Understanding different constraint formulations\nVariable Types: Continuous vs. binary variables\nObjective Functions: Cost minimization and profit maximization\n\n\n\nJulia Programming\n\nBasic Syntax: Variables, loops, functions\nData Structures: Arrays, DataFrames, Dictionaries\nJuMP Modeling: Variable declaration, constraints, objectives\nSolution Analysis: Accessing and interpreting results\n\n\n\nEnergy System Concepts\n\nPower Balance: Supply equals demand constraints\nGenerator Characteristics: Cost curves, capacity limits, ramp rates\nStorage Operation: Energy balance and efficiency\nMulti-energy Integration: Energy carrier conversion and storage",
+    "crumbs": [
+      "12 Repetition",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-12/lecture-repetition.html#practice-exercises",
+    "href": "part-12/lecture-repetition.html#practice-exercises",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "Practice Exercises",
+    "text": "Practice Exercises\n\nModeling Problems\n\nEconomic Dispatch: Formulate and solve a simple dispatch problem\nUnit Commitment: Add binary variables and startup constraints\nStorage Integration: Include storage operation in power balance\nMulti-energy: Model electricity-hydrogen system\n\n\n\nProgramming Problems\n\nData Manipulation: Read, process, and analyze energy data\nOptimization Models: Implement JuMP models for energy problems\nResult Analysis: Plot and interpret optimization results\nScenario Analysis: Handle uncertainty in energy systems",
+    "crumbs": [
+      "12 Repetition",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-12/lecture-repetition.html#exam-strategy",
+    "href": "part-12/lecture-repetition.html#exam-strategy",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "Exam Strategy",
+    "text": "Exam Strategy\n\nTime Management\n\nPart I (30 points): Energy system modeling (45 minutes)\nPart II (15 points): Theory and concepts (22 minutes)\nPart III (15 points): Julia programming (22 minutes)\n\n\n\nProblem-Solving Approach\n\nRead Carefully: Understand the problem requirements\nPlan Solution: Outline your approach before coding\nTest Incrementally: Verify each step before proceeding\nCheck Results: Ensure your solution makes sense\n\n. . .\n\n\n\n\n\n\nImportant\n\n\n\nRemember: You can bring one handwritten DIN A4 sheet with notes to the exam!",
+    "crumbs": [
+      "12 Repetition",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-12/lecture-repetition.html#what-you-have-learned",
+    "href": "part-12/lecture-repetition.html#what-you-have-learned",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "What You Have Learned",
+    "text": "What You Have Learned\n\nProgramming Skills\n\nJulia Language: Modern, high-performance programming\nData Management: Working with real-world energy data\nOptimization Modeling: Mathematical problem formulation\nSolution Analysis: Interpreting and visualizing results\n\n\n\nEnergy System Knowledge\n\nPower System Operations: How electricity systems work\nOptimization Applications: Real-world energy problems\nMulti-energy Systems: Integration of different energy carriers\nUncertainty Handling: Stochastic programming approaches\n\n\n\nProblem-Solving Skills\n\nMathematical Modeling: Converting problems to optimization models\nAlgorithm Implementation: Coding optimization algorithms\nResult Interpretation: Understanding and communicating solutions\nTeam Collaboration: Working in groups on complex problems",
+    "crumbs": [
+      "12 Repetition",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-12/lecture-repetition.html#career-applications",
+    "href": "part-12/lecture-repetition.html#career-applications",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "Career Applications",
+    "text": "Career Applications\n\nIndustry Opportunities\n\nEnergy Companies: Power system planning and operations\nConsulting Firms: Energy system analysis and optimization\nResearch Institutions: Academic and applied research\nGovernment Agencies: Energy policy and regulation\n\n\n\nSkill Transfer\n\nProgramming: Julia skills transfer to other languages\nOptimization: Mathematical modeling skills for various domains\nData Analysis: Energy data skills apply to other sectors\nProblem Solving: Systematic approach to complex problems\n\n. . .\n\n\n\n\n\n\nTip\n\n\n\nThe skills you’ve learned in this course are valuable for many careers in energy, operations research, and data science!",
+    "crumbs": [
+      "12 Repetition",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-12/lecture-repetition.html#course-objectives-achieved",
+    "href": "part-12/lecture-repetition.html#course-objectives-achieved",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "Course Objectives Achieved",
+    "text": "Course Objectives Achieved\n✅ Understanding Optimization: You can now recognize and formulate optimization problems\n✅ Julia Programming: You can write, debug, and optimize Julia code\n✅ Energy System Modeling: You understand how to model energy system problems\n✅ Real-World Applications: You can apply optimization to practical energy problems\n✅ Team Collaboration: You’ve worked effectively in groups on complex problems",
+    "crumbs": [
+      "12 Repetition",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-12/lecture-repetition.html#next-steps",
+    "href": "part-12/lecture-repetition.html#next-steps",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "Next Steps",
+    "text": "Next Steps\n\nFurther Learning\n\nAdvanced Optimization: Nonlinear and stochastic programming\nMachine Learning: Data-driven approaches to energy systems\nEnergy Markets: Market design and price formation\nPolicy Analysis: Impact of regulations on energy systems\n\n\n\nResources\n\nJulia Documentation: docs.julialang.org\nJuMP Documentation: jump.dev\nEnergy Literature: Academic journals and industry reports\nOnline Courses: MOOCs on energy systems and optimization\n\n\n\nStay Connected\n\nResearch Opportunities: Consider thesis projects in energy optimization\nIndustry Internships: Apply your skills in real-world settings\nProfessional Networks: Join energy and operations research societies\nContinuing Education: Pursue advanced degrees in related fields\n\n. . .\n\n\n\n\n\n\nNote\n\n\n\nThank you for your active participation throughout this course. Your questions and engagement have made this a rewarding experience for everyone!",
+    "crumbs": [
+      "12 Repetition",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-12/lecture-repetition.html#core-references",
+    "href": "part-12/lecture-repetition.html#core-references",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "Core References",
+    "text": "Core References\n\nJulia Programming\n\nLauwens, B., & Downey, A. B. (2019). Think Julia: How to think like a computer scientist. O’Reilly®.\n\n\n\nOptimization\n\nWinston, W. L. (2004). Operations Research: Applications and Algorithms. Thomson Brooks/Cole.\nHillier, F. S., & Lieberman, G. J. (2015). Introduction to Operations Research. McGraw-Hill.\n\n\n\nEnergy Systems\n\nWood, A. J., & Wollenberg, B. F. (2012). Power Generation, Operation, and Control. Wiley.\nKirschen, D. S., & Strbac, G. (2018). Fundamentals of Power System Economics. Wiley.\n\n\n\nMulti-Energy Systems\n\nMancarella, P. (2014). MES (multi-energy systems): An overview of concepts and evaluation models. Energy, 65, 1-17.\nGeidl, M., & Andersson, G. (2007). Optimal power flow of multiple energy carriers. IEEE Transactions on Power Systems, 22(1), 145-155.",
+    "crumbs": [
+      "12 Repetition",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-12/lecture-repetition.html#online-resources",
+    "href": "part-12/lecture-repetition.html#online-resources",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "Online Resources",
+    "text": "Online Resources\n\nDocumentation\n\nJulia Documentation\nJuMP Documentation\nDataFrames.jl Documentation\n\n\n\nTutorials and Examples\n\nJulia Academy\nJuMP Tutorials\nEnergy System Modeling Examples\n\n\n\nResearch Papers\n\nRecent papers in journals like:\n\nIEEE Transactions on Power Systems\nEnergy\nApplied Energy\nEuropean Journal of Operational Research",
+    "crumbs": [
+      "12 Repetition",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-12/lecture-presentation.html#what-we-have-covered",
+    "href": "part-12/lecture-presentation.html#what-we-have-covered",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "What We Have Covered",
+    "text": "What We Have Covered\nThis course has been organized into three main parts:\n\nPart I: Introduction to Julia and Modelling (Lectures I-IV)\nPart II: Energy System Optimization with Basic Models (Lectures V-VIII)\nPart III: Energy System Optimization with Advanced Models (Lectures IX-XI)\n\n\n\n\n\n\n\n\nTip\n\n\nThis repetition lecture will help you consolidate your understanding of all key concepts covered throughout the course."
+  },
+  {
+    "objectID": "part-12/lecture-presentation.html#lecture-i-welcome-and-introduction",
+    "href": "part-12/lecture-presentation.html#lecture-i-welcome-and-introduction",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "Lecture I: Welcome and Introduction",
+    "text": "Lecture I: Welcome and Introduction\nCourse Objectives\n\nUnderstanding and applying optimization to real-world problems\nLearning to recognize and solve problem structures\nEnergy system optimization applications\n\nKey Topics Covered\n\nCourse structure and assignments\nEnergy system optimization applications\nJulia programming language introduction\nReal-world applications in operations research"
+  },
+  {
+    "objectID": "part-12/lecture-presentation.html#lecture-ii-first-steps-in-julia",
+    "href": "part-12/lecture-presentation.html#lecture-ii-first-steps-in-julia",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "Lecture II: First Steps in Julia",
+    "text": "Lecture II: First Steps in Julia\nCore Programming Concepts\n\nVariables: Assignment and data types\nVectors: Creation, indexing, and manipulation\nComparisons: Boolean operations and conditional logic\nLoops: for and while loops for iteration\nDictionaries: Key-value data structures\n\nTechnical Setup\n\nJulia installation and configuration\nVS Code setup with Julia extension\nIJulia for Jupyter notebooks\nAssignment submission process"
+  },
+  {
+    "objectID": "part-12/lecture-presentation.html#lecture-iii-packages-and-data-management",
+    "href": "part-12/lecture-presentation.html#lecture-iii-packages-and-data-management",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "Lecture III: Packages and Data Management",
+    "text": "Lecture III: Packages and Data Management\nAdvanced Julia Concepts\n\nFunctions: Definition, arguments, and return values\nPackages: Installation and usage with using and import\nDataFrames: Tabular data manipulation\nInput/Output: File reading and writing operations\nPlotting: Data visualization with Plots.jl\n\nKey Skills Developed\n\nPackage management with Pkg\nData manipulation with DataFrames.jl\nFile I/O operations with CSV.jl\nBasic plotting and visualization"
+  },
+  {
+    "objectID": "part-12/lecture-presentation.html#lecture-iv-modelling-with-jump",
+    "href": "part-12/lecture-presentation.html#lecture-iv-modelling-with-jump",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "Lecture IV: Modelling with JuMP",
+    "text": "Lecture IV: Modelling with JuMP\nMathematical Optimization Foundation\n\nJuMP Framework: Optimization modeling in Julia\nVariables: Declaration with bounds and types\nConstraints: Equality and inequality constraints\nObjective Functions: Linear and nonlinear objectives\nSolvers: Integration with various optimization solvers\n\nModeling Skills\n\nProblem formulation in mathematical notation\nTranslation to JuMP code\nSolver selection and parameter setting\nSolution analysis and interpretation"
+  },
+  {
+    "objectID": "part-12/lecture-presentation.html#lecture-v-economic-dispatch-problem",
+    "href": "part-12/lecture-presentation.html#lecture-v-economic-dispatch-problem",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "Lecture V: Economic Dispatch Problem",
+    "text": "Lecture V: Economic Dispatch Problem\nProblem Definition\n\nObjective: Minimize electricity generation costs\nConstraints: Demand satisfaction, generator limits, renewable integration\nDecision Variables: Power output of thermal generators and renewables\n\nMathematical Formulation\nSets: - \\(\\mathcal{G}\\) - Set of thermal generators - \\(\\mathcal{W}\\) - Set of wind turbines\nParameters: - \\(c^{var}_g\\) - Variable cost of generator \\(g\\) - \\(p^{\\min}_g, p^{\\max}_g\\) - Power limits of generator \\(g\\) - \\(p^{f}_w\\) - Forecasted wind power - \\(d^f\\) - Forecasted demand\nDecision Variables: - \\(p_g\\) - Power output of generator \\(g\\) - \\(p_w\\) - Power output of wind turbine \\(w\\)\nObjective: \\(\\min \\sum_{g \\in \\mathcal{G}} c^{var}_g p_g + \\sum_{w \\in \\mathcal{W}} c^{var}_w p_w\\)\nConstraints: - Power balance: \\(\\sum_{g \\in \\mathcal{G}} p_g + \\sum_{w \\in \\mathcal{W}} p_w = d^f\\) - Generator limits: \\(p^{\\min}_g \\leq p_g \\leq p^{\\max}_g \\quad \\forall g \\in \\mathcal{G}\\) - Wind limits: \\(0 \\leq p_w \\leq p^{f}_w \\quad \\forall w \\in \\mathcal{W}\\)"
+  },
+  {
+    "objectID": "part-12/lecture-presentation.html#lecture-vi-unit-commitment-problem",
+    "href": "part-12/lecture-presentation.html#lecture-vi-unit-commitment-problem",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "Lecture VI: Unit Commitment Problem",
+    "text": "Lecture VI: Unit Commitment Problem\nProblem Extension\n\nBinary Variables: Startup/shutdown decisions\nTime Dimension: Multi-period optimization\nAdditional Constraints: Minimum up/down times, ramp rates\n\nKey Modeling Concepts\n\nBinary Variables: \\(v_{g,t}\\) (startup), \\(u_{g,t}\\) (commitment)\nMinimum Up/Down Times: Prevent rapid cycling\nRamp Rate Limits: Constrain power change rates\nStartup Costs: Additional costs for starting generators\n\nMathematical Extensions\nAdditional Sets: - \\(\\mathcal{T}\\) - Set of time periods\nAdditional Variables: - \\(v_{g,t}\\) - Binary startup variable - \\(u_{g,t}\\) - Binary commitment variable\nAdditional Constraints: - Minimum up time: \\(\\sum_{\\tau=t}^{t+UT_g-1} u_{g,\\tau} \\geq UT_g v_{g,t}\\) - Minimum down time: \\(\\sum_{\\tau=t}^{t+DT_g-1} (1-u_{g,\\tau}) \\geq DT_g (1-u_{g,t-1})\\) - Ramp rate: \\(p_{g,t} - p_{g,t-1} \\leq RampUp_g u_{g,t}\\)"
+  },
+  {
+    "objectID": "part-12/lecture-presentation.html#lecture-vii-storage-systems",
+    "href": "part-12/lecture-presentation.html#lecture-vii-storage-systems",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "Lecture VII: Storage Systems",
+    "text": "Lecture VII: Storage Systems\nStorage Modeling Concepts\n\nEnergy Balance: Storage level evolution over time\nPower Limits: Charging and discharging rate constraints\nEfficiency: Energy conversion losses\nState of Charge: Energy level constraints\n\nMathematical Formulation\nSets: - \\(\\mathcal{S}\\) - Set of storage systems\nVariables: - \\(e_{s,t}\\) - Energy level of storage \\(s\\) at time \\(t\\) - \\(p^{ch}_{s,t}\\) - Charging power of storage \\(s\\) at time \\(t\\) - \\(p^{dis}_{s,t}\\) - Discharging power of storage \\(s\\) at time \\(t\\)\nConstraints: - Energy balance: \\(e_{s,t} = e_{s,t-1} + \\eta^{ch}_s p^{ch}_{s,t} - \\frac{p^{dis}_{s,t}}{\\eta^{dis}_s}\\) - Energy limits: \\(E^{\\min}_s \\leq e_{s,t} \\leq E^{\\max}_s\\) - Power limits: \\(0 \\leq p^{ch}_{s,t} \\leq P^{ch,\\max}_s\\), \\(0 \\leq p^{dis}_{s,t} \\leq P^{dis,\\max}_s\\)"
+  },
+  {
+    "objectID": "part-12/lecture-presentation.html#lecture-viii-investment-planning",
+    "href": "part-12/lecture-presentation.html#lecture-viii-investment-planning",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "Lecture VIII: Investment Planning",
+    "text": "Lecture VIII: Investment Planning\nLong-term Planning Problem\n\nInvestment Decisions: Capacity expansion decisions\nMulti-period Optimization: Long-term planning horizon\nCost Components: Investment, operational, and maintenance costs\n\nKey Concepts\n\nAnnualized Costs: Converting investment costs to annual equivalents\nCapacity Planning: Optimal sizing of generation and storage\nEconomic Analysis: Cost-benefit evaluation of investments\nSystem Reliability: Ensuring adequate capacity margins"
+  },
+  {
+    "objectID": "part-12/lecture-presentation.html#lecture-ix-multi-energy-systems",
+    "href": "part-12/lecture-presentation.html#lecture-ix-multi-energy-systems",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "Lecture IX: Multi-Energy Systems",
+    "text": "Lecture IX: Multi-Energy Systems\nSystem Integration\n\nMultiple Energy Carriers: Electricity, heat, hydrogen, etc.\nEnergy Conversion: Technologies linking different carriers\nSystem Optimization: Coordinated optimization across carriers\n\nKey Components\n\nElectrolyzers: Electricity to hydrogen conversion\nHeat Pumps: Electricity to heat conversion\nCombined Heat and Power: Simultaneous electricity and heat generation\nEnergy Storage: Multiple storage types for different carriers\n\nMathematical Extensions\nAdditional Sets: - \\(\\mathcal{C}\\) - Set of energy carriers - \\(\\mathcal{X}\\) - Set of conversion technologies\nAdditional Variables: - \\(h_{x,t}\\) - Hydrogen production from electrolyzer \\(x\\) - \\(q_{chp,t}\\) - Heat production from CHP unit\nAdditional Constraints: - Hydrogen balance: \\(\\sum_{x \\in \\mathcal{X}} h_{x,t} = d^{H2}_t\\) - Heat balance: \\(\\sum_{chp \\in \\mathcal{CHP}} q_{chp,t} = d^{Heat}_t\\)"
+  },
+  {
+    "objectID": "part-12/lecture-presentation.html#lecture-x-uncertainty-modeling-and-renewable-integration",
+    "href": "part-12/lecture-presentation.html#lecture-x-uncertainty-modeling-and-renewable-integration",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "Lecture X: Uncertainty Modeling and Renewable Integration",
+    "text": "Lecture X: Uncertainty Modeling and Renewable Integration\nStochastic Programming\n\nScenarios: Multiple possible realizations of uncertain parameters\nTwo-Stage Problems: Here-and-now vs. wait-and-see decisions\nRisk Management: Robust optimization approaches\n\nUncertainty Sources\n\nRenewable Generation: Wind and solar power variability\nDemand Patterns: Load forecasting uncertainty\nPrice Volatility: Energy market price fluctuations\nWeather Conditions: Temperature and weather impacts\n\nMathematical Framework\nSets: - \\(\\Omega\\) - Set of scenarios - \\(\\pi_{\\omega}\\) - Probability of scenario \\(\\omega\\)\nTwo-Stage Structure: - First Stage: Investment decisions (here-and-now) - Second Stage: Operational decisions (wait-and-see)\nObjective: \\(\\min \\sum_{i} C^{inv}_i x_i + \\sum_{\\omega \\in \\Omega} \\pi_{\\omega} \\sum_{t} C^{op}_{t,\\omega} y_{t,\\omega}\\)"
+  },
+  {
+    "objectID": "part-12/lecture-presentation.html#lecture-xi-framework-for-multi-energy-system-optimization",
+    "href": "part-12/lecture-presentation.html#lecture-xi-framework-for-multi-energy-system-optimization",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "Lecture XI: Framework for Multi-Energy System Optimization",
+    "text": "Lecture XI: Framework for Multi-Energy System Optimization\nComprehensive Framework\n\nMulti-Carrier Integration: Electricity and hydrogen systems\nStochastic Formulation: Uncertainty in renewable generation and demand\nInvestment and Operations: Combined planning and operational optimization\n\nAdvanced Modeling Concepts\n\nBig M Constraints: Conditional constraint modeling\nMixed-Integer Programming: Binary variables for discrete decisions\nLarge-Scale Optimization: Efficient solution methods\nScenario Generation: Creating representative uncertainty scenarios\n\nFramework Components\nInvestment Variables: - Storage capacities: \\(e^{nom}_s\\), \\(p^{ch,nom}_s\\), \\(p^{dis,nom}_s\\) - Generation capacities: \\(p^{nom}_w\\), \\(p^{nom}_v\\) - Conversion capacities: \\(p^{nom}_x\\)\nOperational Variables: - Power outputs: \\(p_{w,t,\\omega}\\), \\(p_{v,t,\\omega}\\) - Storage operation: \\(p^{ch}_{s,t,\\omega}\\), \\(p^{dis}_{s,t,\\omega}\\), \\(e_{s,t,\\omega}\\) - Conversion operation: \\(p_{x,t,\\omega}\\), \\(h_{x,t,\\omega}\\)"
+  },
+  {
+    "objectID": "part-12/lecture-presentation.html#optimization-problem-structure",
+    "href": "part-12/lecture-presentation.html#optimization-problem-structure",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "Optimization Problem Structure",
+    "text": "Optimization Problem Structure\nGeneral Form\n\\(\\min f(x)\\) subject to: \\(g_i(x) \\leq 0 \\quad \\forall i \\in \\mathcal{I}\\) \\(h_j(x) = 0 \\quad \\forall j \\in \\mathcal{J}\\) \\(x \\in \\mathcal{X}\\)\nProblem Types\n\nLinear Programming (LP): Linear objective and constraints\nMixed-Integer Linear Programming (MILP): Linear with binary variables\nNonlinear Programming (NLP): Nonlinear objective or constraints\nStochastic Programming: Multiple scenarios with probabilities"
+  },
+  {
+    "objectID": "part-12/lecture-presentation.html#constraint-types",
+    "href": "part-12/lecture-presentation.html#constraint-types",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "Constraint Types",
+    "text": "Constraint Types\nEquality Constraints\n\nPower balance: \\(\\sum_{g} p_g = d\\)\nEnergy balance: \\(e_t = e_{t-1} + p^{ch}_t - p^{dis}_t\\)\n\nInequality Constraints\n\nCapacity limits: \\(p_g \\leq p^{\\max}_g\\)\nRamp rates: \\(p_{g,t} - p_{g,t-1} \\leq RampUp_g\\)\n\nBinary Variable Constraints\n\nMinimum up time: \\(\\sum_{\\tau=t}^{t+UT-1} u_{\\tau} \\geq UT \\cdot v_t\\)\nLogical constraints: \\(p_g \\leq p^{\\max}_g \\cdot u_g\\)"
+  },
+  {
+    "objectID": "part-12/lecture-presentation.html#solution-methods",
+    "href": "part-12/lecture-presentation.html#solution-methods",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "Solution Methods",
+    "text": "Solution Methods\nSolver Types\n\nLP Solvers: HiGHS, GLPK, Gurobi\nMILP Solvers: Gurobi, CPLEX, HiGHS\nNLP Solvers: IPOPT, KNITRO\n\nSolution Analysis\n\nFeasibility: Check if solution satisfies all constraints\nOptimality: Verify solution is globally optimal\nSensitivity: Analyze impact of parameter changes"
+  },
+  {
+    "objectID": "part-12/lecture-presentation.html#core-programming-concepts-1",
+    "href": "part-12/lecture-presentation.html#core-programming-concepts-1",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "Core Programming Concepts",
+    "text": "Core Programming Concepts\nData Types and Structures\n# Variables and basic types\nx = 5.0          # Float64\ny = [1, 2, 3]    # Vector{Int64}\nz = Dict(\"a\" =&gt; 1, \"b\" =&gt; 2)  # Dict{String, Int64}\n\n# Arrays and matrices\nA = [1 2; 3 4]   # Matrix\nB = zeros(3, 3)  # 3x3 zero matrix\nControl Structures\n# Loops\nfor i in 1:10\n    println(i)\nend\n\n# Conditionals\nif x &gt; 0\n    println(\"Positive\")\nelseif x &lt; 0\n    println(\"Negative\")\nelse\n    println(\"Zero\")\nend\nFunctions\n# Function definition\nfunction calculate_cost(power, cost_rate)\n    return power * cost_rate\nend\n\n# Anonymous functions\nf = x -&gt; x^2 + 2*x + 1"
+  },
+  {
+    "objectID": "part-12/lecture-presentation.html#data-management",
+    "href": "part-12/lecture-presentation.html#data-management",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "Data Management",
+    "text": "Data Management\nDataFrames\nusing DataFrames\n\n# Create DataFrame\ndf = DataFrame(\n    generator = [\"G1\", \"G2\", \"G3\"],\n    capacity = [100, 150, 200],\n    cost = [50, 60, 45]\n)\n\n# Access and manipulate\ndf.capacity[1] = 120\ndf[!, :efficiency] = [0.8, 0.85, 0.9]\nFile I/O\nusing CSV\n\n# Read CSV file\ndata = CSV.read(\"generators.csv\", DataFrame)\n\n# Write CSV file\nCSV.write(\"results.csv\", results_df)"
+  },
+  {
+    "objectID": "part-12/lecture-presentation.html#optimization-with-jump",
+    "href": "part-12/lecture-presentation.html#optimization-with-jump",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "Optimization with JuMP",
+    "text": "Optimization with JuMP\nBasic Model Structure\nusing JuMP, HiGHS\n\n# Create model\nmodel = Model(HiGHS.Optimizer)\n\n# Variables\n@variable(model, p[g] &gt;= 0)  # Power output\n@variable(model, u[g, t], Bin)  # Binary commitment\n\n# Objective\n@objective(model, Min, sum(cost[g] * p[g] for g in generators))\n\n# Constraints\n@constraint(model, power_balance[t in time], \n    sum(p[g] for g in generators) == demand[t])\n\n# Solve\noptimize!(model)\nAdvanced Modeling\n# Conditional constraints with Big M\n@constraint(model, p[g] &lt;= max_power[g] * u[g])\n\n# Minimum up time constraints\n@constraint(model, min_up_time[g, t], \n    sum(u[g, tau] for tau in t:t+min_up[g]-1) &gt;= min_up[g] * v[g, t])"
+  },
+  {
+    "objectID": "part-12/lecture-presentation.html#real-world-problem-types",
+    "href": "part-12/lecture-presentation.html#real-world-problem-types",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "Real-World Problem Types",
+    "text": "Real-World Problem Types\nGeneration Planning\n\nEconomic Dispatch: Optimal power generation for given demand\nUnit Commitment: Optimal generator scheduling with startup/shutdown\nGeneration Expansion: Long-term capacity planning\n\nStorage Integration\n\nBattery Storage: Short-term energy storage\nPumped Hydro: Large-scale energy storage\nThermal Storage: Heat storage for district heating\n\nRenewable Integration\n\nWind Power: Variable generation with forecasting\nSolar Power: Diurnal patterns and weather dependence\nGrid Integration: Balancing variable renewable energy\n\nMulti-Energy Systems\n\nPower-to-Gas: Hydrogen production from electricity\nDistrict Heating: Combined heat and power systems\nTransport Integration: Electric vehicle charging"
+  },
+  {
+    "objectID": "part-12/lecture-presentation.html#industry-applications",
+    "href": "part-12/lecture-presentation.html#industry-applications",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "Industry Applications",
+    "text": "Industry Applications\nPower System Operations\n\nDay-ahead Markets: 24-hour ahead generation scheduling\nReal-time Balancing: Minute-to-minute power balance\nAncillary Services: Frequency regulation and reserves\n\nEnergy Planning\n\nInvestment Planning: Long-term capacity expansion\nPolicy Analysis: Impact of carbon pricing and regulations\nTechnology Assessment: Comparison of different energy technologies\n\nResearch Applications\n\nAcademic Research: Novel optimization algorithms\nIndustry Collaboration: Real-world problem solving\nPolicy Support: Evidence-based energy policy design"
+  },
+  {
+    "objectID": "part-12/lecture-presentation.html#key-areas-to-review",
+    "href": "part-12/lecture-presentation.html#key-areas-to-review",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "Key Areas to Review",
+    "text": "Key Areas to Review\nMathematical Modeling\n\nProblem Formulation: Converting word problems to mathematical models\nConstraint Types: Understanding different constraint formulations\nVariable Types: Continuous vs. binary variables\nObjective Functions: Cost minimization and profit maximization\n\nJulia Programming\n\nBasic Syntax: Variables, loops, functions\nData Structures: Arrays, DataFrames, Dictionaries\nJuMP Modeling: Variable declaration, constraints, objectives\nSolution Analysis: Accessing and interpreting results\n\nEnergy System Concepts\n\nPower Balance: Supply equals demand constraints\nGenerator Characteristics: Cost curves, capacity limits, ramp rates\nStorage Operation: Energy balance and efficiency\nMulti-energy Integration: Energy carrier conversion and storage"
+  },
+  {
+    "objectID": "part-12/lecture-presentation.html#practice-exercises",
+    "href": "part-12/lecture-presentation.html#practice-exercises",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "Practice Exercises",
+    "text": "Practice Exercises\nModeling Problems\n\nEconomic Dispatch: Formulate and solve a simple dispatch problem\nUnit Commitment: Add binary variables and startup constraints\nStorage Integration: Include storage operation in power balance\nMulti-energy: Model electricity-hydrogen system\n\nProgramming Problems\n\nData Manipulation: Read, process, and analyze energy data\nOptimization Models: Implement JuMP models for energy problems\nResult Analysis: Plot and interpret optimization results\nScenario Analysis: Handle uncertainty in energy systems"
+  },
+  {
+    "objectID": "part-12/lecture-presentation.html#exam-strategy",
+    "href": "part-12/lecture-presentation.html#exam-strategy",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "Exam Strategy",
+    "text": "Exam Strategy\nTime Management\n\nPart I (30 points): Energy system modeling (45 minutes)\nPart II (15 points): Theory and concepts (22 minutes)\nPart III (15 points): Julia programming (22 minutes)\n\nProblem-Solving Approach\n\nRead Carefully: Understand the problem requirements\nPlan Solution: Outline your approach before coding\nTest Incrementally: Verify each step before proceeding\nCheck Results: Ensure your solution makes sense\n\n. . .\n\n\n\n\n\n\nImportant\n\n\nRemember: You can bring one handwritten DIN A4 sheet with notes to the exam!"
+  },
+  {
+    "objectID": "part-12/lecture-presentation.html#what-you-have-learned",
+    "href": "part-12/lecture-presentation.html#what-you-have-learned",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "What You Have Learned",
+    "text": "What You Have Learned\nProgramming Skills\n\nJulia Language: Modern, high-performance programming\nData Management: Working with real-world energy data\nOptimization Modeling: Mathematical problem formulation\nSolution Analysis: Interpreting and visualizing results\n\nEnergy System Knowledge\n\nPower System Operations: How electricity systems work\nOptimization Applications: Real-world energy problems\nMulti-energy Systems: Integration of different energy carriers\nUncertainty Handling: Stochastic programming approaches\n\nProblem-Solving Skills\n\nMathematical Modeling: Converting problems to optimization models\nAlgorithm Implementation: Coding optimization algorithms\nResult Interpretation: Understanding and communicating solutions\nTeam Collaboration: Working in groups on complex problems"
+  },
+  {
+    "objectID": "part-12/lecture-presentation.html#career-applications",
+    "href": "part-12/lecture-presentation.html#career-applications",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "Career Applications",
+    "text": "Career Applications\nIndustry Opportunities\n\nEnergy Companies: Power system planning and operations\nConsulting Firms: Energy system analysis and optimization\nResearch Institutions: Academic and applied research\nGovernment Agencies: Energy policy and regulation\n\nSkill Transfer\n\nProgramming: Julia skills transfer to other languages\nOptimization: Mathematical modeling skills for various domains\nData Analysis: Energy data skills apply to other sectors\nProblem Solving: Systematic approach to complex problems\n\n. . .\n\n\n\n\n\n\nTip\n\n\nThe skills you’ve learned in this course are valuable for many careers in energy, operations research, and data science!"
+  },
+  {
+    "objectID": "part-12/lecture-presentation.html#course-objectives-achieved",
+    "href": "part-12/lecture-presentation.html#course-objectives-achieved",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "Course Objectives Achieved",
+    "text": "Course Objectives Achieved\n✅ Understanding Optimization: You can now recognize and formulate optimization problems\n✅ Julia Programming: You can write, debug, and optimize Julia code\n✅ Energy System Modeling: You understand how to model energy system problems\n✅ Real-World Applications: You can apply optimization to practical energy problems\n✅ Team Collaboration: You’ve worked effectively in groups on complex problems"
+  },
+  {
+    "objectID": "part-12/lecture-presentation.html#next-steps",
+    "href": "part-12/lecture-presentation.html#next-steps",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "Next Steps",
+    "text": "Next Steps\nFurther Learning\n\nAdvanced Optimization: Nonlinear and stochastic programming\nMachine Learning: Data-driven approaches to energy systems\nEnergy Markets: Market design and price formation\nPolicy Analysis: Impact of regulations on energy systems\n\nResources\n\nJulia Documentation: docs.julialang.org\nJuMP Documentation: jump.dev\nEnergy Literature: Academic journals and industry reports\nOnline Courses: MOOCs on energy systems and optimization\n\nStay Connected\n\nResearch Opportunities: Consider thesis projects in energy optimization\nIndustry Internships: Apply your skills in real-world settings\nProfessional Networks: Join energy and operations research societies\nContinuing Education: Pursue advanced degrees in related fields\n\n. . .\n\n\n\n\n\n\nNote\n\n\nThank you for your active participation throughout this course. Your questions and engagement have made this a rewarding experience for everyone!"
+  },
+  {
+    "objectID": "part-12/lecture-presentation.html#core-references",
+    "href": "part-12/lecture-presentation.html#core-references",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "Core References",
+    "text": "Core References\nJulia Programming\n\nLauwens, B., & Downey, A. B. (2019). Think Julia: How to think like a computer scientist. O’Reilly®.\n\nOptimization\n\nWinston, W. L. (2004). Operations Research: Applications and Algorithms. Thomson Brooks/Cole.\nHillier, F. S., & Lieberman, G. J. (2015). Introduction to Operations Research. McGraw-Hill.\n\nEnergy Systems\n\nWood, A. J., & Wollenberg, B. F. (2012). Power Generation, Operation, and Control. Wiley.\nKirschen, D. S., & Strbac, G. (2018). Fundamentals of Power System Economics. Wiley.\n\nMulti-Energy Systems\n\nMancarella, P. (2014). MES (multi-energy systems): An overview of concepts and evaluation models. Energy, 65, 1-17.\nGeidl, M., & Andersson, G. (2007). Optimal power flow of multiple energy carriers. IEEE Transactions on Power Systems, 22(1), 145-155."
+  },
+  {
+    "objectID": "part-12/lecture-presentation.html#online-resources",
+    "href": "part-12/lecture-presentation.html#online-resources",
+    "title": "Lecture XII - Course Repetition and Summary",
+    "section": "Online Resources",
+    "text": "Online Resources\nDocumentation\n\nJulia Documentation\nJuMP Documentation\nDataFrames.jl Documentation\n\nTutorials and Examples\n\nJulia Academy\nJuMP Tutorials\nEnergy System Modeling Examples\n\nResearch Papers\n\nRecent papers in journals like:\n\nIEEE Transactions on Power Systems\nEnergy\nApplied Energy\nEuropean Journal of Operational Research"
+  },
+  {
+    "objectID": "part-08/lecture-presentation.html#unit-commitment-problem-with-storage-overview",
+    "href": "part-08/lecture-presentation.html#unit-commitment-problem-with-storage-overview",
+    "title": "Lecture VIII - Energy System Design Problem",
+    "section": "Unit Commitment Problem with Storage Overview",
+    "text": "Unit Commitment Problem with Storage Overview\n\nObjective: Minimize total generation and storage costs over multiple time periods\nDecision Variables:\n\nPower output of thermal generators (\\(p_{g,t}\\))\nPower output of wind turbines (\\(p_{w,t}\\))\nBinary variables for generator status (\\(u_{g,t}\\))\nBinary variables for startup events (\\(v_{g,t}\\))\nStorage energy level (\\(e_{s,t}\\))\nStorage charging power (\\(p^{ch}_{s,t}\\))\nStorage discharging power (\\(p^{dis}_{s,t}\\))\nBinary variables for storage charging status (\\(u^{ch}_{s,t}\\))\nBinary variables for storage discharging status (\\(u^{dis}_{s,t}\\))\n\nKey Constraints:\n\nPower balance (including storage)\nGenerator limits\nWind limits\nMinimum up/down times\nRamp rate limits\nStartup variable definition\nStorage energy balance\nStorage energy limits\nStorage power limits and mutual exclusion\nStorage ramp rate limits\n\n\n\n\n\n\n\n\nNote\n\n\nThe Unit Commitment problem with storage extends the basic UC problem by adding storage system modeling and operation constraints."
+  },
+  {
+    "objectID": "part-08/lecture-presentation.html#mathematical-formulation",
+    "href": "part-08/lecture-presentation.html#mathematical-formulation",
+    "title": "Lecture VIII - Energy System Design Problem",
+    "section": "Mathematical Formulation",
+    "text": "Mathematical Formulation\nObjective Function\n\\(\\text{Minimize} \\quad \\sum_{t \\in \\mathcal{T}} \\left( \\sum_{g \\in \\mathcal{G}} (c^{var}_g p_{g,t} + c^{fix}_g u_{g,t} + c^{start}_g v_{g,t}) + \\sum_{w \\in \\mathcal{W}} c^{var}_w p_{w,t} \\right)\\)\nKey Constraints\n\nPower Balance:\n\n\\(\\sum_{g \\in \\mathcal{G}} p_{g,t} + \\sum_{w \\in \\mathcal{W}} p_{w,t} + \\sum_{s \\in \\mathcal{S}} (p^{dis}_{s,t} - p^{ch}_{s,t}) = d^f_t \\quad \\forall t \\in \\mathcal{T}\\)\n\nGenerator Limits:\n\n\\(p^{\\min}_g u_{g,t} \\leq p_{g,t} \\leq p^{\\max}_g u_{g,t} \\quad \\forall g \\in \\mathcal{G}, t \\in \\mathcal{T}\\)\n\nWind Power:\n\n\\(0 \\leq p_{w,t} \\leq p^f_{w,t} \\quad \\forall w \\in \\mathcal{W}, t \\in \\mathcal{T}\\)\n\nStorage Energy Balance:\n\n\\(e_{s,t} = (1-sdr_s)e_{s,t-1} + \\eta^{ch}_s p^{ch}_{s,t} - \\frac{p^{dis}_{s,t}}{\\eta^{dis}_s} \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}\\)\n\nStorage Energy Limits:\n\n\\(E^{min}_s \\leq e_{s,t} \\leq E^{max}_s \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}\\)\n\nStorage Power Limits and Mutual Exclusion:\n\n\\(0 \\leq p^{ch}_{s,t} \\leq P^{ch,max}_s u^{ch}_{s,t} \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}\\) \\(0 \\leq p^{dis}_{s,t} \\leq P^{dis,max}_s u^{dis}_{s,t} \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}\\) \\(u^{ch}_{s,t} + u^{dis}_{s,t} \\leq 1 \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}\\)\n\nStorage Ramp Rate Limits:\n\n\\(p^{ch}_{s,t} - p^{ch}_{s,t-1} \\leq R^{ch}_s \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}\\) \\(p^{dis}_{s,t} - p^{dis}_{s,t-1} \\leq R^{dis}_s \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}\\)"
+  },
+  {
+    "objectID": "part-08/lecture-presentation.html#model-characteristics",
+    "href": "part-08/lecture-presentation.html#model-characteristics",
+    "title": "Lecture VIII - Energy System Design Problem",
+    "section": "Model Characteristics",
+    "text": "Model Characteristics\n\nMixed-Integer Linear Programming (MILP) problem\nBinary variables for generator status, startup events, and storage operation\nTime-dependent decisions for both generation and storage\nComputationally challenging due to:\n\nLarge number of binary variables\nLarge number of time steps\nLarge number of constraints\n\n\n\n\n\n\n\n\nTip\n\n\nThe Unit Commitment problem with storage provides a comprehensive model for power system operation, including both generation and storage resources."
+  },
+  {
+    "objectID": "part-08/lecture-presentation.html#implementation-insights",
+    "href": "part-08/lecture-presentation.html#implementation-insights",
+    "title": "Lecture VIII - Energy System Design Problem",
+    "section": "Implementation Insights",
+    "text": "Implementation Insights\n\nData structures use NamedTuples for efficient parameter storage\nResults are stored in DataFrames for easy analysis\nKey metrics tracked:\n\nTotal system cost\nWind curtailment\nThermal and wind generation\nGenerator status and startup events\nStorage energy levels\nStorage charging/discharging power\n\n\n\n\n\n\n\n\nNote\n\n\nThe tutorial demonstrated how to implement and solve the UC problem with storage using Julia and JuMP, including visualization of generation and storage operation over time."
+  },
+  {
+    "objectID": "part-08/lecture-presentation.html#solutions-from-last-week",
+    "href": "part-08/lecture-presentation.html#solutions-from-last-week",
+    "title": "Lecture VIII - Energy System Design Problem",
+    "section": "Solutions from last Week",
+    "text": "Solutions from last Week\n\nThe tutorials from last week will again be available on Friday\nYou can access them in the project folder on Github\nClick on the little cat icon on the bottom right\n\n\n\n\n\n\n\n\nTip\n\n\nYou can ask questions anytime in class or via email!"
+  },
+  {
+    "objectID": "part-08/lecture-presentation.html#what-are-tight-and-compact-formulations",
+    "href": "part-08/lecture-presentation.html#what-are-tight-and-compact-formulations",
+    "title": "Lecture VIII - Energy System Design Problem",
+    "section": "What are Tight and Compact Formulations?",
+    "text": "What are Tight and Compact Formulations?\nIn mathematical optimization, particularly for Mixed-Integer Linear Programming (MILP) problems like the Unit Commitment problem, the concepts of “tight” and “compact” formulations are crucial for efficient problem solving.\nTight Formulations\nA formulation is considered “tight” when there is a small gap between the optimal solution of the linear programming (LP) relaxation and the integer solution. This is important because:\n\nIt helps solvers find optimal solutions faster\nIt provides better lower bounds for branch-and-bound algorithms\nIt reduces the search space for integer solutions\n\nCompact Formulations\nA formulation is considered “compact” when it uses fewer variables and constraints while maintaining accuracy. This is important because:\n\nIt reduces computational complexity\nIt decreases memory requirements\nIt can speed up solution times\nIt makes the model easier to understand and maintain"
+  },
+  {
+    "objectID": "part-08/lecture-presentation.html#examples-in-uc-with-storage",
+    "href": "part-08/lecture-presentation.html#examples-in-uc-with-storage",
+    "title": "Lecture VIII - Energy System Design Problem",
+    "section": "Examples in UC with Storage",
+    "text": "Examples in UC with Storage\n1. Tight Formulations\nExample 1 - Generator Commitment:\n# Less tight formulation\np_{g,t} ≤ P^{max}_g u_{g,t}  # Only upper bound\n\n# Tighter formulation\nP^{min}_g u_{g,t} ≤ p_{g,t} ≤ P^{max}_g u_{g,t}  # Both bounds\n\nThe second formulation is tighter because it includes both minimum and maximum power constraints\nThis reduces the feasible region of the LP relaxation\nMakes it easier for the solver to find integer solutions\n\nExample 2 - Storage Operation:\n# Less tight formulation\ne_{s,t} = e_{s,t-1} + p^{ch}_{s,t} - p^{dis}_{s,t}  # Without efficiency\n\n# Tighter formulation\ne_{s,t} = (1-sdr_s)e_{s,t-1} + η^{ch}_s p^{ch}_{s,t} - p^{dis}_{s,t}/η^{dis}_s  # With efficiency\n\nThe second formulation is tighter because it accounts for efficiency losses\nThis better represents the physical reality of storage operation\nHelps the solver find more realistic solutions\n\n2. Compact Formulations\nExample 1 - Minimum Up/Down Times:\n# Less compact formulation\nu_{g,t} - u_{g,t-1} ≤ u_{g,τ}  ∀τ ∈ [t+1, t+T^{up}_g-1]\nu_{g,t-1} - u_{g,t} ≤ 1 - u_{g,τ}  ∀τ ∈ [t+1, t+T^{down}_g-1]\n\n# More compact formulation\n∑_{τ=t}^{t+T^{up}_g-1} u_{g,τ} ≥ T^{up}_g (u_{g,t} - u_{g,t-1})\n∑_{τ=t}^{t+T^{down}_g-1} (1-u_{g,τ}) ≥ T^{down}_g (u_{g,t-1} - u_{g,t})\n\nThe second formulation uses fewer constraints\nAchieves the same result with less computational overhead\nMakes the model more efficient to solve\n\nExample 2 - Storage Mutual Exclusion:\n# Less compact formulation\np^{ch}_{s,t} ≤ P^{ch,max}_s u^{ch}_{s,t}\np^{dis}_{s,t} ≤ P^{dis,max}_s u^{dis}_{s,t}\nu^{ch}_{s,t} + u^{dis}_{s,t} ≤ 1\n\n# More compact formulation\np^{ch}_{s,t}/P^{ch,max}_s + p^{dis}_{s,t}/P^{dis,max}_s ≤ 1\n\nThe second formulation combines three constraints into one\nReduces the number of binary variables needed\nSimplifies the model while maintaining accuracy"
+  },
+  {
+    "objectID": "part-08/lecture-presentation.html#why-these-concepts-matter",
+    "href": "part-08/lecture-presentation.html#why-these-concepts-matter",
+    "title": "Lecture VIII - Energy System Design Problem",
+    "section": "Why These Concepts Matter",
+    "text": "Why These Concepts Matter\nComputational Efficiency\n\nTighter formulations reduce the search space\nCompact formulations reduce the problem size\nBoth lead to faster solution times\n\nSolution Quality\n\nTighter formulations provide better bounds\nHelp find optimal solutions more reliably\nReduce the gap between LP relaxation and integer solution\n\nPractical Implementation\n\nMore efficient use of computational resources\nBetter handling of large-scale problems\nMore reliable results for real-world applications"
+  },
+  {
+    "objectID": "part-08/lecture-presentation.html#trade-offs-to-consider",
+    "href": "part-08/lecture-presentation.html#trade-offs-to-consider",
+    "title": "Lecture VIII - Energy System Design Problem",
+    "section": "Trade-offs to Consider",
+    "text": "Trade-offs to Consider\nTightness vs. Compactness\n\nSometimes making a formulation tighter makes it less compact\nNeed to balance between tightness and problem size\nChoose based on specific problem characteristics\n\nModel Complexity\n\nMore complex formulations might be tighter but harder to understand\nSimpler formulations might be more compact but less accurate\nNeed to find the right balance for your specific use case\n\n\n\n\n\n\n\nNote\n\n\nThese concepts are particularly important in the Unit Commitment problem with storage and approximations of part-load efficiencies because:\n\nThe problem is already complex with many variables and constraints\nStorage adds additional complexity with its operational constraints\nReal-world applications need efficient solutions\nThe problem size can grow quickly with more time periods or storage units"
+  },
+  {
+    "objectID": "part-08/lecture-presentation.html#energy-system-design-problem",
+    "href": "part-08/lecture-presentation.html#energy-system-design-problem",
+    "title": "Lecture VIII - Energy System Design Problem",
+    "section": "Energy System Design Problem",
+    "text": "Energy System Design Problem\nIn this lecture, we extend the Unit Commitment problem to include investment decisions for energy system components. This allows us to:\n\nOptimize technology selection\nDetermine optimal component sizes\nBalance investment and operational costs\nPlan local energy systems holistically\n\n\n\n\n\n\n\nNote\n\n\nThe design problem combines investment planning (sizing) with operational optimization, enabling comprehensive energy system design."
+  },
+  {
+    "objectID": "part-08/lecture-presentation.html#key-components",
+    "href": "part-08/lecture-presentation.html#key-components",
+    "title": "Lecture VIII - Energy System Design Problem",
+    "section": "Key Components",
+    "text": "Key Components\nWe will focus on optimizing:\n\nStorage systems\nWind parks\nPV parks\nElectric market participation\n\n… while fullfilling a fixed electric demand. Additionally, we consider a maximum investment budget.\nAll nominal sizes will be decision variables in our optimization model."
+  },
+  {
+    "objectID": "part-08/lecture-presentation.html#sets",
+    "href": "part-08/lecture-presentation.html#sets",
+    "title": "Lecture VIII - Energy System Design Problem",
+    "section": "Sets",
+    "text": "Sets\n\n\\(\\mathcal{T}\\) - Set of time periods indexed by \\(t \\in \\{1,2,...,|\\mathcal{T}|\\}\\)\n\\(\\mathcal{S}\\) - Set of storage systems indexed by \\(s \\in \\{1,2,...,|\\mathcal{S}|\\}\\)\n\\(\\mathcal{W}\\) - Set of wind parks indexed by \\(w \\in \\{1,2,...,|\\mathcal{W}|\\}\\)\n\\(\\mathcal{V}\\) - Set of PV parks indexed by \\(v \\in \\{1,2,...,|\\mathcal{V}|\\}\\)"
+  },
+  {
+    "objectID": "part-08/lecture-presentation.html#decision-variables",
+    "href": "part-08/lecture-presentation.html#decision-variables",
+    "title": "Lecture VIII - Energy System Design Problem",
+    "section": "Decision Variables",
+    "text": "Decision Variables\nInvestment Variables\n\n\\(e^{nom}_s\\) - Nominal energy capacity of storage \\(s\\) [MWh]\n\\(p^{ch,nom}_s\\) - Nominal charging power of storage \\(s\\) [MW]\n\\(p^{dis,nom}_s\\) - Nominal discharging power of storage \\(s\\) [MW]\n\\(p^{nom}_w\\) - Nominal power of wind park \\(w\\) [MW]\n\\(p^{nom}_v\\) - Nominal power of PV park \\(v\\) [MW]\n\nOperational Variables\n\n\\(p_{w,t}\\) - Power output of wind park \\(w\\) at time \\(t\\) [MW]\n\\(p_{v,t}\\) - Power output of PV park \\(v\\) at time \\(t\\) [MW]\n\\(p^{in}_t\\) - Power inflow through market at time \\(t\\) [MW]\n\\(p^{out}_t\\) - Power outflow through market at time \\(t\\) [MW]\n\\(p^{ch}_{s,t}\\) - Charging power of storage \\(s\\) at time \\(t\\) [MW]\n\\(p^{dis}_{s,t}\\) - Discharging power of storage \\(s\\) at time \\(t\\) [MW]\n\\(e_{s,t}\\) - Energy level of storage \\(s\\) at time \\(t\\) [MWh]\n\nAnnual Cost Variables\n\n\\(AC^{inv}_s\\) - Annual investment cost for storage \\(s\\) [EUR/year]\n\\(AC^{inv}_w\\) - Annual investment cost for wind park \\(w\\) [EUR/year]\n\\(AC^{inv}_v\\) - Annual investment cost for PV park \\(v\\) [EUR/year]\n\\(AC^{grid,imp}\\) - Annual grid electricity import cost [EUR/year]\n\\(AR^{grid,exp}\\) - Annual grid electricity export revenue [EUR/year]"
+  },
+  {
+    "objectID": "part-08/lecture-presentation.html#parameters",
+    "href": "part-08/lecture-presentation.html#parameters",
+    "title": "Lecture VIII - Energy System Design Problem",
+    "section": "Parameters",
+    "text": "Parameters\nInvestment Costs\n\n\\(C^{E}_s\\) - Cost per MWh of energy capacity for storage \\(s\\) [EUR/MWh]\n\\(C^{P,ch}_s\\) - Cost per MW of charging power capacity for storage \\(s\\) [EUR/MW]\n\\(C^{P,dis}_s\\) - Cost per MW of discharging power capacity for storage \\(s\\) [EUR/MW]\n\\(C^{W}_w\\) - Cost per MW of wind park \\(w\\) [EUR/MW]\n\\(C^{PV}_v\\) - Cost per MW of PV park \\(v\\) [EUR/MW]\n\\(F^{PVAF}\\) - Present value annuity factor for investment costs\n\\(B^{max}\\) - Maximum investment budget [EUR]\n\nOperational Parameters\n\n\\(\\eta^{ch}_s\\) - Charging efficiency of storage \\(s\\)\n\\(\\eta^{dis}_s\\) - Discharging efficiency of storage \\(s\\)\n\\(sdr_s\\) - Self-discharge rate of storage \\(s\\) per time step\n\\(DoD_s\\) - Depth of discharge limit for storage \\(s\\) [%]\n\\(f_{w,t}\\) - Wind capacity factor at time \\(t\\) for wind park \\(w\\)\n\\(f_{v,t}\\) - Solar capacity factor at time \\(t\\) for PV park \\(v\\)\n\\(d_t\\) - Electric demand at time \\(t\\) [MW]\n\\(c^{MP}_t\\) - Grid electricity market price at time \\(t\\) [EUR/MWh]\n\\(c^{TaL}\\) - Grid electricity taxes and levies (including Netzentgelt) [EUR/MWh]"
+  },
+  {
+    "objectID": "part-08/lecture-presentation.html#present-value-annuity-factor-pvaf",
+    "href": "part-08/lecture-presentation.html#present-value-annuity-factor-pvaf",
+    "title": "Lecture VIII - Energy System Design Problem",
+    "section": "Present Value Annuity Factor (PVAF)",
+    "text": "Present Value Annuity Factor (PVAF)\nThe Present Value Annuity Factor (PVAF) is used to convert investment costs into equivalent annual costs. It is calculated as:\n\\(F^{PVAF} = \\frac{(1 + r)^n - 1}{r(1 + r)^n}\\)\nwhere: - \\(r\\) is the discount rate (e.g., 0.05 for 5%) - \\(n\\) is the component lifetime in years (we assume the same lifetime for all components in the following)\nThis factor allows us to:\n\nConvert one-time investment costs into equivalent annual costs\nAccount for the time value of money\nCompare investments with different lifetimes\nMake investment decisions based on annual costs"
+  },
+  {
+    "objectID": "part-08/lecture-presentation.html#objective-function-1",
+    "href": "part-08/lecture-presentation.html#objective-function-1",
+    "title": "Lecture VIII - Energy System Design Problem",
+    "section": "Objective Function",
+    "text": "Objective Function\n\\(\\text{Minimize} \\quad \\sum_{s \\in \\mathcal{S}} AC^{inv}_s + \\sum_{w \\in \\mathcal{W}} AC^{inv}_w + \\sum_{v \\in \\mathcal{V}} AC^{inv}_v + AC^{grid,imp} - AR^{grid,exp}\\)\n\n\n\n\n\n\nNote\n\n\nThe objective function minimizes the total annual costs of the energy system:\n\nInvestment costs for all components:\n\nStorage systems (energy and power capacity)\nWind parks\nPV parks\n\nGrid electricity costs/revenues:\n\nImport costs (market price + taxes/levies including Netzentgelt)\nExport revenue (market price only)"
+  },
+  {
+    "objectID": "part-08/lecture-presentation.html#annual-cost-constraints",
+    "href": "part-08/lecture-presentation.html#annual-cost-constraints",
+    "title": "Lecture VIII - Energy System Design Problem",
+    "section": "Annual Cost Constraints",
+    "text": "Annual Cost Constraints\nInvestment Costs\n\\(AC^{inv}_s = \\frac{C^{E}_s}{F^{PVAF}} e^{nom}_s + \\frac{C^{P,ch}_s}{F^{PVAF}} p^{ch,nom}_s + \\frac{C^{P,dis}_s}{F^{PVAF}} p^{dis,nom}_s \\quad \\forall s \\in \\mathcal{S}\\) \\(AC^{inv}_w = \\frac{C^{W}_w}{F^{PVAF}} p^{nom}_w \\quad \\forall w \\in \\mathcal{W}\\) \\(AC^{inv}_v = \\frac{C^{PV}_v}{F^{PVAF}} p^{nom}_v \\quad \\forall v \\in \\mathcal{V}\\)\n\n\n\n\n\n\nNote\n\n\nThe investment costs are annualized using the Present Value Annuity Factor (PVAF):\n\nStorage investment includes:\n\nEnergy capacity costs\nCharging power capacity costs\nDischarging power capacity costs\n\nWind and PV investment include:\n\nPower capacity costs only\n\n\n\n\n\nInvestment Budget\n\\(\\sum_{s \\in \\mathcal{S}} (C^{E}_s e^{nom}_s + C^{P,ch}_s p^{ch,nom}_s + C^{P,dis}_s p^{dis,nom}_s) + \\sum_{w \\in \\mathcal{W}} C^{W}_w p^{nom}_w + \\sum_{v \\in \\mathcal{V}} C^{PV}_v p^{nom}_v \\leq B^{max}\\)\n\n\n\n\n\n\nNote\n\n\nThe investment budget constraint ensures that:\n\nTotal investment costs do not exceed the maximum budget\nIncludes all component investments:\n\nStorage systems (energy and power capacity)\nWind parks\nPV parks\n\n\n\n\n\nGrid Electricity Costs\n\\(AC^{grid,imp} = \\sum_{t \\in \\mathcal{T}} (c^{MP}_t + c^{TaL}) p^{in}_t\\) \\(AR^{grid,exp} = \\sum_{t \\in \\mathcal{T}} c^{MP}_t p^{out}_t\\)\n\n\n\n\n\n\nNote\n\n\nThe grid electricity costs and revenues are calculated as:\n\nImport costs include:\n\nTime-dependent market price\nFixed taxes and levies (including Netzentgelt)\n\nExport revenue includes:\n\nTime-dependent market price only"
+  },
+  {
+    "objectID": "part-08/lecture-presentation.html#constraints",
+    "href": "part-08/lecture-presentation.html#constraints",
+    "title": "Lecture VIII - Energy System Design Problem",
+    "section": "Constraints",
+    "text": "Constraints\nPower Balance\n\\(\\sum_{w \\in \\mathcal{W}} p_{w,t} + \\sum_{v \\in \\mathcal{V}} p_{v,t} + (p^{in}_t - p^{out}_t) + \\sum_{s \\in \\mathcal{S}} (p^{dis}_{s,t} - p^{ch}_{s,t}) = d_t \\quad \\forall t \\in \\mathcal{T}\\)\n\n\n\n\n\n\nNote\n\n\nThe power balance ensures that at each time step:\n\nTotal generation equals total demand:\n\nWind generation\nPV generation\nGrid import/export\nStorage charging/discharging\n\nNet grid power flow is:\n\nPositive for import\nNegative for export\n\n\n\n\n\nComponent Limits\nWind Parks\n\\(0 \\leq p_{w,t} \\leq f_{w,t} p^{nom}_w \\quad \\forall w \\in \\mathcal{W}, t \\in \\mathcal{T}\\)\n\n\n\n\n\n\nNote\n\n\nWind power output is constrained by:\n\nNon-negativity (no negative generation)\nMaximum available power:\n\nTime-dependent capacity factor\nNominal power capacity\n\n\n\n\n\nPV Parks\n\\(0 \\leq p_{v,t} \\leq f_{v,t} p^{nom}_v \\quad \\forall v \\in \\mathcal{V}, t \\in \\mathcal{T}\\)\n\n\n\n\n\n\nNote\n\n\nPV power output is constrained by:\n\nNon-negativity (no negative generation)\nMaximum available power:\n\nTime-dependent capacity factor\nNominal power capacity\n\n\n\n\n\nStorage Systems\n\\(0 \\leq p^{ch}_{s,t} \\leq p^{ch,nom}_s \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}\\) \\(0 \\leq p^{dis}_{s,t} \\leq p^{dis,nom}_s \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}\\) \\(DoD_s e^{nom}_s \\leq e_{s,t} \\leq e^{nom}_s \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}\\)\n\n\n\n\n\n\nNote\n\n\nStorage operation is constrained by:\n\nCharging power limits:\n\nNon-negativity\nNominal charging power capacity\n\nDischarging power limits:\n\nNon-negativity\nNominal discharging power capacity\n\nEnergy level limits:\n\nMinimum level based on depth of discharge\nMaximum level based on nominal capacity\n\n\n\n\n\nStorage Energy Balance\n\\(e_{s,t} = (1-sdr_s)e_{s,t-1} + \\eta^{ch}_s p^{ch}_{s,t} - \\frac{p^{dis}_{s,t}}{\\eta^{dis}_s} \\quad \\forall s \\in \\mathcal{S}, t \\in \\mathcal{T}\\)\n\n\n\n\n\n\nNote\n\n\nThe storage energy balance accounts for:\n\nPrevious energy level:\n\nReduced by self-discharge\n\nCharging:\n\nIncreased by charging power\nReduced by charging efficiency losses\n\nDischarging:\n\nDecreased by discharging power\nDecreased by discharging efficiency losses"
+  },
+  {
+    "objectID": "part-08/lecture-presentation.html#model-characteristics-1",
+    "href": "part-08/lecture-presentation.html#model-characteristics-1",
+    "title": "Lecture VIII - Energy System Design Problem",
+    "section": "Model Characteristics",
+    "text": "Model Characteristics\n\nMixed-Integer Linear Programming (MILP) problem\nCombines investment and operational decisions\nLarge-scale optimization problem\nRequires efficient solution methods\n\n\n\n\n\n\n\nNote\n\n\nThe model can be adapted to the specific use case, i.e. if a windpark already has a fixed capacity, the corresponding variable can be coverted to a parameter."
+  },
+  {
+    "objectID": "part-08/lecture-presentation.html#key-considerations",
+    "href": "part-08/lecture-presentation.html#key-considerations",
+    "title": "Lecture VIII - Energy System Design Problem",
+    "section": "Key Considerations",
+    "text": "Key Considerations\n\nTime Resolution:\n\nBalance between accuracy and computational effort\nConsider representative periods\nAccount for seasonal variations\n\nInvestment Costs:\n\nAnnualize investment costs using PVAF\nConsider component lifetimes\nInclude maintenance costs\n\nOperational Constraints:\n\nStorage cycling limits\nGrid connection capacity\nRenewable generation profiles\n\nSolution Methods:\n\nDecomposition approaches\nHeuristic methods\nCommercial solvers"
+  },
+  {
+    "objectID": "part-08/lecture-presentation.html#real-world-use-cases",
+    "href": "part-08/lecture-presentation.html#real-world-use-cases",
+    "title": "Lecture VIII - Energy System Design Problem",
+    "section": "Real-World Use Cases",
+    "text": "Real-World Use Cases\n\nLocal Energy Systems:\n\nMicrogrids\nIndustrial parks\nResidential communities\n\nGrid Integration:\n\nRenewable energy integration\nGrid capacity planning\nAncillary services\n\nEnergy Markets:\n\nMulti-market participation\nPrice arbitrage\nCapacity markets"
+  },
+  {
+    "objectID": "part-08/lecture-presentation.html#extensions",
+    "href": "part-08/lecture-presentation.html#extensions",
+    "title": "Lecture VIII - Energy System Design Problem",
+    "section": "Extensions",
+    "text": "Extensions\n\nMulti-Criteria Optimization:\n\nEconomic objectives\nEnvironmental impact\nSystem reliability\n\nUncertainty Handling:\n\nWeather forecasts\nPrice forecasts\nDemand forecasts\n\nAdvanced Features:\n\nBattery degradation\nMulti-market participation\nGrid services\n\n\n\n\n\n\n\n\nNote\n\n\nThe sizing problem provides a foundation for comprehensive energy system planning and optimization.\n\n\n\n\n\nQuestions?\n\n\n\n\n\nLiterature\n\n\n\nLiterature I\nFor more interesting literature to learn more about Julia, take a look at the literature list of this course.\n\n\nLiterature II\nFor a detailed mathematical formulation of the Unit Commitment problem, see Morales-Espana, Latorre, and Ramos (2013) and Zimmermann and Kather (2019).\n\n\n\n\n\n\n\nMorales-Espana, G., J. M. Latorre, and A. Ramos. 2013. “Tight and Compact MILP Formulation for the Thermal Unit Commitment Problem.” IEEE Transactions on Power Systems 28 (4): 4897–4908.\n\n\nZimmermann, Cors, T., and A. Kather. 2019. “Increasing Tightness by Introduction of Intertemporal Constraints in MILP Unit Commitment.” In NEIS 2019; Conference on Sustainable Energy Supply and Energy Storage Systems, edited by Detlef Schulz, 209–14. VDE Verl."
+  },
+  {
+    "objectID": "part-08/lecture-presentation.html#literature-i",
+    "href": "part-08/lecture-presentation.html#literature-i",
+    "title": "Lecture VIII - Energy System Design Problem",
+    "section": "Literature I",
+    "text": "Literature I\nFor more interesting literature to learn more about Julia, take a look at the literature list of this course."
+  },
+  {
+    "objectID": "part-08/lecture-presentation.html#literature-ii",
+    "href": "part-08/lecture-presentation.html#literature-ii",
+    "title": "Lecture VIII - Energy System Design Problem",
+    "section": "Literature II",
+    "text": "Literature II\nFor a detailed mathematical formulation of the Unit Commitment problem, see Morales-Espana, Latorre, and Ramos (2013) and Zimmermann and Kather (2019)."
+  },
+  {
+    "objectID": "part-11/tutorial-framework.html",
+    "href": "part-11/tutorial-framework.html",
+    "title": "Tutorial XI - Multi-Energy System Optimization Framework",
+    "section": "",
+    "text": "This tutorial demonstrates the implementation of a general multi-energy system optimization framework in Julia, following the mathematical formulation from the lecture. The framework is designed to be technology-agnostic and flexible, allowing you to model and optimize energy systems with multiple energy carriers (e.g., electricity, hydrogen, heat, methanol, CO₂, etc.) and a wide range of conversion, storage, and supply technologies.\nThe model is structured to: - Optimize investment and operational decisions across all technologies and carriers - Allow easy extension to new technologies and energy carriers by changing sets and parameters - Enable robust planning under uncertainty via scenario-based stochastic optimization\nIn this tutorial, you will: - Build the general sets and parameters for the framework - Generate example data for a multi-carrier system - Implement the model in Julia using JuMP - Extend the system with a methanol synthesis plant and a carbon capture unit\n\n\n\n\n\n\n\\(\\mathcal{T}\\): Time periods\n\\(\\mathcal{E}\\): Energy carriers/fuels (e.g., electricity, hydrogen, CO₂, methanol)\n\\(\\mathcal{E}^D\\): Subset of carriers with demand constraints\n\\(\\mathcal{G}\\): All technology units\n\\(\\mathcal{G}^S\\): Storage units\n\\(\\mathcal{G}^{Var}\\): Variable renewable units (e.g., wind, PV)\n\\(\\mathcal{G}^{Conv}\\): Conversion units (e.g., electrolyzer, methanol synthesis)\n\\(\\mathcal{G}^{Sup}\\): Supply units (e.g., grid, CO₂ supply)\n\\(\\Omega\\): Scenarios\n\n\n\n\n\nInvestment: \\(P_g^{nom}\\) (nominal capacity), \\(SOC_g^{nom}\\) (storage energy capacity)\nOperation: \\(x_{g,e,t,\\omega}^{in}\\) (input flow), \\(x_{g,e,t,\\omega}^{out}\\) (output flow), \\(x_{g,t,\\omega}^{total}\\) (activity), \\(soc_{g,t,\\omega}\\) (state of charge), \\(f_{e,t,\\omega}^{buy}\\), \\(f_{e,t,\\omega}^{sell}\\)\nBinary: \\(u_{g,t,\\omega}\\) (on/off), \\(o_{g,t,\\omega}\\) (charge/discharge)\n\n\n\n\n\nCosts: Investment, variable, startup\nConversion: \\(\\sigma_{g,e}^{in}\\), \\(\\sigma_{g,e}^{out}\\), \\(\\Theta_g\\)\nLimits: \\(P_g^{max}\\), \\(P_g^{min}\\), \\(SOC_g^{max}\\), etc.\nScenario data: Demand, prices, capacity factors, etc.\n\n\n\n\nMaximize profit (revenues from selling carriers minus costs for buying, variable costs, startup costs, and investment costs).\n\n\n\n\nInvestment cost and budget\nInput-output relationships for all technologies\nStorage dynamics\nEnergy carrier balances for all \\(e\\)\nTechnology and storage capacity limits\n(Optional) Unit commitment and startup costs\n\n\n\n\n\n\n\nNote\n\n\n\nThis framework is highly flexible: to add a new technology or carrier, simply add its parameters and update the relevant sets. In this tutorial, we will extend the system with a methanol synthesis plant (using H₂ and CO₂ as inputs) and a carbon capture unit (as a CO₂ supply)."
+  },
+  {
+    "objectID": "part-11/tutorial-framework.html#introduction",
+    "href": "part-11/tutorial-framework.html#introduction",
+    "title": "Tutorial XI - Multi-Energy System Optimization Framework",
+    "section": "",
+    "text": "This tutorial demonstrates the implementation of a general multi-energy system optimization framework in Julia, following the mathematical formulation from the lecture. The framework is designed to be technology-agnostic and flexible, allowing you to model and optimize energy systems with multiple energy carriers (e.g., electricity, hydrogen, heat, methanol, CO₂, etc.) and a wide range of conversion, storage, and supply technologies.\nThe model is structured to: - Optimize investment and operational decisions across all technologies and carriers - Allow easy extension to new technologies and energy carriers by changing sets and parameters - Enable robust planning under uncertainty via scenario-based stochastic optimization\nIn this tutorial, you will: - Build the general sets and parameters for the framework - Generate example data for a multi-carrier system - Implement the model in Julia using JuMP - Extend the system with a methanol synthesis plant and a carbon capture unit"
+  },
+  {
+    "objectID": "part-11/tutorial-framework.html#mathematical-framework-overview",
+    "href": "part-11/tutorial-framework.html#mathematical-framework-overview",
+    "title": "Tutorial XI - Multi-Energy System Optimization Framework",
+    "section": "",
+    "text": "\\(\\mathcal{T}\\): Time periods\n\\(\\mathcal{E}\\): Energy carriers/fuels (e.g., electricity, hydrogen, CO₂, methanol)\n\\(\\mathcal{E}^D\\): Subset of carriers with demand constraints\n\\(\\mathcal{G}\\): All technology units\n\\(\\mathcal{G}^S\\): Storage units\n\\(\\mathcal{G}^{Var}\\): Variable renewable units (e.g., wind, PV)\n\\(\\mathcal{G}^{Conv}\\): Conversion units (e.g., electrolyzer, methanol synthesis)\n\\(\\mathcal{G}^{Sup}\\): Supply units (e.g., grid, CO₂ supply)\n\\(\\Omega\\): Scenarios\n\n\n\n\n\nInvestment: \\(P_g^{nom}\\) (nominal capacity), \\(SOC_g^{nom}\\) (storage energy capacity)\nOperation: \\(x_{g,e,t,\\omega}^{in}\\) (input flow), \\(x_{g,e,t,\\omega}^{out}\\) (output flow), \\(x_{g,t,\\omega}^{total}\\) (activity), \\(soc_{g,t,\\omega}\\) (state of charge), \\(f_{e,t,\\omega}^{buy}\\), \\(f_{e,t,\\omega}^{sell}\\)\nBinary: \\(u_{g,t,\\omega}\\) (on/off), \\(o_{g,t,\\omega}\\) (charge/discharge)\n\n\n\n\n\nCosts: Investment, variable, startup\nConversion: \\(\\sigma_{g,e}^{in}\\), \\(\\sigma_{g,e}^{out}\\), \\(\\Theta_g\\)\nLimits: \\(P_g^{max}\\), \\(P_g^{min}\\), \\(SOC_g^{max}\\), etc.\nScenario data: Demand, prices, capacity factors, etc.\n\n\n\n\nMaximize profit (revenues from selling carriers minus costs for buying, variable costs, startup costs, and investment costs).\n\n\n\n\nInvestment cost and budget\nInput-output relationships for all technologies\nStorage dynamics\nEnergy carrier balances for all \\(e\\)\nTechnology and storage capacity limits\n(Optional) Unit commitment and startup costs\n\n\n\n\n\n\n\nNote\n\n\n\nThis framework is highly flexible: to add a new technology or carrier, simply add its parameters and update the relevant sets. In this tutorial, we will extend the system with a methanol synthesis plant (using H₂ and CO₂ as inputs) and a carbon capture unit (as a CO₂ supply)."
+  },
+  {
+    "objectID": "part-11/tutorial-framework.html#load-packages",
+    "href": "part-11/tutorial-framework.html#load-packages",
+    "title": "Tutorial XI - Multi-Energy System Optimization Framework",
+    "section": "1. Load Packages",
+    "text": "1. Load Packages\n\nusing Pkg\nPkg.add(\"JuMP\")\nPkg.add(\"HiGHS\")\nPkg.add(\"CSV\")\nPkg.add(\"DataFrames\")\nPkg.add(\"CairoMakie\")\nPkg.add(\"Dates\")\n\n# Required packages\nusing Random\nusing Statistics\nusing DataFrames\nusing CSV\nusing Dates\nusing JuMP\nusing HiGHS\nusing CairoMakie\n\n# Set up CairoMakie\nset_theme!(theme_light())"
+  },
+  {
+    "objectID": "part-11/tutorial-framework.html#data-generation",
+    "href": "part-11/tutorial-framework.html#data-generation",
+    "title": "Tutorial XI - Multi-Energy System Optimization Framework",
+    "section": "2. Data Generation",
+    "text": "2. Data Generation\n\n# Set random seed for reproducibility\nRandom.seed!(42)\n\n# Get the directory of the current file\nfile_directory = \"$(@__DIR__)/data\"\n\n# Number of scenarios and time periods\nn_scenarios = 5\nn_hours = 168  # One week\n\n# Generate scenario data\nscenario_data = DataFrame(\n    scenario = String[],\n    datetime = DateTime[],\n    demand_meoh = Float64[],\n    wind_cf = Float64[],\n    pv_cf = Float64[],\n    market_price = Float64[],\n    probability = Float64[]\n)\n\n# Base datetime\nbase_datetime = DateTime(2024, 1, 1)\n\n# Generate data for each scenario\nfor s in 1:n_scenarios\n    # Methanol demand (constant for simplicity)\n    demand_meoh = fill(10.0, n_hours)  # 10 t/h equivalent\n\n    # Wind capacity factors\n    wind_cf = rand(n_hours)\n\n    # PV capacity factors (daily pattern)\n    hour_of_day = mod.(0:n_hours-1, 24)\n    pv_cf = max.(0, sin.(π .* hour_of_day ./ 12)) .+ randn(n_hours) .* 0.1\n    pv_cf = max.(0, min.(1, pv_cf))\n\n    # Market prices\n    base_price = 200 .+ 100 .* sin.(2π .* (0:n_hours-1) ./ 24)\n    market_price = base_price .+ randn(n_hours) .* 100\n    market_price = max.(-500, min.(1000, market_price))\n\n    for h in 1:n_hours\n        push!(scenario_data, (\n            \"S$s\",\n            base_datetime + Hour(h-1),\n            demand_meoh[h],\n            wind_cf[h],\n            pv_cf[h],\n            market_price[h],\n            1/n_scenarios\n        ))\n    end\nend\n\nCSV.write(\"$file_directory/scenario.csv\", scenario_data)\n\n# Grid data (electricity supply)\ngrid_data = DataFrame(\n    name = [\"grid\"],\n    taxes_levies = [50.0]  # EUR/MWh\n)\nCSV.write(\"$file_directory/grid.csv\", grid_data)\n\n# Storage data (battery example)\nstorage_data = DataFrame(\n    name = [\"battery\"],\n    energy_cost = [100000.0],  # EUR/MWh\n    power_cost = [50000.0],    # EUR/MW\n    lifetime = [10],\n    discount_rate = [0.05],\n    charge_efficiency = [0.95],\n    discharge_efficiency = [0.95],\n    self_discharge_rate = [0.001]\n)\nCSV.write(\"$file_directory/storage.csv\", storage_data)\n\n# Wind turbine data\nwind_data = DataFrame(\n    name = [\"wind\"],\n    power_cost = [1000000.0],  # EUR/MW\n    lifetime = [20],\n    discount_rate = [0.05]\n)\nCSV.write(\"$file_directory/windTurbine.csv\", wind_data)\n\n# PV data\npv_data = DataFrame(\n    name = [\"pv\"],\n    power_cost = [500000.0],   # EUR/MW\n    lifetime = [25],\n    discount_rate = [0.05]\n)\nCSV.write(\"$file_directory/pv.csv\", pv_data)\n\n# Electrolyzer data (conversion: electricity -&gt; hydrogen)\nelectrolyzer_data = DataFrame(\n    name = [\"electrolyzer\"],\n    power_cost = [800000.0],   # EUR/MW\n    lifetime = [15],\n    discount_rate = [0.05],\n    var_cost = [5.0],          # EUR/MWh H2\n    # Nominal input/output flows at 1 MW nominal power\n    input_carrier = [\"electricity\"],\n    output_carrier = [\"hydrogen\"],\n    input_flow_nom = [1.0],    # 1 MW electricity in\n    output_flow_nom = [0.0018]    # 0.0018 t/h hydrogen out (ca. 60% efficiency)\n)\nCSV.write(\"$file_directory/electrolyzer.csv\", electrolyzer_data)\n\n# Methanol synthesis data (conversion: hydrogen + CO2 -&gt; methanol)\nmethanol_data = DataFrame(\n    name = [\"meoh_synth\"],\n    power_cost = [1200000.0],  # EUR/t H2\n    lifetime = [20],\n    discount_rate = [0.05],\n    var_cost = [10.0],         # EUR/t H2\n    input_carrier = [\"hydrogen,CO2,electricity\"],\n    output_carrier = [\"methanol,water\"],\n    input_flow_nom = [0.19,1.37,0.03],  # 0.19 t/h H2, 1.37 t/h CO2, 0.03 MW electricity in\n    output_flow_nom = [1.0,0.56]        # 1 t methanol out\n)\nCSV.write(\"$file_directory/methanol.csv\", methanol_data)\n\n# Carbon capture (CO2 supply, fixed outflow)\nco2_supply_data = DataFrame(\n    name = [\"co2_supply\"],\n    supply_carrier = [\"CO2\"],\n    outflow_nom = [20.0],      # 20 t CO2 available (fixed)\n    var_cost = [20.0]          # EUR/t CO2\n)\nCSV.write(\"$file_directory/co2_supply.csv\", co2_supply_data)"
+  },
+  {
+    "objectID": "part-11/tutorial-framework.html#load-and-process-data",
+    "href": "part-11/tutorial-framework.html#load-and-process-data",
+    "title": "Tutorial XI - Multi-Energy System Optimization Framework",
+    "section": "3. Load and Process Data",
+    "text": "3. Load and Process Data\n\n# Load data\nusing DataFrames, CSV\n\n# Load all technology data\nfile_directory = \"$(@__DIR__)/data\"\ndfStorage = CSV.read(\"$file_directory/storage.csv\", DataFrame)\ndfWind = CSV.read(\"$file_directory/windTurbine.csv\", DataFrame)\ndfPV = CSV.read(\"$file_directory/pv.csv\", DataFrame)\ndfElectrolyzer = CSV.read(\"$file_directory/electrolyzer.csv\", DataFrame)\ndfMethanol = CSV.read(\"$file_directory/methanol.csv\", DataFrame)\ndfCO2Supply = CSV.read(\"$file_directory/co2_supply.csv\", DataFrame)\ndfScenarios = CSV.read(\"$file_directory/scenario.csv\", DataFrame)\ndfGrid = CSV.read(\"$file_directory/grid.csv\", DataFrame)\n\n# --- Build technology dictionaries with PVAF calculation ---\n\n# Storage units (G^S)\ndictGS = Dict()\nfor row in eachrow(dfStorage)\n    pvaf = (1 + row.discount_rate)^row.lifetime / \n           (row.discount_rate * (1 + row.discount_rate)^row.lifetime)\n    dictGS[row.name] = (\n        energy_cost = row.energy_cost,\n        power_cost = row.power_cost,\n        lifetime = row.lifetime,\n        discount_rate = row.discount_rate,\n        charge_efficiency = row.charge_efficiency,\n        discharge_efficiency = row.discharge_efficiency,\n        self_discharge_rate = row.self_discharge_rate,\n        pvaf = pvaf\n    )\nend\n\n# Variable renewables (G^Var)\ndictGVar = Dict()\nfor row in eachrow(dfWind)\n    pvaf = (1 + row.discount_rate)^row.lifetime / \n           (row.discount_rate * (1 + row.discount_rate)^row.lifetime)\n    dictGVar[row.name] = (\n        power_cost = row.power_cost,\n        lifetime = row.lifetime,\n        discount_rate = row.discount_rate,\n        pvaf = pvaf\n    )\nend\nfor row in eachrow(dfPV)\n    pvaf = (1 + row.discount_rate)^row.lifetime / \n           (row.discount_rate * (1 + row.discount_rate)^row.lifetime)\n    dictGVar[row.name] = (\n        power_cost = row.power_cost,\n        lifetime = row.lifetime,\n        discount_rate = row.discount_rate,\n        pvaf = pvaf\n    )\nend\n\n# Conversion units (G^Conv)\ndictGConv = Dict()\n# Electrolyzer\nfor row in eachrow(dfElectrolyzer)\n    pvaf = (1 + row.discount_rate)^row.lifetime / \n           (row.discount_rate * (1 + row.discount_rate)^row.lifetime)\n    # Calculate sigma and theta\n    input_carrier = split(row.input_carrier, \",\")\n    output_carrier = split(row.output_carrier, \",\")\n    input_flow_nom = [parse(Float64, x) for x in split(string(row.input_flow_nom), \",\")]\n    output_flow_nom = [parse(Float64, x) for x in split(string(row.output_flow_nom), \",\")]\n    sigma_in = Dict(input_carrier[i] =&gt; input_flow_nom[i]/sum(input_flow_nom) for i in 1:length(input_carrier))\n    sigma_out = Dict(output_carrier[i] =&gt; output_flow_nom[i]/sum(output_flow_nom) for i in 1:length(output_carrier))\n    theta = sum(output_flow_nom) / sum(input_flow_nom)\n    dictGConv[row.name] = (\n        power_cost = row.power_cost,\n        lifetime = row.lifetime,\n        discount_rate = row.discount_rate,\n        var_cost = row.var_cost,\n        input_carrier = input_carrier,\n        output_carrier = output_carrier,\n        sigma_in = sigma_in,\n        sigma_out = sigma_out,\n        theta = theta,\n        pvaf = pvaf\n    )\nend\n# Methanol synthesis\nfor row in eachrow(dfMethanol)\n    pvaf = (1 + row.discount_rate)^row.lifetime / \n           (row.discount_rate * (1 + row.discount_rate)^row.lifetime)\n    input_carrier = split(row.input_carrier, \",\")\n    output_carrier = split(row.output_carrier, \",\")\n    input_flow_nom = [parse(Float64, x) for x in split(string(row.input_flow_nom), \",\")]\n    output_flow_nom = [parse(Float64, x) for x in split(string(row.output_flow_nom), \",\")]\n    sigma_in = Dict(input_carrier[i] =&gt; input_flow_nom[i]/sum(input_flow_nom) for i in 1:length(input_carrier))\n    sigma_out = Dict(output_carrier[i] =&gt; output_flow_nom[i]/sum(output_flow_nom) for i in 1:length(output_carrier))\n    theta = sum(output_flow_nom) / sum(input_flow_nom)\n    dictGConv[row.name] = (\n        power_cost = row.power_cost,\n        lifetime = row.lifetime,\n        discount_rate = row.discount_rate,\n        var_cost = row.var_cost,\n        input_carrier = input_carrier,\n        output_carrier = output_carrier,\n        sigma_in = sigma_in,\n        sigma_out = sigma_out,\n        theta = theta,\n        pvaf = pvaf\n    )\nend\n\n# Supply units (G^Sup)\ndictGSup = Dict()\nfor row in eachrow(dfCO2Supply)\n    dictGSup[row.name] = (\n        supply_carrier = row.supply_carrier,\n        outflow_nom = row.outflow_nom,\n        var_cost = row.var_cost\n    )\nend\n# Grid as supply (electricity)\nfor row in eachrow(dfGrid)\n    dictGSup[row.name] = (\n        supply_carrier = \"electricity\",\n        taxes_levies = row.taxes_levies\n    )\nend\n\n# --- Build general technology dictionary and sets ---\n# Union of all technology dictionaries\ndictG = merge(dictGS, dictGVar, dictGConv, dictGSup)\n\n# Sets of technology names\nGS = collect(keys(dictGS))\nGVar = collect(keys(dictGVar))\nGConv = collect(keys(dictGConv))\nGSup = collect(keys(dictGSup))\nG = collect(keys(dictG))\n\n# --- Build supply dictionary for CO2 supply ---\ndictSupply = Dict()\nfor row in eachrow(dfCO2Supply)\n    dictSupply[row.supply_carrier] = (\n        outflow_nom = row.outflow_nom,\n        var_cost = row.var_cost\n    )\nend\n\n# --- Prepare scenario data with carrier-specific information ---\ndictScenarios = Dict()\nfor scenario in unique(dfScenarios.scenario)\n    scenario_data = dfScenarios[dfScenarios.scenario .== scenario, :]\n    \n    # Create carrier-specific demand dictionary\n    demand = Dict(\n        \"methanol\" =&gt; scenario_data.demand_meoh\n    )\n    \n    # Create technology-specific capacity factors\n    cf = Dict(\n        \"wind\" =&gt; scenario_data.wind_cf,\n        \"pv\" =&gt; scenario_data.pv_cf\n    )\n    \n    # Create carrier-specific market prices\n    market_price = Dict(\n        \"electricity\" =&gt; scenario_data.market_price,\n        \"hydrogen\" =&gt; fill(300.0, length(scenario_data.market_price)),  # Fixed H2 price\n        \"methanol\" =&gt; fill(70.0, length(scenario_data.market_price)),   # Fixed MeOH price (70 EUR/t)\n        \"CO2\" =&gt; fill(50.0, length(scenario_data.market_price))         # Fixed CO2 price\n    )\n    \n    dictScenarios[scenario] = (\n        datetime = scenario_data.datetime,\n        demand = demand,\n        cf = cf,\n        market_price = market_price,\n        probability = scenario_data.probability[1]\n    )\nend"
+  },
+  {
+    "objectID": "part-11/tutorial-framework.html#model-implementation",
+    "href": "part-11/tutorial-framework.html#model-implementation",
+    "title": "Tutorial XI - Multi-Energy System Optimization Framework",
+    "section": "4. Model Implementation",
+    "text": "4. Model Implementation\nNow, let’s implement the general Multi-Energy System Framework based on the Stochastic System Design model:\n\nfunction solve_mes_framework(dictGS, dictGVar, dictGConv, dictGSup, dictScenarios, dictSupply, max_budget)\n    # Create model\n    model = Model(HiGHS.Optimizer)\n    set_silent(model)\n    \n    # Define sets\n    T = 1:168  # Time periods (hours)\n    GS = collect(keys(dictGS))  # Storage units\n    GVar = collect(keys(dictGVar))  # Variable renewable units\n    GConv = collect(keys(dictGConv))  # Conversion units\n    GSup = collect(keys(dictGSup))  # Supply units\n    G = vcat(GS, GVar, GConv, GSup)  # All technology units\n    Ω = collect(keys(dictScenarios))  # Scenarios\n    \n    # Build set of energy carriers E and mapping sets inside the function\n    E = Set{String}()\n    for g in G\n        if haskey(dictG, g)\n            if haskey(dictG[g], :input_carrier)\n                for e in dictG[g].input_carrier\n                    push!(E, e)\n                end\n            end\n            if haskey(dictG[g], :output_carrier)\n                for e in dictG[g].output_carrier\n                    push!(E, e)\n                end\n            end\n            if haskey(dictG[g], :supply_carrier)\n                push!(E, dictG[g].supply_carrier)\n            end\n        end\n    end\n    E = collect(E)\n    \n    # Mapping sets for inflow and outflow carriers for each g\n    E_g_in = Dict(g =&gt; get(dictG[g], :input_carrier, String[])) for g in G\n    E_g_out = Dict(g =&gt; get(dictG[g], :output_carrier, String[])) for g in G\n    \n    # Carriers with demand\n    ED = [\"methanol\"]  # Only methanol has demand\n    \n    # Decision Variables\n    # Investment variables (First Stage)\n    @variable(model, P_nom[g in G] &gt;= 0)  # Nominal capacity\n    @variable(model, SOC_nom[g in GS] &gt;= 0)  # Storage energy capacity\n    \n    # Operational variables (Second Stage)\n    @variable(model, x_in[g in G, e in E, t in T, ω in Ω] &gt;= 0)  # Input flow\n    @variable(model, x_out[g in G, e in E, t in T, ω in Ω] &gt;= 0)  # Output flow\n    @variable(model, x_total[g in G, t in T, ω in Ω] &gt;= 0)  # Total activity\n    @variable(model, soc[g in GS, t in T, ω in Ω] &gt;= 0)  # State of charge\n    @variable(model, f_buy[e in E, t in T, ω in Ω] &gt;= 0)  # Buy flow\n    @variable(model, f_sell[e in E, t in T, ω in Ω] &gt;= 0)  # Sell flow\n    \n    # Binary variables\n    @variable(model, u[g in GConv, t in T, ω in Ω], Bin)  # On/off status\n    @variable(model, o[g in GS, t in T, ω in Ω], Bin)  # Charge/discharge\n    \n    # Cost variables\n    @variable(model, AC_inv[g in G] &gt;= 0)  # Annual investment cost\n    @variable(model, c_start[g in GConv, t in T, ω in Ω] &gt;= 0)  # Startup cost\n    \n    # Objective Function: Maximize profit\n    @objective(model, Max,\n        # Revenue from selling energy carriers\n        sum(dictScenarios[ω].probability * \n            sum(dictScenarios[ω].market_price[e][t] * f_sell[e,t,ω] \n                for e in E, t in T) for ω in Ω) * 52.1429 -\n        # Costs of buying energy carriers\n        sum(dictScenarios[ω].probability * \n            sum(dictScenarios[ω].market_price[e][t] * f_buy[e,t,ω] \n                for e in E, t in T) for ω in Ω) * 52.1429 -\n        # Variable operating costs\n        sum(dictScenarios[ω].probability * \n            sum(dictGConv[g].var_cost * x_total[g,t,ω] \n                for g in GConv, t in T) for ω in Ω) * 52.1429 -\n        # Investment costs\n        sum(AC_inv[g] for g in G)\n    )\n    \n    # Investment cost constraints\n    @constraint(model, [g in GS], AC_inv[g] == \n        dictGS[g].power_cost/dictGS[g].pvaf * P_nom[g] + \n        dictGS[g].energy_cost/dictGS[g].pvaf * SOC_nom[g])\n    \n    @constraint(model, [g in vcat(GVar, GConv)], AC_inv[g] == \n        dictG[g].power_cost/dictG[g].pvaf * P_nom[g])\n    \n    # Investment budget constraint\n    @constraint(model, sum(AC_inv[g] for g in G) &lt;= max_budget)\n    \n    # Energy conversion constraints\n    # Input-output relationships for conversion units\n    @constraint(model, [g in GConv, e in dictGConv[g].input_carrier, t in T, ω in Ω],\n        x_in[g,e,t,ω] == dictGConv[g].sigma_in[e] * x_total[g,t,ω])\n    \n    @constraint(model, [g in GConv, e in dictGConv[g].output_carrier, t in T, ω in Ω],\n        x_out[g,e,t,ω] == dictGConv[g].sigma_out[e] * dictGConv[g].theta * x_total[g,t,ω])\n    \n    # Technology capacity limits\n    @constraint(model, [g in GConv, t in T, ω in Ω],\n        0.1 * P_nom[g] * u[g,t,ω] &lt;= x_total[g,t,ω] &lt;= P_nom[g] * u[g,t,ω])\n    \n    # Variable energy technologies\n    @constraint(model, [g in GVar, t in T, ω in Ω],\n        x_total[g,t,ω] &lt;= dictScenarios[ω].cf[g][t] * P_nom[g])\n    \n    # Storage constraints\n    @constraint(model, [g in GS, t in 2:length(T), ω in Ω],\n        soc[g,t,ω] == (1 - dictGS[g].self_discharge_rate) * soc[g,t-1,ω] +\n        dictGS[g].charge_efficiency * x_total[g,t,ω] -\n        sum(x_out[g,e,t,ω] for e in E) / dictGS[g].discharge_efficiency)\n    \n    @constraint(model, [g in GS, ω in Ω],\n        soc[g,1,ω] == dictGS[g].charge_efficiency * x_total[g,1,ω] -\n        sum(x_out[g,e,1,ω] for e in E) / dictGS[g].discharge_efficiency)\n    \n    # Storage capacity limits\n    @constraint(model, [g in GS, t in T, ω in Ω],\n        soc[g,t,ω] &lt;= SOC_nom[g])\n    \n    # Storage charging/discharging mutual exclusion\n    @constraint(model, [g in GS, t in T, ω in Ω],\n        0.1 * P_nom[g] * o[g,t,ω] &lt;= x_total[g,t,ω] &lt;= P_nom[g] * o[g,t,ω])\n    \n    @constraint(model, [g in GS, t in T, ω in Ω],\n        0.1 * P_nom[g] * (1-o[g,t,ω]) &lt;= \n        sum(x_out[g,e,t,ω] for e in E) &lt;= P_nom[g] * (1-o[g,t,ω]))\n    \n    # Supply unit constraints (fixed outflow)\n    @constraint(model, [g in GSup, t in T, ω in Ω],\n        haskey(dictGSup[g], :outflow_nom) ? \n        x_out[g,dictGSup[g].supply_carrier,t,ω] &lt;= dictGSup[g].outflow_nom : \n        x_out[g,dictGSup[g].supply_carrier,t,ω] &gt;= 0)\n    \n    # Energy balance constraints\n    @constraint(model, [e in ED, t in T, ω in Ω],\n        sum(x_out[g,e,t,ω] for g in G) + f_buy[e,t,ω] == \n        sum(x_in[g,e,t,ω] for g in G) + f_sell[e,t,ω] + dictScenarios[ω].demand[e][t])\n    \n    # Solve the model\n    optimize!(model)\n    \n    # Check solution status\n    if termination_status(model) != MOI.OPTIMAL\n        ts = termination_status(model)\n        @info \"Optimization finished. The model was not solved correctly. Termination Status: $ts\"\n    end\n    \n    # Return results\n    return (\n        P_nom = value.(P_nom),\n        SOC_nom = value.(SOC_nom),\n        total_cost = objective_value(model),\n        investment_costs = Dict(g =&gt; value.(AC_inv[g]) for g in G),\n        operational_variables = Dict(\n            \"x_in\" =&gt; value.(x_in),\n            \"x_out\" =&gt; value.(x_out),\n            \"x_total\" =&gt; value.(x_total),\n            \"soc\" =&gt; value.(soc),\n            \"f_buy\" =&gt; value.(f_buy),\n            \"f_sell\" =&gt; value.(f_sell)\n        )\n    )\nend"
+  },
+  {
+    "objectID": "part-11/tutorial-framework.html#solve-and-analyze-results",
+    "href": "part-11/tutorial-framework.html#solve-and-analyze-results",
+    "title": "Tutorial XI - Multi-Energy System Optimization Framework",
+    "section": "5. Solve and Analyze Results",
+    "text": "5. Solve and Analyze Results\nLet’s solve the model with a maximum budget of 50 million EUR:\n\n# Solve model\nmax_budget = 50_000_000  # 50 million EUR\nresults = solve_mes_framework(dictGS, dictGVar, dictGConv, dictGSup, dictScenarios, dictSupply, max_budget)\n\n# Create results DataFrame\nresults_df = DataFrame(\n    component = String[],\n    capacity = Float64[],\n    investment_cost = Float64[]\n)\n\n# Add results for all technology types\nfor g in keys(results.P_nom)\n    if g in GS\n        push!(results_df, (g, results.P_nom[g], results.investment_costs[g]))\n    elseif g in GVar\n        push!(results_df, (g, results.P_nom[g], results.investment_costs[g]))\n    elseif g in GConv\n        push!(results_df, (g, results.P_nom[g], results.investment_costs[g]))\n    end\nend\n\n# Calculate total costs\ntotal_investment_cost = sum(values(results.investment_costs))\ntotal_cost = results.total_cost\n\n# Print results\nprintln(\"Optimal Multi-Energy System Design:\")\nprintln(\"=\" * 50)\n\n# Storage results\nfor g in GS\n    println(\"$g:\")\n    println(\"  Power Capacity: $(round(results.P_nom[g], digits=2)) MW\")\n    println(\"  Energy Capacity: $(round(results.SOC_nom[g], digits=2)) MWh\")\n    println(\"  Investment Cost: $(round(results.investment_costs[g], digits=2)) EUR/year\")\nend\n\n# Variable renewable results\nfor g in GVar\n    println(\"$g:\")\n    println(\"  Power Capacity: $(round(results.P_nom[g], digits=2)) MW\")\n    println(\"  Investment Cost: $(round(results.investment_costs[g], digits=2)) EUR/year\")\nend\n\n# Conversion unit results\nfor g in GConv\n    println(\"$g:\")\n    println(\"  Power Capacity: $(round(results.P_nom[g], digits=2)) MW\")\n    println(\"  Investment Cost: $(round(results.investment_costs[g], digits=2)) EUR/year\")\nend\n\nprintln(\"\\nCost Summary:\")\nprintln(\"Total Annual Cost: $(round(total_cost, digits=2)) EUR/year\")\nprintln(\"Total Investment Cost: $(round(total_investment_cost, digits=2)) EUR/year\")\n\n# Create operational results DataFrame\noperational_df = DataFrame(\n    scenario = String[],\n    hour = Int[],\n    carrier = String[],\n    demand = Float64[],\n    production = Float64[],\n    storage_energy = Float64[],\n    buy_flow = Float64[],\n    sell_flow = Float64[]\n)\n\n# Add operational data for each scenario and carrier\nfor ω in keys(dictScenarios)\n    for t in 1:168\n        for e in [\"methanol\"]\n            # Calculate total production for this carrier\n            production = sum(results.operational_variables[\"x_out\"][g,e,t,ω] for g in G)\n            \n            # Get storage energy (only for electricity storage)\n            storage_energy = 0.0\n            if e == \"electricity\"\n                for g in GS\n                    storage_energy += results.operational_variables[\"soc\"][g,t,ω]\n                end\n            end\n            \n            push!(operational_df, (\n                ω,\n                t,\n                e,\n                dictScenarios[ω].demand[e][t],\n                production,\n                storage_energy,\n                results.operational_variables[\"f_buy\"][e,t,ω],\n                results.operational_variables[\"f_sell\"][e,t,ω]\n            ))\n        end\n    end\nend"
+  },
+  {
+    "objectID": "part-11/tutorial-framework.html#create-figures",
+    "href": "part-11/tutorial-framework.html#create-figures",
+    "title": "Tutorial XI - Multi-Energy System Optimization Framework",
+    "section": "6. Create Figures",
+    "text": "6. Create Figures\n\n# Create figure for component sizes and costs\nfig1 = Figure(size=(1200, 800))\n\n# Component sizes\nax1 = Axis(fig1[1, 1], title=\"Optimal Component Sizes\")\nx_pos = 1:length(results_df.component)\nbarplot!(ax1, x_pos, results_df.capacity)\nax1.xticks = (x_pos, results_df.component)\nax1.xticklabelrotation = π/4\nax1.ylabel = \"Capacity [MWh/MW]\"\n\n# Cost breakdown\nax2 = Axis(fig1[1, 2], title=\"Annual Investment Cost Breakdown\", aspect=1)\nhidespines!(ax2)\nhidedecorations!(ax2)\ncosts = [results.investment_costs[g] for g in results_df.component]\ncolors = [:blue, :green, :orange, :red, :purple, :brown]\nlabels = results_df.component\n\n# Create pie chart\npie!(ax2, costs, color=colors, radius=0.8)\n\n# Create legend\nLegend(fig1[2, 2], [PolyElement(color=c) for c in colors], labels, \"Components\", \n    orientation=:horizontal)\n\n# Display figure\ndisplay(fig1)\n\n# Create operational plots for multi-carrier system\nfig2 = Figure(size=(1400, 1800))\n\n# Methanol system\nax1 = Axis(fig2[1, 1], title=\"Methanol Production and Demand\")\nfor ω in keys(dictScenarios)\n    # Total methanol production\n    total_prod = [sum(results.operational_variables[\"x_out\"][g,\"methanol\",t,ω] for g in G) for t in 1:168]\n    lines!(ax1, 1:168, total_prod, label=\"Production - $ω\")\n    lines!(ax1, 1:168, dictScenarios[ω].demand[\"methanol\"], label=\"Demand - $ω\", linestyle=:dash)\nend\nax1.xlabel = \"Hour\"\nax1.ylabel = \"Production [t/h]\"\naxislegend(ax1)\n\n# Storage operation\nax2 = Axis(fig2[1, 2], title=\"Storage Energy Level\")\nfor g in GS\n    for ω in keys(dictScenarios)\n        lines!(ax2, 1:168, [results.operational_variables[\"soc\"][g,t,ω] for t in 1:168], \n               label=\"$g - $ω\")\n    end\nend\nax2.xlabel = \"Hour\"\nax2.ylabel = \"Energy [MWh]\"\naxislegend(ax2)\n\n# Hydrogen flows\nax3 = Axis(fig2[2, 1], title=\"Hydrogen Production and Consumption\")\nfor ω in keys(dictScenarios)\n    # Hydrogen production (from electrolyzer)\n    h2_prod = [sum(results.operational_variables[\"x_out\"][g,\"hydrogen\",t,ω] for g in G) for t in 1:168]\n    # Hydrogen consumption (by methanol synthesis)\n    h2_cons = [sum(results.operational_variables[\"x_in\"][g,\"hydrogen\",t,ω] for g in G) for t in 1:168]\n    lines!(ax3, 1:168, h2_prod, label=\"Production - $ω\")\n    lines!(ax3, 1:168, h2_cons, label=\"Consumption - $ω\", linestyle=:dash)\nend\nax3.xlabel = \"Hour\"\nax3.ylabel = \"Flow [t/h]\"\naxislegend(ax3)\n\n# CO2 flows\nax4 = Axis(fig2[2, 2], title=\"CO2 Supply and Consumption\")\nfor ω in keys(dictScenarios)\n    # CO2 supply\n    co2_supply = [sum(results.operational_variables[\"x_out\"][g,\"CO2\",t,ω] for g in GSup) for t in 1:168]\n    # CO2 consumption (by methanol synthesis)\n    co2_cons = [sum(results.operational_variables[\"x_in\"][g,\"CO2\",t,ω] for g in G) for t in 1:168]\n    lines!(ax4, 1:168, co2_supply, label=\"Supply - $ω\")\n    lines!(ax4, 1:168, co2_cons, label=\"Consumption - $ω\", linestyle=:dash)\nend\nax4.xlabel = \"Hour\"\nax4.ylabel = \"Flow [t/h]\"\naxislegend(ax4)\n\n# Technology operation\nax5 = Axis(fig2[3, 1], title=\"Technology Operation Levels\")\nfor g in GConv\n    for ω in keys(dictScenarios)\n        lines!(ax5, 1:168, [results.operational_variables[\"x_total\"][g,t,ω] for t in 1:168], \n               label=\"$g - $ω\")\n    end\nend\nax5.xlabel = \"Hour\"\nax5.ylabel = \"Activity Level [MW]\"\naxislegend(ax5)\n\n# Variable renewable operation\nax6 = Axis(fig2[3, 2], title=\"Variable Renewable Generation\")\nfor g in GVar\n    for ω in keys(dictScenarios)\n        lines!(ax6, 1:168, [results.operational_variables[\"x_total\"][g,t,ω] for t in 1:168], \n               label=\"$g - $ω\")\n    end\nend\nax6.xlabel = \"Hour\"\nax6.ylabel = \"Power [MW]\"\naxislegend(ax6)\n\n# Display figure\ndisplay(fig2)"
+  },
+  {
+    "objectID": "part-11/tutorial-framework.html#methanol-synthesis-and-carbon-capture-extension",
+    "href": "part-11/tutorial-framework.html#methanol-synthesis-and-carbon-capture-extension",
+    "title": "Tutorial XI - Multi-Energy System Optimization Framework",
+    "section": "7. Methanol Synthesis and Carbon Capture Extension",
+    "text": "7. Methanol Synthesis and Carbon Capture Extension\nThe framework has been successfully extended with:\n\nMethanol Synthesis Plant: Converts hydrogen and CO₂ to methanol\nCarbon Capture Unit: Provides CO₂ supply to the system\n\nLet’s analyze the results of this extension:\n\n# Analyze methanol synthesis results\nprintln(\"Methanol Synthesis Analysis:\")\nprintln(\"=\" * 40)\n\n# Calculate average methanol production\navg_meoh_prod = 0.0\nfor ω in keys(dictScenarios)\n    for t in 1:168\n        avg_meoh_prod += sum(results.operational_variables[\"x_out\"][g,\"methanol\",t,ω] for g in G)\n    end\nend\navg_meoh_prod /= (length(keys(dictScenarios)) * 168)\n\nprintln(\"Average Methanol Production: $(round(avg_meoh_prod, digits=2)) t/h\")\nprintln(\"Methanol Synthesis Capacity: $(round(results.P_nom[\"meoh_synth\"], digits=2)) MW\")\nprintln(\"Investment Cost: $(round(results.investment_costs[\"meoh_synth\"], digits=2)) EUR/year\")\n\n# Analyze hydrogen flows\nprintln(\"\\nHydrogen Flow Analysis:\")\nprintln(\"=\" * 40)\n\n# Calculate average hydrogen production and consumption\navg_h2_prod = 0.0\navg_h2_cons = 0.0\nfor ω in keys(dictScenarios)\n    for t in 1:168\n        avg_h2_prod += sum(results.operational_variables[\"x_out\"][g,\"hydrogen\",t,ω] for g in G)\n        avg_h2_cons += sum(results.operational_variables[\"x_in\"][g,\"hydrogen\",t,ω] for g in G)\n    end\nend\navg_h2_prod /= (length(keys(dictScenarios)) * 168)\navg_h2_cons /= (length(keys(dictScenarios)) * 168)\n\nprintln(\"Average Hydrogen Production: $(round(avg_h2_prod, digits=2)) t/h\")\nprintln(\"Average Hydrogen Consumption: $(round(avg_h2_cons, digits=2)) t/h\")\nprintln(\"Electrolyzer Capacity: $(round(results.P_nom[\"electrolyzer\"], digits=2)) MW\")\n\n# Analyze CO2 flows\nprintln(\"\\nCO2 Flow Analysis:\")\nprintln(\"=\" * 40)\n\navg_co2_supply = 0.0\navg_co2_cons = 0.0\nfor ω in keys(dictScenarios)\n    for t in 1:168\n        avg_co2_supply += sum(results.operational_variables[\"x_out\"][g,\"CO2\",t,ω] for g in GSup)\n        avg_co2_cons += sum(results.operational_variables[\"x_in\"][g,\"CO2\",t,ω] for g in G)\n    end\nend\navg_co2_supply /= (length(keys(dictScenarios)) * 168)\navg_co2_cons /= (length(keys(dictScenarios)) * 168)\n\nprintln(\"Average CO2 Supply: $(round(avg_co2_supply, digits=2)) t/h\")\nprintln(\"Average CO2 Consumption: $(round(avg_co2_cons, digits=2)) t/h\")\nprintln(\"CO2 Supply Capacity: $(round(dictSupply[\"CO2\"].outflow_nom, digits=2)) t/h\")"
+  },
+  {
+    "objectID": "part-11/tutorial-framework.html#sensitivity-analysis",
+    "href": "part-11/tutorial-framework.html#sensitivity-analysis",
+    "title": "Tutorial XI - Multi-Energy System Optimization Framework",
+    "section": "8. Sensitivity Analysis",
+    "text": "8. Sensitivity Analysis\nLet’s analyze how the optimal solution changes with different maximum budgets:\n\n# Test different budgets\nbudgets = [25_000_000, 50_000_000, 75_000_000, 100_000_000]\nresults_by_budget = Dict()\n\nfor budget in budgets\n    results_by_budget[budget] = solve_mes_framework(dictGS, dictGVar, dictGConv, dictGSup, dictScenarios, dictSupply, budget)\nend\n\n# Create figure\nfig3 = Figure(size=(1200, 800))\n\n# Sort budgets and get corresponding results\nsorted_budgets = sort(budgets)\nsorted_results = [results_by_budget[b] for b in sorted_budgets]\n\n# Component sizes vs budget\nax1 = Axis(fig3[1, 1], title=\"Component Sizes vs Budget\")\nfor g in G\n    if g in results.P_nom\n        lines!(ax1, sorted_budgets, [r.P_nom[g] for r in sorted_results], label=g)\n    end\nend\nax1.xlabel = \"Maximum Budget [EUR]\"\nax1.ylabel = \"Capacity [MWh or MW]\"\naxislegend(ax1)\n\n# Costs vs budget\nax2 = Axis(fig3[1, 2], title=\"Costs vs Budget\")\nlines!(ax2, sorted_budgets, [r.total_cost for r in sorted_results], label=\"Total Annual Cost\")\n\n# Add investment costs for each technology type\nfor g in G\n    if g in results.investment_costs\n        lines!(ax2, sorted_budgets, [r.investment_costs[g] for r in sorted_results], label=g)\n    end\nend\n\nax2.xlabel = \"Maximum Budget [EUR]\"\nax2.ylabel = \"Annual Cost [EUR/year]\"\naxislegend(ax2)\n\n# Display figure\ndisplay(fig3)\n\n# Print key findings\nprintln(\"\\nKey Findings from Budget Sensitivity Analysis:\")\nprintln(\"1. Impact on Component Sizes:\")\nfor g in G\n    if g in results.P_nom\n        println(\"   - $g capacity changes from $(round(sorted_results[1].P_nom[g], digits=2)) to $(round(sorted_results[end].P_nom[g], digits=2)) MW\")\n    end\nend\n\nprintln(\"\\n2. Impact on Costs:\")\nprintln(\"   - Total cost changes from $(round(sorted_results[1].total_cost, digits=2)) to $(round(sorted_results[end].total_cost, digits=2)) EUR/year\")"
+  },
+  {
+    "objectID": "part-11/tutorial-framework.html#conclusion",
+    "href": "part-11/tutorial-framework.html#conclusion",
+    "title": "Tutorial XI - Multi-Energy System Optimization Framework",
+    "section": "9. Conclusion",
+    "text": "9. Conclusion\nThis tutorial has successfully demonstrated the implementation of a general multi-energy system optimization framework with the following key achievements:\n\nFramework Implementation\n\nTechnology-agnostic design: The framework can handle any combination of energy carriers and conversion technologies\nFlexible data structure: Uses carrier-specific demand, capacity factors, and market prices\nComprehensive constraints: Implements all framework constraints including energy conversion, storage dynamics, and energy balances\n\n\n\nSystem Extension\n\nMethanol synthesis: Successfully integrated hydrogen and CO₂ conversion to methanol\nCarbon capture: Added CO₂ supply as a new energy carrier\nMulti-carrier optimization: Optimized across electricity, hydrogen, methanol, and CO₂ simultaneously\n\n\n\nKey Benefits\n\nScalability: Easy to add new technologies and carriers by updating data files\nRobustness: Stochastic formulation handles uncertainty in renewable generation and demand\nComprehensive: Considers investment and operational decisions simultaneously\nFlexible: Framework can be adapted to various energy system applications\n\n\n\nPractical Applications\nThe framework can be applied to: - Industrial energy systems - Microgrid design - Power-to-X facilities - Multi-energy hubs - Renewable energy integration\n\n\n\n\n\n\nNote\n\n\n\nThe general framework provides a powerful foundation for multi-energy system optimization. By changing only the data files (sets and parameters), the same model can be applied to different energy system configurations, making it a versatile tool for energy system planning and optimization."
   }
 ]

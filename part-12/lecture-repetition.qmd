@@ -1,0 +1,690 @@
+---
+title: "Lecture XII - Course Repetition and Summary"
+subtitle: "Energy System Optimization with Julia"
+author: "Dr. Tobias Cors"
+institute: "Hamburg University of Applied Science - Summer 2025"
+title-slide-attributes:
+    data-background-color: "#025259"
+html-math-method:
+  method: mathjax
+  url: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+
+format:
+    html:
+        theme: [litera, ../styles.scss]
+    revealjs:
+        theme: [default, ../styles.scss]
+        transition: slide
+        transition-speed: fast
+        highlight-style: arrow
+        slide-number: true
+        code-copy: true
+        code-link: true
+        preview-links: auto
+        footer: " {{< meta title >}} | {{< meta author >}} | [Home](lecture-repetition.qmd)"
+        output-file: lecture-presentation.html
+
+bibliography: ../ESO-bib.bib
+
+engine: julia
+
+execute:
+    echo: true
+---
+
+# [Course Overview]{.flow} {.title}
+
+## What We Have Covered
+
+This course has been organized into three main parts:
+
+1. **Part I**: Introduction to Julia and Modelling (Lectures I-IV)
+2. **Part II**: Energy System Optimization with Basic Models (Lectures V-VIII)
+3. **Part III**: Energy System Optimization with Advanced Models (Lectures IX-XI)
+
+. . .
+
+::: {.callout-tip}
+This repetition lecture will help you consolidate your understanding of all key concepts covered throughout the course.
+:::
+
+# [Part I: Introduction to Julia and Modelling]{.flow} {.title}
+
+## Lecture I: Welcome and Introduction
+
+### Course Objectives
+- Understanding and applying optimization to real-world problems
+- Learning to recognize and solve problem structures
+- Energy system optimization applications
+
+### Key Topics Covered
+- Course structure and assignments
+- Energy system optimization applications
+- Julia programming language introduction
+- Real-world applications in operations research
+
+## Lecture II: First Steps in Julia
+
+### Core Programming Concepts
+- **Variables**: Assignment and data types
+- **Vectors**: Creation, indexing, and manipulation
+- **Comparisons**: Boolean operations and conditional logic
+- **Loops**: `for` and `while` loops for iteration
+- **Dictionaries**: Key-value data structures
+
+### Technical Setup
+- Julia installation and configuration
+- VS Code setup with Julia extension
+- IJulia for Jupyter notebooks
+- Assignment submission process
+
+## Lecture III: Packages and Data Management
+
+### Advanced Julia Concepts
+- **Functions**: Definition, arguments, and return values
+- **Packages**: Installation and usage with `using` and `import`
+- **DataFrames**: Tabular data manipulation
+- **Input/Output**: File reading and writing operations
+- **Plotting**: Data visualization with Plots.jl
+
+### Key Skills Developed
+- Package management with `Pkg`
+- Data manipulation with DataFrames.jl
+- File I/O operations with CSV.jl
+- Basic plotting and visualization
+
+## Lecture IV: Modelling with JuMP
+
+### Mathematical Optimization Foundation
+- **JuMP Framework**: Optimization modeling in Julia
+- **Variables**: Declaration with bounds and types
+- **Constraints**: Equality and inequality constraints
+- **Objective Functions**: Linear and nonlinear objectives
+- **Solvers**: Integration with various optimization solvers
+
+### Modeling Skills
+- Problem formulation in mathematical notation
+- Translation to JuMP code
+- Solver selection and parameter setting
+- Solution analysis and interpretation
+
+# [Part II: Energy System Optimization with Basic Models]{.flow} {.title}
+
+## Lecture V: Economic Dispatch Problem
+
+### Problem Definition
+- **Objective**: Minimize electricity generation costs
+- **Constraints**: Demand satisfaction, generator limits, renewable integration
+- **Decision Variables**: Power output of thermal generators and renewables
+
+### Mathematical Formulation
+**Sets:**
+
+- $\mathcal{G}$ - Set of thermal generators
+- $\mathcal{W}$ - Set of wind turbines
+
+**Parameters:**
+
+- $c^{var}_g$ - Variable cost of generator $g$
+- $p^{\min}_g, p^{\max}_g$ - Power limits of generator $g$
+- $p^{f}_w$ - Forecasted wind power
+- $d^f$ - Forecasted demand
+
+**Decision Variables:**
+
+- $p_g$ - Power output of generator $g$
+- $p_w$ - Power output of wind turbine $w$
+
+**Objective:**
+
+$\min \sum_{g \in \mathcal{G}} c^{var}_g p_g + \sum_{w \in \mathcal{W}} c^{var}_w p_w$
+
+**Constraints:**
+
+- Power balance: $\sum_{g \in \mathcal{G}} p_g + \sum_{w \in \mathcal{W}} p_w = d^f$
+- Generator limits: $p^{\min}_g \leq p_g \leq p^{\max}_g \quad \forall g \in \mathcal{G}$
+- Wind limits: $0 \leq p_w \leq p^{f}_w \quad \forall w \in \mathcal{W}$
+
+## Lecture VI: Unit Commitment Problem
+
+### Problem Extension
+- **Binary Variables**: Startup/shutdown decisions
+- **Time Dimension**: Multi-period optimization
+- **Additional Constraints**: Minimum up/down times, ramp rates
+
+### Key Modeling Concepts
+- **Binary Variables**: $v_{g,t}$ (startup), $u_{g,t}$ (commitment)
+- **Minimum Up/Down Times**: Prevent rapid cycling
+- **Ramp Rate Limits**: Constrain power change rates
+- **Startup Costs**: Additional costs for starting generators
+
+### Mathematical Extensions
+**Additional Sets:**
+
+- $\mathcal{T}$ - Set of time periods
+
+**Additional Variables:**
+
+- $v_{g,t}$ - Binary startup variable
+- $u_{g,t}$ - Binary commitment variable
+
+**Additional Constraints:**
+
+- Minimum up time: $\sum_{\tau=t}^{t+UT_g-1} u_{g,\tau} \geq UT_g v_{g,t}$
+- Minimum down time: $\sum_{\tau=t}^{t+DT_g-1} (1-u_{g,\tau}) \geq DT_g (1-u_{g,t-1})$
+- Ramp rate: $p_{g,t} - p_{g,t-1} \leq RampUp_g u_{g,t}$
+
+## Lecture VII: Storage Systems
+
+### Storage Modeling Concepts
+- **Energy Balance**: Storage level evolution over time
+- **Power Limits**: Charging and discharging rate constraints
+- **Efficiency**: Energy conversion losses
+- **State of Charge**: Energy level constraints
+
+### Mathematical Formulation
+**Sets:**
+
+- $\mathcal{S}$ - Set of storage systems
+
+**Variables:**
+
+- $e_{s,t}$ - Energy level of storage $s$ at time $t$
+- $p^{ch}_{s,t}$ - Charging power of storage $s$ at time $t$
+- $p^{dis}_{s,t}$ - Discharging power of storage $s$ at time $t$
+
+**Constraints:**
+
+- Energy balance: $e_{s,t} = e_{s,t-1} + \eta^{ch}_s p^{ch}_{s,t} - \frac{p^{dis}_{s,t}}{\eta^{dis}_s}$
+- Energy limits: $E^{\min}_s \leq e_{s,t} \leq E^{\max}_s$
+- Power limits: $0 \leq p^{ch}_{s,t} \leq P^{ch,\max}_s$, $0 \leq p^{dis}_{s,t} \leq P^{dis,\max}_s$
+
+## Lecture VIII: Investment Planning
+
+### Long-term Planning Problem
+- **Investment Decisions**: Capacity expansion decisions
+- **Multi-period Optimization**: Long-term planning horizon
+- **Cost Components**: Investment, operational, and maintenance costs
+
+### Key Concepts
+- **Annualized Costs**: Converting investment costs to annual equivalents
+- **Capacity Planning**: Optimal sizing of generation and storage
+- **Economic Analysis**: Cost-benefit evaluation of investments
+- **System Reliability**: Ensuring adequate capacity margins
+
+# [Part III: Energy System Optimization with Advanced Models]{.flow} {.title}
+
+## Lecture IX: Multi-Energy Systems
+
+### System Integration
+- **Multiple Energy Carriers**: Electricity and hydrogen as primary example
+- **Energy Conversion**: Technologies linking different carriers (electrolyzers)
+- **System Optimization**: Coordinated optimization across carriers
+
+### Key Components
+- **Electrolyzers**: Electricity to hydrogen conversion
+- **Energy Storage**: Multiple storage types for different carriers
+- **Renewable Generation**: Wind and PV integration
+- **Grid Connection**: Market participation for electricity
+
+### Mathematical Extensions
+**Additional Sets:**
+
+- $\mathcal{S}_{\text{El}}$ - Subset of electricity storage systems
+- $\mathcal{S}_{\text{H2}}$ - Subset of hydrogen storage systems
+- $\mathcal{X}$ - Set of electrolyzers
+
+**Additional Variables:**
+
+- $h_{x,t,\omega}$ - Hydrogen production from electrolyzer $x$
+- $p_{x,t,\omega}$ - Power consumption of electrolyzer $x$
+
+**Additional Constraints:**
+
+- Hydrogen balance: $\sum_{x \in \mathcal{X}} h_{x,t,\omega} + \sum_{s \in \mathcal{S}_{\text{H2}}} (p^{dis}_{s,t,\omega} - p^{ch}_{s,t,\omega}) = d_{t,\omega}$
+- Electrolyzer conversion: $h_{x,t,\omega} = \beta_x p_{x,t,\omega}$
+- Electricity balance modified: $\sum_{w \in \mathcal{W}} p_{w,t,\omega} + \sum_{v \in \mathcal{V}} p_{v,t,\omega} + (p^{in}_{t,\omega} - p^{out}_{t,\omega}) + \sum_{s \in \mathcal{S}_{\text{El}}} (p^{dis}_{s,t,\omega} - p^{ch}_{s,t,\omega}) = \sum_{x \in \mathcal{X}} p_{x,t,\omega}$
+
+### Two-Stage Stochastic Programming
+- **First Stage (Investment)**: Storage capacity, wind/PV capacity, electrolyzer capacity decisions
+- **Second Stage (Operation)**: Power dispatch, storage operation, grid interaction decisions
+- **Solution Approaches**: Monolithic approach or decomposition methods (Benders, Progressive Hedging)
+- **Mathematical Form**: $\min_{x} \quad c^T x + \mathbb{E}_{\omega}[Q(x,\omega)]$
+
+### Model Characteristics
+- Two-stage stochastic Linear Programming (LP) problem for multi-energy systems
+- Combines investment and operational decisions across multiple energy carriers
+- Large-scale optimization problem with energy conversion technologies
+- Integrates electricity and hydrogen value chains
+
+### Key Extensions from Single-Energy Systems
+- **Electrolyzers**: Convert electricity to hydrogen with efficiency $\beta_x$
+- **Hydrogen Storage**: Separate storage systems for hydrogen with different characteristics
+- **Energy Conversion**: Explicit modeling of energy carrier conversion processes
+- **Multi-Carrier Storage**: Distinguishes between electricity ($\mathcal{S}_{\text{El}}$) and hydrogen ($\mathcal{S}_{\text{H2}}$) storage
+
+::: {.callout-note}
+**Note**: Lecture IX uses technology-specific sets and variables (e.g., $\mathcal{X}$ for electrolyzers, $\mathcal{S}_{\text{El}}$ and $\mathcal{S}_{\text{H2}}$ for storage types). Only the storage modeling provides a template for a more general framework formulation.
+:::
+
+## Lecture X: Test Exam Preparation
+
+::: {.callout-note}
+**Note**: Lecture X was dedicated to test exam preparation, where students practiced exam-style problems together in class. This session focused on applying the concepts learned throughout the course to prepare for the final examination.
+:::
+
+## Lecture XI: Framework for Multi-Energy System Optimization
+
+### General Framework Approach
+- **Adaptable Design**: Framework that can be configured for different MES setups
+- **Configurable Sets and Parameters**: Only requires configuration of sets and parameters for new applications
+- **Technology-Agnostic**: Not limited to specific technologies or energy carriers
+- **Scalable Architecture**: Can handle various system sizes and complexities
+
+### Comprehensive Framework
+- **Multi-Carrier Integration**: Flexible approach to multiple energy carriers
+- **Stochastic Formulation**: Uncertainty in renewable generation and demand
+- **Investment and Operations**: Combined planning and operational optimization
+
+### Advanced Modeling Concepts
+- **Big M Constraints**: Conditional constraint modeling
+- **Mixed-Integer Programming**: Binary variables for discrete decisions
+- **Large-Scale Optimization**: Efficient solution methods
+- **Scenario Generation**: Creating representative uncertainty scenarios
+
+### Framework Components
+**Investment Variables:**
+
+- Storage capacities: $e^{nom}_s$, $p^{ch,nom}_s$, $p^{dis,nom}_s$
+- Generation capacities: $p^{nom}_w$, $p^{nom}_v$
+- Conversion capacities: $p^{nom}_x$
+
+**Operational Variables:**
+
+- Power outputs: $p_{w,t,\omega}$, $p_{v,t,\omega}$
+- Storage operation: $p^{ch}_{s,t,\omega}$, $p^{dis}_{s,t,\omega}$, $e_{s,t,\omega}$
+- Conversion operation: $p_{x,t,\omega}$, $h_{x,t,\omega}$
+
+### Two-Stage Stochastic Programming
+- **First Stage (Investment)**: Storage capacity, wind/PV capacity, electrolyzer capacity decisions
+- **Second Stage (Operation)**: Power dispatch, storage operation, grid interaction decisions
+- **Solution Approaches**: Monolithic approach or decomposition methods (Benders, Progressive Hedging)
+- **Mathematical Form**: $\min_{x} \quad c^T x + \mathbb{E}_{\omega}[Q(x,\omega)]$
+
+### Big M Constraints in Mixed-Integer Programming
+- **Purpose**: Create conditional relationships between continuous and binary variables
+- **General Form**: $f(x) \leq M (1 - y)$ where $M$ is a large constant
+- **Application**: Modeling complex logical relationships and conditional constraints
+- **Example**: Generator startup timing constraints in unit commitment problems
+
+::: {.callout-tip}
+**Key Difference**: Unlike Lecture IX's technology-specific approach, Lecture XI introduces a general framework that can be adapted to different MES setups by simply configuring the sets and parameters, making it applicable to various energy system configurations beyond just electricity-hydrogen systems.
+:::
+
+# [Key Mathematical Concepts]{.flow} {.title}
+
+## Optimization Problem Structure
+
+### General Form
+$\min f(x)$
+
+subject to:
+
+$g_i(x) \leq 0 \quad \forall i \in \mathcal{I}$
+$h_j(x) = 0 \quad \forall j \in \mathcal{J}$
+$x \in \mathcal{X}$
+
+### Problem Types
+- **Linear Programming (LP)**: Linear objective and constraints
+- **Mixed-Integer Linear Programming (MILP)**: Linear with binary variables
+- **Nonlinear Programming (NLP)**: Nonlinear objective or constraints
+- **Stochastic Programming**: Multiple scenarios with probabilities
+
+## Constraint Types
+
+### Equality Constraints
+- Power balance: $\sum_{g} p_g = d$
+- Energy balance: $e_t = e_{t-1} + p^{ch}_t - p^{dis}_t$
+
+### Inequality Constraints
+- Capacity limits: $p_g \leq p^{\max}_g$
+- Ramp rates: $p_{g,t} - p_{g,t-1} \leq RampUp_g$
+
+### Binary Variable Constraints
+- Minimum up time: $\sum_{\tau=t}^{t+UT-1} u_{\tau} \geq UT \cdot v_t$
+- Logical constraints: $p_g \leq p^{\max}_g \cdot u_g$
+
+## Solution Methods
+
+### Solver Types
+- **LP Solvers**: HiGHS, GLPK, Gurobi
+- **MILP Solvers**: Gurobi, CPLEX, HiGHS
+- **NLP Solvers**: IPOPT, KNITRO
+
+### Solution Analysis
+- **Feasibility**: Check if solution satisfies all constraints
+- **Optimality**: Verify solution is globally optimal
+- **Sensitivity**: Analyze impact of parameter changes
+
+# [Julia Programming Skills]{.flow} {.title}
+
+## Core Programming Concepts
+
+### Data Types and Structures
+```julia
+# Variables and basic types
+x = 5.0          # Float64
+y = [1, 2, 3]    # Vector{Int64}
+z = Dict("a" => 1, "b" => 2)  # Dict{String, Int64}
+
+# Arrays and matrices
+A = [1 2; 3 4]   # Matrix
+B = zeros(3, 3)  # 3x3 zero matrix
+```
+
+### Control Structures
+```julia
+# Loops
+for i in 1:10
+    println(i)
+end
+
+# Conditionals
+if x > 0
+    println("Positive")
+elseif x < 0
+    println("Negative")
+else
+    println("Zero")
+end
+```
+
+### Functions
+```julia
+# Function definition
+function calculate_cost(power, cost_rate)
+    return power * cost_rate
+end
+
+# Anonymous functions
+f = x -> x^2 + 2*x + 1
+```
+
+## Data Management
+
+### DataFrames
+```julia
+using DataFrames
+
+# Create DataFrame
+df = DataFrame(
+    generator = ["G1", "G2", "G3"],
+    capacity = [100, 150, 200],
+    cost = [50, 60, 45]
+)
+
+# Access and manipulate
+df.capacity[1] = 120
+df[!, :efficiency] = [0.8, 0.85, 0.9]
+```
+
+### File I/O
+```julia
+using CSV
+
+# Read CSV file
+data = CSV.read("generators.csv", DataFrame)
+
+# Write CSV file
+CSV.write("results.csv", results_df)
+```
+
+## Optimization with JuMP
+
+### Basic Model Structure
+```julia
+using JuMP, HiGHS
+
+# Create model
+model = Model(HiGHS.Optimizer)
+
+# Variables
+@variable(model, p[g] >= 0)  # Power output
+@variable(model, u[g, t], Bin)  # Binary commitment
+
+# Objective
+@objective(model, Min, sum(cost[g] * p[g] for g in generators))
+
+# Constraints
+@constraint(model, power_balance[t in time], 
+    sum(p[g] for g in generators) == demand[t])
+
+# Solve
+optimize!(model)
+```
+
+### Advanced Modeling
+```julia
+# Conditional constraints with Big M
+@constraint(model, p[g] <= max_power[g] * u[g])
+
+# Minimum up time constraints
+@constraint(model, min_up_time[g, t], 
+    sum(u[g, tau] for tau in t:t+min_up[g]-1) >= min_up[g] * v[g, t])
+```
+
+# [Energy System Applications]{.flow} {.title}
+
+## Real-World Problem Types
+
+### Generation Planning
+- **Economic Dispatch**: Optimal power generation for given demand
+- **Unit Commitment**: Optimal generator scheduling with startup/shutdown
+- **Generation Expansion**: Long-term capacity planning
+
+### Storage Integration
+- **Battery Storage**: Short-term energy storage
+- **Pumped Hydro**: Large-scale energy storage
+- **Thermal Storage**: Heat storage for district heating
+
+### Renewable Integration
+- **Wind Power**: Variable generation with forecasting
+- **Solar Power**: Diurnal patterns and weather dependence
+- **Grid Integration**: Balancing variable renewable energy
+
+### Multi-Energy Systems
+- **Power-to-Gas**: Hydrogen production from electricity
+- **District Heating**: Combined heat and power systems
+- **Transport Integration**: Electric vehicle charging
+
+## Industry Applications
+
+### Power System Operations
+- **Day-ahead Markets**: 24-hour ahead generation scheduling
+- **Real-time Balancing**: Minute-to-minute power balance
+- **Ancillary Services**: Frequency regulation and reserves
+
+### Energy Planning
+- **Investment Planning**: Long-term capacity expansion
+- **Policy Analysis**: Impact of carbon pricing and regulations
+- **Technology Assessment**: Comparison of different energy technologies
+
+### Research Applications
+- **Academic Research**: Novel optimization algorithms
+- **Industry Collaboration**: Real-world problem solving
+- **Policy Support**: Evidence-based energy policy design
+
+# [Exam Preparation Tips]{.flow} {.title}
+
+## Key Areas to Review
+
+### Mathematical Modeling
+- **Problem Formulation**: Converting word problems to mathematical models
+- **Constraint Types**: Understanding different constraint formulations
+- **Variable Types**: Continuous vs. binary variables
+- **Objective Functions**: Cost minimization and profit maximization
+
+### Julia Programming
+- **Basic Syntax**: Variables, loops, functions
+- **Data Structures**: Arrays, DataFrames, Dictionaries
+- **JuMP Modeling**: Variable declaration, constraints, objectives
+- **Solution Analysis**: Accessing and interpreting results
+
+### Energy System Concepts
+- **Power Balance**: Supply equals demand constraints
+- **Generator Characteristics**: Cost curves, capacity limits, ramp rates
+- **Storage Operation**: Energy balance and efficiency
+- **Multi-energy Integration**: Energy carrier conversion and storage
+
+## Practice Exercises
+
+### Modeling Problems
+1. **Economic Dispatch**: Formulate and solve a simple dispatch problem
+2. **Unit Commitment**: Add binary variables and startup constraints
+3. **Storage Integration**: Include storage operation in power balance
+4. **Multi-energy**: Model electricity-hydrogen system
+
+### Programming Problems
+1. **Data Manipulation**: Read, process, and analyze energy data
+2. **Optimization Models**: Implement JuMP models for energy problems
+3. **Result Analysis**: Plot and interpret optimization results
+4. **Scenario Analysis**: Handle uncertainty in energy systems
+
+## Exam Strategy
+
+### Time Management
+- **Part I (30 points)**: Energy system modeling (45 minutes)
+- **Part II (15 points)**: Theory and concepts (22 minutes)
+- **Part III (15 points)**: Julia programming (22 minutes)
+
+### Problem-Solving Approach
+1. **Read Carefully**: Understand the problem requirements
+2. **Plan Solution**: Outline your approach before coding
+3. **Test Incrementally**: Verify each step before proceeding
+4. **Check Results**: Ensure your solution makes sense
+
+. . .
+
+::: {.callout-important}
+Remember: You can bring one handwritten DIN A4 sheet with notes to the exam!
+:::
+
+# [Course Summary]{.flow} {.title}
+
+## What You Have Learned
+
+### Programming Skills
+- **Julia Language**: Modern, high-performance programming
+- **Data Management**: Working with real-world energy data
+- **Optimization Modeling**: Mathematical problem formulation
+- **Solution Analysis**: Interpreting and visualizing results
+
+### Energy System Knowledge
+- **Power System Operations**: How electricity systems work
+- **Optimization Applications**: Real-world energy problems
+- **Multi-energy Systems**: Integration of different energy carriers
+- **Uncertainty Handling**: Stochastic programming approaches
+
+### Problem-Solving Skills
+- **Mathematical Modeling**: Converting problems to optimization models
+- **Algorithm Implementation**: Coding optimization algorithms
+- **Result Interpretation**: Understanding and communicating solutions
+- **Team Collaboration**: Working in groups on complex problems
+
+## Career Applications
+
+### Industry Opportunities
+- **Energy Companies**: Power system planning and operations
+- **Consulting Firms**: Energy system analysis and optimization
+- **Research Institutions**: Academic and applied research
+- **Government Agencies**: Energy policy and regulation
+
+### Skill Transfer
+- **Programming**: Julia skills transfer to other languages
+- **Optimization**: Mathematical modeling skills for various domains
+- **Data Analysis**: Energy data skills apply to other sectors
+- **Problem Solving**: Systematic approach to complex problems
+
+. . .
+
+::: {.callout-tip}
+The skills you've learned in this course are valuable for many careers in energy, operations research, and data science!
+:::
+
+# [Final Thoughts]{.flow} {.title}
+
+## Course Objectives Achieved
+
+✅ **Understanding Optimization**: You can now recognize and formulate optimization problems
+
+✅ **Julia Programming**: You can write, debug, and optimize Julia code
+
+✅ **Energy System Modeling**: You understand how to model energy system problems
+
+✅ **Real-World Applications**: You can apply optimization to practical energy problems
+
+✅ **Team Collaboration**: You've worked effectively in groups on complex problems
+
+## Next Steps
+
+### Further Learning
+- **Advanced Optimization**: Nonlinear and stochastic programming
+- **Machine Learning**: Data-driven approaches to energy systems
+- **Energy Markets**: Market design and price formation
+- **Policy Analysis**: Impact of regulations on energy systems
+
+### Resources
+- **Julia Documentation**: [docs.julialang.org](https://docs.julialang.org/)
+- **JuMP Documentation**: [jump.dev](https://jump.dev/)
+- **Energy Literature**: Academic journals and industry reports
+- **Online Courses**: MOOCs on energy systems and optimization
+
+### Stay Connected
+- **Research Opportunities**: Consider thesis projects in energy optimization
+- **Industry Internships**: Apply your skills in real-world settings
+- **Professional Networks**: Join energy and operations research societies
+- **Continuing Education**: Pursue advanced degrees in related fields
+
+. . .
+
+::: {.callout-note}
+Thank you for your active participation throughout this course. Your questions and engagement have made this a rewarding experience for everyone!
+:::
+
+# [Literature]{.flow} {.title}
+
+## Core References
+
+### Julia Programming
+- Lauwens, B., & Downey, A. B. (2019). Think Julia: How to think like a computer scientist. O'Reilly®.
+
+### Optimization
+- Winston, W. L. (2004). Operations Research: Applications and Algorithms. Thomson Brooks/Cole.
+- Hillier, F. S., & Lieberman, G. J. (2015). Introduction to Operations Research. McGraw-Hill.
+
+### Energy Systems
+- Wood, A. J., & Wollenberg, B. F. (2012). Power Generation, Operation, and Control. Wiley.
+- Kirschen, D. S., & Strbac, G. (2018). Fundamentals of Power System Economics. Wiley.
+
+### Multi-Energy Systems
+- Mancarella, P. (2014). MES (multi-energy systems): An overview of concepts and evaluation models. Energy, 65, 1-17.
+- Geidl, M., & Andersson, G. (2007). Optimal power flow of multiple energy carriers. IEEE Transactions on Power Systems, 22(1), 145-155.
+
+## Online Resources
+
+### Documentation
+- [Julia Documentation](https://docs.julialang.org/)
+- [JuMP Documentation](https://jump.dev/)
+- [DataFrames.jl Documentation](https://dataframes.juliadata.org/)
+
+### Tutorials and Examples
+- [Julia Academy](https://juliaacademy.com/)
+- [JuMP Tutorials](https://jump.dev/tutorials/)
+- [Energy System Modeling Examples](https://github.com/JuliaEnergy)
+
+### Research Papers
+- Recent papers in journals like:
+  - IEEE Transactions on Power Systems
+  - Energy
+  - Applied Energy
+  - European Journal of Operational Research 
