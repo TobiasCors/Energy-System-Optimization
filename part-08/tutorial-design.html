@@ -75,7 +75,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-a6ef90cfdb74e828c1a9db3872de2949.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-9f022468b1cf5881011695715d73b7cb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -1177,163 +1177,160 @@ Note
 <span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calculate PVAF for each component type</span></span>
 <span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    pvaf <span class="op">=</span> <span class="fu">Dict</span>(</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>        <span class="st">"storage"</span> <span class="op">=&gt;</span> (<span class="fl">1</span> <span class="op">+</span> dictStorage[<span class="st">"storage"</span>].discount_rate)<span class="op">^</span>dictStorage[<span class="st">"storage"</span>].lifetime <span class="op">/</span> </span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>                    (dictStorage[<span class="st">"storage"</span>].discount_rate <span class="op">*</span> (<span class="fl">1</span> <span class="op">+</span> dictStorage[<span class="st">"storage"</span>].discount_rate)<span class="op">^</span>dictStorage[<span class="st">"storage"</span>].lifetime),</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>        <span class="st">"wind"</span> <span class="op">=&gt;</span> (<span class="fl">1</span> <span class="op">+</span> dictWindTurbines[<span class="st">"wind"</span>].discount_rate)<span class="op">^</span>dictWindTurbines[<span class="st">"wind"</span>].lifetime <span class="op">/</span> </span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>                 (dictWindTurbines[<span class="st">"wind"</span>].discount_rate <span class="op">*</span> (<span class="fl">1</span> <span class="op">+</span> dictWindTurbines[<span class="st">"wind"</span>].discount_rate)<span class="op">^</span>dictWindTurbines[<span class="st">"wind"</span>].lifetime),</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>        <span class="st">"pv"</span> <span class="op">=&gt;</span> (<span class="fl">1</span> <span class="op">+</span> dictPV[<span class="st">"pv"</span>].discount_rate)<span class="op">^</span>dictPV[<span class="st">"pv"</span>].lifetime <span class="op">/</span> </span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>               (dictPV[<span class="st">"pv"</span>].discount_rate <span class="op">*</span> (<span class="fl">1</span> <span class="op">+</span> dictPV[<span class="st">"pv"</span>].discount_rate)<span class="op">^</span>dictPV[<span class="st">"pv"</span>].lifetime)</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Decision Variables</span></span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># First stage (investment)</span></span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@variable</span>(model, e_nom[s <span class="kw">in</span> S] <span class="op">&gt;=</span> <span class="fl">0</span>)  <span class="co"># Nominal energy capacity</span></span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@variable</span>(model, p_ch_nom[s <span class="kw">in</span> S] <span class="op">&gt;=</span> <span class="fl">0</span>)  <span class="co"># Nominal charging power</span></span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@variable</span>(model, p_dis_nom[s <span class="kw">in</span> S] <span class="op">&gt;=</span> <span class="fl">0</span>)  <span class="co"># Nominal discharging power</span></span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@variable</span>(model, p_w_nom[w <span class="kw">in</span> W] <span class="op">&gt;=</span> <span class="fl">0</span>)  <span class="co"># Nominal wind power</span></span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@variable</span>(model, p_v_nom[v <span class="kw">in</span> V] <span class="op">&gt;=</span> <span class="fl">0</span>)  <span class="co"># Nominal PV power</span></span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Second stage (operation)</span></span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@variable</span>(model, p_w[w <span class="kw">in</span> W, t <span class="kw">in</span> T, ω <span class="kw">in</span> Ω] <span class="op">&gt;=</span> <span class="fl">0</span>)  <span class="co"># Wind power output</span></span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@variable</span>(model, p_v[v <span class="kw">in</span> V, t <span class="kw">in</span> T, ω <span class="kw">in</span> Ω] <span class="op">&gt;=</span> <span class="fl">0</span>)  <span class="co"># PV power output</span></span>
-<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@variable</span>(model, p_in[t <span class="kw">in</span> T, ω <span class="kw">in</span> Ω] <span class="op">&gt;=</span> <span class="fl">0</span>)  <span class="co"># Grid import</span></span>
-<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@variable</span>(model, p_out[t <span class="kw">in</span> T, ω <span class="kw">in</span> Ω] <span class="op">&gt;=</span> <span class="fl">0</span>)  <span class="co"># Grid export</span></span>
-<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@variable</span>(model, p_ch[s <span class="kw">in</span> S, t <span class="kw">in</span> T, ω <span class="kw">in</span> Ω] <span class="op">&gt;=</span> <span class="fl">0</span>)  <span class="co"># Storage charging</span></span>
-<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@variable</span>(model, p_dis[s <span class="kw">in</span> S, t <span class="kw">in</span> T, ω <span class="kw">in</span> Ω] <span class="op">&gt;=</span> <span class="fl">0</span>)  <span class="co"># Storage discharging</span></span>
-<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@variable</span>(model, <span class="cn">e</span>[s <span class="kw">in</span> S, t <span class="kw">in</span> T, ω <span class="kw">in</span> Ω] <span class="op">&gt;=</span> <span class="fl">0</span>)  <span class="co"># Storage energy level</span></span>
-<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Annual cost variables</span></span>
-<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@variable</span>(model, AC_inv_s[s <span class="kw">in</span> S] <span class="op">&gt;=</span> <span class="fl">0</span>)  <span class="co"># Annual storage investment cost</span></span>
-<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@variable</span>(model, AC_inv_w[w <span class="kw">in</span> W] <span class="op">&gt;=</span> <span class="fl">0</span>)  <span class="co"># Annual wind investment cost</span></span>
-<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@variable</span>(model, AC_inv_v[v <span class="kw">in</span> V] <span class="op">&gt;=</span> <span class="fl">0</span>)  <span class="co"># Annual PV investment cost</span></span>
-<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@variable</span>(model, AC_grid_imp[ω <span class="kw">in</span> Ω] <span class="op">&gt;=</span> <span class="fl">0</span>)  <span class="co"># Annual grid import cost</span></span>
-<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@variable</span>(model, AR_grid_exp[ω <span class="kw">in</span> Ω] <span class="op">&gt;=</span> <span class="fl">0</span>)  <span class="co"># Annual grid export revenue</span></span>
-<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Objective Function</span></span>
-<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@objective</span>(model, Min, </span>
-<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(AC_inv_s[s] <span class="cf">for</span> s <span class="kw">in</span> S) <span class="op">+</span></span>
-<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(AC_inv_w[w] <span class="cf">for</span> w <span class="kw">in</span> W) <span class="op">+</span></span>
-<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(AC_inv_v[v] <span class="cf">for</span> v <span class="kw">in</span> V) <span class="op">+</span></span>
-<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(dictScenarios[ω].probability <span class="op">*</span> (AC_grid_imp[ω] <span class="op">-</span> AR_grid_exp[ω]) <span class="cf">for</span> ω <span class="kw">in</span> Ω) <span class="op">*</span> <span class="fl">52.1429</span></span>
-<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Investment cost constraints</span></span>
-<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@constraint</span>(model, [s <span class="kw">in</span> S],</span>
-<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>        AC_inv_s[s] <span class="op">==</span> dictStorage[s].energy_cost<span class="op">/</span>pvaf[<span class="st">"storage"</span>] <span class="op">*</span> e_nom[s] <span class="op">+</span></span>
-<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>                      dictStorage[s].power_cost<span class="op">/</span>pvaf[<span class="st">"storage"</span>] <span class="op">*</span> (p_ch_nom[s] <span class="op">+</span> p_dis_nom[s])</span>
-<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@constraint</span>(model, [w <span class="kw">in</span> W],</span>
-<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a>        AC_inv_w[w] <span class="op">==</span> dictWindTurbines[w].power_cost<span class="op">/</span>pvaf[<span class="st">"wind"</span>] <span class="op">*</span> p_w_nom[w]</span>
-<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-65"><a href="#cb4-65" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@constraint</span>(model, [v <span class="kw">in</span> V],</span>
-<span id="cb4-66"><a href="#cb4-66" aria-hidden="true" tabindex="-1"></a>        AC_inv_v[v] <span class="op">==</span> dictPV[v].power_cost<span class="op">/</span>pvaf[<span class="st">"pv"</span>] <span class="op">*</span> p_v_nom[v]</span>
-<span id="cb4-67"><a href="#cb4-67" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb4-68"><a href="#cb4-68" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-69"><a href="#cb4-69" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Investment budget constraint</span></span>
-<span id="cb4-70"><a href="#cb4-70" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@constraint</span>(model,</span>
-<span id="cb4-71"><a href="#cb4-71" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(dictStorage[s].energy_cost <span class="op">*</span> e_nom[s] <span class="op">+</span></span>
-<span id="cb4-72"><a href="#cb4-72" aria-hidden="true" tabindex="-1"></a>            dictStorage[s].power_cost <span class="op">*</span> (p_ch_nom[s] <span class="op">+</span> p_dis_nom[s]) <span class="cf">for</span> s <span class="kw">in</span> S) <span class="op">+</span></span>
-<span id="cb4-73"><a href="#cb4-73" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(dictWindTurbines[w].power_cost <span class="op">*</span> p_w_nom[w] <span class="cf">for</span> w <span class="kw">in</span> W) <span class="op">+</span></span>
-<span id="cb4-74"><a href="#cb4-74" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(dictPV[v].power_cost <span class="op">*</span> p_v_nom[v] <span class="cf">for</span> v <span class="kw">in</span> V) <span class="op">&lt;=</span> max_budget</span>
-<span id="cb4-75"><a href="#cb4-75" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb4-76"><a href="#cb4-76" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-77"><a href="#cb4-77" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Grid electricity costs</span></span>
-<span id="cb4-78"><a href="#cb4-78" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@constraint</span>(model, [ω <span class="kw">in</span> Ω],</span>
-<span id="cb4-79"><a href="#cb4-79" aria-hidden="true" tabindex="-1"></a>        AC_grid_imp[ω] <span class="op">==</span> <span class="fu">sum</span>(</span>
-<span id="cb4-80"><a href="#cb4-80" aria-hidden="true" tabindex="-1"></a>            (dictScenarios[ω].market_price[t] <span class="op">+</span> dictGrid[<span class="st">"grid"</span>].taxes_levies) <span class="op">*</span> p_in[t,ω]</span>
-<span id="cb4-81"><a href="#cb4-81" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> t <span class="kw">in</span> T</span>
-<span id="cb4-82"><a href="#cb4-82" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb4-83"><a href="#cb4-83" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb4-84"><a href="#cb4-84" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-85"><a href="#cb4-85" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@constraint</span>(model, [ω <span class="kw">in</span> Ω],</span>
-<span id="cb4-86"><a href="#cb4-86" aria-hidden="true" tabindex="-1"></a>        AR_grid_exp[ω] <span class="op">==</span> <span class="fu">sum</span>(</span>
-<span id="cb4-87"><a href="#cb4-87" aria-hidden="true" tabindex="-1"></a>            dictScenarios[ω].market_price[t] <span class="op">*</span> p_out[t,ω]</span>
-<span id="cb4-88"><a href="#cb4-88" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> t <span class="kw">in</span> T</span>
-<span id="cb4-89"><a href="#cb4-89" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb4-90"><a href="#cb4-90" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb4-91"><a href="#cb4-91" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-92"><a href="#cb4-92" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Power balance</span></span>
-<span id="cb4-93"><a href="#cb4-93" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@constraint</span>(model, [t <span class="kw">in</span> T, ω <span class="kw">in</span> Ω],</span>
-<span id="cb4-94"><a href="#cb4-94" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(p_w[w,t,ω] <span class="cf">for</span> w <span class="kw">in</span> W) <span class="op">+</span></span>
-<span id="cb4-95"><a href="#cb4-95" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(p_v[v,t,ω] <span class="cf">for</span> v <span class="kw">in</span> V) <span class="op">+</span></span>
-<span id="cb4-96"><a href="#cb4-96" aria-hidden="true" tabindex="-1"></a>        (p_in[t,ω] <span class="op">-</span> p_out[t,ω]) <span class="op">+</span></span>
-<span id="cb4-97"><a href="#cb4-97" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(p_dis[s,t,ω] <span class="op">-</span> p_ch[s,t,ω] <span class="cf">for</span> s <span class="kw">in</span> S) <span class="op">==</span></span>
-<span id="cb4-98"><a href="#cb4-98" aria-hidden="true" tabindex="-1"></a>        dictScenarios[ω].demand[t]</span>
-<span id="cb4-99"><a href="#cb4-99" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb4-100"><a href="#cb4-100" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-101"><a href="#cb4-101" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Component limits</span></span>
-<span id="cb4-102"><a href="#cb4-102" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@constraint</span>(model, [w <span class="kw">in</span> W, t <span class="kw">in</span> T, ω <span class="kw">in</span> Ω],</span>
-<span id="cb4-103"><a href="#cb4-103" aria-hidden="true" tabindex="-1"></a>        p_w[w,t,ω] <span class="op">&lt;=</span> dictScenarios[ω].wind_cf[t] <span class="op">*</span> p_w_nom[w]</span>
-<span id="cb4-104"><a href="#cb4-104" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb4-105"><a href="#cb4-105" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-106"><a href="#cb4-106" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@constraint</span>(model, [v <span class="kw">in</span> V, t <span class="kw">in</span> T, ω <span class="kw">in</span> Ω],</span>
-<span id="cb4-107"><a href="#cb4-107" aria-hidden="true" tabindex="-1"></a>        p_v[v,t,ω] <span class="op">&lt;=</span> dictScenarios[ω].pv_cf[t] <span class="op">*</span> p_v_nom[v]</span>
-<span id="cb4-108"><a href="#cb4-108" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb4-109"><a href="#cb4-109" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-110"><a href="#cb4-110" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@constraint</span>(model, [s <span class="kw">in</span> S, t <span class="kw">in</span> T, ω <span class="kw">in</span> Ω],</span>
-<span id="cb4-111"><a href="#cb4-111" aria-hidden="true" tabindex="-1"></a>        p_ch[s,t,ω] <span class="op">&lt;=</span> p_ch_nom[s]</span>
-<span id="cb4-112"><a href="#cb4-112" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb4-113"><a href="#cb4-113" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-114"><a href="#cb4-114" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@constraint</span>(model, [s <span class="kw">in</span> S, t <span class="kw">in</span> T, ω <span class="kw">in</span> Ω],</span>
-<span id="cb4-115"><a href="#cb4-115" aria-hidden="true" tabindex="-1"></a>        p_dis[s,t,ω] <span class="op">&lt;=</span> p_dis_nom[s]</span>
-<span id="cb4-116"><a href="#cb4-116" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb4-117"><a href="#cb4-117" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-118"><a href="#cb4-118" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@constraint</span>(model, [s <span class="kw">in</span> S, t <span class="kw">in</span> T, ω <span class="kw">in</span> Ω],</span>
-<span id="cb4-119"><a href="#cb4-119" aria-hidden="true" tabindex="-1"></a>        <span class="cn">e</span>[s,t,ω] <span class="op">&lt;=</span> e_nom[s]</span>
-<span id="cb4-120"><a href="#cb4-120" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb4-121"><a href="#cb4-121" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-122"><a href="#cb4-122" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Storage energy balance</span></span>
-<span id="cb4-123"><a href="#cb4-123" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@constraint</span>(model, [s <span class="kw">in</span> S, t <span class="kw">in</span> <span class="fl">2</span><span class="op">:</span><span class="fu">length</span>(T), ω <span class="kw">in</span> Ω],</span>
-<span id="cb4-124"><a href="#cb4-124" aria-hidden="true" tabindex="-1"></a>        <span class="cn">e</span>[s,t,ω] <span class="op">==</span> (<span class="fl">1</span> <span class="op">-</span> dictStorage[s].self_discharge_rate) <span class="op">*</span> <span class="cn">e</span>[s,t<span class="op">-</span><span class="fl">1</span>,ω] <span class="op">+</span></span>
-<span id="cb4-125"><a href="#cb4-125" aria-hidden="true" tabindex="-1"></a>                    dictStorage[s].charge_efficiency <span class="op">*</span> p_ch[s,t,ω] <span class="op">-</span></span>
-<span id="cb4-126"><a href="#cb4-126" aria-hidden="true" tabindex="-1"></a>                    p_dis[s,t,ω] <span class="op">/</span> dictStorage[s].discharge_efficiency</span>
-<span id="cb4-127"><a href="#cb4-127" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb4-128"><a href="#cb4-128" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-129"><a href="#cb4-129" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@constraint</span>(model, [s <span class="kw">in</span> S, ω <span class="kw">in</span> Ω],</span>
-<span id="cb4-130"><a href="#cb4-130" aria-hidden="true" tabindex="-1"></a>        <span class="cn">e</span>[s,<span class="fl">1</span>,ω] <span class="op">==</span> dictStorage[s].charge_efficiency <span class="op">*</span> p_ch[s,<span class="fl">1</span>,ω] <span class="op">-</span></span>
-<span id="cb4-131"><a href="#cb4-131" aria-hidden="true" tabindex="-1"></a>                    p_dis[s,<span class="fl">1</span>,ω] <span class="op">/</span> dictStorage[s].discharge_efficiency</span>
-<span id="cb4-132"><a href="#cb4-132" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb4-133"><a href="#cb4-133" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-134"><a href="#cb4-134" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Solve the model</span></span>
-<span id="cb4-135"><a href="#cb4-135" aria-hidden="true" tabindex="-1"></a>    <span class="fu">optimize!</span>(model)</span>
-<span id="cb4-136"><a href="#cb4-136" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-137"><a href="#cb4-137" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Assert that the solution is feasible</span></span>
-<span id="cb4-138"><a href="#cb4-138" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="fu">termination_status</span>(model) <span class="op">!=</span> MOI.OPTIMAL</span>
-<span id="cb4-139"><a href="#cb4-139" aria-hidden="true" tabindex="-1"></a>        ts <span class="op">=</span> <span class="fu">termination_status</span>(model)</span>
-<span id="cb4-140"><a href="#cb4-140" aria-hidden="true" tabindex="-1"></a>        <span class="pp">@info</span> <span class="st">"Optimization finished. The model was not solved correctly. Termination Status: </span><span class="sc">$</span>ts<span class="st">"</span></span>
-<span id="cb4-141"><a href="#cb4-141" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Helpful resource: https://jump.dev/JuMP.jl/stable/manual/solutions/#Conflicts</span></span>
-<span id="cb4-142"><a href="#cb4-142" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
-<span id="cb4-143"><a href="#cb4-143" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-144"><a href="#cb4-144" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Return results</span></span>
-<span id="cb4-145"><a href="#cb4-145" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (</span>
-<span id="cb4-146"><a href="#cb4-146" aria-hidden="true" tabindex="-1"></a>        e_nom <span class="op">=</span> <span class="fu">value</span>.(e_nom),</span>
-<span id="cb4-147"><a href="#cb4-147" aria-hidden="true" tabindex="-1"></a>        p_ch_nom <span class="op">=</span> <span class="fu">value</span>.(p_ch_nom),</span>
-<span id="cb4-148"><a href="#cb4-148" aria-hidden="true" tabindex="-1"></a>        p_dis_nom <span class="op">=</span> <span class="fu">value</span>.(p_dis_nom),</span>
-<span id="cb4-149"><a href="#cb4-149" aria-hidden="true" tabindex="-1"></a>        p_w_nom <span class="op">=</span> <span class="fu">value</span>.(p_w_nom),</span>
-<span id="cb4-150"><a href="#cb4-150" aria-hidden="true" tabindex="-1"></a>        p_v_nom <span class="op">=</span> <span class="fu">value</span>.(p_v_nom),</span>
-<span id="cb4-151"><a href="#cb4-151" aria-hidden="true" tabindex="-1"></a>        total_cost <span class="op">=</span> <span class="fu">objective_value</span>(model),</span>
-<span id="cb4-152"><a href="#cb4-152" aria-hidden="true" tabindex="-1"></a>        investment_costs <span class="op">=</span> <span class="fu">Dict</span>(</span>
-<span id="cb4-153"><a href="#cb4-153" aria-hidden="true" tabindex="-1"></a>            <span class="st">"storage"</span> <span class="op">=&gt;</span> <span class="fu">value</span>.(AC_inv_s[<span class="st">"storage"</span>]),</span>
-<span id="cb4-154"><a href="#cb4-154" aria-hidden="true" tabindex="-1"></a>            <span class="st">"wind"</span> <span class="op">=&gt;</span> <span class="fu">value</span>.(AC_inv_w[<span class="st">"wind"</span>]),</span>
-<span id="cb4-155"><a href="#cb4-155" aria-hidden="true" tabindex="-1"></a>            <span class="st">"pv"</span> <span class="op">=&gt;</span> <span class="fu">value</span>.(AC_inv_v[<span class="st">"pv"</span>])</span>
-<span id="cb4-156"><a href="#cb4-156" aria-hidden="true" tabindex="-1"></a>        ),</span>
-<span id="cb4-157"><a href="#cb4-157" aria-hidden="true" tabindex="-1"></a>        operational_costs <span class="op">=</span> <span class="fu">Dict</span>(</span>
-<span id="cb4-158"><a href="#cb4-158" aria-hidden="true" tabindex="-1"></a>            <span class="st">"grid_import"</span> <span class="op">=&gt;</span> <span class="fu">sum</span>(dictScenarios[ω].probability <span class="op">*</span> <span class="fu">value</span>.(AC_grid_imp[ω]) <span class="cf">for</span> ω <span class="kw">in</span> Ω) <span class="op">*</span> <span class="fl">52.1429</span>,</span>
-<span id="cb4-159"><a href="#cb4-159" aria-hidden="true" tabindex="-1"></a>            <span class="st">"grid_export"</span> <span class="op">=&gt;</span> <span class="fu">sum</span>(dictScenarios[ω].probability <span class="op">*</span> <span class="fu">value</span>.(AR_grid_exp[ω]) <span class="cf">for</span> ω <span class="kw">in</span> Ω) <span class="op">*</span> <span class="fl">52.1429</span></span>
-<span id="cb4-160"><a href="#cb4-160" aria-hidden="true" tabindex="-1"></a>        ),</span>
-<span id="cb4-161"><a href="#cb4-161" aria-hidden="true" tabindex="-1"></a>        operational_variables <span class="op">=</span> <span class="fu">Dict</span>(</span>
-<span id="cb4-162"><a href="#cb4-162" aria-hidden="true" tabindex="-1"></a>            <span class="st">"storage_energy"</span> <span class="op">=&gt;</span> <span class="fu">value</span>.(<span class="cn">e</span>),</span>
-<span id="cb4-163"><a href="#cb4-163" aria-hidden="true" tabindex="-1"></a>            <span class="st">"storage_charge"</span> <span class="op">=&gt;</span> <span class="fu">value</span>.(p_ch),</span>
-<span id="cb4-164"><a href="#cb4-164" aria-hidden="true" tabindex="-1"></a>            <span class="st">"storage_discharge"</span> <span class="op">=&gt;</span> <span class="fu">value</span>.(p_dis),</span>
-<span id="cb4-165"><a href="#cb4-165" aria-hidden="true" tabindex="-1"></a>            <span class="st">"wind_power"</span> <span class="op">=&gt;</span> <span class="fu">value</span>.(p_w),</span>
-<span id="cb4-166"><a href="#cb4-166" aria-hidden="true" tabindex="-1"></a>            <span class="st">"pv_power"</span> <span class="op">=&gt;</span> <span class="fu">value</span>.(p_v),</span>
-<span id="cb4-167"><a href="#cb4-167" aria-hidden="true" tabindex="-1"></a>            <span class="st">"grid_import"</span> <span class="op">=&gt;</span> <span class="fu">value</span>.(p_in),</span>
-<span id="cb4-168"><a href="#cb4-168" aria-hidden="true" tabindex="-1"></a>            <span class="st">"grid_export"</span> <span class="op">=&gt;</span> <span class="fu">value</span>.(p_out)</span>
-<span id="cb4-169"><a href="#cb4-169" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb4-170"><a href="#cb4-170" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb4-171"><a href="#cb4-171" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>        <span class="st">"storage"</span> <span class="op">=&gt;</span> (<span class="fl">1</span> <span class="op">-</span> <span class="fl">1</span><span class="op">/</span>(<span class="fl">1</span> <span class="op">+</span> dictStorage[<span class="st">"storage"</span>].discount_rate)<span class="op">^</span>dictStorage[<span class="st">"storage"</span>].lifetime) <span class="op">/</span> dictStorage[<span class="st">"storage"</span>].discount_rate,</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>        <span class="st">"wind"</span> <span class="op">=&gt;</span> (<span class="fl">1</span> <span class="op">-</span> <span class="fl">1</span><span class="op">/</span>(<span class="fl">1</span> <span class="op">+</span> dictWindTurbines[<span class="st">"wind"</span>].discount_rate)<span class="op">^</span>dictWindTurbines[<span class="st">"wind"</span>].lifetime) <span class="op">/</span> dictWindTurbines[<span class="st">"wind"</span>].discount_rate,</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>        <span class="st">"pv"</span> <span class="op">=&gt;</span> (<span class="fl">1</span> <span class="op">-</span> <span class="fl">1</span><span class="op">/</span>(<span class="fl">1</span> <span class="op">+</span> dictPV[<span class="st">"pv"</span>].discount_rate)<span class="op">^</span>dictPV[<span class="st">"pv"</span>].lifetime) <span class="op">/</span> dictPV[<span class="st">"pv"</span>].discount_rate</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Decision Variables</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># First stage (investment)</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@variable</span>(model, e_nom[s <span class="kw">in</span> S] <span class="op">&gt;=</span> <span class="fl">0</span>)  <span class="co"># Nominal energy capacity</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@variable</span>(model, p_ch_nom[s <span class="kw">in</span> S] <span class="op">&gt;=</span> <span class="fl">0</span>)  <span class="co"># Nominal charging power</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@variable</span>(model, p_dis_nom[s <span class="kw">in</span> S] <span class="op">&gt;=</span> <span class="fl">0</span>)  <span class="co"># Nominal discharging power</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@variable</span>(model, p_w_nom[w <span class="kw">in</span> W] <span class="op">&gt;=</span> <span class="fl">0</span>)  <span class="co"># Nominal wind power</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@variable</span>(model, p_v_nom[v <span class="kw">in</span> V] <span class="op">&gt;=</span> <span class="fl">0</span>)  <span class="co"># Nominal PV power</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Second stage (operation)</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@variable</span>(model, p_w[w <span class="kw">in</span> W, t <span class="kw">in</span> T, ω <span class="kw">in</span> Ω] <span class="op">&gt;=</span> <span class="fl">0</span>)  <span class="co"># Wind power output</span></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@variable</span>(model, p_v[v <span class="kw">in</span> V, t <span class="kw">in</span> T, ω <span class="kw">in</span> Ω] <span class="op">&gt;=</span> <span class="fl">0</span>)  <span class="co"># PV power output</span></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@variable</span>(model, p_in[t <span class="kw">in</span> T, ω <span class="kw">in</span> Ω] <span class="op">&gt;=</span> <span class="fl">0</span>)  <span class="co"># Grid import</span></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@variable</span>(model, p_out[t <span class="kw">in</span> T, ω <span class="kw">in</span> Ω] <span class="op">&gt;=</span> <span class="fl">0</span>)  <span class="co"># Grid export</span></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@variable</span>(model, p_ch[s <span class="kw">in</span> S, t <span class="kw">in</span> T, ω <span class="kw">in</span> Ω] <span class="op">&gt;=</span> <span class="fl">0</span>)  <span class="co"># Storage charging</span></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@variable</span>(model, p_dis[s <span class="kw">in</span> S, t <span class="kw">in</span> T, ω <span class="kw">in</span> Ω] <span class="op">&gt;=</span> <span class="fl">0</span>)  <span class="co"># Storage discharging</span></span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@variable</span>(model, <span class="cn">e</span>[s <span class="kw">in</span> S, t <span class="kw">in</span> T, ω <span class="kw">in</span> Ω] <span class="op">&gt;=</span> <span class="fl">0</span>)  <span class="co"># Storage energy level</span></span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Annual cost variables</span></span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@variable</span>(model, AC_inv_s[s <span class="kw">in</span> S] <span class="op">&gt;=</span> <span class="fl">0</span>)  <span class="co"># Annual storage investment cost</span></span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@variable</span>(model, AC_inv_w[w <span class="kw">in</span> W] <span class="op">&gt;=</span> <span class="fl">0</span>)  <span class="co"># Annual wind investment cost</span></span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@variable</span>(model, AC_inv_v[v <span class="kw">in</span> V] <span class="op">&gt;=</span> <span class="fl">0</span>)  <span class="co"># Annual PV investment cost</span></span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@variable</span>(model, AC_grid_imp[ω <span class="kw">in</span> Ω] <span class="op">&gt;=</span> <span class="fl">0</span>)  <span class="co"># Annual grid import cost</span></span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@variable</span>(model, AR_grid_exp[ω <span class="kw">in</span> Ω] <span class="op">&gt;=</span> <span class="fl">0</span>)  <span class="co"># Annual grid export revenue</span></span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Objective Function</span></span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@objective</span>(model, Min, </span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(AC_inv_s[s] <span class="cf">for</span> s <span class="kw">in</span> S) <span class="op">+</span></span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(AC_inv_w[w] <span class="cf">for</span> w <span class="kw">in</span> W) <span class="op">+</span></span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(AC_inv_v[v] <span class="cf">for</span> v <span class="kw">in</span> V) <span class="op">+</span></span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(dictScenarios[ω].probability <span class="op">*</span> (AC_grid_imp[ω] <span class="op">-</span> AR_grid_exp[ω]) <span class="cf">for</span> ω <span class="kw">in</span> Ω)</span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Investment cost constraints</span></span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@constraint</span>(model, [s <span class="kw">in</span> S],</span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>        AC_inv_s[s] <span class="op">==</span> dictStorage[s].energy_cost<span class="op">/</span>pvaf[<span class="st">"storage"</span>] <span class="op">*</span> e_nom[s] <span class="op">+</span></span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>                      dictStorage[s].power_cost<span class="op">/</span>pvaf[<span class="st">"storage"</span>] <span class="op">*</span> (p_ch_nom[s] <span class="op">+</span> p_dis_nom[s])</span>
+<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@constraint</span>(model, [w <span class="kw">in</span> W],</span>
+<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a>        AC_inv_w[w] <span class="op">==</span> dictWindTurbines[w].power_cost<span class="op">/</span>pvaf[<span class="st">"wind"</span>] <span class="op">*</span> p_w_nom[w]</span>
+<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@constraint</span>(model, [v <span class="kw">in</span> V],</span>
+<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a>        AC_inv_v[v] <span class="op">==</span> dictPV[v].power_cost<span class="op">/</span>pvaf[<span class="st">"pv"</span>] <span class="op">*</span> p_v_nom[v]</span>
+<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-65"><a href="#cb4-65" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-66"><a href="#cb4-66" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Investment budget constraint</span></span>
+<span id="cb4-67"><a href="#cb4-67" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@constraint</span>(model,</span>
+<span id="cb4-68"><a href="#cb4-68" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(dictStorage[s].energy_cost <span class="op">*</span> e_nom[s] <span class="op">+</span></span>
+<span id="cb4-69"><a href="#cb4-69" aria-hidden="true" tabindex="-1"></a>            dictStorage[s].power_cost <span class="op">*</span> (p_ch_nom[s] <span class="op">+</span> p_dis_nom[s]) <span class="cf">for</span> s <span class="kw">in</span> S) <span class="op">+</span></span>
+<span id="cb4-70"><a href="#cb4-70" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(dictWindTurbines[w].power_cost <span class="op">*</span> p_w_nom[w] <span class="cf">for</span> w <span class="kw">in</span> W) <span class="op">+</span></span>
+<span id="cb4-71"><a href="#cb4-71" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(dictPV[v].power_cost <span class="op">*</span> p_v_nom[v] <span class="cf">for</span> v <span class="kw">in</span> V) <span class="op">&lt;=</span> max_budget</span>
+<span id="cb4-72"><a href="#cb4-72" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-73"><a href="#cb4-73" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-74"><a href="#cb4-74" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Grid electricity costs</span></span>
+<span id="cb4-75"><a href="#cb4-75" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@constraint</span>(model, [ω <span class="kw">in</span> Ω],</span>
+<span id="cb4-76"><a href="#cb4-76" aria-hidden="true" tabindex="-1"></a>        AC_grid_imp[ω] <span class="op">==</span> <span class="fu">sum</span>(</span>
+<span id="cb4-77"><a href="#cb4-77" aria-hidden="true" tabindex="-1"></a>            (dictScenarios[ω].market_price[t] <span class="op">+</span> dictGrid[<span class="st">"grid"</span>].taxes_levies) <span class="op">*</span> p_in[t,ω]</span>
+<span id="cb4-78"><a href="#cb4-78" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> t <span class="kw">in</span> T</span>
+<span id="cb4-79"><a href="#cb4-79" aria-hidden="true" tabindex="-1"></a>        ) <span class="op">*</span> <span class="fl">52.1429</span> <span class="co"># 52.1429 is the number of weeks in a year as we currently have a time horizon of one week</span></span>
+<span id="cb4-80"><a href="#cb4-80" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-81"><a href="#cb4-81" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-82"><a href="#cb4-82" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@constraint</span>(model, [ω <span class="kw">in</span> Ω],</span>
+<span id="cb4-83"><a href="#cb4-83" aria-hidden="true" tabindex="-1"></a>        AR_grid_exp[ω] <span class="op">==</span> <span class="fu">sum</span>(</span>
+<span id="cb4-84"><a href="#cb4-84" aria-hidden="true" tabindex="-1"></a>            dictScenarios[ω].market_price[t] <span class="op">*</span> p_out[t,ω]</span>
+<span id="cb4-85"><a href="#cb4-85" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> t <span class="kw">in</span> T</span>
+<span id="cb4-86"><a href="#cb4-86" aria-hidden="true" tabindex="-1"></a>        ) <span class="op">*</span> <span class="fl">52.1429</span> <span class="co"># 52.1429 is the number of weeks in a year as we currently have a time horizon of one week</span></span>
+<span id="cb4-87"><a href="#cb4-87" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-88"><a href="#cb4-88" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-89"><a href="#cb4-89" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Power balance</span></span>
+<span id="cb4-90"><a href="#cb4-90" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@constraint</span>(model, [t <span class="kw">in</span> T, ω <span class="kw">in</span> Ω],</span>
+<span id="cb4-91"><a href="#cb4-91" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(p_w[w,t,ω] <span class="cf">for</span> w <span class="kw">in</span> W) <span class="op">+</span></span>
+<span id="cb4-92"><a href="#cb4-92" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(p_v[v,t,ω] <span class="cf">for</span> v <span class="kw">in</span> V) <span class="op">+</span></span>
+<span id="cb4-93"><a href="#cb4-93" aria-hidden="true" tabindex="-1"></a>        (p_in[t,ω] <span class="op">-</span> p_out[t,ω]) <span class="op">+</span></span>
+<span id="cb4-94"><a href="#cb4-94" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(p_dis[s,t,ω] <span class="op">-</span> p_ch[s,t,ω] <span class="cf">for</span> s <span class="kw">in</span> S) <span class="op">==</span></span>
+<span id="cb4-95"><a href="#cb4-95" aria-hidden="true" tabindex="-1"></a>        dictScenarios[ω].demand[t]</span>
+<span id="cb4-96"><a href="#cb4-96" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-97"><a href="#cb4-97" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-98"><a href="#cb4-98" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Component limits</span></span>
+<span id="cb4-99"><a href="#cb4-99" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@constraint</span>(model, [w <span class="kw">in</span> W, t <span class="kw">in</span> T, ω <span class="kw">in</span> Ω],</span>
+<span id="cb4-100"><a href="#cb4-100" aria-hidden="true" tabindex="-1"></a>        p_w[w,t,ω] <span class="op">&lt;=</span> dictScenarios[ω].wind_cf[t] <span class="op">*</span> p_w_nom[w]</span>
+<span id="cb4-101"><a href="#cb4-101" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-102"><a href="#cb4-102" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-103"><a href="#cb4-103" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@constraint</span>(model, [v <span class="kw">in</span> V, t <span class="kw">in</span> T, ω <span class="kw">in</span> Ω],</span>
+<span id="cb4-104"><a href="#cb4-104" aria-hidden="true" tabindex="-1"></a>        p_v[v,t,ω] <span class="op">&lt;=</span> dictScenarios[ω].pv_cf[t] <span class="op">*</span> p_v_nom[v]</span>
+<span id="cb4-105"><a href="#cb4-105" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-106"><a href="#cb4-106" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-107"><a href="#cb4-107" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@constraint</span>(model, [s <span class="kw">in</span> S, t <span class="kw">in</span> T, ω <span class="kw">in</span> Ω],</span>
+<span id="cb4-108"><a href="#cb4-108" aria-hidden="true" tabindex="-1"></a>        p_ch[s,t,ω] <span class="op">&lt;=</span> p_ch_nom[s]</span>
+<span id="cb4-109"><a href="#cb4-109" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-110"><a href="#cb4-110" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-111"><a href="#cb4-111" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@constraint</span>(model, [s <span class="kw">in</span> S, t <span class="kw">in</span> T, ω <span class="kw">in</span> Ω],</span>
+<span id="cb4-112"><a href="#cb4-112" aria-hidden="true" tabindex="-1"></a>        p_dis[s,t,ω] <span class="op">&lt;=</span> p_dis_nom[s]</span>
+<span id="cb4-113"><a href="#cb4-113" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-114"><a href="#cb4-114" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-115"><a href="#cb4-115" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@constraint</span>(model, [s <span class="kw">in</span> S, t <span class="kw">in</span> T, ω <span class="kw">in</span> Ω],</span>
+<span id="cb4-116"><a href="#cb4-116" aria-hidden="true" tabindex="-1"></a>        <span class="cn">e</span>[s,t,ω] <span class="op">&lt;=</span> e_nom[s]</span>
+<span id="cb4-117"><a href="#cb4-117" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-118"><a href="#cb4-118" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-119"><a href="#cb4-119" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Storage energy balance</span></span>
+<span id="cb4-120"><a href="#cb4-120" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@constraint</span>(model, [s <span class="kw">in</span> S, t <span class="kw">in</span> <span class="fl">2</span><span class="op">:</span><span class="fu">length</span>(T), ω <span class="kw">in</span> Ω],</span>
+<span id="cb4-121"><a href="#cb4-121" aria-hidden="true" tabindex="-1"></a>        <span class="cn">e</span>[s,t,ω] <span class="op">==</span> (<span class="fl">1</span> <span class="op">-</span> dictStorage[s].self_discharge_rate) <span class="op">*</span> <span class="cn">e</span>[s,t<span class="op">-</span><span class="fl">1</span>,ω] <span class="op">+</span></span>
+<span id="cb4-122"><a href="#cb4-122" aria-hidden="true" tabindex="-1"></a>                    dictStorage[s].charge_efficiency <span class="op">*</span> p_ch[s,t,ω] <span class="op">-</span></span>
+<span id="cb4-123"><a href="#cb4-123" aria-hidden="true" tabindex="-1"></a>                    p_dis[s,t,ω] <span class="op">/</span> dictStorage[s].discharge_efficiency</span>
+<span id="cb4-124"><a href="#cb4-124" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-125"><a href="#cb4-125" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-126"><a href="#cb4-126" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@constraint</span>(model, [s <span class="kw">in</span> S, ω <span class="kw">in</span> Ω],</span>
+<span id="cb4-127"><a href="#cb4-127" aria-hidden="true" tabindex="-1"></a>        <span class="cn">e</span>[s,<span class="fl">1</span>,ω] <span class="op">==</span> dictStorage[s].charge_efficiency <span class="op">*</span> p_ch[s,<span class="fl">1</span>,ω] <span class="op">-</span></span>
+<span id="cb4-128"><a href="#cb4-128" aria-hidden="true" tabindex="-1"></a>                    p_dis[s,<span class="fl">1</span>,ω] <span class="op">/</span> dictStorage[s].discharge_efficiency</span>
+<span id="cb4-129"><a href="#cb4-129" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-130"><a href="#cb4-130" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-131"><a href="#cb4-131" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Solve the model</span></span>
+<span id="cb4-132"><a href="#cb4-132" aria-hidden="true" tabindex="-1"></a>    <span class="fu">optimize!</span>(model)</span>
+<span id="cb4-133"><a href="#cb4-133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-134"><a href="#cb4-134" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Assert that the solution is feasible</span></span>
+<span id="cb4-135"><a href="#cb4-135" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="fu">termination_status</span>(model) <span class="op">!=</span> MOI.OPTIMAL</span>
+<span id="cb4-136"><a href="#cb4-136" aria-hidden="true" tabindex="-1"></a>        ts <span class="op">=</span> <span class="fu">termination_status</span>(model)</span>
+<span id="cb4-137"><a href="#cb4-137" aria-hidden="true" tabindex="-1"></a>        <span class="pp">@info</span> <span class="st">"Optimization finished. The model was not solved correctly. Termination Status: </span><span class="sc">$</span>ts<span class="st">"</span></span>
+<span id="cb4-138"><a href="#cb4-138" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Helpful resource: https://jump.dev/JuMP.jl/stable/manual/solutions/#Conflicts</span></span>
+<span id="cb4-139"><a href="#cb4-139" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb4-140"><a href="#cb4-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-141"><a href="#cb4-141" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Return results</span></span>
+<span id="cb4-142"><a href="#cb4-142" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (</span>
+<span id="cb4-143"><a href="#cb4-143" aria-hidden="true" tabindex="-1"></a>        e_nom <span class="op">=</span> <span class="fu">value</span>.(e_nom),</span>
+<span id="cb4-144"><a href="#cb4-144" aria-hidden="true" tabindex="-1"></a>        p_ch_nom <span class="op">=</span> <span class="fu">value</span>.(p_ch_nom),</span>
+<span id="cb4-145"><a href="#cb4-145" aria-hidden="true" tabindex="-1"></a>        p_dis_nom <span class="op">=</span> <span class="fu">value</span>.(p_dis_nom),</span>
+<span id="cb4-146"><a href="#cb4-146" aria-hidden="true" tabindex="-1"></a>        p_w_nom <span class="op">=</span> <span class="fu">value</span>.(p_w_nom),</span>
+<span id="cb4-147"><a href="#cb4-147" aria-hidden="true" tabindex="-1"></a>        p_v_nom <span class="op">=</span> <span class="fu">value</span>.(p_v_nom),</span>
+<span id="cb4-148"><a href="#cb4-148" aria-hidden="true" tabindex="-1"></a>        total_cost <span class="op">=</span> <span class="fu">objective_value</span>(model),</span>
+<span id="cb4-149"><a href="#cb4-149" aria-hidden="true" tabindex="-1"></a>        investment_costs <span class="op">=</span> <span class="fu">Dict</span>(</span>
+<span id="cb4-150"><a href="#cb4-150" aria-hidden="true" tabindex="-1"></a>            <span class="st">"storage"</span> <span class="op">=&gt;</span> <span class="fu">value</span>.(AC_inv_s[<span class="st">"storage"</span>]),</span>
+<span id="cb4-151"><a href="#cb4-151" aria-hidden="true" tabindex="-1"></a>            <span class="st">"wind"</span> <span class="op">=&gt;</span> <span class="fu">value</span>.(AC_inv_w[<span class="st">"wind"</span>]),</span>
+<span id="cb4-152"><a href="#cb4-152" aria-hidden="true" tabindex="-1"></a>            <span class="st">"pv"</span> <span class="op">=&gt;</span> <span class="fu">value</span>.(AC_inv_v[<span class="st">"pv"</span>])</span>
+<span id="cb4-153"><a href="#cb4-153" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb4-154"><a href="#cb4-154" aria-hidden="true" tabindex="-1"></a>        operational_costs <span class="op">=</span> <span class="fu">Dict</span>(</span>
+<span id="cb4-155"><a href="#cb4-155" aria-hidden="true" tabindex="-1"></a>            <span class="st">"grid_import"</span> <span class="op">=&gt;</span> <span class="fu">sum</span>(dictScenarios[ω].probability <span class="op">*</span> <span class="fu">value</span>.(AC_grid_imp[ω]) <span class="cf">for</span> ω <span class="kw">in</span> Ω) <span class="op">*</span> <span class="fl">52.1429</span>,</span>
+<span id="cb4-156"><a href="#cb4-156" aria-hidden="true" tabindex="-1"></a>            <span class="st">"grid_export"</span> <span class="op">=&gt;</span> <span class="fu">sum</span>(dictScenarios[ω].probability <span class="op">*</span> <span class="fu">value</span>.(AR_grid_exp[ω]) <span class="cf">for</span> ω <span class="kw">in</span> Ω) <span class="op">*</span> <span class="fl">52.1429</span></span>
+<span id="cb4-157"><a href="#cb4-157" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb4-158"><a href="#cb4-158" aria-hidden="true" tabindex="-1"></a>        operational_variables <span class="op">=</span> <span class="fu">Dict</span>(</span>
+<span id="cb4-159"><a href="#cb4-159" aria-hidden="true" tabindex="-1"></a>            <span class="st">"storage_energy"</span> <span class="op">=&gt;</span> <span class="fu">value</span>.(<span class="cn">e</span>),</span>
+<span id="cb4-160"><a href="#cb4-160" aria-hidden="true" tabindex="-1"></a>            <span class="st">"storage_charge"</span> <span class="op">=&gt;</span> <span class="fu">value</span>.(p_ch),</span>
+<span id="cb4-161"><a href="#cb4-161" aria-hidden="true" tabindex="-1"></a>            <span class="st">"storage_discharge"</span> <span class="op">=&gt;</span> <span class="fu">value</span>.(p_dis),</span>
+<span id="cb4-162"><a href="#cb4-162" aria-hidden="true" tabindex="-1"></a>            <span class="st">"wind_power"</span> <span class="op">=&gt;</span> <span class="fu">value</span>.(p_w),</span>
+<span id="cb4-163"><a href="#cb4-163" aria-hidden="true" tabindex="-1"></a>            <span class="st">"pv_power"</span> <span class="op">=&gt;</span> <span class="fu">value</span>.(p_v),</span>
+<span id="cb4-164"><a href="#cb4-164" aria-hidden="true" tabindex="-1"></a>            <span class="st">"grid_import"</span> <span class="op">=&gt;</span> <span class="fu">value</span>.(p_in),</span>
+<span id="cb4-165"><a href="#cb4-165" aria-hidden="true" tabindex="-1"></a>            <span class="st">"grid_export"</span> <span class="op">=&gt;</span> <span class="fu">value</span>.(p_out)</span>
+<span id="cb4-166"><a href="#cb4-166" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb4-167"><a href="#cb4-167" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-168"><a href="#cb4-168" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="solve-and-analyze-results" class="level2">
