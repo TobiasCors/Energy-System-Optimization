@@ -487,12 +487,9 @@ function solve_stochastic_design(dictStorage, dictWindTurbines, dictPV, dictScen
     
     # Calculate PVAF for each component type
     pvaf = Dict(
-        "storage" => (1 + dictStorage["storage"].discount_rate)^dictStorage["storage"].lifetime / 
-                    (dictStorage["storage"].discount_rate * (1 + dictStorage["storage"].discount_rate)^dictStorage["storage"].lifetime),
-        "wind" => (1 + dictWindTurbines["wind"].discount_rate)^dictWindTurbines["wind"].lifetime / 
-                 (dictWindTurbines["wind"].discount_rate * (1 + dictWindTurbines["wind"].discount_rate)^dictWindTurbines["wind"].lifetime),
-        "pv" => (1 + dictPV["pv"].discount_rate)^dictPV["pv"].lifetime / 
-               (dictPV["pv"].discount_rate * (1 + dictPV["pv"].discount_rate)^dictPV["pv"].lifetime)
+        "storage" => (1 - 1/(1 + dictStorage["storage"].discount_rate)^dictStorage["storage"].lifetime) / dictStorage["storage"].discount_rate,
+        "wind" => (1 - 1/(1 + dictWindTurbines["wind"].discount_rate)^dictWindTurbines["wind"].lifetime) / dictWindTurbines["wind"].discount_rate,
+        "pv" => (1 - 1/(1 + dictPV["pv"].discount_rate)^dictPV["pv"].lifetime) / dictPV["pv"].discount_rate
     )
     
     # Decision Variables
@@ -524,7 +521,7 @@ function solve_stochastic_design(dictStorage, dictWindTurbines, dictPV, dictScen
         sum(AC_inv_s[s] for s in S) +
         sum(AC_inv_w[w] for w in W) +
         sum(AC_inv_v[v] for v in V) +
-        sum(dictScenarios[ω].probability * (AC_grid_imp[ω] - AR_grid_exp[ω]) for ω in Ω) * 52.1429
+        sum(dictScenarios[ω].probability * (AC_grid_imp[ω] - AR_grid_exp[ω]) for ω in Ω)
     )
     
     # Investment cost constraints
@@ -554,14 +551,14 @@ function solve_stochastic_design(dictStorage, dictWindTurbines, dictPV, dictScen
         AC_grid_imp[ω] == sum(
             (dictScenarios[ω].market_price[t] + dictGrid["grid"].taxes_levies) * p_in[t,ω]
             for t in T
-        )
+        ) * 52.1429 # 52.1429 is the number of weeks in a year as we currently have a time horizon of one week
     )
     
     @constraint(model, [ω in Ω],
         AR_grid_exp[ω] == sum(
             dictScenarios[ω].market_price[t] * p_out[t,ω]
             for t in T
-        )
+        ) * 52.1429 # 52.1429 is the number of weeks in a year as we currently have a time horizon of one week
     )
     
     # Power balance

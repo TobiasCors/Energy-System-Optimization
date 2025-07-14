@@ -1,0 +1,2 @@
+name,min_power,max_power,min_energy,max_energy,charge_efficiency,discharge_efficiency,self_discharge_rate,ramp_up,ramp_down
+B1,0,100,0,500,0.95,0.95,0.001,50,50 
