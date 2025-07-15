@@ -469,9 +469,17 @@ $\text{Maximize}$
 
 $\sum_{\omega \in \Omega} \pi_{\omega}^{prob} \sum_{e \in \mathcal{E}} \sum_{t \in \mathcal{T}} \pi_{e,t,\omega}^{sell} f_{e,t,\omega}^{sell}$
 
+**Revenue from satisfied demand:**
+
+$+\sum_{\omega \in \Omega} \pi_{\omega}^{prob} \sum_{g \in \mathcal{G}^{Dem}} \sum_{t \in \mathcal{T}} \pi_g^{dem} D_{e_g,t,\omega}$
+
 **Costs of buying energy carriers:**
 
 $-\sum_{\omega \in \Omega} \pi_{\omega}^{prob} \sum_{e \in \mathcal{E}} \sum_{t \in \mathcal{T}} \pi_{e,t,\omega}^{buy} f_{e,t,\omega}^{buy}$
+
+**Taxes and levies costs:**
+
+$-\sum_{\omega \in \Omega} \pi_{\omega}^{prob} \sum_{g \in \mathcal{G}^{Sup}} \sum_{e \in \mathcal{E}} \sum_{t \in \mathcal{T}} \tau_g f_{e,t,\omega}^{buy} \quad \text{where } e_g^{sup} = e$
 
 **Variable operating costs:**
 
@@ -486,7 +494,7 @@ $-\sum_{\omega \in \Omega} \pi_{\omega}^{prob} \sum_{g \in \mathcal{G}^{UC}} \su
 $-\sum_{g \in \mathcal{G}} AC_g^{inv}$
 
 ::: {.callout-note}
-The objective maximizes profit: revenue from selling energy carriers minus costs of buying energy carriers, variable operating costs, startup costs, and investment costs.
+The objective maximizes profit: revenue from selling energy carriers and satisfied demand minus costs of buying energy carriers (including taxes and levies), variable operating costs, startup costs, and investment costs.
 :::
 
 ## Investment Cost Constraints
@@ -505,8 +513,18 @@ $x_{g,e,t,\omega}^{in} = \sigma_{g,e}^{in} x_{g,t,\omega}^{total} \quad \forall 
 
 $x_{g,e,t,\omega}^{out} = \sigma_{g,e}^{out} \Theta_g x_{g,t,\omega}^{total} \quad \forall g \in \mathcal{G} \setminus \mathcal{G}^S, e \in \mathcal{E}_g^{Out}, t \in \mathcal{T}, \omega \in \Omega$
 
-### Technology Capacity Limits
-$P_g^{min} u_{g,t,\omega} \leq x_{g,t,\omega}^{total} \leq P_g^{max} u_{g,t,\omega} \quad \forall g \in \mathcal{G} \setminus \mathcal{G}^S, t \in \mathcal{T}, \omega \in \Omega$
+### Technology Capacity Limits (Linearized)
+$x_{g,t,\omega}^{total} \leq P_g^{nom} \quad \forall g \in \mathcal{G} \setminus \mathcal{G}^S, t \in \mathcal{T}, \omega \in \Omega$
+
+$x_{g,t,\omega}^{total} \leq M u_{g,t,\omega} \quad \forall g \in \mathcal{G} \setminus \mathcal{G}^S, t \in \mathcal{T}, \omega \in \Omega$
+
+$0.1 P_g^{nom} \leq x_{g,t,\omega}^{total} + M (1 - u_{g,t,\omega}) \quad \forall g \in \mathcal{G} \setminus \mathcal{G}^S, t \in \mathcal{T}, \omega \in \Omega$
+
+where $M$ is a large constant (big M).
+
+::: {.callout-note}
+The minimum power constraint is implemented using big M constraints to maintain linearity. When $u_{g,t,\omega} = 1$ (unit is on), the third constraint becomes $0.1 P_g^{nom} \leq x_{g,t,\omega}^{total}$, enforcing the minimum power requirement. When $u_{g,t,\omega} = 0$ (unit is off), the second constraint forces $x_{g,t,\omega}^{total} = 0$.
+:::
 
 ### Variable Energy Technologies
 $0 \leq x_{g,t,\omega}^{total} \leq f_{g,t,\omega} P_g^{nom} \quad \forall g \in \mathcal{G}^{Var}, t \in \mathcal{T}, \omega \in \Omega$
@@ -516,7 +534,7 @@ where $f_{g,t,\omega}$ is the capacity factor for variable technology $g$.
 ## Storage Constraints
 
 ### State of Charge Balance
-$soc_{g,t,\omega} = soc_{g,t-1,\omega} + \Theta_g x_{g,t,\omega}^{total} - \sum_{e \in \mathcal{E}_g^{Out}} \sigma_{g,e}^{out} x_{g,e,t,\omega}^{out} \quad \forall g \in \mathcal{G}^S, t \in \mathcal{T}, \omega \in \Omega$
+$soc_{g,t,\omega} = (1 - \delta_g) soc_{g,t-1,\omega} + \eta_g^{ch} x_{g,t,\omega}^{total} - \frac{\sum_{e \in \mathcal{E}_g^{Out}} \sigma_{g,e}^{out} x_{g,e,t,\omega}^{out}}{\eta_g^{dis}} \quad \forall g \in \mathcal{G}^S, t \in \mathcal{T}, \omega \in \Omega$
 
 ### Storage Capacity Limits
 $0 \leq soc_{g,t,\omega} \leq SOC_g^{max} \quad \forall g \in \mathcal{G}^S, t \in \mathcal{T}, \omega \in \Omega$
@@ -524,15 +542,36 @@ $0 \leq soc_{g,t,\omega} \leq SOC_g^{max} \quad \forall g \in \mathcal{G}^S, t \
 ### Initial and Final State
 $soc_{g,t=0,\omega} = soc_{g,t=|\mathcal{T}|,\omega} = SOC_g^{init} \quad \forall g \in \mathcal{G}^S, \omega \in \Omega$
 
-### Charging/Discharging Mutual Exclusion
-$P_g^{min} o_{g,t,\omega} \leq x_{g,t,\omega}^{total} \leq P_g^{max} o_{g,t,\omega} \quad \forall g \in \mathcal{G}^S, t \in \mathcal{T}, \omega \in \Omega$
+### Charging/Discharging Mutual Exclusion (Big M Constraints)
+$x_{g,t,\omega}^{total} \leq P_g^{nom} \quad \forall g \in \mathcal{G}^S, t \in \mathcal{T}, \omega \in \Omega$
 
-$P_g^{min} (1-o_{g,t,\omega}) \leq \sum_{e \in \mathcal{E}_g^{Out}} \sigma_{g,e}^{out} x_{g,e,t,\omega}^{out} \leq P_g^{max} (1-o_{g,t,\omega}) \quad \forall g \in \mathcal{G}^S, t \in \mathcal{T}, \omega \in \Omega$
+$x_{g,t,\omega}^{total} \leq M o_{g,t,\omega} \quad \forall g \in \mathcal{G}^S, t \in \mathcal{T}, \omega \in \Omega$
+
+$\sum_{e \in \mathcal{E}_g^{Out}} \sigma_{g,e}^{out} x_{g,e,t,\omega}^{out} \leq P_g^{nom} \quad \forall g \in \mathcal{G}^S, t \in \mathcal{T}, \omega \in \Omega$
+
+$\sum_{e \in \mathcal{E}_g^{Out}} \sigma_{g,e}^{out} x_{g,e,t,\omega}^{out} \leq M (1-o_{g,t,\omega}) \quad \forall g \in \mathcal{G}^S, t \in \mathcal{T}, \omega \in \Omega$
+
+where $M$ is a large constant (big M).
+
+::: {.callout-note}
+The storage charging/discharging mutual exclusion is implemented using big M constraints. When $o_{g,t,\omega} = 1$ (charging mode), the second constraint allows charging while the fourth constraint forces discharging to zero. When $o_{g,t,\omega} = 0$ (discharging mode), the second constraint forces charging to zero while the fourth constraint allows discharging.
+:::
+
+## Supply Unit Constraints
+
+### Fixed Supply
+$x_{g,e_g^{sup},t,\omega}^{out} = Q_g^{nom} \quad \forall g \in \mathcal{G}^{Sup}: \text{supply type} = \text{"fix"}, t \in \mathcal{T}, \omega \in \Omega$
+
+### Maximum Supply
+$x_{g,e_g^{sup},t,\omega}^{out} \leq Q_g^{nom} \quad \forall g \in \mathcal{G}^{Sup}: \text{supply type} = \text{"max"}, t \in \mathcal{T}, \omega \in \Omega$
 
 ## Energy Balance Constraints
 
-### Energy Carrier Balance
+### Energy Carrier Balance (for carriers with demand)
 $\sum_{g \in \mathcal{G}} x_{g,e,t,\omega}^{out} + f_{e,t,\omega}^{buy} = \sum_{g \in \mathcal{G}} x_{g,e,t,\omega}^{in} + f_{e,t,\omega}^{sell} + D_{e,t,\omega} \quad \forall e \in \mathcal{E}^D, t \in \mathcal{T}, \omega \in \Omega$
+
+### Energy Carrier Balance (for carriers without demand)
+$\sum_{g \in \mathcal{G}} x_{g,e,t,\omega}^{out} + f_{e,t,\omega}^{buy} = \sum_{g \in \mathcal{G}} x_{g,e,t,\omega}^{in} + f_{e,t,\omega}^{sell} \quad \forall e \in \mathcal{E} \setminus \mathcal{E}^D, t \in \mathcal{T}, \omega \in \Omega$
 
 ## Unit Commitment Constraints (if applicable)
 
