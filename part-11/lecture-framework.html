@@ -618,7 +618,7 @@ window.Quarto = {
   <li><a href="#energy-conversion-constraints" id="toc-energy-conversion-constraints" class="nav-link" data-scroll-target="#energy-conversion-constraints">Energy Conversion Constraints</a>
   <ul class="collapse">
   <li><a href="#input-output-relationships" id="toc-input-output-relationships" class="nav-link" data-scroll-target="#input-output-relationships">Input-Output Relationships</a></li>
-  <li><a href="#technology-capacity-limits" id="toc-technology-capacity-limits" class="nav-link" data-scroll-target="#technology-capacity-limits">Technology Capacity Limits</a></li>
+  <li><a href="#technology-capacity-limits-linearized" id="toc-technology-capacity-limits-linearized" class="nav-link" data-scroll-target="#technology-capacity-limits-linearized">Technology Capacity Limits (Linearized)</a></li>
   <li><a href="#variable-energy-technologies" id="toc-variable-energy-technologies" class="nav-link" data-scroll-target="#variable-energy-technologies">Variable Energy Technologies</a></li>
   </ul></li>
   <li><a href="#storage-constraints" id="toc-storage-constraints" class="nav-link" data-scroll-target="#storage-constraints">Storage Constraints</a>
@@ -626,11 +626,17 @@ window.Quarto = {
   <li><a href="#state-of-charge-balance" id="toc-state-of-charge-balance" class="nav-link" data-scroll-target="#state-of-charge-balance">State of Charge Balance</a></li>
   <li><a href="#storage-capacity-limits" id="toc-storage-capacity-limits" class="nav-link" data-scroll-target="#storage-capacity-limits">Storage Capacity Limits</a></li>
   <li><a href="#initial-and-final-state" id="toc-initial-and-final-state" class="nav-link" data-scroll-target="#initial-and-final-state">Initial and Final State</a></li>
-  <li><a href="#chargingdischarging-mutual-exclusion" id="toc-chargingdischarging-mutual-exclusion" class="nav-link" data-scroll-target="#chargingdischarging-mutual-exclusion">Charging/Discharging Mutual Exclusion</a></li>
+  <li><a href="#chargingdischarging-mutual-exclusion-big-m-constraints" id="toc-chargingdischarging-mutual-exclusion-big-m-constraints" class="nav-link" data-scroll-target="#chargingdischarging-mutual-exclusion-big-m-constraints">Charging/Discharging Mutual Exclusion (Big M Constraints)</a></li>
+  </ul></li>
+  <li><a href="#supply-unit-constraints" id="toc-supply-unit-constraints" class="nav-link" data-scroll-target="#supply-unit-constraints">Supply Unit Constraints</a>
+  <ul class="collapse">
+  <li><a href="#fixed-supply" id="toc-fixed-supply" class="nav-link" data-scroll-target="#fixed-supply">Fixed Supply</a></li>
+  <li><a href="#maximum-supply" id="toc-maximum-supply" class="nav-link" data-scroll-target="#maximum-supply">Maximum Supply</a></li>
   </ul></li>
   <li><a href="#energy-balance-constraints" id="toc-energy-balance-constraints" class="nav-link" data-scroll-target="#energy-balance-constraints">Energy Balance Constraints</a>
   <ul class="collapse">
-  <li><a href="#energy-carrier-balance" id="toc-energy-carrier-balance" class="nav-link" data-scroll-target="#energy-carrier-balance">Energy Carrier Balance</a></li>
+  <li><a href="#energy-carrier-balance-for-carriers-with-demand" id="toc-energy-carrier-balance-for-carriers-with-demand" class="nav-link" data-scroll-target="#energy-carrier-balance-for-carriers-with-demand">Energy Carrier Balance (for carriers with demand)</a></li>
+  <li><a href="#energy-carrier-balance-for-carriers-without-demand" id="toc-energy-carrier-balance-for-carriers-without-demand" class="nav-link" data-scroll-target="#energy-carrier-balance-for-carriers-without-demand">Energy Carrier Balance (for carriers without demand)</a></li>
   </ul></li>
   <li><a href="#unit-commitment-constraints-if-applicable" id="toc-unit-commitment-constraints-if-applicable" class="nav-link" data-scroll-target="#unit-commitment-constraints-if-applicable">Unit Commitment Constraints (if applicable)</a>
   <ul class="collapse">
@@ -1278,8 +1284,12 @@ $\left. - \sum_{g \in \mathcal{G}^{UC}} \sum_{t \in \mathcal{T}} c_{g,t,\omega}^
 <p><span class="math inline">\(\text{Maximize}\)</span></p>
 <p><strong>Revenue from selling energy carriers:</strong></p>
 <p><span class="math inline">\(\sum_{\omega \in \Omega} \pi_{\omega}^{prob} \sum_{e \in \mathcal{E}} \sum_{t \in \mathcal{T}} \pi_{e,t,\omega}^{sell} f_{e,t,\omega}^{sell}\)</span></p>
+<p><strong>Revenue from satisfied demand:</strong></p>
+<p><span class="math inline">\(+\sum_{\omega \in \Omega} \pi_{\omega}^{prob} \sum_{g \in \mathcal{G}^{Dem}} \sum_{t \in \mathcal{T}} \pi_g^{dem} D_{e_g,t,\omega}\)</span></p>
 <p><strong>Costs of buying energy carriers:</strong></p>
 <p><span class="math inline">\(-\sum_{\omega \in \Omega} \pi_{\omega}^{prob} \sum_{e \in \mathcal{E}} \sum_{t \in \mathcal{T}} \pi_{e,t,\omega}^{buy} f_{e,t,\omega}^{buy}\)</span></p>
+<p><strong>Taxes and levies costs:</strong></p>
+<p><span class="math inline">\(-\sum_{\omega \in \Omega} \pi_{\omega}^{prob} \sum_{g \in \mathcal{G}^{Sup}} \sum_{e \in \mathcal{E}} \sum_{t \in \mathcal{T}} \tau_g f_{e,t,\omega}^{buy} \quad \text{where } e_g^{sup} = e\)</span></p>
 <p><strong>Variable operating costs:</strong></p>
 <p><span class="math inline">\(-\sum_{\omega \in \Omega} \pi_{\omega}^{prob} \sum_{g \in \mathcal{G}} \sum_{t \in \mathcal{T}} C_g^{var} x_{g,t,\omega}^{total}\)</span></p>
 <p><strong>Startup costs:</strong></p>
@@ -1296,7 +1306,7 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>The objective maximizes profit: revenue from selling energy carriers minus costs of buying energy carriers, variable operating costs, startup costs, and investment costs.</p>
+<p>The objective maximizes profit: revenue from selling energy carriers and satisfied demand minus costs of buying energy carriers (including taxes and levies), variable operating costs, startup costs, and investment costs.</p>
 </div>
 </div>
 </section>
@@ -1316,9 +1326,25 @@ Note
 <p><span class="math inline">\(x_{g,e,t,\omega}^{in} = \sigma_{g,e}^{in} x_{g,t,\omega}^{total} \quad \forall g \in \mathcal{G}, e \in \mathcal{E}_g^{In}, t \in \mathcal{T}, \omega \in \Omega\)</span></p>
 <p><span class="math inline">\(x_{g,e,t,\omega}^{out} = \sigma_{g,e}^{out} \Theta_g x_{g,t,\omega}^{total} \quad \forall g \in \mathcal{G} \setminus \mathcal{G}^S, e \in \mathcal{E}_g^{Out}, t \in \mathcal{T}, \omega \in \Omega\)</span></p>
 </section>
-<section id="technology-capacity-limits" class="level3">
-<h3 class="anchored" data-anchor-id="technology-capacity-limits">Technology Capacity Limits</h3>
-<p><span class="math inline">\(P_g^{min} u_{g,t,\omega} \leq x_{g,t,\omega}^{total} \leq P_g^{max} u_{g,t,\omega} \quad \forall g \in \mathcal{G} \setminus \mathcal{G}^S, t \in \mathcal{T}, \omega \in \Omega\)</span></p>
+<section id="technology-capacity-limits-linearized" class="level3">
+<h3 class="anchored" data-anchor-id="technology-capacity-limits-linearized">Technology Capacity Limits (Linearized)</h3>
+<p><span class="math inline">\(x_{g,t,\omega}^{total} \leq P_g^{nom} \quad \forall g \in \mathcal{G} \setminus \mathcal{G}^S, t \in \mathcal{T}, \omega \in \Omega\)</span></p>
+<p><span class="math inline">\(x_{g,t,\omega}^{total} \leq M u_{g,t,\omega} \quad \forall g \in \mathcal{G} \setminus \mathcal{G}^S, t \in \mathcal{T}, \omega \in \Omega\)</span></p>
+<p><span class="math inline">\(0.1 P_g^{nom} \leq x_{g,t,\omega}^{total} + M (1 - u_{g,t,\omega}) \quad \forall g \in \mathcal{G} \setminus \mathcal{G}^S, t \in \mathcal{T}, \omega \in \Omega\)</span></p>
+<p>where <span class="math inline">\(M\)</span> is a large constant (big M).</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The minimum power constraint is implemented using big M constraints to maintain linearity. When <span class="math inline">\(u_{g,t,\omega} = 1\)</span> (unit is on), the third constraint becomes <span class="math inline">\(0.1 P_g^{nom} \leq x_{g,t,\omega}^{total}\)</span>, enforcing the minimum power requirement. When <span class="math inline">\(u_{g,t,\omega} = 0\)</span> (unit is off), the second constraint forces <span class="math inline">\(x_{g,t,\omega}^{total} = 0\)</span>.</p>
+</div>
+</div>
 </section>
 <section id="variable-energy-technologies" class="level3">
 <h3 class="anchored" data-anchor-id="variable-energy-technologies">Variable Energy Technologies</h3>
@@ -1330,7 +1356,7 @@ Note
 <h2 class="anchored" data-anchor-id="storage-constraints">Storage Constraints</h2>
 <section id="state-of-charge-balance" class="level3">
 <h3 class="anchored" data-anchor-id="state-of-charge-balance">State of Charge Balance</h3>
-<p><span class="math inline">\(soc_{g,t,\omega} = soc_{g,t-1,\omega} + \Theta_g x_{g,t,\omega}^{total} - \sum_{e \in \mathcal{E}_g^{Out}} \sigma_{g,e}^{out} x_{g,e,t,\omega}^{out} \quad \forall g \in \mathcal{G}^S, t \in \mathcal{T}, \omega \in \Omega\)</span></p>
+<p><span class="math inline">\(soc_{g,t,\omega} = (1 - \delta_g) soc_{g,t-1,\omega} + \eta_g^{ch} x_{g,t,\omega}^{total} - \frac{\sum_{e \in \mathcal{E}_g^{Out}} \sigma_{g,e}^{out} x_{g,e,t,\omega}^{out}}{\eta_g^{dis}} \quad \forall g \in \mathcal{G}^S, t \in \mathcal{T}, \omega \in \Omega\)</span></p>
 </section>
 <section id="storage-capacity-limits" class="level3">
 <h3 class="anchored" data-anchor-id="storage-capacity-limits">Storage Capacity Limits</h3>
@@ -1340,17 +1366,48 @@ Note
 <h3 class="anchored" data-anchor-id="initial-and-final-state">Initial and Final State</h3>
 <p><span class="math inline">\(soc_{g,t=0,\omega} = soc_{g,t=|\mathcal{T}|,\omega} = SOC_g^{init} \quad \forall g \in \mathcal{G}^S, \omega \in \Omega\)</span></p>
 </section>
-<section id="chargingdischarging-mutual-exclusion" class="level3">
-<h3 class="anchored" data-anchor-id="chargingdischarging-mutual-exclusion">Charging/Discharging Mutual Exclusion</h3>
-<p><span class="math inline">\(P_g^{min} o_{g,t,\omega} \leq x_{g,t,\omega}^{total} \leq P_g^{max} o_{g,t,\omega} \quad \forall g \in \mathcal{G}^S, t \in \mathcal{T}, \omega \in \Omega\)</span></p>
-<p><span class="math inline">\(P_g^{min} (1-o_{g,t,\omega}) \leq \sum_{e \in \mathcal{E}_g^{Out}} \sigma_{g,e}^{out} x_{g,e,t,\omega}^{out} \leq P_g^{max} (1-o_{g,t,\omega}) \quad \forall g \in \mathcal{G}^S, t \in \mathcal{T}, \omega \in \Omega\)</span></p>
+<section id="chargingdischarging-mutual-exclusion-big-m-constraints" class="level3">
+<h3 class="anchored" data-anchor-id="chargingdischarging-mutual-exclusion-big-m-constraints">Charging/Discharging Mutual Exclusion (Big M Constraints)</h3>
+<p><span class="math inline">\(x_{g,t,\omega}^{total} \leq P_g^{nom} \quad \forall g \in \mathcal{G}^S, t \in \mathcal{T}, \omega \in \Omega\)</span></p>
+<p><span class="math inline">\(x_{g,t,\omega}^{total} \leq M o_{g,t,\omega} \quad \forall g \in \mathcal{G}^S, t \in \mathcal{T}, \omega \in \Omega\)</span></p>
+<p><span class="math inline">\(\sum_{e \in \mathcal{E}_g^{Out}} \sigma_{g,e}^{out} x_{g,e,t,\omega}^{out} \leq P_g^{nom} \quad \forall g \in \mathcal{G}^S, t \in \mathcal{T}, \omega \in \Omega\)</span></p>
+<p><span class="math inline">\(\sum_{e \in \mathcal{E}_g^{Out}} \sigma_{g,e}^{out} x_{g,e,t,\omega}^{out} \leq M (1-o_{g,t,\omega}) \quad \forall g \in \mathcal{G}^S, t \in \mathcal{T}, \omega \in \Omega\)</span></p>
+<p>where <span class="math inline">\(M\)</span> is a large constant (big M).</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The storage charging/discharging mutual exclusion is implemented using big M constraints. When <span class="math inline">\(o_{g,t,\omega} = 1\)</span> (charging mode), the second constraint allows charging while the fourth constraint forces discharging to zero. When <span class="math inline">\(o_{g,t,\omega} = 0\)</span> (discharging mode), the second constraint forces charging to zero while the fourth constraint allows discharging.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="supply-unit-constraints" class="level2">
+<h2 class="anchored" data-anchor-id="supply-unit-constraints">Supply Unit Constraints</h2>
+<section id="fixed-supply" class="level3">
+<h3 class="anchored" data-anchor-id="fixed-supply">Fixed Supply</h3>
+<p><span class="math inline">\(x_{g,e_g^{sup},t,\omega}^{out} = Q_g^{nom} \quad \forall g \in \mathcal{G}^{Sup}: \text{supply type} = \text{"fix"}, t \in \mathcal{T}, \omega \in \Omega\)</span></p>
+</section>
+<section id="maximum-supply" class="level3">
+<h3 class="anchored" data-anchor-id="maximum-supply">Maximum Supply</h3>
+<p><span class="math inline">\(x_{g,e_g^{sup},t,\omega}^{out} \leq Q_g^{nom} \quad \forall g \in \mathcal{G}^{Sup}: \text{supply type} = \text{"max"}, t \in \mathcal{T}, \omega \in \Omega\)</span></p>
 </section>
 </section>
 <section id="energy-balance-constraints" class="level2">
 <h2 class="anchored" data-anchor-id="energy-balance-constraints">Energy Balance Constraints</h2>
-<section id="energy-carrier-balance" class="level3">
-<h3 class="anchored" data-anchor-id="energy-carrier-balance">Energy Carrier Balance</h3>
+<section id="energy-carrier-balance-for-carriers-with-demand" class="level3">
+<h3 class="anchored" data-anchor-id="energy-carrier-balance-for-carriers-with-demand">Energy Carrier Balance (for carriers with demand)</h3>
 <p><span class="math inline">\(\sum_{g \in \mathcal{G}} x_{g,e,t,\omega}^{out} + f_{e,t,\omega}^{buy} = \sum_{g \in \mathcal{G}} x_{g,e,t,\omega}^{in} + f_{e,t,\omega}^{sell} + D_{e,t,\omega} \quad \forall e \in \mathcal{E}^D, t \in \mathcal{T}, \omega \in \Omega\)</span></p>
+</section>
+<section id="energy-carrier-balance-for-carriers-without-demand" class="level3">
+<h3 class="anchored" data-anchor-id="energy-carrier-balance-for-carriers-without-demand">Energy Carrier Balance (for carriers without demand)</h3>
+<p><span class="math inline">\(\sum_{g \in \mathcal{G}} x_{g,e,t,\omega}^{out} + f_{e,t,\omega}^{buy} = \sum_{g \in \mathcal{G}} x_{g,e,t,\omega}^{in} + f_{e,t,\omega}^{sell} \quad \forall e \in \mathcal{E} \setminus \mathcal{E}^D, t \in \mathcal{T}, \omega \in \Omega\)</span></p>
 </section>
 </section>
 <section id="unit-commitment-constraints-if-applicable" class="level2">
