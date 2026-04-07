@@ -1,6 +1,6 @@
 ---
 title: "Welcome to Energy System Optimization (ESO) with Julia!"
-subtitle: "Hamburg University of Applied Science - Summer 2025"
+subtitle: "Hamburg University of Applied Science - Summer 2026"
 
 html:
     theme: [default, styles.scss]

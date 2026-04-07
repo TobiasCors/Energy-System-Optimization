@@ -45,8 +45,8 @@ A case study on unit commitment as short-term scheduling
 **Storages (VII)**\
 A case study on storages
 
-**Investment Planning (VIII)**\
-A case study on investment planning
+**Energy System Design and Investment Planning (VIII)**\
+A case study on energy system design and investment planning
 
 # Part III 
 ## Energy System Optimization with Advanced Models
@@ -58,14 +58,19 @@ In the third part, we will cover more advanced optimization models and concepts.
 **Multi-energy Systems (IX)**\
 A case study on multi-energy systems
 
-**Uncertainty Modelling and Renewable Energy Integration (X)**\
-A case study on uncertainty modelling and renewable energy integration
-
-**Intermission: Exam Preparation (XI)**\
+**Intermission: Exam Preparation (X)**\
 We will prepare for the exam by solving a set of exercises together in the lecture.
 
-**Electricity Market and Carbon Pricing (XII)**\
-A case study on electricity market and carbon pricing
+**Framework for Multi-Energy Systems Optimization (XI)**\
+A case study with the general framework for multi-energy systems optimization
 
-**Recap and Discussion (XIII)**\
+**Recap and Discussion (XII)**\
 We repeat the concepts from the course and discuss all your remaining questions
+
+**Electricity Markets (XIII)**\
+An overview of electricity markets and their role in the energy system
+
+<!--
+**Uncertainty Modelling and Renewable Energy Integration (X)**\
+A case study on uncertainty modelling and renewable energy integration
+-->

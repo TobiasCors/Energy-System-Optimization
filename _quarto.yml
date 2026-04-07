@@ -5,17 +5,17 @@ project:
     - index.qmd
     - general/*.qmd
     - part-01/*.qmd
-    - part-02/*.qmd
-    - part-03/*.qmd
-    - part-04/*.qmd
-    - part-05/*.qmd
-    - part-06/*.qmd
-    - part-07/*.qmd
-    - part-08/*.qmd
-    - part-09/*.qmd
-    - part-10/*.qmd
-    - part-11/*.qmd
-    - part-12/*.qmd
+    # - part-02/*.qmd
+    # - part-03/*.qmd
+    # - part-04/*.qmd
+    # - part-05/*.qmd
+    # - part-06/*.qmd
+    # - part-07/*.qmd
+    # - part-08/*.qmd
+    # - part-09/*.qmd
+    # - part-10/*.qmd
+    # - part-11/*.qmd
+    # - part-12/*.qmd
     # - part-13/*.qmd
 website:
   title: "Energy System Optimization with Julia"
@@ -36,100 +36,100 @@ website:
       - text: "***"
       - text: "01 Introduction"
         href: part-01/lecture-introduction.qmd
-      - section: "02 First Steps"
-        contents:
-          - text: "Lecture"
-            href: part-02/lecture-firststeps.qmd
-          - text: "01 - Variables"
-            href: part-02/tutorial-02-01-variables.qmd
-          - text: "02 - Vectors"
-            href: part-02/tutorial-02-02-vectors.qmd
-          - text: "03 - Comparisons"
-            href: part-02/tutorial-02-03-comparisons.qmd
-          - text: "04 - Loops"
-            href: part-02/tutorial-02-04-loops.qmd
-          - text: "05 - Dictionaries"
-            href: part-02/tutorial-02-05-dicts.qmd
-      - section: "03 Data"
-        contents:
-          - text: "Lecture"
-            href: part-03/lecture-packages.qmd
-          - text: "01 - Functions"
-            href: part-03/tutorial-03-01-functions.qmd
-          - text: "02 - Packages"
-            href: part-03/tutorial-03-02-handling.qmd
-          - text: "03 - DataFrames"
-            href: part-03/tutorial-03-03-DataFrames.qmd
-          - text: "04 - Input and Output"
-            href: part-03/tutorial-03-04-IO.qmd
-          - text: "05 - Plotting"
-            href: part-03/tutorial-03-05-Plotting.qmd
-      - section: "04 Optimization"
-        contents:
-          - text: "Lecture"
-            href: part-04/lecture-jump.qmd
-          - text: "01 - JuMP"
-            href: part-04/tutorial-04-01-jump.qmd
-          - text: "02 - Bounds"
-            href: part-04/tutorial-04-02-bounds.qmd
-          - text: "03 - Constraints"
-            href: part-04/tutorial-04-03-constraints.qmd
-          - text: "04 - Advanced"
-            href: part-04/tutorial-04-04-advanced.qmd
-          - text: "05 - Transport"
-            href: part-04/tutorial-04-05-transport.qmd
-      - section: "05 Dispatch"
-        contents:
-          - text: "Lecture"
-            href: part-05/lecture-dispatch.qmd
-          - text: "Tutorial"
-            href: part-05/tutorial-dispatch.qmd
-      - section: "06 Commitment"
-        contents:
-          - text: "Lecture"
-            href: part-06/lecture-commitment.qmd
-          - text: "Tutorial"
-            href: part-06/tutorial-commitment.qmd
-      - section: "07 Storage"
-        contents:
-          - text: "Lecture"
-            href: part-07/lecture-storage.qmd
-          - text: "Tutorial"
-            href: part-07/tutorial-storage.qmd
-      - section: "08 Design"
-        contents:
-          - text: "Lecture"
-            href: part-08/lecture-design.qmd
-          - text: "Tutorial"
-            href: part-08/tutorial-design.qmd
-      - section: "09 MES"
-        contents:
-          - text: "Lecture"
-            href: part-09/lecture-mes.qmd
-          # - text: "Tutorial"
-          #   href: part-09/tutorial-mes.qmd
-      - section: "10 Intermission"
-        contents:
-          - text: "Lecture"
-            href: part-10/lecture-intermission.qmd
-      #     - text: "Tutorial"
-      #       href: part-10/tutorial-intermission.qmd
-      - section: "11 Framework"
-        contents:
-          - text: "Lecture"
-            href: part-11/lecture-framework.qmd
-      #     - text: "Tutorial"
-      #       href: part-11/tutorial-distancing.qmd
-      - section: "12 Repetition"
-        contents:
-          - text: "Lecture"
-            href: part-12/lecture-repetition.qmd
-      # - section: "13 Recap"
+      # - section: "02 First Steps"
       #   contents:
       #     - text: "Lecture"
-      #       href: part-13/lecture-recap.qmd
+      #       href: part-02/lecture-firststeps.qmd
+      #     - text: "01 - Variables"
+      #       href: part-02/tutorial-02-01-variables.qmd
+      #     - text: "02 - Vectors"
+      #       href: part-02/tutorial-02-02-vectors.qmd
+      #     - text: "03 - Comparisons"
+      #       href: part-02/tutorial-02-03-comparisons.qmd
+      #     - text: "04 - Loops"
+      #       href: part-02/tutorial-02-04-loops.qmd
+      #     - text: "05 - Dictionaries"
+      #       href: part-02/tutorial-02-05-dicts.qmd
+      # - section: "03 Data"
+      #   contents:
+      #     - text: "Lecture"
+      #       href: part-03/lecture-packages.qmd
+      #     - text: "01 - Functions"
+      #       href: part-03/tutorial-03-01-functions.qmd
+      #     - text: "02 - Packages"
+      #       href: part-03/tutorial-03-02-handling.qmd
+      #     - text: "03 - DataFrames"
+      #       href: part-03/tutorial-03-03-DataFrames.qmd
+      #     - text: "04 - Input and Output"
+      #       href: part-03/tutorial-03-04-IO.qmd
+      #     - text: "05 - Plotting"
+      #       href: part-03/tutorial-03-05-Plotting.qmd
+      # - section: "04 Optimization"
+      #   contents:
+      #     - text: "Lecture"
+      #       href: part-04/lecture-jump.qmd
+      #     - text: "01 - JuMP"
+      #       href: part-04/tutorial-04-01-jump.qmd
+      #     - text: "02 - Bounds"
+      #       href: part-04/tutorial-04-02-bounds.qmd
+      #     - text: "03 - Constraints"
+      #       href: part-04/tutorial-04-03-constraints.qmd
+      #     - text: "04 - Advanced"
+      #       href: part-04/tutorial-04-04-advanced.qmd
+      #     - text: "05 - Transport"
+      #       href: part-04/tutorial-04-05-transport.qmd
+      # - section: "05 Dispatch"
+      #   contents:
+      #     - text: "Lecture"
+      #       href: part-05/lecture-dispatch.qmd
       #     - text: "Tutorial"
-      #       href: part-13/tutorial-recap.qmd
+      #       href: part-05/tutorial-dispatch.qmd
+      # - section: "06 Commitment"
+      #   contents:
+      #     - text: "Lecture"
+      #       href: part-06/lecture-commitment.qmd
+      #     - text: "Tutorial"
+      #       href: part-06/tutorial-commitment.qmd
+      # - section: "07 Storage"
+      #   contents:
+      #     - text: "Lecture"
+      #       href: part-07/lecture-storage.qmd
+      #     - text: "Tutorial"
+      #       href: part-07/tutorial-storage.qmd
+      # - section: "08 Design"
+      #   contents:
+      #     - text: "Lecture"
+      #       href: part-08/lecture-design.qmd
+      #     - text: "Tutorial"
+      #       href: part-08/tutorial-design.qmd
+      # - section: "09 MES"
+      #   contents:
+      #     - text: "Lecture"
+      #       href: part-09/lecture-mes.qmd
+      #     # - text: "Tutorial"
+      #     #   href: part-09/tutorial-mes.qmd
+      # - section: "10 Intermission"
+      #   contents:
+      #     - text: "Lecture"
+      #       href: part-10/lecture-intermission.qmd
+      # #     - text: "Tutorial"
+      # #       href: part-10/tutorial-intermission.qmd
+      # - section: "11 Framework"
+      #   contents:
+      #     - text: "Lecture"
+      #       href: part-11/lecture-framework.qmd
+      # #     - text: "Tutorial"
+      # #       href: part-11/tutorial-framework.qmd
+      # - section: "12 Repetition"
+      #   contents:
+      #     - text: "Lecture"
+      #       href: part-12/lecture-repetition.qmd
+      # - section: "13 Electricity Markets"
+      #   contents:
+      #     - text: "Lecture"
+      #       href: part-13/lecture-markets.qmd
+      #     - text: "Summary"
+      #       href: part-13/lecture-markets-short.qmd
       - text: "***"
       - section: "Cheatsheets"
         contents:

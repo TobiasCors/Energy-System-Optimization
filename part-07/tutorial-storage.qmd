@@ -2,7 +2,7 @@
 title: "Tutorial VII - Storage Modeling"
 subtitle: "Energy System Optimization with Julia"
 author: "Dr. Tobias Cors"
-institute: "Hamburg University of Applied Science - Summer 2025"
+institute: "Hamburg University of Applied Science - Summer 2026"
 format:
     html:
         theme: litera

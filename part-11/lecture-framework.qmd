@@ -2,7 +2,7 @@
 title: "Lecture XI - Framework for Multi-Energy System Optimization"
 subtitle: "Energy System Optimization with Julia"
 author: "Dr. Tobias Cors"
-institute: "Hamburg University of Applied Science - Summer 2025"
+institute: "Hamburg University of Applied Science - Summer 2026"
 title-slide-attributes:
     data-background-color: "#025259"
 html-math-method:
@@ -26,7 +26,7 @@ format:
         code-copy: true
         code-link: true
         preview-links: auto
-        footer: " {{< meta title >}} | {{< meta author >}} | [Home](lecture-mes.qmd)"
+        footer: " {{< meta title >}} | {{< meta author >}} | [Home](lecture-framework.qmd)"
         output-file: lecture-presentation.html
 
 bibliography: ../ESO-bib.bib
