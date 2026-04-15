@@ -1,35 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://TobiasCors.github.io/Energy-System-Optimization/part-02/tutorial-02-05-dicts.html</loc>
+    <lastmod>2026-04-15T06:24:39.715Z</lastmod>
+  </url>
+  <url>
+    <loc>https://TobiasCors.github.io/Energy-System-Optimization/part-02/tutorial-02-03-comparisons.html</loc>
+    <lastmod>2026-04-15T06:24:39.715Z</lastmod>
+  </url>
+  <url>
+    <loc>https://TobiasCors.github.io/Energy-System-Optimization/part-02/tutorial-02-01-variables.html</loc>
+    <lastmod>2026-04-15T06:24:39.715Z</lastmod>
+  </url>
+  <url>
     <loc>https://TobiasCors.github.io/Energy-System-Optimization/part-01/lecture-introduction.html</loc>
-    <lastmod>2026-04-07T10:48:40.762Z</lastmod>
+    <lastmod>2026-04-15T06:24:39.715Z</lastmod>
   </url>
   <url>
     <loc>https://TobiasCors.github.io/Energy-System-Optimization/part-01/lecture-presentation.html</loc>
-    <lastmod>2026-04-07T10:48:40.762Z</lastmod>
+    <lastmod>2026-04-15T06:24:39.715Z</lastmod>
   </url>
   <url>
     <loc>https://TobiasCors.github.io/Energy-System-Optimization/general/literature.html</loc>
-    <lastmod>2026-04-07T10:48:40.762Z</lastmod>
+    <lastmod>2026-04-15T06:24:39.715Z</lastmod>
   </url>
   <url>
     <loc>https://TobiasCors.github.io/Energy-System-Optimization/general/cheatsheet-jump.html</loc>
-    <lastmod>2026-04-07T10:48:40.762Z</lastmod>
+    <lastmod>2026-04-15T06:24:39.715Z</lastmod>
   </url>
   <url>
     <loc>https://TobiasCors.github.io/Energy-System-Optimization/index.html</loc>
-    <lastmod>2026-04-07T10:48:40.762Z</lastmod>
+    <lastmod>2026-04-15T06:24:39.715Z</lastmod>
   </url>
   <url>
     <loc>https://TobiasCors.github.io/Energy-System-Optimization/general/cheatsheet-julia.html</loc>
-    <lastmod>2026-04-07T10:48:40.761Z</lastmod>
+    <lastmod>2026-04-15T06:24:39.714Z</lastmod>
   </url>
   <url>
     <loc>https://TobiasCors.github.io/Energy-System-Optimization/general/faq.html</loc>
-    <lastmod>2026-04-07T10:48:40.762Z</lastmod>
+    <lastmod>2026-04-15T06:24:39.715Z</lastmod>
   </url>
   <url>
     <loc>https://TobiasCors.github.io/Energy-System-Optimization/general/syllabus.html</loc>
-    <lastmod>2026-04-07T10:48:40.762Z</lastmod>
+    <lastmod>2026-04-15T06:24:39.715Z</lastmod>
+  </url>
+  <url>
+    <loc>https://TobiasCors.github.io/Energy-System-Optimization/part-02/lecture-presentation.html</loc>
+    <lastmod>2026-04-15T06:24:39.715Z</lastmod>
+  </url>
+  <url>
+    <loc>https://TobiasCors.github.io/Energy-System-Optimization/part-02/lecture-firststeps.html</loc>
+    <lastmod>2026-04-15T06:24:39.715Z</lastmod>
+  </url>
+  <url>
+    <loc>https://TobiasCors.github.io/Energy-System-Optimization/part-02/tutorial-02-02-vectors.html</loc>
+    <lastmod>2026-04-15T06:24:39.715Z</lastmod>
+  </url>
+  <url>
+    <loc>https://TobiasCors.github.io/Energy-System-Optimization/part-02/tutorial-02-04-loops.html</loc>
+    <lastmod>2026-04-15T06:24:39.715Z</lastmod>
   </url>
 </urlset>

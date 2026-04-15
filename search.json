@@ -1,5 +1,214 @@
 [
   {
+    "objectID": "part-02/tutorial-02-05-dicts.html",
+    "href": "part-02/tutorial-02-05-dicts.html",
+    "title": "Tutorial II.V - Dictionaries",
+    "section": "",
+    "text": "Imagine you have a school directory where each student’s name is associated with their unique student ID. This is similar to how dictionaries work in programming - they allow you to store and retrieve information using key-value pairs.\nFollow the structured instructions, implement your code in the designated blocks, and affirm your comprehension with @assert statements.",
+    "crumbs": [
+      "02 First Steps",
+      "05 - Dictionaries"
+    ]
+  },
+  {
+    "objectID": "part-02/tutorial-02-05-dicts.html#exercise-1.1---create-and-modify-a-dictionary",
+    "href": "part-02/tutorial-02-05-dicts.html#exercise-1.1---create-and-modify-a-dictionary",
+    "title": "Tutorial II.V - Dictionaries",
+    "section": "Exercise 1.1 - Create and Modify a Dictionary",
+    "text": "Exercise 1.1 - Create and Modify a Dictionary\nAdd a new book called “Harry Potter and the Philosopher’s Stone” with the author “J.K. Rowling” to the created dictionary.\n\n# Creates a dictionary of books and authors\nbooks = Dict(\n    \"1984\" =&gt; \"George Orwell\", \n    \"Nexus\" =&gt; \"Yuval Noah Harari\"\n)\n# YOUR CODE BELOW\n\n\n# Test your answer\n@assert haskey(books, \"Harry Potter and the Philosopher's Stone\")\nprintln(\"Great! You've successfully added a new book to the books dictionary.\")",
+    "crumbs": [
+      "02 First Steps",
+      "05 - Dictionaries"
+    ]
+  },
+  {
+    "objectID": "part-02/tutorial-02-05-dicts.html#exercise-1.2---modify-a-dictionary",
+    "href": "part-02/tutorial-02-05-dicts.html#exercise-1.2---modify-a-dictionary",
+    "title": "Tutorial II.V - Dictionaries",
+    "section": "Exercise 1.2 - Modify a Dictionary",
+    "text": "Exercise 1.2 - Modify a Dictionary\nChange the author of “1984” to “Eric Blair” (George Orwell’s real name).\n\n# YOUR CODE BELOW\n\n\n# Test your answer\n@assert books[\"1984\"] == \"Eric Blair\"\nprintln(\"Great! You've successfully modified the books dictionary.\")",
+    "crumbs": [
+      "02 First Steps",
+      "05 - Dictionaries"
+    ]
+  },
+  {
+    "objectID": "part-02/tutorial-02-05-dicts.html#conclusion",
+    "href": "part-02/tutorial-02-05-dicts.html#conclusion",
+    "title": "Tutorial II.V - Dictionaries",
+    "section": "Conclusion",
+    "text": "Conclusion\nGreat! You’ve just navigated through the basics of dictionaries in Julia. Dictionaries are powerful data structures that allow for efficient data organization and retrieval. Continue to the next file to learn more advanced Julia concepts.",
+    "crumbs": [
+      "02 First Steps",
+      "05 - Dictionaries"
+    ]
+  },
+  {
+    "objectID": "part-02/tutorial-02-03-comparisons.html",
+    "href": "part-02/tutorial-02-03-comparisons.html",
+    "title": "Tutorial II.III - Comparison Operators",
+    "section": "",
+    "text": "Imagine you’re teaching a computer to make decisions. Just like we compare things in everyday life (“Is it raining?”, “Do I have enough money?”), computers need ways to compare values and make choices. This tutorial will show you how to help computers make these comparisons!\nFollow the instructions, write your code in the designated code blocks, and execute the corresponding code cell.",
+    "crumbs": [
+      "02 First Steps",
+      "03 - Comparisons"
+    ]
+  },
+  {
+    "objectID": "part-02/tutorial-02-03-comparisons.html#exercise-1.1---compare-if-10-is-greater-than-5",
+    "href": "part-02/tutorial-02-03-comparisons.html#exercise-1.1---compare-if-10-is-greater-than-5",
+    "title": "Tutorial II.III - Comparison Operators",
+    "section": "Exercise 1.1 - Compare if 10 is greater than 5",
+    "text": "Exercise 1.1 - Compare if 10 is greater than 5\nCompare if 10 is greater than 5 and store the result in comparison1.\n\n# YOUR CODE BELOW\n\n\n\nCode\n# Test your answer\n@assert comparison1 == true\nprintln(\"comparison1 is \", comparison1)",
+    "crumbs": [
+      "02 First Steps",
+      "03 - Comparisons"
+    ]
+  },
+  {
+    "objectID": "part-02/tutorial-02-03-comparisons.html#exercise-1.2---compare-if-x-is-not-equal-to-y",
+    "href": "part-02/tutorial-02-03-comparisons.html#exercise-1.2---compare-if-x-is-not-equal-to-y",
+    "title": "Tutorial II.III - Comparison Operators",
+    "section": "Exercise 1.2 - Compare if x is not equal to y",
+    "text": "Exercise 1.2 - Compare if x is not equal to y\nDefine variables x with value \"Hello\" and y with value \"world\". Compare if x is not equal to y and store the result in comparison2.\n\n# YOUR CODE BELOW\n\n\n\nCode\n# Test your answer\n@assert x == \"Hello\"\n@assert y == \"world\"\n@assert comparison2 == true\nprintln(\"Comparison2 is \", comparison2)",
+    "crumbs": [
+      "02 First Steps",
+      "03 - Comparisons"
+    ]
+  },
+  {
+    "objectID": "part-02/tutorial-02-03-comparisons.html#exercise-2.1---use-the-and-operator",
+    "href": "part-02/tutorial-02-03-comparisons.html#exercise-2.1---use-the-and-operator",
+    "title": "Tutorial II.III - Comparison Operators",
+    "section": "Exercise 2.1 - Use the AND operator",
+    "text": "Exercise 2.1 - Use the AND operator\nUse the AND operator to check if 10 is greater than 5 and hello is equal to hello. Store the result in logic1.\n\n# YOUR CODE BELOW\n\n\n\nCode\n# Test your answer\n@assert logic1 == true\nprintln(\"logic1 is \", logic1)",
+    "crumbs": [
+      "02 First Steps",
+      "03 - Comparisons"
+    ]
+  },
+  {
+    "objectID": "part-02/tutorial-02-03-comparisons.html#exercise-2.2---use-the-or-operator",
+    "href": "part-02/tutorial-02-03-comparisons.html#exercise-2.2---use-the-or-operator",
+    "title": "Tutorial II.III - Comparison Operators",
+    "section": "Exercise 2.2 - Use the OR operator",
+    "text": "Exercise 2.2 - Use the OR operator\nUse the OR operator to check if 10 is less than 5 or hello is equal to hello. Store the result in logic2.\n\n# YOUR CODE BELOW\n\n\n\nCode\n# Test your answer\n@assert logic2 == true\nprintln(\"logic2 is \", logic2)\n\n\n\n\n\n\n\n\nTip\n\n\n\nJulia uses short-circuit evaluation for && and || operators. This means that the second operand is only evaluated if necessary.",
+    "crumbs": [
+      "02 First Steps",
+      "03 - Comparisons"
+    ]
+  },
+  {
+    "objectID": "part-02/tutorial-02-03-comparisons.html#exercise-2.3---use-the-not-operator",
+    "href": "part-02/tutorial-02-03-comparisons.html#exercise-2.3---use-the-not-operator",
+    "title": "Tutorial II.III - Comparison Operators",
+    "section": "Exercise 2.3 - Use the NOT operator",
+    "text": "Exercise 2.3 - Use the NOT operator\nCheck whether 10 is greater than 5 and store the result in logic3. Then, use the NOT operator to invert logic3. Store the result in logic4.\n\n# YOUR CODE BELOW\n\n\n\nCode\n# Test your answer\n@assert logic3 == true\n@assert logic4 == false\nprintln(\"logic3 is \", logic3,\" and logic4 is\", logic4)",
+    "crumbs": [
+      "02 First Steps",
+      "03 - Comparisons"
+    ]
+  },
+  {
+    "objectID": "part-02/tutorial-02-03-comparisons.html#exercise-2.4---chaining-comparisons",
+    "href": "part-02/tutorial-02-03-comparisons.html#exercise-2.4---chaining-comparisons",
+    "title": "Tutorial II.III - Comparison Operators",
+    "section": "Exercise 2.4 - Chaining Comparisons",
+    "text": "Exercise 2.4 - Chaining Comparisons\nJulia has a neat feature that lets you write comparisons the way you think about them:\n# Instead of writing:\nage &gt;= 13 && age &lt;= 19    # Is age between 13 and 19?\n\n# You can write:\n13 &lt;= age &lt;= 19          # Much more natural!\nReal-world examples:\n# Is the body temperature normal?\nnormal_temperature = (36.5 &lt;= body_temp &lt;= 37.5)\n\n# Is the current hour within working hours?\nworking_hours = (9 &lt;= current_hour &lt; 17)\nCheck if x is between 1 and 10 (exclusive) using a chained comparison. Store the result in chained_comparison.\n\nx = 5\n# YOUR CODE BELOW\n\n\n\nCode\n# Test your answer\n@assert chained_comparison == true\nprintln(\"chained_comparison is \", chained_comparison)",
+    "crumbs": [
+      "02 First Steps",
+      "03 - Comparisons"
+    ]
+  },
+  {
+    "objectID": "part-02/tutorial-02-01-variables.html",
+    "href": "part-02/tutorial-02-01-variables.html",
+    "title": "Tutorial II.I - Variables and Types",
+    "section": "",
+    "text": "Welcome to this interactive Julia tutorial which introduces the basics of variables and types. Understanding variables and their types is crucial as they are the building blocks of any program. They determine how data is stored, manipulated, and how efficiently your code runs.\nThis script is designed to be interactive. Follow the instructions, write your code in the designated code blocks, and then execute the corresponding code. Each exercise is followed by an @assert statement that checks your solution.\nThere are two ways to run the code:\n\nThe easiest way to run the code is by using VS Code. First, install the Julia and the Jupyter Extension. Then, you can open the downloaded .ipynb files and run the code from there.\nThe second way is by using IJulia. Start Julia, and type using IJulia; notebook() in the Julia prompt. This will open a new browser window where you can run the code. If you have not installed IJulia yet, you can do so by typing ] in the Julia prompt to open the package manager, and then installing IJulia by typing add IJulia.\n\n\n\n\n\n\n\nNote\n\n\n\nAlways replace ‘YOUR CODE BELOW’ with your actual code.",
+    "crumbs": [
+      "02 First Steps",
+      "01 - Variables"
+    ]
+  },
+  {
+    "objectID": "part-02/tutorial-02-01-variables.html#exercise-1.1---declare-a-variable",
+    "href": "part-02/tutorial-02-01-variables.html#exercise-1.1---declare-a-variable",
+    "title": "Tutorial II.I - Variables and Types",
+    "section": "Exercise 1.1 - Declare a Variable",
+    "text": "Exercise 1.1 - Declare a Variable\nDeclare a variable named x and assign it the value 1.\n\n# YOUR CODE BELOW\n\n\n\nCode\n# Test your answer\n@assert x == 1 \"Check again, the value of x should be 1. Remember to assign the value directly to x.\"\nprintln(\"Great, you have correctly assigned the value $x to the variable 'x'.\")",
+    "crumbs": [
+      "02 First Steps",
+      "01 - Variables"
+    ]
+  },
+  {
+    "objectID": "part-02/tutorial-02-01-variables.html#exercise-1.2---declare-a-string-variable",
+    "href": "part-02/tutorial-02-01-variables.html#exercise-1.2---declare-a-string-variable",
+    "title": "Tutorial II.I - Variables and Types",
+    "section": "Exercise 1.2 - Declare a String Variable",
+    "text": "Exercise 1.2 - Declare a String Variable\nDeclare a variable named hi and assign it the string \"Hello, Optimization!\".\n\n# YOUR CODE BELOW\n\n\n\nCode\n# Test your answer\n@assert hi == \"Hello, Optimization!\" \"Make sure the variable 'hi' contains the exact string \\\"Hello, Optimization\\\"!\"\nprintln(\"Good, the variable 'hi' now states \\\"$hi\\\".\")",
+    "crumbs": [
+      "02 First Steps",
+      "01 - Variables"
+    ]
+  },
+  {
+    "objectID": "part-02/tutorial-02-01-variables.html#exercise-2.1---create-an-integer-variable",
+    "href": "part-02/tutorial-02-01-variables.html#exercise-2.1---create-an-integer-variable",
+    "title": "Tutorial II.I - Variables and Types",
+    "section": "Exercise 2.1 - Create an Integer Variable",
+    "text": "Exercise 2.1 - Create an Integer Variable\nCreate an Integer variable answerUniverse and set it to 42.\n\n# YOUR CODE BELOW\n\n\n\nCode\n# Test your answer\n@assert answerUniverse == 42 \"The variable 'answerUniverse' should hold 42.\"\nprintln(\"Great, the answer to all questions on the universe is $answerUniverse now.\")",
+    "crumbs": [
+      "02 First Steps",
+      "01 - Variables"
+    ]
+  },
+  {
+    "objectID": "part-02/tutorial-02-01-variables.html#exercise-2.2---create-a-float-variable",
+    "href": "part-02/tutorial-02-01-variables.html#exercise-2.2---create-a-float-variable",
+    "title": "Tutorial II.I - Variables and Types",
+    "section": "Exercise 2.2 - Create a Float Variable",
+    "text": "Exercise 2.2 - Create a Float Variable\nCreate a Float variable money and set it to 1.35.\n\n# YOUR CODE BELOW\n\n\n\nCode\n# Test your answer\n@assert money == 1.35 \"The variable 'money' should hold the Float64 1.35.\"\nprintln(\"Perfect, the you have stored $money in the variable 'money'.\")",
+    "crumbs": [
+      "02 First Steps",
+      "01 - Variables"
+    ]
+  },
+  {
+    "objectID": "part-02/tutorial-02-01-variables.html#exercise-2.3---create-a-boolean-variable",
+    "href": "part-02/tutorial-02-01-variables.html#exercise-2.3---create-a-boolean-variable",
+    "title": "Tutorial II.I - Variables and Types",
+    "section": "Exercise 2.3 - Create a Boolean Variable",
+    "text": "Exercise 2.3 - Create a Boolean Variable\nCreate a Boolean variable isStudent and set it to true.\n\n# YOUR CODE BELOW\n\n\n\nCode\n# Test your answer\n@assert isStudent == true \"The variable 'isStudent' should be set to true.\"\nprintln(\"Correct, you are a student now.\")",
+    "crumbs": [
+      "02 First Steps",
+      "01 - Variables"
+    ]
+  },
+  {
+    "objectID": "part-02/tutorial-02-01-variables.html#exercise-3.1---type-annotation",
+    "href": "part-02/tutorial-02-01-variables.html#exercise-3.1---type-annotation",
+    "title": "Tutorial II.I - Variables and Types",
+    "section": "Exercise 3.1 - Type Annotation",
+    "text": "Exercise 3.1 - Type Annotation\nDeclare a variable y with an explicit type annotation of Int64 and assign it the value 5.\n\n# YOUR CODE BELOW\n\n\n\nCode\n# Test your answer\n@assert y == 5 && typeof(y) == Int64 \"Make sure 'y' is of type Int64 and has the value 5.\"\nprintln(\"Great! You've created an Int64 variable 'y' with the value $y.\")",
+    "crumbs": [
+      "02 First Steps",
+      "01 - Variables"
+    ]
+  },
+  {
+    "objectID": "part-02/tutorial-02-01-variables.html#exercise-4.1---string-interpolation",
+    "href": "part-02/tutorial-02-01-variables.html#exercise-4.1---string-interpolation",
+    "title": "Tutorial II.I - Variables and Types",
+    "section": "Exercise 4.1 - String Interpolation",
+    "text": "Exercise 4.1 - String Interpolation\nCreate a string message that says \"y is [value of y]\" using string interpolation.\n\n# YOUR CODE BELOW\n\n\n\nCode\n# Test your answer\n@assert message == \"y is 5\" \"Make sure your string includes the correct value of y.\"\nprintln(\"Excellent! Your interpolated string is: $message\")",
+    "crumbs": [
+      "02 First Steps",
+      "01 - Variables"
+    ]
+  },
+  {
     "objectID": "part-01/lecture-introduction.html",
     "href": "part-01/lecture-introduction.html",
     "title": "Lecture I - Welcome and Introduction",
@@ -24,7 +233,7 @@
     "href": "part-01/lecture-introduction.html#lectures",
     "title": "Lecture I - Welcome and Introduction",
     "section": "Lectures",
-    "text": "Lectures\n\nEvery Wednesday between 10.00 PM and 11.45 PM\nFirst four lectures repeat modelling and programming\nLater lectures discuss practical problems and implementation\nLectures are interactive → We discuss approaches!\nCommunication takes place via Moodle and E-Mail\nMoodle link: https://moodle.haw-hamburg.de/course/view.php?id=10960\nPlease join the course on Moodle and activate the notifications for the lecture",
+    "text": "Lectures\n\nEvery Wednesday between 10.00 AM and 11.45 AM\nFirst four lectures repeat modelling and programming\nLater lectures discuss practical problems and implementation\nLectures are interactive → We discuss approaches!\nCommunication takes place via Moodle and E-Mail\nMoodle link: https://moodle.haw-hamburg.de/course/view.php?id=10960\nPlease join the course on Moodle and activate the notifications for the lecture",
     "crumbs": [
       "01 Introduction"
     ]
@@ -591,7 +800,7 @@
     "href": "part-01/lecture-presentation.html#lectures",
     "title": "Lecture I - Welcome and Introduction",
     "section": "Lectures",
-    "text": "Lectures\n\nEvery Wednesday between 10.00 PM and 11.45 PM\nFirst four lectures repeat modelling and programming\nLater lectures discuss practical problems and implementation\nLectures are interactive → We discuss approaches!\nCommunication takes place via Moodle and E-Mail\nMoodle link: https://moodle.haw-hamburg.de/course/view.php?id=10960\nPlease join the course on Moodle and activate the notifications for the lecture"
+    "text": "Lectures\n\nEvery Wednesday between 10.00 AM and 11.45 AM\nFirst four lectures repeat modelling and programming\nLater lectures discuss practical problems and implementation\nLectures are interactive → We discuss approaches!\nCommunication takes place via Moodle and E-Mail\nMoodle link: https://moodle.haw-hamburg.de/course/view.php?id=10960\nPlease join the course on Moodle and activate the notifications for the lecture"
   },
   {
     "objectID": "part-01/lecture-presentation.html#tutorials",
@@ -1794,6 +2003,568 @@
     "text": "Lectures\nMulti-energy Systems (IX)\nA case study on multi-energy systems\nIntermission: Exam Preparation (X)\nWe will prepare for the exam by solving a set of exercises together in the lecture.\nFramework for Multi-Energy Systems Optimization (XI)\nA case study with the general framework for multi-energy systems optimization\nRecap and Discussion (XII)\nWe repeat the concepts from the course and discuss all your remaining questions\nElectricity Markets (XIII)\nAn overview of electricity markets and their role in the energy system",
     "crumbs": [
       "Syllabus"
+    ]
+  },
+  {
+    "objectID": "part-02/lecture-presentation.html#download-and-install-julia",
+    "href": "part-02/lecture-presentation.html#download-and-install-julia",
+    "title": "Lecture II - First Steps in Julia",
+    "section": "Download and Install Julia",
+    "text": "Download and Install Julia\n\nTo prepare for the upcoming lectures, we start by installing the Julia Programming Language and an Integrated Development Environment (IDE) to work with Julia."
+  },
+  {
+    "objectID": "part-02/lecture-presentation.html#installaing-julia",
+    "href": "part-02/lecture-presentation.html#installaing-julia",
+    "title": "Lecture II - First Steps in Julia",
+    "section": "Installaing Julia",
+    "text": "Installaing Julia\n\n\nHead to julialang.org and follow the instructions.\n\n\n\n\n\n\n\n\nTip\n\n\nIf you are ever asked to add something to your “PATH”, do so!"
+  },
+  {
+    "objectID": "part-02/lecture-presentation.html#vs-code",
+    "href": "part-02/lecture-presentation.html#vs-code",
+    "title": "Lecture II - First Steps in Julia",
+    "section": "VS Code",
+    "text": "VS Code\n\n\nNext, we are going to install VS Code\nAlternatively, you can install VS Codium\nIt is essentially VS Code but without any tracking by MS"
+  },
+  {
+    "objectID": "part-02/lecture-presentation.html#installing-vs-code",
+    "href": "part-02/lecture-presentation.html#installing-vs-code",
+    "title": "Lecture II - First Steps in Julia",
+    "section": "Installing VS Code",
+    "text": "Installing VS Code\n\nHead to the website code.visualstudio.com\nOR to the webside vscodium.com\nDownload and install the latest release"
+  },
+  {
+    "objectID": "part-02/lecture-presentation.html#verify-the-installation",
+    "href": "part-02/lecture-presentation.html#verify-the-installation",
+    "title": "Lecture II - First Steps in Julia",
+    "section": "Verify the Installation",
+    "text": "Verify the Installation\n\nStart the IDE and take a look around\nSearch for the field “Extensions” on the left sidebar\nClick it and search for “Julia”\nDownload and install “Julia (Julia Language Support)”"
+  },
+  {
+    "objectID": "part-02/lecture-presentation.html#create-a-new-file",
+    "href": "part-02/lecture-presentation.html#create-a-new-file",
+    "title": "Lecture II - First Steps in Julia",
+    "section": "Create a new file",
+    "text": "Create a new file\n\nCreate a new file with a “.jl” ending\nSave it somewhere on your computer\ne.g., in a folder that you will use in the course\n\n\nprint(\"Hello World!\")\n\n\n\nHello World!\n\n\n\nRun the file by clicking “run” in the upper right corner\nOR by pressing “Control+Enter” or “STRG+Enter”"
+  },
+  {
+    "objectID": "part-02/lecture-presentation.html#everything-working",
+    "href": "part-02/lecture-presentation.html#everything-working",
+    "title": "Lecture II - First Steps in Julia",
+    "section": "Everything working?",
+    "text": "Everything working?\n\nIf the terminal opens with a Hello World! → perfect!\nIf not, it is likely that the IDE cannot find the path to Julia\nTry to determine the path and save it to VS Code\nAfter saving it, try to run the file again\n\n\n\n\n\n\n\nTip\n\n\nDon’t worry if it is not running right away. We will fix this together!"
+  },
+  {
+    "objectID": "part-02/lecture-presentation.html#julia-as-a-programming-language",
+    "href": "part-02/lecture-presentation.html#julia-as-a-programming-language",
+    "title": "Lecture II - First Steps in Julia",
+    "section": "Julia as a Programming Language",
+    "text": "Julia as a Programming Language\n\nFollowing three lectures are dedicated to learning the basics\nStart with the very basics and gradually move on\nFocus in the first two lectures on the programming language\nThird lecture dedicated to Mathematical Optimization"
+  },
+  {
+    "objectID": "part-02/lecture-presentation.html#notebooks-in-vs-code",
+    "href": "part-02/lecture-presentation.html#notebooks-in-vs-code",
+    "title": "Lecture II - First Steps in Julia",
+    "section": "Notebooks in VS Code",
+    "text": "Notebooks in VS Code\n\nThe easiest way is by using VS Code\nInstall the Jupyter Extension\nNow, you can open .ipynb files\nHere you can run the code in the cells"
+  },
+  {
+    "objectID": "part-02/lecture-presentation.html#downloading-the-notebooks",
+    "href": "part-02/lecture-presentation.html#downloading-the-notebooks",
+    "title": "Lecture II - First Steps in Julia",
+    "section": "Downloading the Notebooks",
+    "text": "Downloading the Notebooks\n\nYou will find the tutorial notebooks next to the tutorial pages\nOn each page, you will find a button Jupyter on the right\nClick it to download the notebook and save it\nI’d recommend storing the notebooks in a separate directory for this course"
+  },
+  {
+    "objectID": "part-02/lecture-presentation.html#learning-by-doing",
+    "href": "part-02/lecture-presentation.html#learning-by-doing",
+    "title": "Lecture II - First Steps in Julia",
+    "section": "Learning by doing",
+    "text": "Learning by doing\n\nThe best way to learn a programming language is by doing\nWe will therefore solve problems the coming weeks\nThe goal is to get you familiar with the language\nYou can discuss the problems with your fellow students\nYou can hand in your solutions to receive bonus points!"
+  },
+  {
+    "objectID": "part-02/lecture-presentation.html#ijulia",
+    "href": "part-02/lecture-presentation.html#ijulia",
+    "title": "Lecture II - First Steps in Julia",
+    "section": "IJulia",
+    "text": "IJulia\n\nIJulia is an interface between Julia and Jupyter Notebooks\nPopular tool for data analysis and visualization\nYou can use IJulia to run Julia code in the notebooks\n\n\n\n\n\n\n\n\nTip\n\n\nYou can also copy and paste code from the notebooks into your IDE!"
+  },
+  {
+    "objectID": "part-02/lecture-presentation.html#installing-ijulia",
+    "href": "part-02/lecture-presentation.html#installing-ijulia",
+    "title": "Lecture II - First Steps in Julia",
+    "section": "Installing IJulia",
+    "text": "Installing IJulia\n\nOpen the VS Code IDE and start a terminal\nStart Julia by typing julia in the terminal\nInstall IJulia by typing ] to open the package manager\nInstall IJulia by typing add IJulia\nPress Enter"
+  },
+  {
+    "objectID": "part-02/lecture-presentation.html#running-ijulia",
+    "href": "part-02/lecture-presentation.html#running-ijulia",
+    "title": "Lecture II - First Steps in Julia",
+    "section": "Running IJulia",
+    "text": "Running IJulia\nusing IJulia; notebook()\n\nStart IJulia by typing the above code in the Julia prompt\nThis will open a new browser window\nYou can now run code in the notebooks\n\n\n\n\n\n\n\n\nTip\n\n\nYou can also run the notebooks in VS Code, if you prefer!"
+  },
+  {
+    "objectID": "part-02/lecture-presentation.html#submission-of-assignments-1",
+    "href": "part-02/lecture-presentation.html#submission-of-assignments-1",
+    "title": "Lecture II - First Steps in Julia",
+    "section": "Submission of Assignments",
+    "text": "Submission of Assignments\n\nYou can work in groups of up to three people\nSubmit the assignment via Moodle\nYou will submit your assignment by uploading a notebook\nThe assignment is due the day before the next tutorial\n\n\n\n\n\n\n\n\nTip\n\n\nDon’t forget to save your notebook before uploading it to Moodle!"
+  },
+  {
+    "objectID": "part-02/lecture-presentation.html#grading-of-assignments",
+    "href": "part-02/lecture-presentation.html#grading-of-assignments",
+    "title": "Lecture II - First Steps in Julia",
+    "section": "Grading of Assignments",
+    "text": "Grading of Assignments\n\nEach assignment is worth 0.5 points\nYou can get a maximum of 6.0 points from the assignments\nThe points will be added to your exam points\nYou need to pass the exam first, to receive any bonus points!\n\n\n\n\n\n\n\n\nNote\n\n\nThe assignments are mandatory!"
+  },
+  {
+    "objectID": "part-02/lecture-presentation.html#topics-of-the-tutorials",
+    "href": "part-02/lecture-presentation.html#topics-of-the-tutorials",
+    "title": "Lecture II - First Steps in Julia",
+    "section": "Topics of the Tutorials",
+    "text": "Topics of the Tutorials\n\nVariables: Learn how to assign values to variables\nVectors: Learn how to create and manipulate vectors\nComparisons: Learn how to compare values\nLoops: Learn how to use loops to repeat code\nScope: Learn about the scope of variables"
+  },
+  {
+    "objectID": "part-02/lecture-presentation.html#get-started-with-the-tutorials",
+    "href": "part-02/lecture-presentation.html#get-started-with-the-tutorials",
+    "title": "Lecture II - First Steps in Julia",
+    "section": "Get started with the tutorials",
+    "text": "Get started with the tutorials\n\nDownload the first notebook and open it\nStart with the first problem and solve it step by step\nYou can find the tutorials here on the website\nYou can ask questions anytime!\n\n\n\n\n\n\n\n\nAnd that’s it for this lecture!\n\n\nThe remaining time we will already start working on the first problems."
+  },
+  {
+    "objectID": "part-02/lecture-presentation.html#literature-1",
+    "href": "part-02/lecture-presentation.html#literature-1",
+    "title": "Lecture II - First Steps in Julia",
+    "section": "Literature",
+    "text": "Literature\n\nLauwens, B., & Downey, A. B. (2019). Think Julia: How to think like a computer scientist (First edition). O’Reilly®. Link to the free book website.\nJulia Documentation\n\nFor more interesting literature to learn more about Julia, take a look at the literature list of this course."
+  },
+  {
+    "objectID": "part-02/lecture-firststeps.html",
+    "href": "part-02/lecture-firststeps.html",
+    "title": "Lecture II - First Steps in Julia",
+    "section": "",
+    "text": "To prepare for the upcoming lectures, we start by installing the Julia Programming Language and an Integrated Development Environment (IDE) to work with Julia.\n\n\n\n\n\nHead to julialang.org and follow the instructions.\n\n. . .\n\n\n\n\n\n\nTip\n\n\n\nIf you are ever asked to add something to your “PATH”, do so!\n\n\n\n\n\n\n\nNext, we are going to install VS Code\nAlternatively, you can install VS Codium\nIt is essentially VS Code but without any tracking by MS\n\n\n\n\n\nHead to the website code.visualstudio.com\nOR to the webside vscodium.com\nDownload and install the latest release\n\n\n\n\n\nStart the IDE and take a look around\nSearch for the field “Extensions” on the left sidebar\nClick it and search for “Julia”\nDownload and install “Julia (Julia Language Support)”\n\n\n\n\n\nCreate a new file with a “.jl” ending\nSave it somewhere on your computer\ne.g., in a folder that you will use in the course\n\n\nprint(\"Hello World!\")\n\nHello World!\n\n\n\nRun the file by clicking “run” in the upper right corner\nOR by pressing “Control+Enter” or “STRG+Enter”\n\n\n\n\n\nIf the terminal opens with a Hello World! → perfect!\nIf not, it is likely that the IDE cannot find the path to Julia\nTry to determine the path and save it to VS Code\nAfter saving it, try to run the file again\n\n\n\n\n\n\n\nTip\n\n\n\nDon’t worry if it is not running right away. We will fix this together!",
+    "crumbs": [
+      "02 First Steps",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-02/lecture-firststeps.html#download-and-install-julia",
+    "href": "part-02/lecture-firststeps.html#download-and-install-julia",
+    "title": "Lecture II - First Steps in Julia",
+    "section": "",
+    "text": "To prepare for the upcoming lectures, we start by installing the Julia Programming Language and an Integrated Development Environment (IDE) to work with Julia.",
+    "crumbs": [
+      "02 First Steps",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-02/lecture-firststeps.html#installaing-julia",
+    "href": "part-02/lecture-firststeps.html#installaing-julia",
+    "title": "Lecture II - First Steps in Julia",
+    "section": "",
+    "text": "Head to julialang.org and follow the instructions.\n\n. . .\n\n\n\n\n\n\nTip\n\n\n\nIf you are ever asked to add something to your “PATH”, do so!",
+    "crumbs": [
+      "02 First Steps",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-02/lecture-firststeps.html#vs-code",
+    "href": "part-02/lecture-firststeps.html#vs-code",
+    "title": "Lecture II - First Steps in Julia",
+    "section": "",
+    "text": "Next, we are going to install VS Code\nAlternatively, you can install VS Codium\nIt is essentially VS Code but without any tracking by MS",
+    "crumbs": [
+      "02 First Steps",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-02/lecture-firststeps.html#installing-vs-code",
+    "href": "part-02/lecture-firststeps.html#installing-vs-code",
+    "title": "Lecture II - First Steps in Julia",
+    "section": "",
+    "text": "Head to the website code.visualstudio.com\nOR to the webside vscodium.com\nDownload and install the latest release",
+    "crumbs": [
+      "02 First Steps",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-02/lecture-firststeps.html#verify-the-installation",
+    "href": "part-02/lecture-firststeps.html#verify-the-installation",
+    "title": "Lecture II - First Steps in Julia",
+    "section": "",
+    "text": "Start the IDE and take a look around\nSearch for the field “Extensions” on the left sidebar\nClick it and search for “Julia”\nDownload and install “Julia (Julia Language Support)”",
+    "crumbs": [
+      "02 First Steps",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-02/lecture-firststeps.html#create-a-new-file",
+    "href": "part-02/lecture-firststeps.html#create-a-new-file",
+    "title": "Lecture II - First Steps in Julia",
+    "section": "",
+    "text": "Create a new file with a “.jl” ending\nSave it somewhere on your computer\ne.g., in a folder that you will use in the course\n\n\nprint(\"Hello World!\")\n\nHello World!\n\n\n\nRun the file by clicking “run” in the upper right corner\nOR by pressing “Control+Enter” or “STRG+Enter”",
+    "crumbs": [
+      "02 First Steps",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-02/lecture-firststeps.html#everything-working",
+    "href": "part-02/lecture-firststeps.html#everything-working",
+    "title": "Lecture II - First Steps in Julia",
+    "section": "",
+    "text": "If the terminal opens with a Hello World! → perfect!\nIf not, it is likely that the IDE cannot find the path to Julia\nTry to determine the path and save it to VS Code\nAfter saving it, try to run the file again\n\n\n\n\n\n\n\nTip\n\n\n\nDon’t worry if it is not running right away. We will fix this together!",
+    "crumbs": [
+      "02 First Steps",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-02/lecture-firststeps.html#julia-as-a-programming-language",
+    "href": "part-02/lecture-firststeps.html#julia-as-a-programming-language",
+    "title": "Lecture II - First Steps in Julia",
+    "section": "Julia as a Programming Language",
+    "text": "Julia as a Programming Language\n\nFollowing three lectures are dedicated to learning the basics\nStart with the very basics and gradually move on\nFocus in the first two lectures on the programming language\nThird lecture dedicated to Mathematical Optimization",
+    "crumbs": [
+      "02 First Steps",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-02/lecture-firststeps.html#notebooks-in-vs-code",
+    "href": "part-02/lecture-firststeps.html#notebooks-in-vs-code",
+    "title": "Lecture II - First Steps in Julia",
+    "section": "Notebooks in VS Code",
+    "text": "Notebooks in VS Code\n\nThe easiest way is by using VS Code\nInstall the Jupyter Extension\nNow, you can open .ipynb files\nHere you can run the code in the cells",
+    "crumbs": [
+      "02 First Steps",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-02/lecture-firststeps.html#downloading-the-notebooks",
+    "href": "part-02/lecture-firststeps.html#downloading-the-notebooks",
+    "title": "Lecture II - First Steps in Julia",
+    "section": "Downloading the Notebooks",
+    "text": "Downloading the Notebooks\n\nYou will find the tutorial notebooks next to the tutorial pages\nOn each page, you will find a button Jupyter on the right\nClick it to download the notebook and save it\nI’d recommend storing the notebooks in a separate directory for this course",
+    "crumbs": [
+      "02 First Steps",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-02/lecture-firststeps.html#learning-by-doing",
+    "href": "part-02/lecture-firststeps.html#learning-by-doing",
+    "title": "Lecture II - First Steps in Julia",
+    "section": "Learning by doing",
+    "text": "Learning by doing\n\nThe best way to learn a programming language is by doing\nWe will therefore solve problems the coming weeks\nThe goal is to get you familiar with the language\nYou can discuss the problems with your fellow students\nYou can hand in your solutions to receive bonus points!",
+    "crumbs": [
+      "02 First Steps",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-02/lecture-firststeps.html#ijulia",
+    "href": "part-02/lecture-firststeps.html#ijulia",
+    "title": "Lecture II - First Steps in Julia",
+    "section": "IJulia",
+    "text": "IJulia\n\nIJulia is an interface between Julia and Jupyter Notebooks\nPopular tool for data analysis and visualization\nYou can use IJulia to run Julia code in the notebooks\n\n. . .\n\n\n\n\n\n\nTip\n\n\n\nYou can also copy and paste code from the notebooks into your IDE!",
+    "crumbs": [
+      "02 First Steps",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-02/lecture-firststeps.html#installing-ijulia",
+    "href": "part-02/lecture-firststeps.html#installing-ijulia",
+    "title": "Lecture II - First Steps in Julia",
+    "section": "Installing IJulia",
+    "text": "Installing IJulia\n\nOpen the VS Code IDE and start a terminal\nStart Julia by typing julia in the terminal\nInstall IJulia by typing ] to open the package manager\nInstall IJulia by typing add IJulia\nPress Enter",
+    "crumbs": [
+      "02 First Steps",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-02/lecture-firststeps.html#running-ijulia",
+    "href": "part-02/lecture-firststeps.html#running-ijulia",
+    "title": "Lecture II - First Steps in Julia",
+    "section": "Running IJulia",
+    "text": "Running IJulia\nusing IJulia; notebook()\n\nStart IJulia by typing the above code in the Julia prompt\nThis will open a new browser window\nYou can now run code in the notebooks\n\n. . .\n\n\n\n\n\n\nTip\n\n\n\nYou can also run the notebooks in VS Code, if you prefer!",
+    "crumbs": [
+      "02 First Steps",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-02/lecture-firststeps.html#submission-of-assignments-1",
+    "href": "part-02/lecture-firststeps.html#submission-of-assignments-1",
+    "title": "Lecture II - First Steps in Julia",
+    "section": "Submission of Assignments",
+    "text": "Submission of Assignments\n\nYou can work in groups of up to three people\nSubmit the assignment via Moodle\nYou will submit your assignment by uploading a notebook\nThe assignment is due the day before the next tutorial\n\n. . .\n\n\n\n\n\n\nTip\n\n\n\nDon’t forget to save your notebook before uploading it to Moodle!",
+    "crumbs": [
+      "02 First Steps",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-02/lecture-firststeps.html#grading-of-assignments",
+    "href": "part-02/lecture-firststeps.html#grading-of-assignments",
+    "title": "Lecture II - First Steps in Julia",
+    "section": "Grading of Assignments",
+    "text": "Grading of Assignments\n\nEach assignment is worth 0.5 points\nYou can get a maximum of 6.0 points from the assignments\nThe points will be added to your exam points\nYou need to pass the exam first, to receive any bonus points!\n\n. . .\n\n\n\n\n\n\nNote\n\n\n\nThe assignments are mandatory!",
+    "crumbs": [
+      "02 First Steps",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-02/lecture-firststeps.html#topics-of-the-tutorials",
+    "href": "part-02/lecture-firststeps.html#topics-of-the-tutorials",
+    "title": "Lecture II - First Steps in Julia",
+    "section": "Topics of the Tutorials",
+    "text": "Topics of the Tutorials\n\nVariables: Learn how to assign values to variables\nVectors: Learn how to create and manipulate vectors\nComparisons: Learn how to compare values\nLoops: Learn how to use loops to repeat code\nScope: Learn about the scope of variables",
+    "crumbs": [
+      "02 First Steps",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-02/lecture-firststeps.html#get-started-with-the-tutorials",
+    "href": "part-02/lecture-firststeps.html#get-started-with-the-tutorials",
+    "title": "Lecture II - First Steps in Julia",
+    "section": "Get started with the tutorials",
+    "text": "Get started with the tutorials\n\nDownload the first notebook and open it\nStart with the first problem and solve it step by step\nYou can find the tutorials here on the website\nYou can ask questions anytime!\n\n. . .\n\n\n\n\n\n\nNoteAnd that’s it for this lecture!\n\n\n\nThe remaining time we will already start working on the first problems.",
+    "crumbs": [
+      "02 First Steps",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-02/lecture-firststeps.html#literature-1",
+    "href": "part-02/lecture-firststeps.html#literature-1",
+    "title": "Lecture II - First Steps in Julia",
+    "section": "Literature",
+    "text": "Literature\n\nLauwens, B., & Downey, A. B. (2019). Think Julia: How to think like a computer scientist (First edition). O’Reilly®. Link to the free book website.\nJulia Documentation\n\nFor more interesting literature to learn more about Julia, take a look at the literature list of this course.",
+    "crumbs": [
+      "02 First Steps",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-02/tutorial-02-02-vectors.html",
+    "href": "part-02/tutorial-02-02-vectors.html",
+    "title": "Tutorial II.II - Vectors and Matrices",
+    "section": "",
+    "text": "This interactive Julia script introduces the basics of vectors, matrices, and tuples.\n\nA vector is like a single row in a spreadsheet or a shopping list - it stores items in a line\nA matrix is like a spreadsheet - it has rows and columns\nA tuple is like a sealed package containing different types of items\n\nUnderstanding these data structures and how to manipulate them is crucial in Julia. Follow the instructions, write your code in the designated code blocks, and execute the corresponding code cell.\n\n\n\n\n\n\nNote\n\n\n\nIf a cell is marked with YOUR CODE BELOW, you are expected to write your code in that cell.",
+    "crumbs": [
+      "02 First Steps",
+      "02 - Vectors"
+    ]
+  },
+  {
+    "objectID": "part-02/tutorial-02-02-vectors.html#exercise-1.1---create-a-vector",
+    "href": "part-02/tutorial-02-02-vectors.html#exercise-1.1---create-a-vector",
+    "title": "Tutorial II.II - Vectors and Matrices",
+    "section": "Exercise 1.1 - Create a Vector",
+    "text": "Exercise 1.1 - Create a Vector\nCreate a vector ‘fib’ with the first five Fibonacci numbers: 1, 1, 2, 3, 5.\n\n# YOUR CODE BELOW\n\n\n\nCode\n# Test your answer\n@assert fib == [1, 1, 2, 3, 5]\nprintln(\"The 'fib' vector: \", fib)",
+    "crumbs": [
+      "02 First Steps",
+      "02 - Vectors"
+    ]
+  },
+  {
+    "objectID": "part-02/tutorial-02-02-vectors.html#exercise-1.2---append-to-a-vector",
+    "href": "part-02/tutorial-02-02-vectors.html#exercise-1.2---append-to-a-vector",
+    "title": "Tutorial II.II - Vectors and Matrices",
+    "section": "Exercise 1.2 - Append to a Vector",
+    "text": "Exercise 1.2 - Append to a Vector\nAppend the number 8 to the fib vector.\n\n# YOUR CODE BELOW\n\n\n\nCode\n# Test your answer\n@assert fib == [1, 1, 2, 3, 5, 8]\nprintln(\"The 'fib' vector after appending 8: \", fib)",
+    "crumbs": [
+      "02 First Steps",
+      "02 - Vectors"
+    ]
+  },
+  {
+    "objectID": "part-02/tutorial-02-02-vectors.html#exercise-1.3---remove-the-first-element",
+    "href": "part-02/tutorial-02-02-vectors.html#exercise-1.3---remove-the-first-element",
+    "title": "Tutorial II.II - Vectors and Matrices",
+    "section": "Exercise 1.3 - Remove the First Element",
+    "text": "Exercise 1.3 - Remove the First Element\nRemove the first element of the fib vector.\n\n# YOUR CODE BELOW\n\n\n\nCode\n# Test your answer\n@assert fib == [1, 2, 3, 5, 8]\nprintln(\"The 'fib' vector after removing the first element: \", fib)",
+    "crumbs": [
+      "02 First Steps",
+      "02 - Vectors"
+    ]
+  },
+  {
+    "objectID": "part-02/tutorial-02-02-vectors.html#exercise-1.4---access-and-save-the-first-three-elements",
+    "href": "part-02/tutorial-02-02-vectors.html#exercise-1.4---access-and-save-the-first-three-elements",
+    "title": "Tutorial II.II - Vectors and Matrices",
+    "section": "Exercise 1.4 - Access and Save the First Three Elements",
+    "text": "Exercise 1.4 - Access and Save the First Three Elements\nAccess and save the first three elements of fib, to first_three_elements.\n\n# YOUR CODE BELOW\n\n\n\nCode\n# Test your answer\n@assert first_three_elements == fib[1:3]\nprintln(\"The first three elements of the 'fib' vector: \", first_three_elements)",
+    "crumbs": [
+      "02 First Steps",
+      "02 - Vectors"
+    ]
+  },
+  {
+    "objectID": "part-02/tutorial-02-02-vectors.html#exercise-2.1---create-a-matrix",
+    "href": "part-02/tutorial-02-02-vectors.html#exercise-2.1---create-a-matrix",
+    "title": "Tutorial II.II - Vectors and Matrices",
+    "section": "Exercise 2.1 - Create a Matrix",
+    "text": "Exercise 2.1 - Create a Matrix\nCreate a 2x3 matrix my_matrix with the values: 1 2 3; 4 5 6.\n\n# YOUR CODE BELOW\n\n\n\nCode\n# Test your answer\n@assert my_matrix == [1 2 3; 4 5 6]\nprintln(\"The 'my_matrix':\\n\", my_matrix)",
+    "crumbs": [
+      "02 First Steps",
+      "02 - Vectors"
+    ]
+  },
+  {
+    "objectID": "part-02/tutorial-02-02-vectors.html#exercise-2.2---change-the-3rd-column-of-the-2nd-row",
+    "href": "part-02/tutorial-02-02-vectors.html#exercise-2.2---change-the-3rd-column-of-the-2nd-row",
+    "title": "Tutorial II.II - Vectors and Matrices",
+    "section": "Exercise 2.2 - Change the 3rd Column of the 2nd Row",
+    "text": "Exercise 2.2 - Change the 3rd Column of the 2nd Row\nChange the 3rd column of the 2nd row to 17 by accessing and changing the element.\n\n# YOUR CODE BELOW\n\n\n\n\nCode\n# Test your answer\n@assert my_matrix == [1 2 3; 4 5 17]\nprintln(\"The 'my_matrix' after modification:\\n\", my_matrix)",
+    "crumbs": [
+      "02 First Steps",
+      "02 - Vectors"
+    ]
+  },
+  {
+    "objectID": "part-02/tutorial-02-02-vectors.html#exercise-2.3---perform-matrix-addition",
+    "href": "part-02/tutorial-02-02-vectors.html#exercise-2.3---perform-matrix-addition",
+    "title": "Tutorial II.II - Vectors and Matrices",
+    "section": "Exercise 2.3 - Perform Matrix Addition",
+    "text": "Exercise 2.3 - Perform Matrix Addition\nPerform matrix addition with my_matrix and another_matrix. Call the resulting matrix added_matrices.\n\nanother_matrix = [10 20 30; 40 50 60]\n# YOUR CODE BELOW\n\n\n\nCode\n# Test your answer\n@assert added_matrices == [11 22 33; 44 55 77]\nprintln(\"Result of adding 'my_matrix' and 'another_matrix':\\n\", added_matrices)",
+    "crumbs": [
+      "02 First Steps",
+      "02 - Vectors"
+    ]
+  },
+  {
+    "objectID": "part-02/tutorial-02-02-vectors.html#exercise-2.4---add-10-to-each-element",
+    "href": "part-02/tutorial-02-02-vectors.html#exercise-2.4---add-10-to-each-element",
+    "title": "Tutorial II.II - Vectors and Matrices",
+    "section": "Exercise 2.4 - Add 10 to Each Element",
+    "text": "Exercise 2.4 - Add 10 to Each Element\nAdd 10 to each element in added_matrices.\n\n# YOUR CODE BELOW\n\n\n\nCode\n# Test your answer\n@assert added_matrices == [21 32 43; 54 65 87]\nprintln(\"Result of adding 10 to each element in 'added_matrices':\\n\", added_matrices)",
+    "crumbs": [
+      "02 First Steps",
+      "02 - Vectors"
+    ]
+  },
+  {
+    "objectID": "part-02/tutorial-02-02-vectors.html#exercise-3.1---create-a-tuple",
+    "href": "part-02/tutorial-02-02-vectors.html#exercise-3.1---create-a-tuple",
+    "title": "Tutorial II.II - Vectors and Matrices",
+    "section": "Exercise 3.1 - Create a Tuple",
+    "text": "Exercise 3.1 - Create a Tuple\nCreate a tuple my_tuple with three elements: 4.0, your matrix added_matrices, and \"Hi there!\".\n\n# YOUR CODE BELOW\n\n\n\nCode\n# Test your answer\n@assert my_tuple == (4.0, added_matrices, \"Hi there!\")\nprintln(\"The 'my_tuple': \", my_tuple)",
+    "crumbs": [
+      "02 First Steps",
+      "02 - Vectors"
+    ]
+  },
+  {
+    "objectID": "part-02/tutorial-02-02-vectors.html#exercise-3.2---access-the-second-element",
+    "href": "part-02/tutorial-02-02-vectors.html#exercise-3.2---access-the-second-element",
+    "title": "Tutorial II.II - Vectors and Matrices",
+    "section": "Exercise 3.2 - Access the Second Element",
+    "text": "Exercise 3.2 - Access the Second Element\nAccess the second element of my_tuple, store it in second_element.\n\n# YOUR CODE BELOW\n\n\n\nCode\n# Test your answer\n@assert second_element == [21 32 43; 54 65 87]\nprintln(\"The second element of 'my_tuple':\\n\", second_element)",
+    "crumbs": [
+      "02 First Steps",
+      "02 - Vectors"
+    ]
+  },
+  {
+    "objectID": "part-02/tutorial-02-04-loops.html",
+    "href": "part-02/tutorial-02-04-loops.html",
+    "title": "Tutorial II.IV - Loops",
+    "section": "",
+    "text": "Imagine you need to do the same task many times - like sending emails to 100 people or counting from 1 to 10. Instead of writing the same code over and over, we use loops! Loops are like having a helpful assistant who can repeat tasks for you.\nFollow the instructions, input your code in the designated areas, and verify your implementations with @assert statements.",
+    "crumbs": [
+      "02 First Steps",
+      "04 - Loops"
+    ]
+  },
+  {
+    "objectID": "part-02/tutorial-02-04-loops.html#exercise-1.1---sum-the-numbers-from-1-to-5",
+    "href": "part-02/tutorial-02-04-loops.html#exercise-1.1---sum-the-numbers-from-1-to-5",
+    "title": "Tutorial II.IV - Loops",
+    "section": "Exercise 1.1 - Sum the Numbers from 1 to 5",
+    "text": "Exercise 1.1 - Sum the Numbers from 1 to 5\nSum the numbers from 1 to 5 in a loop. The next lines initialize sum_numbers to 0. The sum you compute should accumulate in this variable.\n\nsum_numbers = 0\n# YOUR CODE BELOW\n\n\n# Test your answer\n@assert sum_numbers == 15\nprintln(\"Sum of numbers from 1 to 5: \", sum_numbers)",
+    "crumbs": [
+      "02 First Steps",
+      "04 - Loops"
+    ]
+  },
+  {
+    "objectID": "part-02/tutorial-02-04-loops.html#exercise-1.2---sum-only-the-even-numbers-from-1-to-10",
+    "href": "part-02/tutorial-02-04-loops.html#exercise-1.2---sum-only-the-even-numbers-from-1-to-10",
+    "title": "Tutorial II.IV - Loops",
+    "section": "Exercise 1.2 - Sum Only the Even Numbers from 1 to 10",
+    "text": "Exercise 1.2 - Sum Only the Even Numbers from 1 to 10\nSum only the even numbers from 1 to 10. Again, we initialize a variable sum_evens to 0. The sum you compute should accumulate in this variable.\n\nsum_evens = 0\n# YOUR CODE BELOW\n\n\n# Test your answer\n@assert sum_evens == 30\nprintln(\"Sum of even numbers from 1 to 10: \", sum_evens)\n\n\n\n\n\n\n\nTip\n\n\n\nHint: You can use the modulo operator % to check if a number is even. The modulo operator returns the remainder of the division of two numbers. If a number is divisible by another number, the remainder is 0. The following example checks if 4 is even: 4 % 2 == 0.",
+    "crumbs": [
+      "02 First Steps",
+      "04 - Loops"
+    ]
+  },
+  {
+    "objectID": "part-02/tutorial-02-04-loops.html#exercise-1.3---exit-the-loop-if-the-current-fruit-is-banana",
+    "href": "part-02/tutorial-02-04-loops.html#exercise-1.3---exit-the-loop-if-the-current-fruit-is-banana",
+    "title": "Tutorial II.IV - Loops",
+    "section": "Exercise 1.3 - Exit the Loop if the Current Fruit is Banana",
+    "text": "Exercise 1.3 - Exit the Loop if the Current Fruit is Banana\nIterate over each fruit in the fruits array, store the current fruit in current_fruit, and exit the loop if current_fruit is banana. The next lines initialize the fruits array and current_fruit variable.\n\nfruits = [\"apple\", \"banana\", \"cherry\"]\ncurrent_fruit = \"None\"\n# YOUR CODE BELOW\n\n\n# Test your answer\n@assert current_fruit == \"banana\"\nprintln(\"The current fruit is: \", current_fruit)",
+    "crumbs": [
+      "02 First Steps",
+      "04 - Loops"
+    ]
+  },
+  {
+    "objectID": "part-02/tutorial-02-04-loops.html#exercise-2.1---subtract-from-10-in-increments-of-1-until-the-result-is-less-than-3",
+    "href": "part-02/tutorial-02-04-loops.html#exercise-2.1---subtract-from-10-in-increments-of-1-until-the-result-is-less-than-3",
+    "title": "Tutorial II.IV - Loops",
+    "section": "Exercise 2.1 - Subtract from 10 in Increments of 1 Until the Result is Less Than 3",
+    "text": "Exercise 2.1 - Subtract from 10 in Increments of 1 Until the Result is Less Than 3\nSubtract from 10 in increments of 1 until the result is less than 3. The next line initializes current_value to 10. The result should be in this variable.\n\ncurrent_value = 10\n# YOUR CODE BELOW\n\n\n# Test your answer\n@assert current_value == 2\nprintln(\"The first value smaller than 3 is: \", current_value)",
+    "crumbs": [
+      "02 First Steps",
+      "04 - Loops"
+    ]
+  },
+  {
+    "objectID": "part-02/tutorial-02-04-loops.html#exercise-2.2---find-the-first-multiple-of-7-greater-than-50",
+    "href": "part-02/tutorial-02-04-loops.html#exercise-2.2---find-the-first-multiple-of-7-greater-than-50",
+    "title": "Tutorial II.IV - Loops",
+    "section": "Exercise 2.2 - Find the First Multiple of 7 Greater Than 50",
+    "text": "Exercise 2.2 - Find the First Multiple of 7 Greater Than 50\nFind the first multiple of 7 greater than 50 using an indefinite loop. The next line initializes first_multiple_of_7 to 0. The first multiple should be in this variable.\n\nfirst_multiple_of_7 = 0\n# YOUR CODE BELOW\n\n\n# Test your answer\n@assert first_multiple_of_7 == 56\nprintln(\"First multiple of 7 greater than 50: \", first_multiple_of_7)\n\n\n\n\n\n\n\nTip\n\n\n\n‘while true … end’ constructs an infinite loop. You can exit the loop using a ‘break’ statement if a condition is met.",
+    "crumbs": [
+      "02 First Steps",
+      "04 - Loops"
+    ]
+  },
+  {
+    "objectID": "part-02/tutorial-02-04-loops.html#exercise-3.1---compute-the-product-of-each-pair-of-elements-from-two-arrays",
+    "href": "part-02/tutorial-02-04-loops.html#exercise-3.1---compute-the-product-of-each-pair-of-elements-from-two-arrays",
+    "title": "Tutorial II.IV - Loops",
+    "section": "Exercise 3.1 - Compute the Product of Each Pair of Elements from Two Arrays",
+    "text": "Exercise 3.1 - Compute the Product of Each Pair of Elements from Two Arrays\nCompute the product of each pair of elements from two arrays. For example, the product of two numbers a and b is a * b. The next lines initialize numbers1, numbers2 arrays, and the products array to store your results.\n\nnumbers1 = [1, 2, 3]\nnumbers2 = [4, 5, 6]\nproducts = []\n# YOUR CODE BELOW\n\n\n# Test your answer\n@assert products == [4, 5, 6, 8, 10, 12, 12, 15, 18]\nprintln(\"Products of each pair from two arrays: \", products)\n\n\n\n\n\n\n\nTip\n\n\n\nRemember, you can use push!() to append elements to an array.",
+    "crumbs": [
+      "02 First Steps",
+      "04 - Loops"
+    ]
+  },
+  {
+    "objectID": "part-02/tutorial-02-04-loops.html#exercise-4.1---create-a-list-of-even-numbers",
+    "href": "part-02/tutorial-02-04-loops.html#exercise-4.1---create-a-list-of-even-numbers",
+    "title": "Tutorial II.IV - Loops",
+    "section": "Exercise 4.1 - Create a List of Even Numbers",
+    "text": "Exercise 4.1 - Create a List of Even Numbers\nCreate a list of even numbers from 1 to 10 using a list comprehension.\n\n# YOUR CODE BELOW\n\n\n# Test your answer\n@assert even_numbers == [2, 4, 6, 8, 10]\nprintln(\"Even numbers from 1 to 10: \", even_numbers)",
+    "crumbs": [
+      "02 First Steps",
+      "04 - Loops"
     ]
   }
 ]
