@@ -5,7 +5,7 @@ project:
     - index.qmd
     - general/*.qmd
     - part-01/*.qmd
-    # - part-02/*.qmd
+    - part-02/*.qmd
     # - part-03/*.qmd
     # - part-04/*.qmd
     # - part-05/*.qmd
@@ -36,20 +36,20 @@ website:
       - text: "***"
       - text: "01 Introduction"
         href: part-01/lecture-introduction.qmd
-      # - section: "02 First Steps"
-      #   contents:
-      #     - text: "Lecture"
-      #       href: part-02/lecture-firststeps.qmd
-      #     - text: "01 - Variables"
-      #       href: part-02/tutorial-02-01-variables.qmd
-      #     - text: "02 - Vectors"
-      #       href: part-02/tutorial-02-02-vectors.qmd
-      #     - text: "03 - Comparisons"
-      #       href: part-02/tutorial-02-03-comparisons.qmd
-      #     - text: "04 - Loops"
-      #       href: part-02/tutorial-02-04-loops.qmd
-      #     - text: "05 - Dictionaries"
-      #       href: part-02/tutorial-02-05-dicts.qmd
+      - section: "02 First Steps"
+        contents:
+          - text: "Lecture"
+            href: part-02/lecture-firststeps.qmd
+          - text: "01 - Variables"
+            href: part-02/tutorial-02-01-variables.qmd
+          - text: "02 - Vectors"
+            href: part-02/tutorial-02-02-vectors.qmd
+          - text: "03 - Comparisons"
+            href: part-02/tutorial-02-03-comparisons.qmd
+          - text: "04 - Loops"
+            href: part-02/tutorial-02-04-loops.qmd
+          - text: "05 - Dictionaries"
+            href: part-02/tutorial-02-05-dicts.qmd
       # - section: "03 Data"
       #   contents:
       #     - text: "Lecture"

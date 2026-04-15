@@ -53,7 +53,7 @@ I really appreciate active participation and interaction!
 
 ## Lectures
 
-- Every Wednesday between 10.00 PM and 11.45 PM
+- Every Wednesday between 10.00 AM and 11.45 AM
 - First four lectures repeat modelling and programming
 - Later lectures discuss practical problems and implementation
 - Lectures are interactive → We discuss approaches!
