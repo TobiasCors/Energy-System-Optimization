@@ -6,9 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Dr.&nbsp;Tobias Cors">
 
-<title>Lecture II - First Steps in Julia – Energy System Optimization with Julia</title>
+<title>Tutorial III.I - Functions in Julia – Energy System Optimization with Julia</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -121,7 +120,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../part-02/lecture-firststeps.html">02 First Steps</a></li><li class="breadcrumb-item"><a href="../part-02/lecture-firststeps.html">Lecture</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../part-03/lecture-packages.html">03 Data</a></li><li class="breadcrumb-item"><a href="../part-03/tutorial-03-01-functions.html">01 - Functions</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -170,16 +169,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
  <span class="menu-text">02 First Steps</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../part-02/lecture-firststeps.html" class="sidebar-item-text sidebar-link active">
+  <a href="../part-02/lecture-firststeps.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Lecture</span></a>
   </div>
 </li>
@@ -217,13 +216,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
  <span class="menu-text">03 Data</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../part-03/lecture-packages.html" class="sidebar-item-text sidebar-link">
@@ -232,7 +231,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../part-03/tutorial-03-01-functions.html" class="sidebar-item-text sidebar-link">
+  <a href="../part-03/tutorial-03-01-functions.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">01 - Functions</span></a>
   </div>
 </li>
@@ -310,76 +309,39 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#quick-recap-on-the-technical-setup" id="toc-quick-recap-on-the-technical-setup" class="nav-link active" data-scroll-target="#quick-recap-on-the-technical-setup"><span class="flow">Quick Recap on the Technical Setup</span></a>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#section-1---creating-and-calling-functions" id="toc-section-1---creating-and-calling-functions" class="nav-link" data-scroll-target="#section-1---creating-and-calling-functions">Section 1 - Creating and Calling Functions</a>
   <ul class="collapse">
-  <li><a href="#download-and-install-julia" id="toc-download-and-install-julia" class="nav-link" data-scroll-target="#download-and-install-julia">Download and Install Julia</a></li>
-  <li><a href="#installaing-julia" id="toc-installaing-julia" class="nav-link" data-scroll-target="#installaing-julia">Installaing Julia</a></li>
-  <li><a href="#vs-code" id="toc-vs-code" class="nav-link" data-scroll-target="#vs-code">VS Code</a></li>
-  <li><a href="#installing-vs-code" id="toc-installing-vs-code" class="nav-link" data-scroll-target="#installing-vs-code">Installing VS Code</a></li>
-  <li><a href="#verify-the-installation" id="toc-verify-the-installation" class="nav-link" data-scroll-target="#verify-the-installation">Verify the Installation</a></li>
-  <li><a href="#create-a-new-file" id="toc-create-a-new-file" class="nav-link" data-scroll-target="#create-a-new-file">Create a new file</a></li>
-  <li><a href="#everything-working" id="toc-everything-working" class="nav-link" data-scroll-target="#everything-working">Everything working?</a></li>
+  <li><a href="#exercise-1.1---define-and-test-a-simple-addition-function" id="toc-exercise-1.1---define-and-test-a-simple-addition-function" class="nav-link" data-scroll-target="#exercise-1.1---define-and-test-a-simple-addition-function">Exercise 1.1 - Define and Test a Simple Addition Function</a></li>
   </ul></li>
-  <li><a href="#learning-julia" id="toc-learning-julia" class="nav-link" data-scroll-target="#learning-julia"><span class="flow">Learning Julia</span></a>
+  <li><a href="#section-2---scope-within-functions" id="toc-section-2---scope-within-functions" class="nav-link" data-scroll-target="#section-2---scope-within-functions">Section 2 - Scope within Functions</a>
   <ul class="collapse">
-  <li><a href="#julia-as-a-programming-language" id="toc-julia-as-a-programming-language" class="nav-link" data-scroll-target="#julia-as-a-programming-language">Julia as a Programming Language</a></li>
+  <li><a href="#exercise-2.1---return-a-local-variable" id="toc-exercise-2.1---return-a-local-variable" class="nav-link" data-scroll-target="#exercise-2.1---return-a-local-variable">Exercise 2.1 - Return a Local Variable</a></li>
+  <li><a href="#exercise-2.2---define-an-implicit-return-function" id="toc-exercise-2.2---define-an-implicit-return-function" class="nav-link" data-scroll-target="#exercise-2.2---define-an-implicit-return-function">Exercise 2.2 - Define an Implicit Return Function</a></li>
   </ul></li>
-  <li><a href="#working-with-vs-code" id="toc-working-with-vs-code" class="nav-link" data-scroll-target="#working-with-vs-code"><span class="flow">Working with VS Code</span></a>
+  <li><a href="#section-3---multiple-dispatch" id="toc-section-3---multiple-dispatch" class="nav-link" data-scroll-target="#section-3---multiple-dispatch">Section 3 - Multiple Dispatch</a>
   <ul class="collapse">
-  <li><a href="#notebooks-in-vs-code" id="toc-notebooks-in-vs-code" class="nav-link" data-scroll-target="#notebooks-in-vs-code">Notebooks in VS Code</a></li>
-  <li><a href="#downloading-the-notebooks" id="toc-downloading-the-notebooks" class="nav-link" data-scroll-target="#downloading-the-notebooks">Downloading the Notebooks</a></li>
-  <li><a href="#learning-by-doing" id="toc-learning-by-doing" class="nav-link" data-scroll-target="#learning-by-doing">Learning by doing</a></li>
+  <li><a href="#exercise-3.1---match-results-to-assertions" id="toc-exercise-3.1---match-results-to-assertions" class="nav-link" data-scroll-target="#exercise-3.1---match-results-to-assertions">Exercise 3.1 - Match Results to Assertions</a></li>
   </ul></li>
-  <li><a href="#working-with-ijulia" id="toc-working-with-ijulia" class="nav-link" data-scroll-target="#working-with-ijulia"><span class="flow">Working with IJulia</span></a>
-  <ul class="collapse">
-  <li><a href="#ijulia" id="toc-ijulia" class="nav-link" data-scroll-target="#ijulia">IJulia</a></li>
-  <li><a href="#installing-ijulia" id="toc-installing-ijulia" class="nav-link" data-scroll-target="#installing-ijulia">Installing IJulia</a></li>
-  <li><a href="#running-ijulia" id="toc-running-ijulia" class="nav-link" data-scroll-target="#running-ijulia">Running IJulia</a></li>
-  </ul></li>
-  <li><a href="#submission-of-assignments" id="toc-submission-of-assignments" class="nav-link" data-scroll-target="#submission-of-assignments"><span class="flow">Submission of Assignments</span></a>
-  <ul class="collapse">
-  <li><a href="#submission-of-assignments-1" id="toc-submission-of-assignments-1" class="nav-link" data-scroll-target="#submission-of-assignments-1">Submission of Assignments</a></li>
-  <li><a href="#grading-of-assignments" id="toc-grading-of-assignments" class="nav-link" data-scroll-target="#grading-of-assignments">Grading of Assignments</a></li>
-  </ul></li>
-  <li><a href="#five-tutorials-for-this-week" id="toc-five-tutorials-for-this-week" class="nav-link" data-scroll-target="#five-tutorials-for-this-week"><span class="flow">Five Tutorials for this Week</span></a>
-  <ul class="collapse">
-  <li><a href="#topics-of-the-tutorials" id="toc-topics-of-the-tutorials" class="nav-link" data-scroll-target="#topics-of-the-tutorials">Topics of the Tutorials</a></li>
-  <li><a href="#get-started-with-the-tutorials" id="toc-get-started-with-the-tutorials" class="nav-link" data-scroll-target="#get-started-with-the-tutorials">Get started with the tutorials</a></li>
-  </ul></li>
-  <li><a href="#literature" id="toc-literature" class="nav-link" data-scroll-target="#literature"><span class="flow">Literature</span></a>
-  <ul class="collapse">
-  <li><a href="#literature-1" id="toc-literature-1" class="nav-link" data-scroll-target="#literature-1">Literature</a></li>
-  </ul></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  <li><a href="#solutions" id="toc-solutions" class="nav-link" data-scroll-target="#solutions">Solutions</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/edit/main/part-02/lecture-firststeps.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/blob/main/part-02/lecture-firststeps.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="lecture-presentation.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/edit/main/part-03/tutorial-03-01-functions.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/blob/main/part-03/tutorial-03-01-functions.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="tutorial-03-01-functions.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li><li><a href="tutorial-03-01-functions.ipynb" download="tutorial-03-01-functions.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../part-02/lecture-firststeps.html">02 First Steps</a></li><li class="breadcrumb-item"><a href="../part-02/lecture-firststeps.html">Lecture</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../part-03/lecture-packages.html">03 Data</a></li><li class="breadcrumb-item"><a href="../part-03/tutorial-03-01-functions.html">01 - Functions</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Lecture II - First Steps in Julia</h1>
+<h1 class="title">Tutorial III.I - Functions in Julia</h1>
 <p class="subtitle lead">Energy System Optimization with Julia</p>
 </div>
 
 
-<div class="quarto-title-meta-author">
-  <div class="quarto-title-meta-heading">Author</div>
-  <div class="quarto-title-meta-heading">Affiliation</div>
-  
-    <div class="quarto-title-meta-contents">
-    <p class="author">Dr.&nbsp;Tobias Cors </p>
-  </div>
-  <div class="quarto-title-meta-contents">
-        <p class="affiliation">
-            Hamburg University of Applied Science - Summer 2026
-          </p>
-      </div>
-  </div>
 
 <div class="quarto-title-meta">
 
-      
+    
   
     
   </div>
@@ -389,86 +351,59 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="quick-recap-on-the-technical-setup" class="level1 title">
-<h1 class="title"><span class="flow">Quick Recap on the Technical Setup</span></h1>
-<section id="download-and-install-julia" class="level2">
-<h2 class="anchored" data-anchor-id="download-and-install-julia">Download and Install Julia</h2>
-<p><img src="https://images.beyondsimulations.com/ao/ao_julia-programming-language.png" class="img-fluid"></p>
-<p>To prepare for the upcoming lectures, we start by installing the Julia Programming Language and an Integrated Development Environment (IDE) to work with Julia.</p>
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>Imagine you have a helpful worker. Instead of explaining every little task to it each time, you can teach it specific jobs once, and then just ask it to do those jobs later. In programming, these “jobs” are called functions! This tutorial will show you how to create and use functions in Julia, making your code more organized and reusable.</p>
+<p>Follow the instructions, input your code in the designated areas, and verify your implementations with <code>@assert</code> statements.</p>
 </section>
-<section id="installaing-julia" class="level2">
-<h2 class="anchored" data-anchor-id="installaing-julia">Installaing Julia</h2>
-<p><img src="https://images.beyondsimulations.com/ao/ao_julia2.png" class="img-fluid" data-max-width="400px"></p>
-<ul>
-<li>Head to <a href="https://julialang.org">julialang.org</a> and follow the instructions.</li>
-</ul>
-<p>. . .</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
+<section id="section-1---creating-and-calling-functions" class="level1">
+<h1>Section 1 - Creating and Calling Functions</h1>
+<p>Functions in Julia encapsulate reusable code and can be defined using the <code>function</code> keyword or shorthand syntax. After the keyword, you name the function and write the parameters in parentheses. Later, you can call the function by writing the name of the function followed by the parameters in parentheses.</p>
+<p>Thus, think of a function like a recipe:</p>
+<ol type="1">
+<li>It has a name (like “say_something”)</li>
+<li>It might need ingredients (our “parameters”)</li>
+<li>It has steps to follow (the code inside the function)</li>
+<li>It usually produces something (we call this the “return value”)</li>
+</ol>
+<p>Let’s see some examples:</p>
+<div id="2" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># A simple function to greet someone</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">say_hello</span>(name)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">"Hello, </span><span class="sc">$</span>(name)<span class="st">!"</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Using our function</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>message <span class="op">=</span> <span class="fu">say_hello</span>(<span class="st">"Elio"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>"Hello, Elio!"</code></pre>
 </div>
-<div class="callout-title-container flex-fill">
-Tip
+</div>
+<div id="4" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">multiply</span>(a,b)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>   a <span class="op">*</span> b</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">multiply</span>(<span class="fl">10</span>, <span class="fl">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>50</code></pre>
 </div>
 </div>
-<div class="callout-body-container callout-body">
-<p>If you are ever asked to add something to your “PATH”, do so!</p>
-</div>
-</div>
-</section>
-<section id="vs-code" class="level2">
-<h2 class="anchored" data-anchor-id="vs-code">VS Code</h2>
-<p><img src="https://images.beyondsimulations.com/ao/ao_codium_cnl.png" class="img-fluid" data-max-width="400px"></p>
-<ul>
-<li>Next, we are going to install VS Code</li>
-<li>Alternatively, you can install VS Codium</li>
-<li>It is essentially VS Code but without any tracking by MS</li>
-</ul>
-</section>
-<section id="installing-vs-code" class="level2">
-<h2 class="anchored" data-anchor-id="installing-vs-code">Installing VS Code</h2>
-<ul>
-<li>Head to the website <a href="https://code.visualstudio.com">code.visualstudio.com</a></li>
-<li>OR to the webside <a href="https://vscodium.com">vscodium.com</a></li>
-<li>Download and install the latest release</li>
-</ul>
-</section>
-<section id="verify-the-installation" class="level2">
-<h2 class="anchored" data-anchor-id="verify-the-installation">Verify the Installation</h2>
-<ul>
-<li>Start the IDE and take a look around</li>
-<li>Search for the field “Extensions” on the left sidebar</li>
-<li>Click it and search for “Julia”</li>
-<li>Download and install “Julia (Julia Language Support)”</li>
-</ul>
-</section>
-<section id="create-a-new-file" class="level2">
-<h2 class="anchored" data-anchor-id="create-a-new-file">Create a new file</h2>
-<ul>
-<li>Create a new file with a “.jl” ending</li>
-<li>Save it somewhere on your computer</li>
-<li>e.g., in a folder that you will use in the course</li>
-</ul>
-<div id="2" class="cell" data-output-location="fragment" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"Hello World!"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The second function takes two parameters, multiplies them, and returns the result implicitly. In Julia, the last expression is automatically returned, making the <code>return</code> keyword optional. If you explicitly use the <code>return</code> keyword in the function, it will return the value immediately once the function encounters the keyword and stops the further execution of the function. That way, you can also use the keyword in conditional statements and use it to return a value based on a condition. For example:</p>
+<div id="6" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">do_something</span>(a,b)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>   <span class="cf">if</span> a <span class="op">&gt;</span> b</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> a <span class="op">*</span> b</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>   <span class="cf">else</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> a <span class="op">+</span> b</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>   <span class="cf">end</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"The result of do_something(10, 5) is </span><span class="sc">$</span>(<span class="fu">do_something</span>(<span class="fl">10</span>, <span class="fl">5</span>))<span class="st">"</span>)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"The result of do_something(5, 10) is </span><span class="sc">$</span>(<span class="fu">do_something</span>(<span class="fl">5</span>, <span class="fl">10</span>))<span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Hello World!</code></pre>
+<pre><code>The result of do_something(10, 5) is 50
+The result of do_something(5, 10) is 15</code></pre>
 </div>
 </div>
-<ul>
-<li>Run the file by clicking “run” in the upper right corner</li>
-<li>OR by pressing “Control+Enter” or “STRG+Enter”</li>
-</ul>
-</section>
-<section id="everything-working" class="level2">
-<h2 class="anchored" data-anchor-id="everything-working">Everything working?</h2>
-<ul>
-<li>If the terminal opens with a <code>Hello World!</code> → perfect!</li>
-<li>If not, it is likely that the IDE <span class="highlight">cannot find the path</span> to Julia</li>
-<li>Try to determine the path and save it to VS Code</li>
-<li>After saving it, try to run the file again</li>
-</ul>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -479,64 +414,118 @@ Tip
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Don’t worry if it is not running right away. We will fix this together!</p>
+<p>Functions are like teaching a robot new skills:</p>
+<ul>
+<li>The function name is like the skill name (e.g., “make_sandwich”)</li>
+<li>Parameters are things the robot needs to do the job (e.g., bread, filling)</li>
+<li>The code inside are the steps to follow</li>
+<li>The return value is the finished product</li>
+</ul>
 </div>
 </div>
+<section id="exercise-1.1---define-and-test-a-simple-addition-function" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-1.1---define-and-test-a-simple-addition-function">Exercise 1.1 - Define and Test a Simple Addition Function</h2>
+<p>Define and test a simple addition function. Define a function <code>add</code> that takes two parameters and returns their sum.</p>
+<div id="8" class="cell" data-execution_count="0">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># YOUR CODE BELOW</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="10" class="cell" data-execution_count="0">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test your answer</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">add</span>(<span class="fl">10</span>, <span class="fl">5</span>) <span class="op">==</span> <span class="fl">15</span> <span class="st">"The sum computed is </span><span class="sc">$</span>(<span class="fu">add</span>(<span class="fl">10</span>, <span class="fl">5</span>))<span class="st"> but should be 15."</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"The sum computed is </span><span class="sc">$</span>(<span class="fu">add</span>(<span class="fl">10</span>, <span class="fl">5</span>))<span class="st">, wonderful!"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
 </section>
 </section>
-<section id="learning-julia" class="level1 title">
-<h1 class="title"><span class="flow">Learning Julia</span></h1>
-<section id="julia-as-a-programming-language" class="level2">
-<h2 class="anchored" data-anchor-id="julia-as-a-programming-language">Julia as a Programming Language</h2>
-<ul>
-<li>Following three lectures are dedicated to learning the basics</li>
-<li>Start with the very basics and gradually move on</li>
-<li>Focus in the first two lectures on the programming language</li>
-<li>Third lecture dedicated to <span class="highlight">Mathematical Optimization</span></li>
-</ul>
+<section id="section-2---scope-within-functions" class="level1">
+<h1>Section 2 - Scope within Functions</h1>
+<p>When you create variables inside a function, they’re like secret ingredients - they only exist inside that function’s “kitchen”. We call this “local scope”. Thus, variables declared inside a function are local to that function and are not accessible outside.</p>
+<div id="12" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">bake_cake</span>()</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    secret_ingredient <span class="op">=</span> <span class="st">"vanilla extract"</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">println</span>(<span class="st">"Adding the secret ingredient: </span><span class="sc">$</span>secret_ingredient<span class="st">"</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">bake_cake</span>()  <span class="co"># This works fine</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Adding the secret ingredient: vanilla extract</code></pre>
+</div>
+</div>
+<div id="14" class="cell" data-execution_count="0">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># But this would cause an error:</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(secret_ingredient)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>If you want to access the variable outside of the function, you have to explicitly return it. You can do this by passing <code>return</code> in front of the variable you want to return from the function.</p>
+<section id="exercise-2.1---return-a-local-variable" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-2.1---return-a-local-variable">Exercise 2.1 - Return a Local Variable</h2>
+<p>Try to execute the following block of code. The objective is to understand how to return the <code>local_variable_one</code> from the function <code>scope_test</code>. Your task is to change the function, to return the value of <code>local_variable_one</code>.</p>
+<div id="16" class="cell" data-execution_count="0">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># YOUR CHANGES BELOW</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">scope_test</span>()</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    local_variable_one <span class="op">=</span> <span class="fl">10</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    local_variable_two <span class="op">=</span> <span class="fl">20</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co"># YOUR CHANGES ABOVE</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="18" class="cell" data-execution_count="0">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test your function</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">scope_test</span>() <span class="op">==</span> <span class="fl">10</span> <span class="st">"The value exported is </span><span class="sc">$</span>(<span class="fu">scope_test</span>())<span class="st">."</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"The value exported is </span><span class="sc">$</span>(<span class="fu">scope_test</span>())<span class="st">, you solved it!"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="exercise-2.2---define-an-implicit-return-function" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-2.2---define-an-implicit-return-function">Exercise 2.2 - Define an Implicit Return Function</h2>
+<p>Define and test an implicit return function. Define a function <code>subtract</code> that takes two parameters and implicitly returns their difference. The implicit return feature makes your code cleaner and more concise.</p>
+<div id="20" class="cell" data-execution_count="0">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># YOUR CODE BELOW</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="22" class="cell" data-execution_count="0">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test your answer</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">subtract</span>(<span class="fl">10</span>, <span class="fl">5</span>) <span class="op">==</span> <span class="fl">5</span>  <span class="st">"The difference computed is </span><span class="sc">$</span>(<span class="fu">subtract</span>(<span class="fl">10</span>, <span class="fl">5</span>))<span class="st"> but should be 5."</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"The difference computed is </span><span class="sc">$</span>(<span class="fu">subtract</span>(<span class="fl">10</span>, <span class="fl">5</span>))<span class="st">, perfect!"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
 </section>
 </section>
-<section id="working-with-vs-code" class="level1 title">
-<h1 class="title"><span class="flow">Working with VS Code</span></h1>
-<section id="notebooks-in-vs-code" class="level2">
-<h2 class="anchored" data-anchor-id="notebooks-in-vs-code">Notebooks in VS Code</h2>
-<ul>
-<li>The easiest way is by using VS Code</li>
-<li>Install the Jupyter Extension</li>
-<li>Now, you can open <code>.ipynb</code> files</li>
-<li>Here you can run the code in the cells</li>
-</ul>
-</section>
-<section id="downloading-the-notebooks" class="level2">
-<h2 class="anchored" data-anchor-id="downloading-the-notebooks">Downloading the Notebooks</h2>
-<ul>
-<li>You will find the tutorial notebooks next to the tutorial pages</li>
-<li>On each page, you will find a button <code>Jupyter</code> on the right</li>
-<li>Click it to download the notebook and save it</li>
-<li>I’d recommend storing the notebooks <span class="highlight">in a separate directory for this course</span></li>
-</ul>
-</section>
-<section id="learning-by-doing" class="level2">
-<h2 class="anchored" data-anchor-id="learning-by-doing">Learning by doing</h2>
-<ul>
-<li>The best way to learn a programming language is <span class="highlight">by doing</span></li>
-<li>We will therefore solve problems the coming weeks</li>
-<li>The goal is to get you familiar with the language</li>
-<li>You can discuss the problems with your fellow students</li>
-<li>You can hand in your solutions to receive bonus points!</li>
-</ul>
-</section>
-</section>
-<section id="working-with-ijulia" class="level1 title">
-<h1 class="title"><span class="flow">Working with IJulia</span></h1>
-<section id="ijulia" class="level2">
-<h2 class="anchored" data-anchor-id="ijulia">IJulia</h2>
-<ul>
-<li>IJulia is an interface between Julia and Jupyter Notebooks</li>
-<li>Popular tool for data analysis and visualization</li>
-<li>You can use IJulia to run <span class="highlight">Julia code in the notebooks</span></li>
-</ul>
-<p>. . .</p>
+<section id="section-3---multiple-dispatch" class="level1">
+<h1>Section 3 - Multiple Dispatch</h1>
+<p>Multiple dispatch in Julia allows defining function behavior based on argument types, promoting code reuse and clarity. It’s a powerful feature for designing flexible and extensible functions. We first define a generic version and then provide specific implementations for different types:</p>
+<div id="24" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generic operation for objects of all types.</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">operation</span>(a, b)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Generic operation for objects of type </span><span class="sc">$</span>(<span class="fu">typeof</span>(a))<span class="st"> and </span><span class="sc">$</span>(<span class="fu">typeof</span>(b))<span class="st">"</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="co"># The specific implementations are:</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="fu">operation</span>(a<span class="op">::</span><span class="dt">Number</span>, b<span class="op">::</span><span class="dt">Number</span>) <span class="op">=</span> a <span class="op">+</span> b        <span class="co"># Specific method for Number types.</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="fu">operation</span>(a<span class="op">::</span><span class="dt">String</span>, b<span class="op">::</span><span class="dt">String</span>) <span class="op">=</span> <span class="fu">string</span>(a, b) <span class="co"># Specific method for String types.</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Test with different types of arguments.</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>result1 <span class="op">=</span> <span class="fu">operation</span>(<span class="fl">10</span>, <span class="fl">20</span>)</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(result1)</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>result2 <span class="op">=</span> <span class="fu">operation</span>(<span class="st">"Hello, "</span>, <span class="st">"World!"</span>)</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(result2)</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>result3 <span class="op">=</span> <span class="fu">operation</span>(<span class="st">"Hello, "</span>, <span class="fl">20</span>)</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(result3)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>30
+Hello, World!
+Generic operation for objects of type String and Int64</code></pre>
+</div>
+</div>
+<section id="exercise-3.1---match-results-to-assertions" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-3.1---match-results-to-assertions">Exercise 3.1 - Match Results to Assertions</h2>
+<p>Match the results from the previous example to the correct assertions:</p>
+<div id="26" class="cell" data-execution_count="0">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># YOUR CHANGES BELOW</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> result2 <span class="op">==</span> <span class="fl">30</span> <span class="st">"result1 should be the sum of two numbers"</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> result3 <span class="op">==</span> <span class="st">"Hello, World!"</span> <span class="st">"result2 should be the concatenation of two strings"</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> result1 <span class="op">==</span> <span class="st">"Generic operation for objects of type String and Int64"</span> <span class="st">"result3 should use the generic operation"</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"You solved it, the assertions are now correct!"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -547,141 +536,22 @@ Tip
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>You can also copy and paste code from the notebooks into your IDE!</p>
-</div>
-</div>
-</section>
-<section id="installing-ijulia" class="level2">
-<h2 class="anchored" data-anchor-id="installing-ijulia">Installing IJulia</h2>
-<ul>
-<li>Open the VS Code IDE and start a terminal</li>
-<li>Start Julia by typing <code>julia</code> in the terminal</li>
-<li>Install IJulia by typing <code>]</code> to open the package manager</li>
-<li>Install IJulia by typing <code>add IJulia</code></li>
-<li>Press <code>Enter</code></li>
-</ul>
-</section>
-<section id="running-ijulia" class="level2">
-<h2 class="anchored" data-anchor-id="running-ijulia">Running IJulia</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">IJulia;</span> notebook()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<ul>
-<li>Start IJulia by typing the above code in the Julia prompt</li>
-<li>This will open a new browser window</li>
-<li>You can now run code in the notebooks</li>
-</ul>
-<p>. . .</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Tip
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>You can also run the notebooks in VS Code, if you prefer!</p>
+<p><strong>Hint</strong>: Look at the types of arguments used in each <code>operation</code> call and match them to the appropriate method.</p>
 </div>
 </div>
 </section>
 </section>
-<section id="submission-of-assignments" class="level1 title">
-<h1 class="title"><span class="flow">Submission of Assignments</span></h1>
-<section id="submission-of-assignments-1" class="level2">
-<h2 class="anchored" data-anchor-id="submission-of-assignments-1">Submission of Assignments</h2>
-<ul>
-<li>You can work in groups of up to three people</li>
-<li>Submit the assignment via Moodle</li>
-<li>You will submit your assignment by uploading a notebook</li>
-<li>The assignment is due <span class="highlight">the day before the next tutorial</span></li>
-</ul>
-<p>. . .</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Tip
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Don’t forget to save your notebook before uploading it to Moodle!</p>
-</div>
-</div>
+<section id="conclusion" class="level1">
+<h1>Conclusion</h1>
+<p>Great work! You’ve just completed the tutorial on functions in Julia. You now have a first understanding of how to create, use, and understand functions in Julia. Continue to the next file to learn more.</p>
 </section>
-<section id="grading-of-assignments" class="level2">
-<h2 class="anchored" data-anchor-id="grading-of-assignments">Grading of Assignments</h2>
-<ul>
-<li>Each assignment is worth 0.5 points</li>
-<li>You can get a maximum of 6.0 points from the assignments</li>
-<li>The points will be added to your exam points</li>
-<li>You need to pass the exam first, to receive any bonus points!</li>
-</ul>
-<p>. . .</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>The assignments are mandatory!</p>
-</div>
-</div>
-</section>
-</section>
-<section id="five-tutorials-for-this-week" class="level1 title">
-<h1 class="title"><span class="flow">Five Tutorials for this Week</span></h1>
-<section id="topics-of-the-tutorials" class="level2">
-<h2 class="anchored" data-anchor-id="topics-of-the-tutorials">Topics of the Tutorials</h2>
-<ul>
-<li><strong>Variables</strong>: Learn how to assign values to variables</li>
-<li><strong>Vectors</strong>: Learn how to create and manipulate vectors</li>
-<li><strong>Comparisons</strong>: Learn how to compare values</li>
-<li><strong>Loops</strong>: Learn how to use loops to repeat code</li>
-<li><strong>Scope</strong>: Learn about the scope of variables</li>
-</ul>
-</section>
-<section id="get-started-with-the-tutorials" class="level2">
-<h2 class="anchored" data-anchor-id="get-started-with-the-tutorials">Get started with the tutorials</h2>
-<ul>
-<li>Download the first notebook and open it</li>
-<li>Start with the <span class="highlight">first problem and solve it step by step</span></li>
-<li>You can find the tutorials here on the website</li>
-<li><span class="highlight">You can ask questions anytime!</span></li>
-</ul>
-<p>. . .</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>And that’s it for this lecture!
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>The remaining time we will already start working on the first problems.</p>
-</div>
-</div>
-</section>
-</section>
-<section id="literature" class="level1 title">
-<h1 class="title"><span class="flow">Literature</span></h1>
-<section id="literature-1" class="level2">
-<h2 class="anchored" data-anchor-id="literature-1">Literature</h2>
-<ul>
-<li><p>Lauwens, B., &amp; Downey, A. B. (2019). Think Julia: How to think like a computer scientist (First edition). O’Reilly®. <a href="https://benlauwens.github.io/ThinkJulia.jl/latest/book.html">Link to the free book website</a>.</p></li>
-<li><p><a href="https://docs.julialang.org/">Julia Documentation</a></p></li>
-</ul>
-<p>For more interesting literature to learn more about Julia, take a look at the <a href="../general/literature.html">literature list</a> of this course.</p>
+<section id="solutions" class="level1">
+<h1>Solutions</h1>
+<p>You will likely find solutions to most exercises online. However, I strongly encourage you to work on these exercises independently without searching explicitly for the exact answers to the exercises. Understanding someone else’s solution is very different from developing your own. Use the lecture notes and try to solve the exercises on your own. This approach will significantly enhance your learning and problem-solving skills.</p>
+<p>Remember, the goal is not just to complete the exercises, but to understand the concepts and improve your programming abilities. If you encounter difficulties, review the lecture materials, experiment with different approaches, and don’t hesitate to ask for clarification during class discussions.</p>
+<p>Later, you will find the solutions to these exercises online in the associated GitHub repository, but we will also quickly go over them in next week’s tutorial. To access the solutions, click on the Github button on the lower right and search for the folder with today’s lecture and tutorial. Alternatively, you can ask ChatGPT or Claude to explain them to you. But please remember, the goal is not just to complete the exercises, but to understand the concepts and improve your programming abilities.</p>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
@@ -1093,7 +963,7 @@ Note
     </div>   
     <div class="nav-footer-center">
 <p>Energy System Optimization with Julia, Tobias Cors<br>CC BY-NC-SA 4.0</p>
-<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/edit/main/part-02/lecture-firststeps.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/blob/main/part-02/lecture-firststeps.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/edit/main/part-03/tutorial-03-01-functions.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/blob/main/part-03/tutorial-03-01-functions.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">

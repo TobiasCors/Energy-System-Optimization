@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Syllabus – Energy System Optimization with Julia</title>
+<title>Tutorial III.IV - Input and Output – Energy System Optimization with Julia</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -22,6 +22,41 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -85,7 +120,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../general/syllabus.html">Syllabus</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../part-03/lecture-packages.html">03 Data</a></li><li class="breadcrumb-item"><a href="../part-03/tutorial-03-04-IO.html">04 - Input and Output</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -119,7 +154,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../general/syllabus.html" class="sidebar-item-text sidebar-link active">
+  <a href="../general/syllabus.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Syllabus</span></a>
   </div>
 </li>
@@ -181,13 +216,13 @@ ul.task-list li input[type="checkbox"] {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
  <span class="menu-text">03 Data</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../part-03/lecture-packages.html" class="sidebar-item-text sidebar-link">
@@ -214,7 +249,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../part-03/tutorial-03-04-IO.html" class="sidebar-item-text sidebar-link">
+  <a href="../part-03/tutorial-03-04-IO.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">04 - Input and Output</span></a>
   </div>
 </li>
@@ -274,31 +309,28 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#part-i" id="toc-part-i" class="nav-link active" data-scroll-target="#part-i">Part I</a>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#section-1---working-with-delimited-files" id="toc-section-1---working-with-delimited-files" class="nav-link" data-scroll-target="#section-1---working-with-delimited-files">Section 1 - Working with Delimited Files</a>
   <ul class="collapse">
-  <li><a href="#introduction-to-julia-and-modelling" id="toc-introduction-to-julia-and-modelling" class="nav-link" data-scroll-target="#introduction-to-julia-and-modelling">Introduction to Julia and Modelling</a></li>
-  <li><a href="#lectures" id="toc-lectures" class="nav-link" data-scroll-target="#lectures">Lectures</a></li>
+  <li><a href="#exercise-1.1---read-a-csv-file" id="toc-exercise-1.1---read-a-csv-file" class="nav-link" data-scroll-target="#exercise-1.1---read-a-csv-file">Exercise 1.1 - Read a CSV File</a></li>
   </ul></li>
-  <li><a href="#part-ii" id="toc-part-ii" class="nav-link" data-scroll-target="#part-ii">Part II</a>
+  <li><a href="#section-2---working-with-csv-files-and-dataframes" id="toc-section-2---working-with-csv-files-and-dataframes" class="nav-link" data-scroll-target="#section-2---working-with-csv-files-and-dataframes">Section 2 - Working with CSV Files and DataFrames</a>
   <ul class="collapse">
-  <li><a href="#energy-system-optimization-with-basic-models" id="toc-energy-system-optimization-with-basic-models" class="nav-link" data-scroll-target="#energy-system-optimization-with-basic-models">Energy System Optimization with Basic Models</a></li>
-  <li><a href="#lectures-1" id="toc-lectures-1" class="nav-link" data-scroll-target="#lectures-1">Lectures</a></li>
+  <li><a href="#exercise-2.1---write-a-dataframe-to-a-csv-file" id="toc-exercise-2.1---write-a-dataframe-to-a-csv-file" class="nav-link" data-scroll-target="#exercise-2.1---write-a-dataframe-to-a-csv-file">Exercise 2.1 - Write a DataFrame to a CSV File</a></li>
+  <li><a href="#exercise-2.2---read-a-csv-file-in" id="toc-exercise-2.2---read-a-csv-file-in" class="nav-link" data-scroll-target="#exercise-2.2---read-a-csv-file-in">Exercise 2.2 - Read a CSV File in</a></li>
   </ul></li>
-  <li><a href="#part-iii" id="toc-part-iii" class="nav-link" data-scroll-target="#part-iii">Part III</a>
-  <ul class="collapse">
-  <li><a href="#energy-system-optimization-with-advanced-models" id="toc-energy-system-optimization-with-advanced-models" class="nav-link" data-scroll-target="#energy-system-optimization-with-advanced-models">Energy System Optimization with Advanced Models</a></li>
-  <li><a href="#lectures-2" id="toc-lectures-2" class="nav-link" data-scroll-target="#lectures-2">Lectures</a></li>
-  </ul></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  <li><a href="#solutions" id="toc-solutions" class="nav-link" data-scroll-target="#solutions">Solutions</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/edit/main/general/syllabus.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/blob/main/general/syllabus.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="syllabus.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/edit/main/part-03/tutorial-03-04-IO.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/blob/main/part-03/tutorial-03-04-IO.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="tutorial-03-04-IO.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li><li><a href="tutorial-03-04-IO.ipynb" download="tutorial-03-04-IO.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../part-03/lecture-packages.html">03 Data</a></li><li class="breadcrumb-item"><a href="../part-03/tutorial-03-04-IO.html">04 - Input and Output</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Syllabus</h1>
-<p class="subtitle lead">This years course structure</p>
+<h1 class="title">Tutorial III.IV - Input and Output</h1>
+<p class="subtitle lead">Energy System Optimization with Julia</p>
 </div>
 
 
@@ -315,67 +347,206 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="part-i" class="level1">
-<h1>Part I</h1>
-<section id="introduction-to-julia-and-modelling" class="level2">
-<h2 class="anchored" data-anchor-id="introduction-to-julia-and-modelling">Introduction to Julia and Modelling</h2>
-<p>In the first part, an introduction to the basic concepts of programming in Julia and to mathematical modelling is provided. Students will learn the Julia syntax, data types, as well as how to implement loops and functions in Julia. We will introduce core Julia libraries, too, including JuMP and DataFrames. Once these concepts are understood, we will learn how they can be used to solve problems.</p>
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>Welcome to this interactive Julia tutorial on working with external files! File Input/Output (I/O) operations are crucial in programming and data analysis, allowing us to persist data, share information between programs, and work with large datasets that don’t fit in memory. In this tutorial, we’ll cover reading and writing text files, handling CSV files, and working with delimited files using various Julia packages. These skills are fundamental for data preprocessing, analysis, and result storage in real-world applications.</p>
+<p>Follow the instructions, write your code in the designated code blocks, and validate your results with <code>@assert</code> statements.</p>
 </section>
-<section id="lectures" class="level2">
-<h2 class="anchored" data-anchor-id="lectures">Lectures</h2>
-<p><strong>Welcome and Introduction (I)</strong><br>
-Introduction to the course and mathematical modelling</p>
-<p><strong>First Steps in Julia (II)</strong><br>
-Vectors, matrices, basic operations loops and functions</p>
-<p><strong>Packages and Data Management (III)</strong><br>
-Package Management, DataFrames, reading and writing data</p>
-<p><strong>Modelling with JuMP (IV)</strong><br>
-Modeling with JuMP with variables, parameters and constraints</p>
-</section>
-</section>
-<section id="part-ii" class="level1">
-<h1>Part II</h1>
-<section id="energy-system-optimization-with-basic-models" class="level2">
-<h2 class="anchored" data-anchor-id="energy-system-optimization-with-basic-models">Energy System Optimization with Basic Models</h2>
-<p>In the second part, we will cover energy system optimization based on basic modelling concepts. We will start with the classic generator expansion problem and learn how to model and solve it using JuMP. Afterwards we start to bring together further modelling concepts, such as the unit commitment and storages, to build a digital twin of a power system for various decision problems. Finally, we developed a basic framework to model and solve operations and investment planning problems of energy systems.</p>
-</section>
-<section id="lectures-1" class="level2">
-<h2 class="anchored" data-anchor-id="lectures-1">Lectures</h2>
-<p><strong>Generator Expansion Planning (V)</strong><br>
-A case study on generator expansion planning</p>
-<p><strong>Unit Commitment as Short-term Scheduling (VI)</strong><br>
-A case study on unit commitment as short-term scheduling</p>
-<p><strong>Storages (VII)</strong><br>
-A case study on storages</p>
-<p><strong>Energy System Design and Investment Planning (VIII)</strong><br>
-A case study on energy system design and investment planning</p>
-</section>
-</section>
-<section id="part-iii" class="level1">
-<h1>Part III</h1>
-<section id="energy-system-optimization-with-advanced-models" class="level2">
-<h2 class="anchored" data-anchor-id="energy-system-optimization-with-advanced-models">Energy System Optimization with Advanced Models</h2>
-<p>In the third part, we will cover more advanced optimization models and concepts. We will start to extend the basic models to more complex models, such as multi-energy systems and uncertainty modelling.</p>
-</section>
-<section id="lectures-2" class="level2">
-<h2 class="anchored" data-anchor-id="lectures-2">Lectures</h2>
-<p><strong>Multi-energy Systems (IX)</strong><br>
-A case study on multi-energy systems</p>
-<p><strong>Intermission: Exam Preparation (X)</strong><br>
-We will prepare for the exam by solving a set of exercises together in the lecture.</p>
-<p><strong>Framework for Multi-Energy Systems Optimization (XI)</strong><br>
-A case study with the general framework for multi-energy systems optimization</p>
-<p><strong>Recap and Discussion (XII)</strong><br>
-We repeat the concepts from the course and discuss all your remaining questions</p>
-<p><strong>Electricity Markets (XIII)</strong><br>
-An overview of electricity markets and their role in the energy system</p>
-<!--
-**Uncertainty Modelling and Renewable Energy Integration (X)**\
-A case study on uncertainty modelling and renewable energy integration
--->
+<section id="section-1---working-with-delimited-files" class="level1">
+<h1>Section 1 - Working with Delimited Files</h1>
+<p>Delimited files, such as CSV (Comma-Separated Values), are a common way to store structured data. Each value in the file is separated by a specific character, often a comma. Julia’s DelimitedFiles package makes it easy to work with these files.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The DelimitedFiles package is part of Julia’s Standard Library, which means you can use it without installing anything extra!</p>
+</div>
+</div>
+<div id="2" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DelimitedFiles</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Now, let’s create a simple matrix and save it as a CSV file:</p>
+<div id="4" class="cell" data-execution_count="0">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a 3x3 matrix</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>new_data <span class="op">=</span> [<span class="fl">10</span> <span class="fl">12</span> <span class="fl">6</span>; <span class="fl">13</span> <span class="fl">25</span> <span class="fl">1</span>; <span class="fl">40</span> <span class="fl">30</span> <span class="fl">7</span>]</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a new folder called "ExampleData"</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span>(<span class="st">"</span><span class="sc">$</span>(<span class="pp">@__DIR__</span>)<span class="st">/ExampleData"</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Write the matrix to a CSV file</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">open</span>(<span class="st">"</span><span class="sc">$</span>(<span class="pp">@__DIR__</span>)<span class="st">/ExampleData/matrix.csv"</span>, <span class="st">"w"</span>) <span class="cf">do</span> io</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">writedlm</span>(io, new_data, <span class="ch">','</span>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"CSV file 'matrix.csv' written successfully to folder ExampleData!"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Note that we used the <code>@__DIR__</code> macro to get the directory of the current file. This is a convenient way to ensure that the file path is correct, no matter where you run the script from. The reason is that the <code>@__DIR__</code> macro returns the directory of the file in which the macro is called, not the working directory of the script you are running.</p>
+</div>
+</div>
+<!-- 
+Example regarding the use of the `@__DIR__` macro: If you have this file structure (where `project/` is your current working directory):
+```
+    project/
+    ├── scripts/
+    │   └── analysis.jl
+    └── ExampleData/
+        └── matrix.csv
+```
+
+And your `analysis.jl` contains:
 
 
+
+
+
+
+
+
+
+
+```bjezelp
+# This will always point to 'project/scripts', even if you run the script from elsewhere
+println(@__DIR__)
+
+# This will point to 'project' (the current working directory)
+println(pwd())
+
+# This is why using @__DIR__ makes your file paths more reliable as the working directory can change:
+matrix_file_path_good = joinpath(@__DIR__, "..", "ExampleData", "matrix.csv")  # Always works
+matrix_file_path_bad = "ExampleData/matrix.csv"  # Only works if run from project/ directory
+```
+
+
+
+
+
+
+
+
+
+
+
+Note: The file paths are stored as a string in the variables `matrix_file_path_good` and `matrix_file_path_bad`. These can be used as a file path in the function `open()`. The `joinpath()` function is an alternative to string interpolation. Remember from the first tutorial, in Julia, you can concatenate strings in several ways:
+
+- Using string interpolation: `"$(@__DIR__)/ExampleData/matrix.csv"`
+- Using the * operator: `@__DIR__ * "/ExampleData/matrix.csv"`
+- Using joinpath(): `joinpath(@__DIR__, "ExampleData", "matrix.csv")`
+
+The `".."` in the path means "go up one directory level". So if `@__DIR__` is `project/scripts`, the path goes up to `project` before going into `ExampleData`. -->
+<section id="exercise-1.1---read-a-csv-file" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-1.1---read-a-csv-file">Exercise 1.1 - Read a CSV File</h2>
+<p>Now it’s your turn! Let’s read the CSV file we just created.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>To learn how to use a Julia function, you can type <code>?</code> followed by the function name in the REPL (Julia’s command-line interface). For example, <code>?readdlm</code> will show you information about the <code>readdlm()</code> function.</p>
+</div>
+</div>
+<p>Use the <code>readdlm()</code> function to read the ‘matrix.csv’ file we just created. Save the result in a variable called <code>read_matrix</code>.</p>
+<div id="6" class="cell" data-execution_count="0">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># YOUR CODE BELOW</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Don't forget to use the @__DIR__ macro to get the correct file path!</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="8" class="cell" data-execution_count="0">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test your answer</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> read_matrix <span class="op">==</span> new_data</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"File 'matrix.csv' read successfully!"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
 </section>
+</section>
+<section id="section-2---working-with-csv-files-and-dataframes" class="level1">
+<h1>Section 2 - Working with CSV Files and DataFrames</h1>
+<p>The CSV package in Julia provides powerful tools for reading and writing CSV files to and from DataFrames, a common requirement in data analysis and data science projects. This requires the CSV and DataFrames packages. If you solely followed the course so far, you first have to install the CSV Package before you can start using it:</p>
+<div id="10" class="cell" data-execution_count="0">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> <span class="bu">Pkg;</span> Pkg.add("CSV")</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<section id="exercise-2.1---write-a-dataframe-to-a-csv-file" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-2.1---write-a-dataframe-to-a-csv-file">Exercise 2.1 - Write a DataFrame to a CSV File</h2>
+<p>Write the following given DataFrame to a CSV file <code>table_out.csv</code> in the folder <code>ExampleData</code>. This can be done by using the function <code>CSV.write()</code>. To learn the syntax, ask the inbuild help with <code>?</code> and the function name.</p>
+<div id="12" class="cell" data-execution_count="0">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">CSV</span>, <span class="bu">DataFrames</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> <span class="fu">DataFrame</span>(Name <span class="op">=</span> [<span class="st">"Elio"</span>, <span class="st">"Bob"</span>, <span class="st">"Yola"</span>], Age <span class="op">=</span> [<span class="fl">18</span>, <span class="fl">25</span>, <span class="fl">29</span>])</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>csv_file_path <span class="op">=</span> <span class="st">"</span><span class="sc">$</span>(<span class="pp">@__DIR__</span>)<span class="st">/ExampleData/table_out.csv"</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># YOUR CODE BELOW</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="14" class="cell" data-execution_count="0">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test your answer</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">isfile</span>(<span class="st">"ExampleData/table_out.csv"</span>) <span class="st">"Sorry, the file could not be found. </span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    Have you followed all steps?<span class="st">"</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"CSV file 'data.csv' written successfully!"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="exercise-2.2---read-a-csv-file-in" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-2.2---read-a-csv-file-in">Exercise 2.2 - Read a CSV File in</h2>
+<p>Read the CSV file <code>table_out.csv</code> in the folder <code>ExampleData</code> into the variable <code>read_data</code>. Here you can use the function <code>CSV.read()</code>, e.g.:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>read_data <span class="op">=</span> CSV.<span class="fu">read</span>(<span class="st">"Path/datatable.csv"</span>, DataFrame)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Note, that you need to provide a sink for the data when using <code>CSV.read()</code>, e.g.&nbsp;a DataFrame.</p>
+</div>
+</div>
+<div id="16" class="cell" data-execution_count="0">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># YOUR CODE BELOW</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Again, don't forget to use the @__DIR__ macro to get the correct file path!</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="18" class="cell" data-execution_count="0">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test your answer</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> read_data[<span class="fl">1</span>,<span class="fl">1</span>] <span class="op">==</span> <span class="st">"Elio"</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"CSV file 'table_out.csv' read successfully!"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+</section>
+<section id="conclusion" class="level1">
+<h1>Conclusion</h1>
+<p>Congratulations! You’ve successfully completed the tutorial on reading and writing external files in Julia. Continue to the next file to learn more.</p>
+</section>
+<section id="solutions" class="level1">
+<h1>Solutions</h1>
+<p>You will likely find solutions to most exercises online. However, I strongly encourage you to work on these exercises independently without searching explicitly for the exact answers to the exercises. Understanding someone else’s solution is very different from developing your own. Use the lecture notes and try to solve the exercises on your own. This approach will significantly enhance your learning and problem-solving skills.</p>
+<p>Remember, the goal is not just to complete the exercises, but to understand the concepts and improve your programming abilities. If you encounter difficulties, review the lecture materials, experiment with different approaches, and don’t hesitate to ask for clarification during class discussions.</p>
+<p>Later, you will find the solutions to these exercises online in the associated GitHub repository, but we will also quickly go over them in next week’s tutorial. To access the solutions, click on the Github button on the lower right and search for the folder with today’s lecture and tutorial. Alternatively, you can ask ChatGPT or Claude to explain them to you. But please remember, the goal is not just to complete the exercises, but to understand the concepts and improve your programming abilities.</p>
+
+
 </section>
 
 </main> <!-- /main -->
@@ -787,7 +958,7 @@ A case study on uncertainty modelling and renewable energy integration
     </div>   
     <div class="nav-footer-center">
 <p>Energy System Optimization with Julia, Tobias Cors<br>CC BY-NC-SA 4.0</p>
-<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/edit/main/general/syllabus.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/blob/main/general/syllabus.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/edit/main/part-03/tutorial-03-04-IO.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/blob/main/part-03/tutorial-03-04-IO.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">
