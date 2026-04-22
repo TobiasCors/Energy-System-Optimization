@@ -6,7 +6,7 @@ project:
     - general/*.qmd
     - part-01/*.qmd
     - part-02/*.qmd
-    # - part-03/*.qmd
+    - part-03/*.qmd
     # - part-04/*.qmd
     # - part-05/*.qmd
     # - part-06/*.qmd
@@ -50,20 +50,20 @@ website:
             href: part-02/tutorial-02-04-loops.qmd
           - text: "05 - Dictionaries"
             href: part-02/tutorial-02-05-dicts.qmd
-      # - section: "03 Data"
-      #   contents:
-      #     - text: "Lecture"
-      #       href: part-03/lecture-packages.qmd
-      #     - text: "01 - Functions"
-      #       href: part-03/tutorial-03-01-functions.qmd
-      #     - text: "02 - Packages"
-      #       href: part-03/tutorial-03-02-handling.qmd
-      #     - text: "03 - DataFrames"
-      #       href: part-03/tutorial-03-03-DataFrames.qmd
-      #     - text: "04 - Input and Output"
-      #       href: part-03/tutorial-03-04-IO.qmd
-      #     - text: "05 - Plotting"
-      #       href: part-03/tutorial-03-05-Plotting.qmd
+      - section: "03 Data"
+        contents:
+          - text: "Lecture"
+            href: part-03/lecture-packages.qmd
+          - text: "01 - Functions"
+            href: part-03/tutorial-03-01-functions.qmd
+          - text: "02 - Packages"
+            href: part-03/tutorial-03-02-handling.qmd
+          - text: "03 - DataFrames"
+            href: part-03/tutorial-03-03-DataFrames.qmd
+          - text: "04 - Input and Output"
+            href: part-03/tutorial-03-04-IO.qmd
+          - text: "05 - Plotting"
+            href: part-03/tutorial-03-05-Plotting.qmd
       # - section: "04 Optimization"
       #   contents:
       #     - text: "Lecture"
