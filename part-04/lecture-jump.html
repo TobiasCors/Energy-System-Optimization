@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Dr.&nbsp;Tobias Cors">
 
-<title>Frequently Asked Questions – Energy System Optimization with Julia</title>
+<title>Lecture IV - Modelling with JuMP – Energy System Optimization with Julia</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -85,7 +86,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../general/faq.html">FAQs</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../part-04/lecture-jump.html">04 Optimization</a></li><li class="breadcrumb-item"><a href="../part-04/lecture-jump.html">Lecture</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -228,16 +229,16 @@ ul.task-list li input[type="checkbox"] {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
  <span class="menu-text">04 Optimization</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../part-04/lecture-jump.html" class="sidebar-item-text sidebar-link">
+  <a href="../part-04/lecture-jump.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Lecture</span></a>
   </div>
 </li>
@@ -301,7 +302,7 @@ ul.task-list li input[type="checkbox"] {
   </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../general/faq.html" class="sidebar-item-text sidebar-link active">
+  <a href="../general/faq.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">FAQs</span></a>
   </div>
 </li>
@@ -321,31 +322,54 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#unanswered-questions" id="toc-unanswered-questions" class="nav-link active" data-scroll-target="#unanswered-questions">Unanswered Questions</a></li>
-  <li><a href="#contribution-and-mistakes" id="toc-contribution-and-mistakes" class="nav-link" data-scroll-target="#contribution-and-mistakes">Contribution and Mistakes</a></li>
-  <li><a href="#faqs" id="toc-faqs" class="nav-link" data-scroll-target="#faqs">FAQs</a>
+  <li><a href="#quick-recap-from-last-week" id="toc-quick-recap-from-last-week" class="nav-link active" data-scroll-target="#quick-recap-from-last-week"><span class="flow">Quick Recap from last Week</span></a>
   <ul class="collapse">
-  <li><a href="#is-the-course-difficult" id="toc-is-the-course-difficult" class="nav-link" data-scroll-target="#is-the-course-difficult">Is the course difficult?</a></li>
-  <li><a href="#how-can-i-download-pdf-slides-from-the-lecture" id="toc-how-can-i-download-pdf-slides-from-the-lecture" class="nav-link" data-scroll-target="#how-can-i-download-pdf-slides-from-the-lecture">How can I download PDF slides from the lecture?</a></li>
+  <li><a href="#functions" id="toc-functions" class="nav-link" data-scroll-target="#functions">Functions</a></li>
+  <li><a href="#packages" id="toc-packages" class="nav-link" data-scroll-target="#packages">Packages</a></li>
+  <li><a href="#dataframes" id="toc-dataframes" class="nav-link" data-scroll-target="#dataframes">DataFrames</a></li>
+  <li><a href="#inputoutput-io" id="toc-inputoutput-io" class="nav-link" data-scroll-target="#inputoutput-io">Input/Output (IO)</a></li>
+  <li><a href="#plots" id="toc-plots" class="nav-link" data-scroll-target="#plots">Plots</a></li>
+  <li><a href="#solutions-from-last-week" id="toc-solutions-from-last-week" class="nav-link" data-scroll-target="#solutions-from-last-week">Solutions from last Week</a></li>
   </ul></li>
-  <li><a href="#how-does-the-calculation-of-the-bonus-points-work" id="toc-how-does-the-calculation-of-the-bonus-points-work" class="nav-link" data-scroll-target="#how-does-the-calculation-of-the-bonus-points-work">How does the calculation of the bonus points work?</a></li>
+  <li><a href="#five-tutorials-for-this-week" id="toc-five-tutorials-for-this-week" class="nav-link" data-scroll-target="#five-tutorials-for-this-week"><span class="flow">Five Tutorials for this Week</span></a>
+  <ul class="collapse">
+  <li><a href="#topics-of-the-tutorials" id="toc-topics-of-the-tutorials" class="nav-link" data-scroll-target="#topics-of-the-tutorials">Topics of the Tutorials</a></li>
+  <li><a href="#get-started-with-the-tutorials" id="toc-get-started-with-the-tutorials" class="nav-link" data-scroll-target="#get-started-with-the-tutorials">Get started with the tutorials</a></li>
+  </ul></li>
+  <li><a href="#literature" id="toc-literature" class="nav-link" data-scroll-target="#literature"><span class="flow">Literature</span></a>
+  <ul class="collapse">
+  <li><a href="#literature-1" id="toc-literature-1" class="nav-link" data-scroll-target="#literature-1">Literature</a></li>
+  </ul></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/edit/main/general/faq.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/blob/main/general/faq.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="faq.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/edit/main/part-04/lecture-jump.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/blob/main/part-04/lecture-jump.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="lecture-presentation.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../part-04/lecture-jump.html">04 Optimization</a></li><li class="breadcrumb-item"><a href="../part-04/lecture-jump.html">Lecture</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Frequently Asked Questions</h1>
-<p class="subtitle lead">Answers to common questions</p>
+<h1 class="title">Lecture IV - Modelling with JuMP</h1>
+<p class="subtitle lead">Energy System Optimization with Julia</p>
 </div>
 
 
+<div class="quarto-title-meta-author">
+  <div class="quarto-title-meta-heading">Author</div>
+  <div class="quarto-title-meta-heading">Affiliation</div>
+  
+    <div class="quarto-title-meta-contents">
+    <p class="author">Dr.&nbsp;Tobias Cors </p>
+  </div>
+  <div class="quarto-title-meta-contents">
+        <p class="affiliation">
+            Hamburg University of Applied Science - Summer 2026
+          </p>
+      </div>
+  </div>
 
 <div class="quarto-title-meta">
 
-    
+      
   
     
   </div>
@@ -355,59 +379,163 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="unanswered-questions" class="level2">
-<h2 class="anchored" data-anchor-id="unanswered-questions">Unanswered Questions</h2>
-<p>If you have a question that is not answered here, please let me know by sending me an e-mail to <a href="mailto:tobias.cors@haw-hamburg.de?subject=Energy%20System%20Optimization%3A%20%3CYour%20subject%3E">tobias.cors@haw-hamburg.de</a> or by creating an issue on <a href="https://github.com/TobiasCors/Energy-System-Optimization/issues">GitHub</a>.</p>
-</section>
-<section id="contribution-and-mistakes" class="level2">
-<h2 class="anchored" data-anchor-id="contribution-and-mistakes">Contribution and Mistakes</h2>
-<p>If you have found a mistake in the course material or if you have any suggestion on how to improve the course, please let me know in the <a href="https://tally.so/r/mOoyN7">following form</a> or by creating an issue on <a href="https://github.com/TobiasCors/Energy-System-Optimization/issues">GitHub</a>.</p>
-</section>
-<section id="faqs" class="level2">
-<h2 class="anchored" data-anchor-id="faqs">FAQs</h2>
-<section id="is-the-course-difficult" class="level3">
-<h3 class="anchored" data-anchor-id="is-the-course-difficult">Is the course difficult?</h3>
-<p>In terms of difficulty, this is of course somehow complicated for me to assess. However, I have tried to make all the content as comprehensible as possible and really do ask you many questions in the lectures. If I have the impression that something has not been understood at all, then I take longer at that point. This semester is the first time I think the course is truly finished. I have adapted the slides based on feedback from the last two years and made all the examples as simple as possible. <strong>In a nutshell</strong>: If you are interested in the subject and equations do not scare you, you will likely do great in the course.</p>
-</section>
-<section id="how-can-i-download-pdf-slides-from-the-lecture" class="level3">
-<h3 class="anchored" data-anchor-id="how-can-i-download-pdf-slides-from-the-lecture">How can I download PDF slides from the lecture?</h3>
-<p>You have two options:</p>
-<section id="option-1-download-from-github" class="level4">
-<h4 class="anchored" data-anchor-id="option-1-download-from-github">Option 1: Download from Github</h4>
+<section id="quick-recap-from-last-week" class="level1 title">
+<h1 class="title"><span class="flow">Quick Recap from last Week</span></h1>
+<section id="functions" class="level2">
+<h2 class="anchored" data-anchor-id="functions">Functions</h2>
 <ul>
-<li>Follow this link to the <a href="https://github.com/TobiasCors/Energy-System-Optimization/tree/main/pdf-slides">PDF slides on Github</a>.</li>
+<li>Functions are reusable blocks of code</li>
+<li>Define functions using the <code>function</code> keyword</li>
+<li>Functions can take arguments and return values</li>
+<li>Use <code>return</code> to specify the output of a function</li>
+</ul>
+<p>. . .</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>You can create anonymous functions using the <code>-&gt;</code> syntax for quick, one-off operations.</p>
+</div>
+</div>
+</section>
+<section id="packages" class="level2">
+<h2 class="anchored" data-anchor-id="packages">Packages</h2>
+<ul>
+<li>Packages extend Julia’s functionality</li>
+<li>Use <code>using Pkg</code> to access package management</li>
+<li>Install packages with <code>Pkg.add("PackageName")</code></li>
+<li>Import packages with <code>using PackageName</code> or <code>import PackageName</code></li>
 </ul>
 </section>
-<section id="option-2-generate-yourself" class="level4">
-<h4 class="anchored" data-anchor-id="option-2-generate-yourself">Option 2: Generate yourself</h4>
-<ol type="1">
-<li>First, open the lecture you want to download the slides from.</li>
-<li>Then, click on the <code>RevealJS</code> button in the top right corner.</li>
-<li>Now, click on the three stacked bars in the lower left corner.</li>
-<li>Then, click on <code>Tools</code> in the upper left corner.</li>
-<li>Now you can select <code>PDF Export Mode</code> and then save the slides as a PDF.</li>
-</ol>
+<section id="dataframes" class="level2">
+<h2 class="anchored" data-anchor-id="dataframes">DataFrames</h2>
+<ul>
+<li>DataFrames are used for working with tabular data</li>
+<li>Create DataFrames using the <code>DataFrame</code> constructor</li>
+<li>Access columns using dot notation or square brackets</li>
+<li>Perform operations on columns and rows</li>
+</ul>
+<p>. . .</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Use <code>describe(df)</code> to get a quick summary of your DataFrame.</p>
+</div>
+</div>
+</section>
+<section id="inputoutput-io" class="level2">
+<h2 class="anchored" data-anchor-id="inputoutput-io">Input/Output (IO)</h2>
+<ul>
+<li>IO operations allow reading from and writing to files</li>
+<li>Reading and writing CSV files can be done with the <code>CSV</code> package</li>
+<li>Use <code>CSV.read()</code> to read a CSV file into a DataFrame</li>
+<li>Use <code>CSV.write()</code> to write a DataFrame to a CSV file</li>
+</ul>
+</section>
+<section id="plots" class="level2">
+<h2 class="anchored" data-anchor-id="plots">Plots</h2>
+<ul>
+<li>Plotting in Julia is done through packages like Plots.jl</li>
+<li>Create basic plots with functions like <code>plot()</code>, <code>scatter()</code>, <code>bar()</code></li>
+<li>Customize plots with attributes like <code>title</code>, <code>xlabel</code>, <code>ylabel</code></li>
+</ul>
+<p>. . .</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Explore different plot types and in the long term even backends for various output formats and interactivity.</p>
+</div>
+</div>
+</section>
+<section id="solutions-from-last-week" class="level2">
+<h2 class="anchored" data-anchor-id="solutions-from-last-week">Solutions from last Week</h2>
+<ul>
+<li>The tutorials from last week will again be <span class="highlight">available on Friday</span></li>
+<li>You can access them in the project folder on Github</li>
+<li>Click on the little cat icon on the bottom right</li>
+</ul>
+<p>. . .</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="highlight">You can ask questions anytime in class or via email!</span></p>
+</div>
+</div>
+</section>
+</section>
+<section id="five-tutorials-for-this-week" class="level1 title">
+<h1 class="title"><span class="flow">Five Tutorials for this Week</span></h1>
+<section id="topics-of-the-tutorials" class="level2">
+<h2 class="anchored" data-anchor-id="topics-of-the-tutorials">Topics of the Tutorials</h2>
+<ul>
+<li><strong>JuMP</strong>: Learn how to use JuMP to define optimization problems</li>
+<li><strong>Variable Bounds</strong>: Learn how to set variable bounds</li>
+<li><strong>Constrains</strong>: Learn how to add constraints to your model</li>
+<li><strong>Advanced Modeling</strong>: Learn how to model more complex problems</li>
+<li><strong>Transport Problem</strong>: Learn how to solve a transportation problem</li>
+</ul>
+</section>
+<section id="get-started-with-the-tutorials" class="level2">
+<h2 class="anchored" data-anchor-id="get-started-with-the-tutorials">Get started with the tutorials</h2>
+<ul>
+<li>Download this weeks tutorials and start with the first one</li>
+<li><span class="highlight">Remember, you can ask questions anytime!</span></li>
+</ul>
+<p>. . .</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Note
+<span class="screen-reader-only">Note</span>And that’s it for this lecture!
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Unfortunately, this method does not work perfectly on all browsers. If you have a Chrome based browser, you should be fine.</p>
+<p>The remaining time we will already start working on the problems of the fourth lecture. From next week, we will start with different optimizations problems and topics, that we address together in the course.</p>
 </div>
 </div>
 </section>
 </section>
+<section id="literature" class="level1 title">
+<h1 class="title"><span class="flow">Literature</span></h1>
+<section id="literature-1" class="level2">
+<h2 class="anchored" data-anchor-id="literature-1">Literature</h2>
+<ul>
+<li><p>Lauwens, B., &amp; Downey, A. B. (2019). Think Julia: How to think like a computer scientist (First edition). O’Reilly®. <a href="https://benlauwens.github.io/ThinkJulia.jl/latest/book.html">Link to the free book website</a>.</p></li>
+<li><p><a href="https://docs.julialang.org/">Julia Documentation</a></p></li>
+</ul>
+<p>For more interesting literature to learn more about Julia, take a look at the <a href="../general/literature.html">literature list</a> of this course.</p>
+
+
 </section>
-<section id="how-does-the-calculation-of-the-bonus-points-work" class="level2">
-<h2 class="anchored" data-anchor-id="how-does-the-calculation-of-the-bonus-points-work">How does the calculation of the bonus points work?</h2>
-<p>To reach the full 6 points, all exercises must be submitted. A maximum of 0.5 points can be earned per exercise. In the overview, ‘1’ stands for successfully submitted, and ‘0.5’ for submitted (but without attempting to solve everything). In the end, I calculate this as half or quarter points towards the total score.</p>
-
-
 </section>
 
 </main> <!-- /main -->
@@ -819,7 +947,7 @@ Note
     </div>   
     <div class="nav-footer-center">
 <p>Energy System Optimization with Julia, Tobias Cors<br>CC BY-NC-SA 4.0</p>
-<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/edit/main/general/faq.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/blob/main/general/faq.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/edit/main/part-04/lecture-jump.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/blob/main/part-04/lecture-jump.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">

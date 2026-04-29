@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Frequently Asked Questions – Energy System Optimization with Julia</title>
+<title>Tutorial IV.II - Variables and Bounds in JuMP – Energy System Optimization with Julia</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -22,6 +22,41 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -85,7 +120,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../general/faq.html">FAQs</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../part-04/lecture-jump.html">04 Optimization</a></li><li class="breadcrumb-item"><a href="../part-04/tutorial-04-02-bounds.html">02 - Bounds</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -228,13 +263,13 @@ ul.task-list li input[type="checkbox"] {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
  <span class="menu-text">04 Optimization</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../part-04/lecture-jump.html" class="sidebar-item-text sidebar-link">
@@ -249,7 +284,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../part-04/tutorial-04-02-bounds.html" class="sidebar-item-text sidebar-link">
+  <a href="../part-04/tutorial-04-02-bounds.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">02 - Bounds</span></a>
   </div>
 </li>
@@ -301,7 +336,7 @@ ul.task-list li input[type="checkbox"] {
   </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../general/faq.html" class="sidebar-item-text sidebar-link active">
+  <a href="../general/faq.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">FAQs</span></a>
   </div>
 </li>
@@ -321,24 +356,32 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#unanswered-questions" id="toc-unanswered-questions" class="nav-link active" data-scroll-target="#unanswered-questions">Unanswered Questions</a></li>
-  <li><a href="#contribution-and-mistakes" id="toc-contribution-and-mistakes" class="nav-link" data-scroll-target="#contribution-and-mistakes">Contribution and Mistakes</a></li>
-  <li><a href="#faqs" id="toc-faqs" class="nav-link" data-scroll-target="#faqs">FAQs</a>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#section-1---understanding-different-types-of-variables" id="toc-section-1---understanding-different-types-of-variables" class="nav-link" data-scroll-target="#section-1---understanding-different-types-of-variables">Section 1 - Understanding Different Types of Variables</a>
   <ul class="collapse">
-  <li><a href="#is-the-course-difficult" id="toc-is-the-course-difficult" class="nav-link" data-scroll-target="#is-the-course-difficult">Is the course difficult?</a></li>
-  <li><a href="#how-can-i-download-pdf-slides-from-the-lecture" id="toc-how-can-i-download-pdf-slides-from-the-lecture" class="nav-link" data-scroll-target="#how-can-i-download-pdf-slides-from-the-lecture">How can I download PDF slides from the lecture?</a></li>
+  <li><a href="#exercise-1.1---create-variables" id="toc-exercise-1.1---create-variables" class="nav-link" data-scroll-target="#exercise-1.1---create-variables">Exercise 1.1 - Create Variables</a></li>
   </ul></li>
-  <li><a href="#how-does-the-calculation-of-the-bonus-points-work" id="toc-how-does-the-calculation-of-the-bonus-points-work" class="nav-link" data-scroll-target="#how-does-the-calculation-of-the-bonus-points-work">How does the calculation of the bonus points work?</a></li>
+  <li><a href="#section-2---creating-variables-in-containers" id="toc-section-2---creating-variables-in-containers" class="nav-link" data-scroll-target="#section-2---creating-variables-in-containers">Section 2 - Creating Variables in Containers</a>
+  <ul class="collapse">
+  <li><a href="#exercise-2.1---create-an-array" id="toc-exercise-2.1---create-an-array" class="nav-link" data-scroll-target="#exercise-2.1---create-an-array">Exercise 2.1 - Create an Array</a></li>
+  <li><a href="#exercise-2.2---create-a-matrix-of-variables" id="toc-exercise-2.2---create-a-matrix-of-variables" class="nav-link" data-scroll-target="#exercise-2.2---create-a-matrix-of-variables">Exercise 2.2 - Create a Matrix of Variables</a></li>
+  </ul></li>
+  <li><a href="#section-3---setting-bounds-on-variables" id="toc-section-3---setting-bounds-on-variables" class="nav-link" data-scroll-target="#section-3---setting-bounds-on-variables">Section 3 - Setting Bounds on Variables</a>
+  <ul class="collapse">
+  <li><a href="#exercise-3.1---set-bounds-on-a-variable" id="toc-exercise-3.1---set-bounds-on-a-variable" class="nav-link" data-scroll-target="#exercise-3.1---set-bounds-on-a-variable">Exercise 3.1 - Set Bounds on a Variable</a></li>
+  </ul></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  <li><a href="#solutions" id="toc-solutions" class="nav-link" data-scroll-target="#solutions">Solutions</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/edit/main/general/faq.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/blob/main/general/faq.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="faq.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/edit/main/part-04/tutorial-04-02-bounds.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/blob/main/part-04/tutorial-04-02-bounds.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="tutorial-04-02-bounds.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li><li><a href="tutorial-04-02-bounds.ipynb" download="tutorial-04-02-bounds.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../part-04/lecture-jump.html">04 Optimization</a></li><li class="breadcrumb-item"><a href="../part-04/tutorial-04-02-bounds.html">02 - Bounds</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Frequently Asked Questions</h1>
-<p class="subtitle lead">Answers to common questions</p>
+<h1 class="title">Tutorial IV.II - Variables and Bounds in JuMP</h1>
+<p class="subtitle lead">Energy System Optimization with Julia</p>
 </div>
 
 
@@ -355,38 +398,51 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="unanswered-questions" class="level2">
-<h2 class="anchored" data-anchor-id="unanswered-questions">Unanswered Questions</h2>
-<p>If you have a question that is not answered here, please let me know by sending me an e-mail to <a href="mailto:tobias.cors@haw-hamburg.de?subject=Energy%20System%20Optimization%3A%20%3CYour%20subject%3E">tobias.cors@haw-hamburg.de</a> or by creating an issue on <a href="https://github.com/TobiasCors/Energy-System-Optimization/issues">GitHub</a>.</p>
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>Welcome to this beginner-friendly tutorial on variables and bounds in JuMP! In this lesson, we’ll explore different types of variables and how to set limits (or bounds) on them. Don’t worry if you’re new to optimization - we’ll explain everything step by step using real-world examples.</p>
+<p>Follow the instructions, write your code in the designated code blocks, and confirm your understanding with <code>@assert</code> statements. Make sure to have the JuMP package installed to follow this tutorial.</p>
+<p>Let’s start by loading the JuMP package:</p>
+<div id="4" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">JuMP</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Now, let’s create a model that we’ll use throughout this tutorial:</p>
+<div id="6" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> <span class="fu">Model</span>()</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"Great! We've created a new optimization model."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Great! We've created a new optimization model.</code></pre>
+</div>
+</div>
 </section>
-<section id="contribution-and-mistakes" class="level2">
-<h2 class="anchored" data-anchor-id="contribution-and-mistakes">Contribution and Mistakes</h2>
-<p>If you have found a mistake in the course material or if you have any suggestion on how to improve the course, please let me know in the <a href="https://tally.so/r/mOoyN7">following form</a> or by creating an issue on <a href="https://github.com/TobiasCors/Energy-System-Optimization/issues">GitHub</a>.</p>
-</section>
-<section id="faqs" class="level2">
-<h2 class="anchored" data-anchor-id="faqs">FAQs</h2>
-<section id="is-the-course-difficult" class="level3">
-<h3 class="anchored" data-anchor-id="is-the-course-difficult">Is the course difficult?</h3>
-<p>In terms of difficulty, this is of course somehow complicated for me to assess. However, I have tried to make all the content as comprehensible as possible and really do ask you many questions in the lectures. If I have the impression that something has not been understood at all, then I take longer at that point. This semester is the first time I think the course is truly finished. I have adapted the slides based on feedback from the last two years and made all the examples as simple as possible. <strong>In a nutshell</strong>: If you are interested in the subject and equations do not scare you, you will likely do great in the course.</p>
-</section>
-<section id="how-can-i-download-pdf-slides-from-the-lecture" class="level3">
-<h3 class="anchored" data-anchor-id="how-can-i-download-pdf-slides-from-the-lecture">How can I download PDF slides from the lecture?</h3>
-<p>You have two options:</p>
-<section id="option-1-download-from-github" class="level4">
-<h4 class="anchored" data-anchor-id="option-1-download-from-github">Option 1: Download from Github</h4>
-<ul>
-<li>Follow this link to the <a href="https://github.com/TobiasCors/Energy-System-Optimization/tree/main/pdf-slides">PDF slides on Github</a>.</li>
-</ul>
-</section>
-<section id="option-2-generate-yourself" class="level4">
-<h4 class="anchored" data-anchor-id="option-2-generate-yourself">Option 2: Generate yourself</h4>
+<section id="section-1---understanding-different-types-of-variables" class="level1">
+<h1>Section 1 - Understanding Different Types of Variables</h1>
+<p>In optimization problems, we often need to represent different kinds of decisions. JuMP allows us to use three main types of variables:</p>
 <ol type="1">
-<li>First, open the lecture you want to download the slides from.</li>
-<li>Then, click on the <code>RevealJS</code> button in the top right corner.</li>
-<li>Now, click on the three stacked bars in the lower left corner.</li>
-<li>Then, click on <code>Tools</code> in the upper left corner.</li>
-<li>Now you can select <code>PDF Export Mode</code> and then save the slides as a PDF.</li>
+<li><p><strong>Continuous variables</strong>: These can take any real value within a range. Example: The amount of water in a reservoir (can be any number, like 3.7 liters).</p></li>
+<li><p><strong>Integer variables</strong>: These can only be whole numbers. Example: The number of cars produced in a factory (we can’t produce half a car!).</p></li>
+<li><p><strong>Binary variables</strong>: These can only be 0 or 1. Example: Whether to build a new store in a location (yes = 1, no = 0).</p></li>
 </ol>
+<p>Let’s see how to create each type:</p>
+<div id="8" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="pp">@variable</span>(model, variableName)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>This defines a continuous variable without any bound.</p>
+<div id="10" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="pp">@variable</span>(model, <span class="fl">0</span> <span class="op">&lt;=</span> variableName2 <span class="op">&lt;=</span> <span class="fl">1</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">has_lower_bound</span>(variableName2) <span class="op">&amp;&amp;</span> <span class="fu">has_upper_bound</span>(variableName2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>This defines a continuous variable in an interval.</p>
+<div id="12" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="pp">@variable</span>(model, variableName3, Bin)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">is_binary</span>(variableName3)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>This defines a binary variable.</p>
+<div id="14" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="pp">@variable</span>(model, <span class="fl">0</span> <span class="op">&lt;=</span> variableName4, <span class="dt">Int</span>) </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">is_integer</span>(variableName4)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>This defines an integer variable.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -397,15 +453,186 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Unfortunately, this method does not work perfectly on all browsers. If you have a Chrome based browser, you should be fine.</p>
+<p>Note that you will have to change <code>model</code> and <code>variableName</code> according to your instance.</p>
 </div>
 </div>
+<section id="exercise-1.1---create-variables" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-1.1---create-variables">Exercise 1.1 - Create Variables</h2>
+<p>Now it’s your turn! Create three variables:</p>
+<ol type="1">
+<li>A continuous variable called <code>water_amount</code></li>
+<li>An integer variable called <code>cars_produced</code></li>
+<li>A binary variable called <code>build_store</code></li>
+</ol>
+<div id="16" class="cell" data-execution_count="0">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># YOUR CODE BELOW</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Hint: Use the @variable macro three times, once for each variable</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="18" class="cell" data-execution_count="0">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test your answer</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">typeof</span>(water_amount) <span class="op">==</span> VariableRef <span class="op">&amp;&amp;</span> !<span class="fu">is_integer</span>(water_amount) <span class="op">&amp;&amp;</span> !<span class="fu">is_binary</span>(water_amount)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">typeof</span>(cars_produced) <span class="op">==</span> VariableRef <span class="op">&amp;&amp;</span> <span class="fu">is_integer</span>(cars_produced)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">typeof</span>(build_store) <span class="op">==</span> VariableRef <span class="op">&amp;&amp;</span> <span class="fu">is_binary</span>(build_store)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"Excellent work! You've successfully created continuous, integer, and binary variables."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
 </section>
 </section>
+<section id="section-2---creating-variables-in-containers" class="level1">
+<h1>Section 2 - Creating Variables in Containers</h1>
+<p>When we have many similar variables, it’s helpful to group them together. JuMP allows us to use containers like arrays and matrices for this purpose. For example:</p>
+<div id="20" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="pp">@variable</span>(model, variableName5[<span class="fl">1</span><span class="op">:</span><span class="fl">20</span>], Bin)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>20-element Vector{VariableRef}:
+ variableName5[1]
+ variableName5[2]
+ variableName5[3]
+ variableName5[4]
+ variableName5[5]
+ variableName5[6]
+ variableName5[7]
+ variableName5[8]
+ variableName5[9]
+ variableName5[10]
+ variableName5[11]
+ variableName5[12]
+ variableName5[13]
+ variableName5[14]
+ variableName5[15]
+ variableName5[16]
+ variableName5[17]
+ variableName5[18]
+ variableName5[19]
+ variableName5[20]</code></pre>
+</div>
+</div>
+<p>This would create a container with 20 variables. To create a set based on a range, we could do:</p>
+<div id="22" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>new_range <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">100</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@variable</span>(model, variableName6[i <span class="kw">in</span> new_range] <span class="op">&gt;=</span> <span class="fl">0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>1-dimensional DenseAxisArray{JuMP.VariableRef,1,...} with index sets:
+    Dimension 1, 1:100
+And data, a 100-element Vector{JuMP.VariableRef}:
+ variableName6[1]
+ variableName6[2]
+ variableName6[3]
+ variableName6[4]
+ variableName6[5]
+ variableName6[6]
+ variableName6[7]
+ variableName6[8]
+ variableName6[9]
+ variableName6[10]
+ ⋮
+ variableName6[92]
+ variableName6[93]
+ variableName6[94]
+ variableName6[95]
+ variableName6[96]
+ variableName6[97]
+ variableName6[98]
+ variableName6[99]
+ variableName6[100]</code></pre>
+</div>
+</div>
+<p>This would create a container with 100 continuous variables larger than 0. For a container with multiple dimensions:</p>
+<div id="24" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="pp">@variable</span>(model, variableName7[<span class="fl">1</span><span class="op">:</span><span class="fl">30</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">30</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>30×30 Matrix{VariableRef}:
+ variableName7[1,1]   variableName7[1,2]   …  variableName7[1,30]
+ variableName7[2,1]   variableName7[2,2]      variableName7[2,30]
+ variableName7[3,1]   variableName7[3,2]      variableName7[3,30]
+ variableName7[4,1]   variableName7[4,2]      variableName7[4,30]
+ variableName7[5,1]   variableName7[5,2]      variableName7[5,30]
+ variableName7[6,1]   variableName7[6,2]   …  variableName7[6,30]
+ variableName7[7,1]   variableName7[7,2]      variableName7[7,30]
+ variableName7[8,1]   variableName7[8,2]      variableName7[8,30]
+ variableName7[9,1]   variableName7[9,2]      variableName7[9,30]
+ variableName7[10,1]  variableName7[10,2]     variableName7[10,30]
+ ⋮                                         ⋱  
+ variableName7[22,1]  variableName7[22,2]     variableName7[22,30]
+ variableName7[23,1]  variableName7[23,2]     variableName7[23,30]
+ variableName7[24,1]  variableName7[24,2]     variableName7[24,30]
+ variableName7[25,1]  variableName7[25,2]     variableName7[25,30]
+ variableName7[26,1]  variableName7[26,2]  …  variableName7[26,30]
+ variableName7[27,1]  variableName7[27,2]     variableName7[27,30]
+ variableName7[28,1]  variableName7[28,2]     variableName7[28,30]
+ variableName7[29,1]  variableName7[29,2]     variableName7[29,30]
+ variableName7[30,1]  variableName7[30,2]     variableName7[30,30]</code></pre>
+</div>
+</div>
+<p>This would create a container with a matrix of continuous variables without any bound. Note that you will have to change <code>model</code> and <code>variableName</code> according to your instance.</p>
+<section id="exercise-2.1---create-an-array" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-2.1---create-an-array">Exercise 2.1 - Create an Array</h2>
+<p>Imagine you’re planning production for a week. Create an array <code>daily_production</code> with 7 non-negative variables, one for each day of the week.</p>
+<div id="26" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># YOUR CODE BELOW</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="28" class="cell" data-execution_count="0">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test your answer</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">length</span>(daily_production) <span class="op">==</span> <span class="fl">7</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">all</span>(<span class="fu">lower_bound</span>(daily_production[i]) <span class="op">==</span> <span class="fl">0</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">7</span>)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"Great job! You've created an array of 7 non-negative variables for daily production."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
 </section>
-<section id="how-does-the-calculation-of-the-bonus-points-work" class="level2">
-<h2 class="anchored" data-anchor-id="how-does-the-calculation-of-the-bonus-points-work">How does the calculation of the bonus points work?</h2>
-<p>To reach the full 6 points, all exercises must be submitted. A maximum of 0.5 points can be earned per exercise. In the overview, ‘1’ stands for successfully submitted, and ‘0.5’ for submitted (but without attempting to solve everything). In the end, I calculate this as half or quarter points towards the total score.</p>
+<section id="exercise-2.2---create-a-matrix-of-variables" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-2.2---create-a-matrix-of-variables">Exercise 2.2 - Create a Matrix of Variables</h2>
+<p>Now, imagine you’re deciding whether to stock 4 different products in 3 different stores. Create a 3x4 matrix of binary variables called <code>stock_decision</code>.</p>
+<div id="30" class="cell" data-execution_count="0">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># YOUR CODE BELOW</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="32" class="cell" data-execution_count="0">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test your answer</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">size</span>(stock_decision) <span class="op">==</span> (<span class="fl">3</span>, <span class="fl">4</span>)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">all</span>(<span class="fu">is_binary</span>(stock_decision[i,j]) <span class="cf">for</span> i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, j <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span>)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"Excellent! You've created a 3x4 matrix of binary variables for stocking decisions."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+</section>
+<section id="section-3---setting-bounds-on-variables" class="level1">
+<h1>Section 3 - Setting Bounds on Variables</h1>
+<p>Often, we know that a variable can’t go below or above certain values. We can set these limits (called bounds) when we create the variable.</p>
+<p>For example, if a factory can produce between 100 and 500 units:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="pp">@variable</span>(model, <span class="fl">100</span> <span class="op">&lt;=</span> production <span class="op">&lt;=</span> <span class="fl">500</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Or if we know a percentage must be between 0 and 100:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="pp">@variable</span>(model, <span class="fl">0</span> <span class="op">&lt;=</span> percentage <span class="op">&lt;=</span> <span class="fl">100</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="exercise-3.1---set-bounds-on-a-variable" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-3.1---set-bounds-on-a-variable">Exercise 3.1 - Set Bounds on a Variable</h2>
+<p>Create a variable <code>temperature</code> that represents the temperature setting on a thermostat. It should be between 0 and 37 degrees.</p>
+<div id="34" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># YOUR CODE BELOW</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="36" class="cell" data-execution_count="0">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test your answer</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">lower_bound</span>(temperature) <span class="op">==</span> <span class="fl">0</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">upper_bound</span>(temperature) <span class="op">==</span> <span class="fl">37</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"Well done! You've created a variable for temperature with appropriate bounds."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+</section>
+<section id="conclusion" class="level1">
+<h1>Conclusion</h1>
+<p>Fantastic! You’ve completed the tutorial on advanced variables in JuMP. You’ve learned how to create variables in containers, manage different types of variables, and work with indexed variables. Continue to the next file to learn more.</p>
+</section>
+<section id="solutions" class="level1">
+<h1>Solutions</h1>
+<p>You will likely find solutions to most exercises online. However, I strongly encourage you to work on these exercises independently without searching explicitly for the exact answers to the exercises. Understanding someone else’s solution is very different from developing your own. Use the lecture notes and try to solve the exercises on your own. This approach will significantly enhance your learning and problem-solving skills.</p>
+<p>Remember, the goal is not just to complete the exercises, but to understand the concepts and improve your programming abilities. If you encounter difficulties, review the lecture materials, experiment with different approaches, and don’t hesitate to ask for clarification during class discussions.</p>
+<p>Later, you will find the solutions to these exercises online in the associated GitHub repository, but we will also quickly go over them in next week’s tutorial. To access the solutions, click on the Github button on the lower right and search for the folder with today’s lecture and tutorial. Alternatively, you can ask ChatGPT or Claude to explain them to you. But please remember, the goal is not just to complete the exercises, but to understand the concepts and improve your programming abilities.</p>
 
 
 </section>
@@ -819,7 +1046,7 @@ Note
     </div>   
     <div class="nav-footer-center">
 <p>Energy System Optimization with Julia, Tobias Cors<br>CC BY-NC-SA 4.0</p>
-<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/edit/main/general/faq.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/blob/main/general/faq.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/edit/main/part-04/tutorial-04-02-bounds.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/blob/main/part-04/tutorial-04-02-bounds.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Frequently Asked Questions – Energy System Optimization with Julia</title>
+<title>Tutorial IV.III - Constraints in JuMP – Energy System Optimization with Julia</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -22,6 +22,41 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -85,7 +120,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../general/faq.html">FAQs</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../part-04/lecture-jump.html">04 Optimization</a></li><li class="breadcrumb-item"><a href="../part-04/tutorial-04-03-constraints.html">03 - Constraints</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -228,13 +263,13 @@ ul.task-list li input[type="checkbox"] {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
  <span class="menu-text">04 Optimization</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../part-04/lecture-jump.html" class="sidebar-item-text sidebar-link">
@@ -255,7 +290,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../part-04/tutorial-04-03-constraints.html" class="sidebar-item-text sidebar-link">
+  <a href="../part-04/tutorial-04-03-constraints.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">03 - Constraints</span></a>
   </div>
 </li>
@@ -301,7 +336,7 @@ ul.task-list li input[type="checkbox"] {
   </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../general/faq.html" class="sidebar-item-text sidebar-link active">
+  <a href="../general/faq.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">FAQs</span></a>
   </div>
 </li>
@@ -321,24 +356,29 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#unanswered-questions" id="toc-unanswered-questions" class="nav-link active" data-scroll-target="#unanswered-questions">Unanswered Questions</a></li>
-  <li><a href="#contribution-and-mistakes" id="toc-contribution-and-mistakes" class="nav-link" data-scroll-target="#contribution-and-mistakes">Contribution and Mistakes</a></li>
-  <li><a href="#faqs" id="toc-faqs" class="nav-link" data-scroll-target="#faqs">FAQs</a>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#section-1---objective-functions-with-container-variables" id="toc-section-1---objective-functions-with-container-variables" class="nav-link" data-scroll-target="#section-1---objective-functions-with-container-variables">Section 1 - Objective Functions with Container Variables</a>
   <ul class="collapse">
-  <li><a href="#is-the-course-difficult" id="toc-is-the-course-difficult" class="nav-link" data-scroll-target="#is-the-course-difficult">Is the course difficult?</a></li>
-  <li><a href="#how-can-i-download-pdf-slides-from-the-lecture" id="toc-how-can-i-download-pdf-slides-from-the-lecture" class="nav-link" data-scroll-target="#how-can-i-download-pdf-slides-from-the-lecture">How can I download PDF slides from the lecture?</a></li>
+  <li><a href="#exercise-1.1---define-arrays" id="toc-exercise-1.1---define-arrays" class="nav-link" data-scroll-target="#exercise-1.1---define-arrays">Exercise 1.1 - Define arrays</a></li>
   </ul></li>
-  <li><a href="#how-does-the-calculation-of-the-bonus-points-work" id="toc-how-does-the-calculation-of-the-bonus-points-work" class="nav-link" data-scroll-target="#how-does-the-calculation-of-the-bonus-points-work">How does the calculation of the bonus points work?</a></li>
+  <li><a href="#section-2---constraints-within-containers" id="toc-section-2---constraints-within-containers" class="nav-link" data-scroll-target="#section-2---constraints-within-containers">Section 2 - Constraints within Containers</a></li>
+  <li><a href="#exercise-2.1---define-constraints" id="toc-exercise-2.1---define-constraints" class="nav-link" data-scroll-target="#exercise-2.1---define-constraints">Exercise 2.1 - Define constraints</a></li>
+  <li><a href="#section-3---implementing-conditional-constraints" id="toc-section-3---implementing-conditional-constraints" class="nav-link" data-scroll-target="#section-3---implementing-conditional-constraints">Section 3 - Implementing Conditional Constraints</a>
+  <ul class="collapse">
+  <li><a href="#exercise-3.1---add-a-conditional-constraints" id="toc-exercise-3.1---add-a-conditional-constraints" class="nav-link" data-scroll-target="#exercise-3.1---add-a-conditional-constraints">Exercise 3.1 - Add a conditional constraints</a></li>
+  </ul></li>
+  <li><a href="#visualization-of-results" id="toc-visualization-of-results" class="nav-link" data-scroll-target="#visualization-of-results">Visualization of Results</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/edit/main/general/faq.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/blob/main/general/faq.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="faq.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/edit/main/part-04/tutorial-04-03-constraints.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/blob/main/part-04/tutorial-04-03-constraints.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="tutorial-04-03-constraints.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li><li><a href="tutorial-04-03-constraints.ipynb" download="tutorial-04-03-constraints.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../part-04/lecture-jump.html">04 Optimization</a></li><li class="breadcrumb-item"><a href="../part-04/tutorial-04-03-constraints.html">03 - Constraints</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Frequently Asked Questions</h1>
-<p class="subtitle lead">Answers to common questions</p>
+<h1 class="title">Tutorial IV.III - Constraints in JuMP</h1>
+<p class="subtitle lead">Energy System Optimization with Julia</p>
 </div>
 
 
@@ -355,57 +395,129 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="unanswered-questions" class="level2">
-<h2 class="anchored" data-anchor-id="unanswered-questions">Unanswered Questions</h2>
-<p>If you have a question that is not answered here, please let me know by sending me an e-mail to <a href="mailto:tobias.cors@haw-hamburg.de?subject=Energy%20System%20Optimization%3A%20%3CYour%20subject%3E">tobias.cors@haw-hamburg.de</a> or by creating an issue on <a href="https://github.com/TobiasCors/Energy-System-Optimization/issues">GitHub</a>.</p>
-</section>
-<section id="contribution-and-mistakes" class="level2">
-<h2 class="anchored" data-anchor-id="contribution-and-mistakes">Contribution and Mistakes</h2>
-<p>If you have found a mistake in the course material or if you have any suggestion on how to improve the course, please let me know in the <a href="https://tally.so/r/mOoyN7">following form</a> or by creating an issue on <a href="https://github.com/TobiasCors/Energy-System-Optimization/issues">GitHub</a>.</p>
-</section>
-<section id="faqs" class="level2">
-<h2 class="anchored" data-anchor-id="faqs">FAQs</h2>
-<section id="is-the-course-difficult" class="level3">
-<h3 class="anchored" data-anchor-id="is-the-course-difficult">Is the course difficult?</h3>
-<p>In terms of difficulty, this is of course somehow complicated for me to assess. However, I have tried to make all the content as comprehensible as possible and really do ask you many questions in the lectures. If I have the impression that something has not been understood at all, then I take longer at that point. This semester is the first time I think the course is truly finished. I have adapted the slides based on feedback from the last two years and made all the examples as simple as possible. <strong>In a nutshell</strong>: If you are interested in the subject and equations do not scare you, you will likely do great in the course.</p>
-</section>
-<section id="how-can-i-download-pdf-slides-from-the-lecture" class="level3">
-<h3 class="anchored" data-anchor-id="how-can-i-download-pdf-slides-from-the-lecture">How can I download PDF slides from the lecture?</h3>
-<p>You have two options:</p>
-<section id="option-1-download-from-github" class="level4">
-<h4 class="anchored" data-anchor-id="option-1-download-from-github">Option 1: Download from Github</h4>
-<ul>
-<li>Follow this link to the <a href="https://github.com/TobiasCors/Energy-System-Optimization/tree/main/pdf-slides">PDF slides on Github</a>.</li>
-</ul>
-</section>
-<section id="option-2-generate-yourself" class="level4">
-<h4 class="anchored" data-anchor-id="option-2-generate-yourself">Option 2: Generate yourself</h4>
-<ol type="1">
-<li>First, open the lecture you want to download the slides from.</li>
-<li>Then, click on the <code>RevealJS</code> button in the top right corner.</li>
-<li>Now, click on the three stacked bars in the lower left corner.</li>
-<li>Then, click on <code>Tools</code> in the upper left corner.</li>
-<li>Now you can select <code>PDF Export Mode</code> and then save the slides as a PDF.</li>
-</ol>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>Welcome to this tutorial on constraints in JuMP! In this lesson, we’ll explore how to add rules (constraints) to our optimization problems.</p>
+<p>By the end of this tutorial, you’ll be able to: 1. Create simple constraints for your optimization problems 2. Use containers (like arrays) to manage multiple similar constraints 3. Create more complex constraints based on conditions</p>
+<p>Let’s start by loading the necessary packages:</p>
+<div id="4" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">JuMP</span>, <span class="bu">HiGHS</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Precompiling JuMP...
+    542.8 ms  ✓ BenchmarkTools
+  14798.0 ms  ✓ MathOptInterface
+   6949.2 ms  ✓ JuMP
+  3 dependencies successfully precompiled in 22 seconds. 48 already precompiled.
+Precompiling HiGHS...
+   5119.9 ms  ✓ HiGHS
+  1 dependency successfully precompiled in 5 seconds. 51 already precompiled.</code></pre>
 </div>
 </div>
-<div class="callout-body-container callout-body">
-<p>Unfortunately, this method does not work perfectly on all browsers. If you have a Chrome based browser, you should be fine.</p>
+<p>Now, let’s create a model that we’ll use throughout this tutorial:</p>
+<div id="6" class="cell" data-execution_count="0">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>another_model <span class="op">=</span> <span class="fu">Model</span>(HiGHS.Optimizer)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"Great! We've created a new optimization model."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+</section>
+<section id="section-1---objective-functions-with-container-variables" class="level1">
+<h1>Section 1 - Objective Functions with Container Variables</h1>
+<p>Defining objective functions with variables in containers allows for scalable and dynamic model formulations. First, we need a container with variables for the objective function. For example:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="pp">@variable</span>(modelName, variableName[<span class="fl">1</span><span class="op">:</span><span class="fl">3</span>] <span class="op">&gt;=</span> <span class="fl">0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Now, we can define an objective function with the container. For example:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="pp">@objective</span>(modelName, Max, <span class="fu">sum</span>(variableName[i] <span class="cf">for</span> i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="exercise-1.1---define-arrays" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-1.1---define-arrays">Exercise 1.1 - Define arrays</h2>
+<p>Scenario: Imagine you’re optimizing the production of 8 different products in a factory. Each product has a different profit margin, and you want to maximize total profit.</p>
+<p>Define an array of variables and an objective function for <code>another_model</code>. The variables should be called <code>profits</code> and have a range from <code>1:8</code>. It has a lower bound of <code>0</code>. The objective should be a Maximization of the sum of all <code>profits</code>.</p>
+<div id="8" class="cell" data-execution_count="0">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># YOUR CODE BELOW</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="10" class="cell" data-execution_count="0">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test your answer</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">length</span>(profits) <span class="op">==</span> <span class="fl">8</span> <span class="op">&amp;&amp;</span> <span class="fu">all</span>(<span class="fu">lower_bound</span>(profits[i]) <span class="op">==</span> <span class="fl">0</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">8</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">typeof</span>(<span class="fu">objective_function</span>(another_model)) <span class="op">==</span> AffExpr</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"Objective function with container variables defined successfully!"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 </div>
 </section>
 </section>
+<section id="section-2---constraints-within-containers" class="level1">
+<h1>Section 2 - Constraints within Containers</h1>
+<p>Defining constraints within containers allows for structured and easily manageable models. This is especially important when models become larger! To define a constraint within a container, we can do, for example, the following:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="pp">@constraint</span>(modelName, </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    constraintName[i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>], </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    variableName[i] <span class="op">&lt;=</span> <span class="fl">100</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This would create a constraint called <code>constraintName</code> for each <code>i</code> - thus <code>1</code>,<code>2</code>, and <code>3</code> - where <code>variableName[1]</code>, <code>variableName[2]</code>, and <code>variableName[3]</code> are restricted to be maximally <code>100</code>.</p>
 </section>
-<section id="how-does-the-calculation-of-the-bonus-points-work" class="level2">
-<h2 class="anchored" data-anchor-id="how-does-the-calculation-of-the-bonus-points-work">How does the calculation of the bonus points work?</h2>
-<p>To reach the full 6 points, all exercises must be submitted. A maximum of 0.5 points can be earned per exercise. In the overview, ‘1’ stands for successfully submitted, and ‘0.5’ for submitted (but without attempting to solve everything). In the end, I calculate this as half or quarter points towards the total score.</p>
+<section id="exercise-2.1---define-constraints" class="level1">
+<h1>Exercise 2.1 - Define constraints</h1>
+<p>Continuing our factory scenario: Each product has a maximum daily production capacity due to machine limitations.</p>
+<p>Define constraints called <code>maxProfit</code> using an array of variables. The logic: Each profit defined in the previous task should be less than or equal to <code>12</code>.</p>
+<div id="12" class="cell" data-execution_count="0">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># YOUR CODE BELOW</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="14" class="cell" data-execution_count="0">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test your answer</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">all</span>(<span class="fu">is_valid</span>(another_model, maxProfit[i]) <span class="cf">for</span> i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">8</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"Constraints within containers defined successfully!"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="section-3---implementing-conditional-constraints" class="level1">
+<h1>Section 3 - Implementing Conditional Constraints</h1>
+<p>Conditional constraints are added to the model based on certain conditions, allowing for dynamic and flexible model formulations. To define a constraint within a container under conditions, we can do the following:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="pp">@constraint</span>(modelName, </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    constraintName[i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>; i <span class="op">&lt;=</span> <span class="fl">2</span>], </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    variableName[i] <span class="op">&lt;=</span> <span class="fl">50</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This would create a constraint called <code>constraintName</code> for each <code>i</code> - thus <code>1</code>,<code>2</code>, and <code>3</code> - where <code>variableName[1]</code>, <code>variableName[2]</code> are restricted to be maximally <code>50</code> and <code>variableName[3]</code> was not restricted.</p>
+<section id="exercise-3.1---add-a-conditional-constraints" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-3.1---add-a-conditional-constraints">Exercise 3.1 - Add a conditional constraints</h2>
+<p>Scenario extension: The first 4 products are new and have limited market demand.</p>
+<p>Add a conditional constraint <code>smallProfit</code> to the previous model. Condition: Only the first 4 variables profit have to be lower or equalthan 5.</p>
+<div id="16" class="cell" data-execution_count="0">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># YOUR CODE BELOW</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="18" class="cell" data-execution_count="0">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test your answer</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">all</span>(<span class="fu">is_valid</span>(another_model, smallProfit[i]) <span class="cf">for</span> i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"Conditional constraint implemented successfully!"</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"Checking successful implementation."</span>)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="fu">optimize!</span>(another_model)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>status <span class="op">=</span> <span class="fu">termination_status</span>(another_model)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> status <span class="op">==</span> MOI.OPTIMAL <span class="st">"Sorry, something didn't work out as the model status is </span><span class="sc">$</span>status<span class="st">"</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">objective_value</span>(another_model) <span class="op">≈</span> <span class="fl">68</span> atol<span class="op">=</span><span class="fl">1e-4</span> <span class="st">"Although you have an optimal solution, </span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    the should be <span class="fl">68</span> not <span class="op">$</span>(<span class="fu">objective_value</span>(another_model)). Is the model correct?<span class="st">"</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"Model components validated successfully!"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+</section>
+<section id="visualization-of-results" class="level1">
+<h1>Visualization of Results</h1>
+<p>Let’s visualize our optimal solution:</p>
+<div id="20" class="cell" data-execution_count="0">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Plots</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Assuming the model has been solved!!!</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>optimal_profits <span class="op">=</span> <span class="fu">value</span>.(profits)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="fu">bar</span>(<span class="fl">1</span><span class="op">:</span><span class="fl">8</span>, optimal_profits, </span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">"Optimal Production Levels"</span>, </span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    xlabel<span class="op">=</span><span class="st">"Product"</span>, </span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    ylabel<span class="op">=</span><span class="st">"Profit"</span>, </span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    legend<span class="op">=</span><span class="cn">false</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="conclusion" class="level1">
+<h1>Conclusion</h1>
+<p>Congratulations! You’ve completed the tutorial on advanced handling of objective functions and constraints in JuMP. You’ve learned how to define objective functions and constraints using container variables. Continue to the next file to learn more.</p>
 
 
 </section>
@@ -819,7 +931,7 @@ Note
     </div>   
     <div class="nav-footer-center">
 <p>Energy System Optimization with Julia, Tobias Cors<br>CC BY-NC-SA 4.0</p>
-<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/edit/main/general/faq.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/blob/main/general/faq.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/edit/main/part-04/tutorial-04-03-constraints.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/blob/main/part-04/tutorial-04-03-constraints.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Tutorial III.II - Package Management – Energy System Optimization with Julia</title>
+<title>Tutorial IV.I - Introduction to Mathematical Optimization with JuMP and HiGHS – Energy System Optimization with Julia</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -120,7 +120,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../part-03/lecture-packages.html">03 Data</a></li><li class="breadcrumb-item"><a href="../part-03/tutorial-03-02-handling.html">02 - Packages</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../part-04/lecture-jump.html">04 Optimization</a></li><li class="breadcrumb-item"><a href="../part-04/tutorial-04-01-jump.html">01 - JuMP</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -216,13 +216,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
  <span class="menu-text">03 Data</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../part-03/lecture-packages.html" class="sidebar-item-text sidebar-link">
@@ -237,7 +237,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../part-03/tutorial-03-02-handling.html" class="sidebar-item-text sidebar-link active">
+  <a href="../part-03/tutorial-03-02-handling.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">02 - Packages</span></a>
   </div>
 </li>
@@ -263,13 +263,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
  <span class="menu-text">04 Optimization</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../part-04/lecture-jump.html" class="sidebar-item-text sidebar-link">
@@ -278,7 +278,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../part-04/tutorial-04-01-jump.html" class="sidebar-item-text sidebar-link">
+  <a href="../part-04/tutorial-04-01-jump.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">01 - JuMP</span></a>
   </div>
 </li>
@@ -356,30 +356,38 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
-  <li><a href="#section-1---using-the-package-manager" id="toc-section-1---using-the-package-manager" class="nav-link" data-scroll-target="#section-1---using-the-package-manager">Section 1 - Using the Package Manager</a>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a>
   <ul class="collapse">
-  <li><a href="#exercise-1.1---import-the-pkg-module" id="toc-exercise-1.1---import-the-pkg-module" class="nav-link" data-scroll-target="#exercise-1.1---import-the-pkg-module">Exercise 1.1 - Import the Pkg Module</a></li>
+  <li><a href="#what-is-jump" id="toc-what-is-jump" class="nav-link" data-scroll-target="#what-is-jump">What is JuMP?</a></li>
+  <li><a href="#what-is-highs" id="toc-what-is-highs" class="nav-link" data-scroll-target="#what-is-highs">What is HiGHS?</a></li>
+  <li><a href="#our-example-problem" id="toc-our-example-problem" class="nav-link" data-scroll-target="#our-example-problem">Our Example Problem</a></li>
+  <li><a href="#setting-up" id="toc-setting-up" class="nav-link" data-scroll-target="#setting-up">Setting Up</a></li>
   </ul></li>
-  <li><a href="#section-2---adding-packages" id="toc-section-2---adding-packages" class="nav-link" data-scroll-target="#section-2---adding-packages">Section 2 - Adding Packages</a>
+  <li><a href="#section-1---defining-an-optimization-model" id="toc-section-1---defining-an-optimization-model" class="nav-link" data-scroll-target="#section-1---defining-an-optimization-model">Section 1 - Defining an Optimization Model</a></li>
+  <li><a href="#section-2---adding-variables" id="toc-section-2---adding-variables" class="nav-link" data-scroll-target="#section-2---adding-variables">Section 2 - Adding Variables</a>
   <ul class="collapse">
-  <li><a href="#exercise-2.1---add-the-dataframes-package" id="toc-exercise-2.1---add-the-dataframes-package" class="nav-link" data-scroll-target="#exercise-2.1---add-the-dataframes-package">Exercise 2.1 - Add the DataFrames Package</a></li>
+  <li><a href="#exercise-2.1---create-variables" id="toc-exercise-2.1---create-variables" class="nav-link" data-scroll-target="#exercise-2.1---create-variables">Exercise 2.1 - Create Variables</a></li>
   </ul></li>
-  <li><a href="#section-3---updating-and-removing-packages" id="toc-section-3---updating-and-removing-packages" class="nav-link" data-scroll-target="#section-3---updating-and-removing-packages">Section 3 - Updating and Removing Packages</a></li>
-  <li><a href="#section-4---managing-environments" id="toc-section-4---managing-environments" class="nav-link" data-scroll-target="#section-4---managing-environments">Section 4 - Managing Environments</a>
+  <li><a href="#section-3---adding-constraints" id="toc-section-3---adding-constraints" class="nav-link" data-scroll-target="#section-3---adding-constraints">Section 3 - Adding Constraints</a>
   <ul class="collapse">
+  <li><a href="#exercise-3.1---create-constraints" id="toc-exercise-3.1---create-constraints" class="nav-link" data-scroll-target="#exercise-3.1---create-constraints">Exercise 3.1 - Create Constraints</a></li>
+  </ul></li>
+  <li><a href="#section-4---defining-the-objective-function" id="toc-section-4---defining-the-objective-function" class="nav-link" data-scroll-target="#section-4---defining-the-objective-function">Section 4 - Defining the Objective Function</a>
+  <ul class="collapse">
+  <li><a href="#exercise-4.1---create-the-objective-function" id="toc-exercise-4.1---create-the-objective-function" class="nav-link" data-scroll-target="#exercise-4.1---create-the-objective-function">Exercise 4.1 - Create the Objective Function</a></li>
+  </ul></li>
+  <li><a href="#section-5---solving-the-model" id="toc-section-5---solving-the-model" class="nav-link" data-scroll-target="#section-5---solving-the-model">Section 5 - Solving the Model</a></li>
   <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
-  </ul></li>
   <li><a href="#solutions" id="toc-solutions" class="nav-link" data-scroll-target="#solutions">Solutions</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/edit/main/part-03/tutorial-03-02-handling.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/blob/main/part-03/tutorial-03-02-handling.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="tutorial-03-02-handling.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li><li><a href="tutorial-03-02-handling.ipynb" download="tutorial-03-02-handling.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/edit/main/part-04/tutorial-04-01-jump.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/blob/main/part-04/tutorial-04-01-jump.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="tutorial-04-01-jump.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li><li><a href="tutorial-04-01-jump.ipynb" download="tutorial-04-01-jump.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../part-03/lecture-packages.html">03 Data</a></li><li class="breadcrumb-item"><a href="../part-03/tutorial-03-02-handling.html">02 - Packages</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../part-04/lecture-jump.html">04 Optimization</a></li><li class="breadcrumb-item"><a href="../part-04/tutorial-04-01-jump.html">01 - JuMP</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Tutorial III.II - Package Management</h1>
+<h1 class="title">Tutorial IV.I - Introduction to Mathematical Optimization with JuMP and HiGHS</h1>
 <p class="subtitle lead">Energy System Optimization with Julia</p>
 </div>
 
@@ -399,89 +407,230 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="introduction" class="level1">
 <h1>Introduction</h1>
-<p>Welcome to this beginner-friendly guide on understanding packages and package management in Julia!</p>
-<p>Think of packages as pre-written sets of tools that extend what Julia can do. It’s like having a toolbox where you can add new tools (packages) to help you solve specific problems. For example, there are packages for working with data, creating visualizations, or solving complex math problems.</p>
-<p>The best part? Most Julia packages are free to use, thanks to the open-source community!</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>While we’ll practice some commands here, you’ll typically manage packages in Julia’s REPL (Read-Eval-Print Loop), which is like Julia’s command center.</p>
-</div>
-</div>
-</section>
-<section id="section-1---using-the-package-manager" class="level1">
-<h1>Section 1 - Using the Package Manager</h1>
-<p>Julia’s built-in package manager, Pkg, provides a robust set of tools for managing packages. To utilize these tools, start by importing the Pkg module. This module allows you to add, update, and remove packages, and manage environments efficiently. Note, <code>import PackageName</code> lets you access exported functions with <code>PackageName.function</code>, while <code>using PackageName</code> imports all exported names into the local namespace for direct access.</p>
-<section id="exercise-1.1---import-the-pkg-module" class="level2">
-<h2 class="anchored" data-anchor-id="exercise-1.1---import-the-pkg-module">Exercise 1.1 - Import the Pkg Module</h2>
-<p>Import the Pkg module to start managing packages effectively.</p>
-<div id="2" class="cell" data-execution_count="0">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># YOUR CODE BELOW</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div id="4" class="cell" data-execution_count="0">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test your answer</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span> </span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">Pkg</span>.<span class="fu">update</span>()</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">println</span>(<span class="st">"Pkg module imported successfully and packages were updated!"</span>)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="cf">catch</span> <span class="cn">e</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@error</span> <span class="st">"The Pkg module was not imported yet! Have you used the correct syntax?"</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-</div>
-</section>
-</section>
-<section id="section-2---adding-packages" class="level1">
-<h1>Section 2 - Adding Packages</h1>
-<p>Adding packages in Julia is straightforward using the <code>Pkg.add("PackageName")</code> function. Replace <code>PackageName</code> with the actual package name you wish to add.</p>
-<section id="exercise-2.1---add-the-dataframes-package" class="level2">
-<h2 class="anchored" data-anchor-id="exercise-2.1---add-the-dataframes-package">Exercise 2.1 - Add the DataFrames Package</h2>
-<p>Let’s add a popular package called DataFrames. It’s great for working with structured data, like spreadsheets.</p>
-<div id="6" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># YOUR CODE BELOW</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div id="8" class="cell" data-execution_count="0">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test your answer</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span> </span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="im">using</span> <span class="bu">DataFrames</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">println</span>(<span class="st">"Package added successfully!"</span>)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="cf">catch</span> <span class="cn">e</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@error</span> <span class="st">"Package was not added yet! Have you used the correct syntax?"</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-</div>
-</section>
-</section>
-<section id="section-3---updating-and-removing-packages" class="level1">
-<h1>Section 3 - Updating and Removing Packages</h1>
-<p>Just like apps on your phone, packages can be updated or removed when you no longer need them.</p>
-<ul>
-<li>To update a package: <code>Pkg.update("PackageName")</code></li>
-<li>To update all packages: <code>Pkg.update()</code></li>
-<li>To remove a package: <code>Pkg.rm("PackageName")</code></li>
-</ul>
-<div class="callout-example">
-<p>If you wanted to update DataFrames, you’d use <code>Pkg.update("DataFrames")</code>. To remove it, you’d use <code>Pkg.rm("DataFrames")</code>.</p>
-</div>
-</section>
-<section id="section-4---managing-environments" class="level1">
-<h1>Section 4 - Managing Environments</h1>
-<p>Think of environments as separate workspaces for different projects. It’s like having different folders for different school subjects. It’s a best practice to create a new environment for each project to avoid conflicts between package versions. Activate a new environment with <code>Pkg.activate("new_environment")</code> and add packages to it with <code>Pkg.add("PackageName")</code>. This ensures that each of your projects has a clean, dedicated set of dependencies. When you create a new environment, Julia generates two important files:</p>
+<p>Welcome to this beginner-friendly tutorial on mathematical optimization using JuMP and the HiGHS solver in Julia! Don’t worry if these terms sound unfamiliar – we’ll explain everything step by step.</p>
+<p>In this tutorial, you’ll learn how to:</p>
 <ol type="1">
-<li><code>Project.toml</code>: Lists direct dependencies of your project.</li>
-<li><code>Manifest.toml</code>: Contains a complete dependency graph of your project.</li>
+<li>Set up a simple optimization problem</li>
+<li>Define variables and constraints</li>
+<li>Create an objective function</li>
+<li>Solve the problem and interpret the results</li>
 </ol>
-<p>These files help ensure reproducibility and should be version controlled with your project. But don’t worry, you don’t have to worry about this yet.</p>
+<p>We’ll use a real-world example to make these concepts more relatable. Imagine you’re managing a small factory that produces two types of products. Your goal is to maximize profit while working within certain limitations. This is exactly the kind of problem that mathematical optimization can solve!</p>
+<section id="what-is-jump" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-jump">What is JuMP?</h2>
+<p>JuMP (Julia for Mathematical Programming) is a powerful tool that helps us describe optimization problems in a way that computers can understand and solve. Think of it as a translator between your business problem and the mathematical solver.</p>
+</section>
+<section id="what-is-highs" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-highs">What is HiGHS?</h2>
+<p>HiGHS is an open-source solver that can find solutions to the optimization problems we describe using JuMP. It’s like a very smart calculator that can handle complex problems quickly and efficiently.</p>
+</section>
+<section id="our-example-problem" class="level2">
+<h2 class="anchored" data-anchor-id="our-example-problem">Our Example Problem</h2>
+<p>Let’s break down our factory management problem:</p>
+<ul>
+<li>You produce two products: Product A and Product B</li>
+<li>Each product gives you a different profit:
+<ul>
+<li>Product A: 100 profit per unit</li>
+<li>Product B: 150 profit per unit</li>
+</ul></li>
+<li>You have two departments: Cutting and Finishing</li>
+<li>Each product requires different amounts of time in each department:
+<ul>
+<li>Product A: 2 hours in Cutting, 4 hours in Finishing</li>
+<li>Product B: 4 hours in Cutting, 3 hours in Finishing</li>
+</ul></li>
+<li>You have limited time available in each department:
+<ul>
+<li>Cutting: 40 hours total</li>
+<li>Finishing: 60 hours total</li>
+</ul></li>
+</ul>
+<p>Your goal is to decide how many of each product to make to maximize your total profit, while not exceeding the available time in each department.</p>
+</section>
+<section id="setting-up" class="level2">
+<h2 class="anchored" data-anchor-id="setting-up">Setting Up</h2>
+<p>First, we need to install and load the necessary packages. If you haven’t already installed JuMP and HiGHS, run the following code:</p>
+<div id="2" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> <span class="bu">Pkg;</span> Pkg.add(["JuMP",<span class="bu">"HiGHS"])</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Now, let’s load these packages:</p>
+<div id="4" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">JuMP</span>, <span class="bu">HiGHS</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Precompiling JuMP...
+    542.2 ms  ✓ BenchmarkTools
+  14780.9 ms  ✓ MathOptInterface
+   6875.2 ms  ✓ JuMP
+  3 dependencies successfully precompiled in 22 seconds. 48 already precompiled.
+Precompiling HiGHS...
+   5148.9 ms  ✓ HiGHS
+  1 dependency successfully precompiled in 5 seconds. 51 already precompiled.</code></pre>
+</div>
+</div>
+<p>Great! We’re now ready to start building our optimization model.</p>
+</section>
+</section>
+<section id="section-1---defining-an-optimization-model" class="level1">
+<h1>Section 1 - Defining an Optimization Model</h1>
+<p>The first step in solving an optimization problem is to create a model. This model will contain all the information about our problem: the variables, constraints, and objective.</p>
+<p>In JuMP, we create a model like this:</p>
+<div id="6" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> <span class="fu">Model</span>(HiGHS.Optimizer)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"Optimization model created successfully!"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Optimization model created successfully!</code></pre>
+</div>
+</div>
+<p>Let’s break this down: - <code>Model()</code> creates a new optimization model - <code>HiGHS.Optimizer</code> tells JuMP to use the HiGHS solver for this model</p>
+<p>Think of this as creating a blank canvas where we’ll paint our optimization problem.</p>
+</section>
+<section id="section-2---adding-variables" class="level1">
+<h1>Section 2 - Adding Variables</h1>
+<p>Now that we have our model, we need to define our variables. In our factory problem, the variables represent the quantities of Product A and Product B that we want to produce.</p>
+<p>In JuMP, we use the <code>@variable</code> macro to define variables. Here’s the general syntax:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="pp">@variable</span>(model_name, variable_name, [additional_properties])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Where:</p>
+<ul>
+<li><code>model_name</code> is the name of your JuMP model</li>
+<li><code>variable_name</code> is what you want to call your variable</li>
+<li><code>[additional_properties]</code> can include bounds or variable types</li>
+</ul>
+<p>For example, to create a continuous variable that’s greater than or equal to 0:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="pp">@variable</span>(model_name, variable_name <span class="op">&gt;=</span> <span class="fl">0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This defines a continuous variable that’s equal to or larger than 0.</p>
+<section id="exercise-2.1---create-variables" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-2.1---create-variables">Exercise 2.1 - Create Variables</h2>
+<p>Now it’s your turn! Create two continuous variables equal to or larger than 0 called <code>productA</code> and <code>productB</code> that represent the number of units produced in our problem for our model <code>model</code>.</p>
+<div id="8" class="cell" data-execution_count="0">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># YOUR CODE BELOW</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="10" class="cell" data-execution_count="0">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test your answer</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="pp">@isdefined</span> productA</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">typeof</span>(productA) <span class="op">==</span> VariableRef</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">has_upper_bound</span>(productA) <span class="op">==</span> <span class="cn">false</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">has_lower_bound</span>(productA) <span class="op">==</span> <span class="cn">true</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">lower_bound</span>(productA) <span class="op">==</span> <span class="fl">0</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="pp">@isdefined</span> productA</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">typeof</span>(productB) <span class="op">==</span> VariableRef</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">has_upper_bound</span>(productB) <span class="op">==</span> <span class="cn">false</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">has_lower_bound</span>(productB) <span class="op">==</span> <span class="cn">true</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">lower_bound</span>(productB) <span class="op">==</span> <span class="fl">0</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"Variables added to the model successfully!"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+</section>
+<section id="section-3---adding-constraints" class="level1">
+<h1>Section 3 - Adding Constraints</h1>
+<p>Constraints are conditions that limit the possible values of the variables in our optimization problem. In JuMP, we use the <code>@constraint</code> macro to define these constraints.</p>
+<p>The general syntax for adding a constraint is:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="pp">@constraint</span>(model_name, constraint_name, constraint_expression)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Where:</p>
+<ul>
+<li><code>model_name</code> is the name of your JuMP model</li>
+<li><code>constraint_name</code> is a label you give to the constraint (optional, but useful for reference)</li>
+<li><code>constraint_expression</code> is the mathematical expression of the constraint</li>
+</ul>
+<p>For example:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="pp">@constraint</span>(model_name, constraint_name, <span class="fl">4</span> <span class="op">*</span> variable_name <span class="op">&lt;=</span> <span class="fl">100</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This defines a constraint that ensures, that the variable <code>variable_name</code> can maximally be 25. Note, that you will have to change <code>model_name</code>, <code>constraint_name</code> and <code>variable_name</code> according to your instance.</p>
+<section id="exercise-3.1---create-constraints" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-3.1---create-constraints">Exercise 3.1 - Create Constraints</h2>
+<p>Create two constraints based on the on the Cutting and Finishing department hours of the problem description in this tutorial. Call the first constraint <code>cutting_constraint</code> and the second constraint <code>finishing_constraint</code>.</p>
+<div id="12" class="cell" data-execution_count="0">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># YOUR CODE BELOW</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="14" class="cell" data-execution_count="0">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test your answer</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">is_valid</span>(model, cutting_constraint)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">is_valid</span>(model, finishing_constraint)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"Constraints added to the model successfully!"</span>)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"Note, that only the existence of these constraints was checked!"</span>)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"The optimization later will show, whether the formulation was correct."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+</section>
+<section id="section-4---defining-the-objective-function" class="level1">
+<h1>Section 4 - Defining the Objective Function</h1>
+<p>The objective function represents the goal of our optimization problem - what we want to maximize or minimize. In JuMP, we use the <code>@objective</code> macro to define this function.</p>
+<p>The general syntax for defining an objective function is:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="pp">@objective</span>(model_name, optimization_direction, objective_expression)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Where:</p>
+<ul>
+<li><code>model_name</code> is the name of your JuMP model</li>
+<li><code>optimization_direction</code> is either <code>Max</code> for maximization or <code>Min</code> for minimization</li>
+<li><code>objective_expression</code> is the mathematical expression of the objective function</li>
+</ul>
+<p>For example:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="pp">@objective</span>(model_name, Max, <span class="fl">2</span><span class="op">*</span>variableA <span class="op">+</span> <span class="fl">3</span><span class="op">*</span>variableB) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This defines an objective function that maximizes something based on the values of <code>variableA</code> and <code>variableB</code>.</p>
+<section id="exercise-4.1---create-the-objective-function" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-4.1---create-the-objective-function">Exercise 4.1 - Create the Objective Function</h2>
+<p>Create the objective function based on the problem description of this tutorial. The objective is to maximize profit based on the values of <code>productA</code> and <code>productB</code>.</p>
+<div id="16" class="cell" data-execution_count="0">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># YOUR CODE BELOW</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="18" class="cell" data-execution_count="0">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test your answer</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">typeof</span>(<span class="fu">objective_function</span>(model)) <span class="op">==</span> AffExpr</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"An objective function defined successfully!"</span>)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"The optimization later will show, whether the formulation was correct."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+</section>
+<section id="section-5---solving-the-model" class="level1">
+<h1>Section 5 - Solving the Model</h1>
+<p>Now that we have defined our variables, constraints, and objective function, we’re ready to solve the optimization model. Here’s how to do it step by step:</p>
+<ol type="1">
+<li>Solve the model:</li>
+</ol>
+<div id="20" class="cell" data-execution_count="0">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">optimize!</span>(model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ol start="2" type="1">
+<li>Check the status of the solution:</li>
+</ol>
+<div id="22" class="cell" data-execution_count="0">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">termination_status</span>(model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ol start="3" type="1">
+<li>If the solution is optimal, we can retrieve the optimal values of our variables and the objective function. If the time limit is reached, we can check whether a primal solution is available. We do so by checking whether the model has values.</li>
+</ol>
+<div id="24" class="cell" data-execution_count="0">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="cf">begin</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="fu">termination_status</span>(model) <span class="op">==</span> OPTIMAL </span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>        <span class="fu">println</span>(<span class="st">"Solution is optimal"</span>)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elseif</span> <span class="fu">termination_status</span>(model) <span class="op">==</span> TIME_LIMIT <span class="op">&amp;&amp;</span> <span class="fu">has_values</span>(model) </span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>        <span class="fu">println</span>(<span class="st">"Solution is suboptimal due to a time limit, </span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>            but a primal solution is available<span class="st">") </span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>        <span class="fu">error</span>(<span class="st">"The model was not solved correctly."</span>) </span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">println</span>(<span class="st">"Objective value = "</span>, <span class="fu">objective_value</span>(model)) </span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>We can then get the values of the variables as follows:</p>
+<div id="26" class="cell" data-execution_count="0">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"Product A quantity: </span><span class="sc">$</span>(<span class="fu">value</span>(productA))<span class="st">"</span>)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"Product B quantity: </span><span class="sc">$</span>(<span class="fu">value</span>(productB))<span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Let’s break this down:</p>
+<ul>
+<li><code>optimize!(model)</code> tells JuMP to solve our model</li>
+<li><code>termination_status(model)</code> checks if we found an optimal solution</li>
+<li><code>objective_value(model)</code> gives us the maximum profit we can achieve</li>
+<li><code>value(productA)</code> and <code>value(productB)</code> tell us how many of each product we should produce</li>
+</ul>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -492,13 +641,22 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>If you plan to stick to working with notebooks, you don’t have to care about environments yet. Just use the regular environment for the course and you don’t have to activate anything.</p>
+<p>The values might be slightly off due to the nature of floating-point numbers in computers.</p>
 </div>
 </div>
-<section id="conclusion" class="level2">
-<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
-<p>Congratulations! You’ve completed the tutorial on packages and package management in Julia. These skills are important for effectively managing and utilizing external libraries. Continue to the next file to learn more.</p>
+<p>The following code block tests whether the solution is correct or whether you have made a mistake in the formulation of the problem.</p>
+<div id="28" class="cell" data-execution_count="0">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test your answer</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">termination_status</span>(model) <span class="op">==</span> MOI.OPTIMAL <span class="st">"Sorry, something didn't work out as the model status is </span><span class="sc">$</span>termination_status<span class="st">(model)"</span>.</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"Solution: Product A = "</span>, val_productA, <span class="st">", Product B = "</span>, val_productB)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">value</span>(productA) <span class="op">≈</span> <span class="fl">12</span> atol<span class="op">=</span><span class="fl">1e-4</span> <span class="st">"Although you have a solution, val_productA should be 12 not </span><span class="sc">$</span>val_productA<span class="st">"</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">value</span>(productB) <span class="op">≈</span> <span class="fl">4</span> atol<span class="op">=</span><span class="fl">1e-4</span> <span class="st">"Although you have a solution, val_productB should be 4 not </span><span class="sc">$</span>val_productB<span class="st">"</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"You have solved the model correctly!"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 </section>
+<section id="conclusion" class="level1">
+<h1>Conclusion</h1>
+<p>Excellent! You’ve completed the tutorial on mathematical optimization with JuMP and HiGHS. You’ve learned how to define optimization models, add variables and constraints, define an objective function, and solve the model. Continue to the next file to learn more.</p>
 </section>
 <section id="solutions" class="level1">
 <h1>Solutions</h1>
@@ -918,7 +1076,7 @@ Note
     </div>   
     <div class="nav-footer-center">
 <p>Energy System Optimization with Julia, Tobias Cors<br>CC BY-NC-SA 4.0</p>
-<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/edit/main/part-03/tutorial-03-02-handling.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/blob/main/part-03/tutorial-03-02-handling.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/edit/main/part-04/tutorial-04-01-jump.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/blob/main/part-04/tutorial-04-01-jump.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">

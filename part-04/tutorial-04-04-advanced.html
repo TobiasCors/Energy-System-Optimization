@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Frequently Asked Questions – Energy System Optimization with Julia</title>
+<title>Tutorial IV.IV - Advanced Solver Options with HiGHS in JuMP – Energy System Optimization with Julia</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -22,6 +22,41 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -85,7 +120,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../general/faq.html">FAQs</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../part-04/lecture-jump.html">04 Optimization</a></li><li class="breadcrumb-item"><a href="../part-04/tutorial-04-04-advanced.html">04 - Advanced</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -228,13 +263,13 @@ ul.task-list li input[type="checkbox"] {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
  <span class="menu-text">04 Optimization</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../part-04/lecture-jump.html" class="sidebar-item-text sidebar-link">
@@ -261,7 +296,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../part-04/tutorial-04-04-advanced.html" class="sidebar-item-text sidebar-link">
+  <a href="../part-04/tutorial-04-04-advanced.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">04 - Advanced</span></a>
   </div>
 </li>
@@ -301,7 +336,7 @@ ul.task-list li input[type="checkbox"] {
   </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../general/faq.html" class="sidebar-item-text sidebar-link active">
+  <a href="../general/faq.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">FAQs</span></a>
   </div>
 </li>
@@ -321,24 +356,28 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#unanswered-questions" id="toc-unanswered-questions" class="nav-link active" data-scroll-target="#unanswered-questions">Unanswered Questions</a></li>
-  <li><a href="#contribution-and-mistakes" id="toc-contribution-and-mistakes" class="nav-link" data-scroll-target="#contribution-and-mistakes">Contribution and Mistakes</a></li>
-  <li><a href="#faqs" id="toc-faqs" class="nav-link" data-scroll-target="#faqs">FAQs</a>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#section-1-understanding-solver-options" id="toc-section-1-understanding-solver-options" class="nav-link" data-scroll-target="#section-1-understanding-solver-options">Section 1: Understanding Solver Options</a>
   <ul class="collapse">
-  <li><a href="#is-the-course-difficult" id="toc-is-the-course-difficult" class="nav-link" data-scroll-target="#is-the-course-difficult">Is the course difficult?</a></li>
-  <li><a href="#how-can-i-download-pdf-slides-from-the-lecture" id="toc-how-can-i-download-pdf-slides-from-the-lecture" class="nav-link" data-scroll-target="#how-can-i-download-pdf-slides-from-the-lecture">How can I download PDF slides from the lecture?</a></li>
+  <li><a href="#exercise-1.1---set-solver-options" id="toc-exercise-1.1---set-solver-options" class="nav-link" data-scroll-target="#exercise-1.1---set-solver-options">Exercise 1.1 - Set Solver Options</a></li>
   </ul></li>
-  <li><a href="#how-does-the-calculation-of-the-bonus-points-work" id="toc-how-does-the-calculation-of-the-bonus-points-work" class="nav-link" data-scroll-target="#how-does-the-calculation-of-the-bonus-points-work">How does the calculation of the bonus points work?</a></li>
+  <li><a href="#section-2-creating-and-solving-a-sample-problem" id="toc-section-2-creating-and-solving-a-sample-problem" class="nav-link" data-scroll-target="#section-2-creating-and-solving-a-sample-problem">Section 2: Creating and Solving a Sample Problem</a>
+  <ul class="collapse">
+  <li><a href="#exercise-2.1---modify-and-solve-the-problem" id="toc-exercise-2.1---modify-and-solve-the-problem" class="nav-link" data-scroll-target="#exercise-2.1---modify-and-solve-the-problem">Exercise 2.1 - Modify and Solve the Problem</a></li>
+  </ul></li>
+  <li><a href="#section-3-interpreting-solver-output" id="toc-section-3-interpreting-solver-output" class="nav-link" data-scroll-target="#section-3-interpreting-solver-output">Section 3: Interpreting Solver Output</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  <li><a href="#solutions" id="toc-solutions" class="nav-link" data-scroll-target="#solutions">Solutions</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/edit/main/general/faq.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/blob/main/general/faq.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="faq.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/edit/main/part-04/tutorial-04-04-advanced.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/blob/main/part-04/tutorial-04-04-advanced.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="tutorial-04-04-advanced.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li><li><a href="tutorial-04-04-advanced.ipynb" download="tutorial-04-04-advanced.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../part-04/lecture-jump.html">04 Optimization</a></li><li class="breadcrumb-item"><a href="../part-04/tutorial-04-04-advanced.html">04 - Advanced</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Frequently Asked Questions</h1>
-<p class="subtitle lead">Answers to common questions</p>
+<h1 class="title">Tutorial IV.IV - Advanced Solver Options with HiGHS in JuMP</h1>
+<p class="subtitle lead">Energy System Optimization with Julia</p>
 </div>
 
 
@@ -355,57 +394,226 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="unanswered-questions" class="level2">
-<h2 class="anchored" data-anchor-id="unanswered-questions">Unanswered Questions</h2>
-<p>If you have a question that is not answered here, please let me know by sending me an e-mail to <a href="mailto:tobias.cors@haw-hamburg.de?subject=Energy%20System%20Optimization%3A%20%3CYour%20subject%3E">tobias.cors@haw-hamburg.de</a> or by creating an issue on <a href="https://github.com/TobiasCors/Energy-System-Optimization/issues">GitHub</a>.</p>
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>Welcome to this tutorial on advanced solver options in JuMP using the HiGHS solver! Don’t worry if “advanced solver options” sounds intimidating - we’ll break everything down into simple, easy-to-understand concepts.</p>
+<p>Imagine you’re using a GPS app to find the best route to a new restaurant. Just like how you can adjust settings in your GPS (like avoiding toll roads or preferring highways), we can adjust settings in our optimization solver to help it find solutions more efficiently or to meet specific requirements.</p>
+<p>By the end of this tutorial, you’ll be able to: 1. Understand what solver options are and why they’re useful 2. Set basic solver options like time limits and solution tolerances 3. Interpret solver output to understand how well your problem was solved</p>
+<p>Let’s start by loading the necessary packages:</p>
+<div id="4" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">JuMP</span>, <span class="bu">HiGHS</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Precompiling JuMP...
+    545.5 ms  ✓ BenchmarkTools
+  14866.8 ms  ✓ MathOptInterface
+   6940.5 ms  ✓ JuMP
+  3 dependencies successfully precompiled in 22 seconds. 48 already precompiled.
+Precompiling HiGHS...
+   5222.9 ms  ✓ HiGHS
+  1 dependency successfully precompiled in 5 seconds. 51 already precompiled.</code></pre>
+</div>
+</div>
 </section>
-<section id="contribution-and-mistakes" class="level2">
-<h2 class="anchored" data-anchor-id="contribution-and-mistakes">Contribution and Mistakes</h2>
-<p>If you have found a mistake in the course material or if you have any suggestion on how to improve the course, please let me know in the <a href="https://tally.so/r/mOoyN7">following form</a> or by creating an issue on <a href="https://github.com/TobiasCors/Energy-System-Optimization/issues">GitHub</a>.</p>
-</section>
-<section id="faqs" class="level2">
-<h2 class="anchored" data-anchor-id="faqs">FAQs</h2>
-<section id="is-the-course-difficult" class="level3">
-<h3 class="anchored" data-anchor-id="is-the-course-difficult">Is the course difficult?</h3>
-<p>In terms of difficulty, this is of course somehow complicated for me to assess. However, I have tried to make all the content as comprehensible as possible and really do ask you many questions in the lectures. If I have the impression that something has not been understood at all, then I take longer at that point. This semester is the first time I think the course is truly finished. I have adapted the slides based on feedback from the last two years and made all the examples as simple as possible. <strong>In a nutshell</strong>: If you are interested in the subject and equations do not scare you, you will likely do great in the course.</p>
-</section>
-<section id="how-can-i-download-pdf-slides-from-the-lecture" class="level3">
-<h3 class="anchored" data-anchor-id="how-can-i-download-pdf-slides-from-the-lecture">How can I download PDF slides from the lecture?</h3>
-<p>You have two options:</p>
-<section id="option-1-download-from-github" class="level4">
-<h4 class="anchored" data-anchor-id="option-1-download-from-github">Option 1: Download from Github</h4>
+<section id="section-1-understanding-solver-options" class="level1">
+<h1>Section 1: Understanding Solver Options</h1>
+<p>Solver options are like the “advanced settings” of our optimization tool. They allow us to control how the solver approaches our problem. Here are a few common options:</p>
+<ol type="1">
+<li><strong>Time limit</strong>: How long the solver should try before giving up</li>
+<li><strong>Solution tolerance</strong>: How precise we need the answer to be</li>
+<li><strong>Presolve</strong>: Whether to simplify the problem before solving it</li>
+</ol>
+<p>Let’s create a model and set some of these options:</p>
+<div id="6" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> <span class="fu">Model</span>(HiGHS.Optimizer)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Set a time limit of 60 seconds</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">set_time_limit_sec</span>(model, <span class="fl">60</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Set the relative MIP gap tolerance to 1%</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="fu">set_optimizer_attribute</span>(model, <span class="st">"mip_rel_gap"</span>, <span class="fl">0.01</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Turn on presolve</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="fu">set_optimizer_attribute</span>(model, <span class="st">"presolve"</span>, <span class="st">"on"</span>)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"Solver options set successfully!"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Solver options set successfully!</code></pre>
+</div>
+</div>
+<p>Let’s break this down:</p>
 <ul>
-<li>Follow this link to the <a href="https://github.com/TobiasCors/Energy-System-Optimization/tree/main/pdf-slides">PDF slides on Github</a>.</li>
+<li><code>set_time_limit_sec(model, 60)</code> tells the solver to stop after 60 seconds if it hasn’t found a solution</li>
+<li><code>set_optimizer_attribute(model, "mip_rel_gap", 0.01)</code> sets how close to the best possible solution we need to be (within 1%)</li>
+<li><code>set_optimizer_attribute(model, "presolve", "on")</code> tells the solver to try simplifying the problem first</li>
+</ul>
+<section id="exercise-1.1---set-solver-options" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-1.1---set-solver-options">Exercise 1.1 - Set Solver Options</h2>
+<p>Now it’s your turn! Set the following solver options: 1. A time limit of 120 seconds 2. A MIP gap tolerance of 0.5% 3. Turn off presolve</p>
+<div id="8" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># YOUR CODE BELOW</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="10" class="cell" data-execution_count="0">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test your answer</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">time_limit_sec</span>(model) <span class="op">==</span> <span class="fl">120</span> <span class="st">"The time limit should be 120 seconds but is </span><span class="sc">$</span>(<span class="fu">time_limit_sec</span>(model))<span class="st">"</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">solver_name</span>(model) <span class="op">==</span> <span class="st">"HiGHS"</span> <span class="st">"The solver should be HiGHS but is </span><span class="sc">$</span>(<span class="fu">solver_name</span>(model))<span class="st">"</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> MOI.<span class="fu">get</span>(model, MOI.<span class="fu">RawOptimizerAttribute</span>(<span class="st">"mip_rel_gap"</span>)) <span class="op">==</span> <span class="fl">0.005</span> <span class="st">"The MIP gap should be 0.5% but is </span><span class="sc">$</span>(MOI.<span class="fu">get</span>(model, MOI.<span class="fu">RawOptimizerAttribute</span>(<span class="st">"mip_rel_gap"</span>)))<span class="st">"</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> MOI.<span class="fu">get</span>(model, MOI.<span class="fu">RawOptimizerAttribute</span>(<span class="st">"presolve"</span>)) <span class="op">==</span> <span class="st">"off"</span> <span class="st">"Presolve should be off but is </span><span class="sc">$</span>(MOI.<span class="fu">get</span>(model, MOI.<span class="fu">RawOptimizerAttribute</span>(<span class="st">"presolve"</span>)))<span class="st">"</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"Great job! You've successfully set advanced solver options."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+</section>
+<section id="section-2-creating-and-solving-a-sample-problem" class="level1">
+<h1>Section 2: Creating and Solving a Sample Problem</h1>
+<p>To see how these options affect solving, let’s create a simple optimization problem. We’ll use a basic production planning scenario.</p>
+<p>Imagine you’re managing a small factory that produces two types of products: widgets and gadgets. You want to maximize profit while staying within your production capacity.</p>
+<div id="12" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define variables</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@variable</span>(model, widgets <span class="op">&gt;=</span> <span class="fl">0</span>, <span class="dt">Int</span>) </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="pp">@variable</span>(model, gadgets <span class="op">&gt;=</span> <span class="fl">0</span>, <span class="dt">Int</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Define constraints</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="pp">@constraint</span>(model, </span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    production_time, </span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="fl">2</span><span class="op">*</span>widgets <span class="op">+</span> <span class="fl">3</span><span class="op">*</span>gadgets <span class="op">&lt;=</span> <span class="fl">240</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>) </span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="pp">@constraint</span>(model, </span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    widget_demand, </span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    widgets <span class="op">&lt;=</span> <span class="fl">80</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>)  </span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="pp">@constraint</span>(model, </span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    gadget_demand, </span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    gadgets <span class="op">&lt;=</span> <span class="fl">60</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Define objective (profit)</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="pp">@objective</span>(model, </span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    Max, </span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    <span class="fl">25</span><span class="op">*</span>widgets <span class="op">+</span> <span class="fl">30</span><span class="op">*</span>gadgets</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Solve the problem</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a><span class="fu">optimize!</span>(model)</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Print results</span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"Optimization status: "</span>, <span class="fu">termination_status</span>(model))</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"Objective value: "</span>, <span class="fu">objective_value</span>(model))</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"Widgets to produce: "</span>, <span class="fu">value</span>(widgets))</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"Gadgets to produce: "</span>, <span class="fu">value</span>(gadgets))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Running HiGHS 1.10.0 (git hash: fd8665394e): Copyright (c) 2025 HiGHS under MIT licence terms
+MIP  has 3 rows; 2 cols; 4 nonzeros; 2 integer variables (0 binary)
+Coefficient ranges:
+  Matrix [1e+00, 3e+00]
+  Cost   [2e+01, 3e+01]
+  Bound  [0e+00, 0e+00]
+  RHS    [6e+01, 2e+02]
+Presolving model
+1 rows, 2 cols, 2 nonzeros  0s
+1 rows, 2 cols, 2 nonzeros  0s
+Objective function is integral with scale 0.2
+
+Solving MIP model with:
+   1 rows
+   2 cols (0 binary, 2 integer, 0 implied int., 0 continuous)
+   2 nonzeros
+
+Src: B =&gt; Branching; C =&gt; Central rounding; F =&gt; Feasibility pump; H =&gt; Heuristic; L =&gt; Sub-MIP;
+     P =&gt; Empty MIP; R =&gt; Randomized rounding; S =&gt; Solve LP; T =&gt; Evaluate node; U =&gt; Unbounded;
+     z =&gt; Trivial zero; l =&gt; Trivial lower; u =&gt; Trivial upper; p =&gt; Trivial point; X =&gt; User solution
+
+        Nodes      |    B&amp;B Tree     |            Objective Bounds              |  Dynamic Constraints |       Work      
+Src  Proc. InQueue |  Leaves   Expl. | BestBound       BestSol              Gap |   Cuts   InLp Confl. | LpIters     Time
+
+ z       0       0         0   0.00%   inf             -0                 Large        0      0      0         0     0.0s
+ S       0       0         0   0.00%   3800            2780              36.69%        0      0      0         0     0.0s
+         1       0         1 100.00%   2800            2780               0.72%        0      0      0         1     0.0s
+
+Solving report
+  Status            Optimal
+  Primal bound      2780
+  Dual bound        2800
+  Gap               0.719% (tolerance: 1%)
+  P-D integral      3.56295499482e-06
+  Solution status   feasible
+                    2780 (objective)
+                    0 (bound viol.)
+                    0 (int. viol.)
+                    0 (row viol.)
+  Timing            0.00 (total)
+                    0.00 (presolve)
+                    0.00 (solve)
+                    0.00 (postsolve)
+  Max sub-MIP depth 0
+  Nodes             1
+  Repair LPs        0 (0 feasible; 0 iterations)
+  LP iterations     1 (total)
+                    0 (strong br.)
+                    0 (separation)
+                    0 (heuristics)
+Optimization status: OPTIMAL
+Objective value: 2780.0
+Widgets to produce: 80.0
+Gadgets to produce: 26.0</code></pre>
+</div>
+</div>
+<p>This problem determines how many widgets and gadgets to produce to maximize profit, given time constraints and maximum demand.</p>
+<section id="exercise-2.1---modify-and-solve-the-problem" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-2.1---modify-and-solve-the-problem">Exercise 2.1 - Modify and Solve the Problem</h2>
+<p>Now it’s your turn! Modify the problem above by:</p>
+<ol type="1">
+<li>Changing the production time constraint to 300 minutes</li>
+<li>Increasing the profit for widgets to 30</li>
+<li>Solving the modified problem and printing the results</li>
+</ol>
+<div id="14" class="cell" data-execution_count="0">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># YOUR CODE BELOW</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Hint: Copy the code above and make the necessary changes</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> <span class="fu">Model</span>(HiGHS.Optimizer) <span class="co"># Don't forget to re-initialize the model</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="16" class="cell" data-execution_count="0">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test your answer</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">termination_status</span>(model) <span class="op">==</span> MOI.OPTIMAL <span class="st">"The termination status should be OPTIMAL but is </span><span class="sc">$</span>(<span class="fu">termination_status</span>(model))<span class="st">"</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">isapprox</span>(<span class="fu">objective_value</span>(model), <span class="fl">3780</span>, atol<span class="op">=</span><span class="fl">1e-6</span>) <span class="st">"The objective value should be 3780 but is </span><span class="sc">$</span>(<span class="fu">objective_value</span>(model))<span class="st">"</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">isapprox</span>(<span class="fu">value</span>(widgets), <span class="fl">80</span>, atol<span class="op">=</span><span class="fl">1e-6</span>) <span class="st">"The number of widgets to produce should be 80 but is </span><span class="sc">$</span>(<span class="fu">value</span>(widgets))<span class="st">"</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">isapprox</span>(<span class="fu">value</span>(gadgets), <span class="fl">46</span>, atol<span class="op">=</span><span class="fl">1e-6</span>) <span class="st">"The number of gadgets to produce should be 46 but is </span><span class="sc">$</span>(<span class="fu">value</span>(gadgets))<span class="st">"</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"Excellent work! You've successfully modified and solved the optimization problem."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+</section>
+<section id="section-3-interpreting-solver-output" class="level1">
+<h1>Section 3: Interpreting Solver Output</h1>
+<p>When we solve an optimization problem, the solver gives us information about how it went. Let’s look at some key pieces of information:</p>
+<div id="18" class="cell" data-execution_count="0">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"Termination status: "</span>, <span class="fu">termination_status</span>(model))</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"Primal status: "</span>, <span class="fu">primal_status</span>(model))</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"Dual status: "</span>, <span class="fu">dual_status</span>(model))</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"Objective value: "</span>, <span class="fu">objective_value</span>(model))</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"Solve time: "</span>, <span class="fu">solve_time</span>(model))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Let’s break this down:</p>
+<ul>
+<li><strong>Termination status</strong>: Tells if the solver found an optimal solution, ran out of time, etc.</li>
+<li><strong>Primal status</strong>: Indicates if we have a valid solution for our original problem</li>
+<li><strong>Dual status</strong>: Relates to the mathematical properties of the solution (don’t worry too much about this)</li>
+<li><strong>Objective value</strong>: The value of our objective function (in this case, our profit)</li>
+<li><strong>Solve time</strong>: How long it took to solve the problem</li>
 </ul>
 </section>
-<section id="option-2-generate-yourself" class="level4">
-<h4 class="anchored" data-anchor-id="option-2-generate-yourself">Option 2: Generate yourself</h4>
-<ol type="1">
-<li>First, open the lecture you want to download the slides from.</li>
-<li>Then, click on the <code>RevealJS</code> button in the top right corner.</li>
-<li>Now, click on the three stacked bars in the lower left corner.</li>
-<li>Then, click on <code>Tools</code> in the upper left corner.</li>
-<li>Now you can select <code>PDF Export Mode</code> and then save the slides as a PDF.</li>
-</ol>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Unfortunately, this method does not work perfectly on all browsers. If you have a Chrome based browser, you should be fine.</p>
-</div>
-</div>
+<section id="conclusion" class="level1">
+<h1>Conclusion</h1>
+<p>Well done! You’ve completed the tutorial on advanced solver options with HiGHS in JuMP. You’ve learned how to set advanced solver options. Continue to the next file to learn more.</p>
 </section>
-</section>
-</section>
-<section id="how-does-the-calculation-of-the-bonus-points-work" class="level2">
-<h2 class="anchored" data-anchor-id="how-does-the-calculation-of-the-bonus-points-work">How does the calculation of the bonus points work?</h2>
-<p>To reach the full 6 points, all exercises must be submitted. A maximum of 0.5 points can be earned per exercise. In the overview, ‘1’ stands for successfully submitted, and ‘0.5’ for submitted (but without attempting to solve everything). In the end, I calculate this as half or quarter points towards the total score.</p>
+<section id="solutions" class="level1">
+<h1>Solutions</h1>
+<p>You will likely find solutions to most exercises online. However, I strongly encourage you to work on these exercises independently without searching explicitly for the exact answers to the exercises. Understanding someone else’s solution is very different from developing your own. Use the lecture notes and try to solve the exercises on your own. This approach will significantly enhance your learning and problem-solving skills.</p>
+<p>Remember, the goal is not just to complete the exercises, but to understand the concepts and improve your programming abilities. If you encounter difficulties, review the lecture materials, experiment with different approaches, and don’t hesitate to ask for clarification during class discussions.</p>
+<p>Later, you will find the solutions to these exercises online in the associated GitHub repository, but we will also quickly go over them in next week’s tutorial. To access the solutions, click on the Github button on the lower right and search for the folder with today’s lecture and tutorial. Alternatively, you can ask ChatGPT or Claude to explain them to you. But please remember, the goal is not just to complete the exercises, but to understand the concepts and improve your programming abilities.</p>
 
 
 </section>
@@ -819,7 +1027,7 @@ Note
     </div>   
     <div class="nav-footer-center">
 <p>Energy System Optimization with Julia, Tobias Cors<br>CC BY-NC-SA 4.0</p>
-<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/edit/main/general/faq.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/blob/main/general/faq.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/edit/main/part-04/tutorial-04-04-advanced.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/blob/main/part-04/tutorial-04-04-advanced.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">
