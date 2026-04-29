@@ -7,7 +7,7 @@ project:
     - part-01/*.qmd
     - part-02/*.qmd
     - part-03/*.qmd
-    # - part-04/*.qmd
+    - part-04/*.qmd
     # - part-05/*.qmd
     # - part-06/*.qmd
     # - part-07/*.qmd
@@ -64,20 +64,20 @@ website:
             href: part-03/tutorial-03-04-IO.qmd
           - text: "05 - Plotting"
             href: part-03/tutorial-03-05-Plotting.qmd
-      # - section: "04 Optimization"
-      #   contents:
-      #     - text: "Lecture"
-      #       href: part-04/lecture-jump.qmd
-      #     - text: "01 - JuMP"
-      #       href: part-04/tutorial-04-01-jump.qmd
-      #     - text: "02 - Bounds"
-      #       href: part-04/tutorial-04-02-bounds.qmd
-      #     - text: "03 - Constraints"
-      #       href: part-04/tutorial-04-03-constraints.qmd
-      #     - text: "04 - Advanced"
-      #       href: part-04/tutorial-04-04-advanced.qmd
-      #     - text: "05 - Transport"
-      #       href: part-04/tutorial-04-05-transport.qmd
+      - section: "04 Optimization"
+        contents:
+          - text: "Lecture"
+            href: part-04/lecture-jump.qmd
+          - text: "01 - JuMP"
+            href: part-04/tutorial-04-01-jump.qmd
+          - text: "02 - Bounds"
+            href: part-04/tutorial-04-02-bounds.qmd
+          - text: "03 - Constraints"
+            href: part-04/tutorial-04-03-constraints.qmd
+          - text: "04 - Advanced"
+            href: part-04/tutorial-04-04-advanced.qmd
+          - text: "05 - Transport"
+            href: part-04/tutorial-04-05-transport.qmd
       # - section: "05 Dispatch"
       #   contents:
       #     - text: "Lecture"
