@@ -487,18 +487,19 @@ window.Quarto = {
   <li><a href="#linear-efficiency-function" id="toc-linear-efficiency-function" class="nav-link" data-scroll-target="#linear-efficiency-function">Linear Efficiency Function</a></li>
   <li><a href="#piecewise-linear-approximation" id="toc-piecewise-linear-approximation" class="nav-link" data-scroll-target="#piecewise-linear-approximation">Piecewise Linear Approximation</a>
   <ul class="collapse">
-  <li><a href="#mathematical-formulation-1" id="toc-mathematical-formulation-1" class="nav-link" data-scroll-target="#mathematical-formulation-1">Mathematical Formulation</a></li>
-  <li><a href="#binary-variables-for-segment-selection" id="toc-binary-variables-for-segment-selection" class="nav-link" data-scroll-target="#binary-variables-for-segment-selection">Binary Variables for Segment Selection</a></li>
-  <li><a href="#constraints" id="toc-constraints" class="nav-link" data-scroll-target="#constraints">Constraints</a></li>
+  <li><a href="#breakpoints-segments-and-parameters" id="toc-breakpoints-segments-and-parameters" class="nav-link" data-scroll-target="#breakpoints-segments-and-parameters">Breakpoints, Segments, and Parameters</a></li>
+  <li><a href="#decision-variables" id="toc-decision-variables" class="nav-link" data-scroll-target="#decision-variables">Decision Variables</a></li>
+  <li><a href="#interpolation-same-weights-for-p-and-f" id="toc-interpolation-same-weights-for-p-and-f" class="nav-link" data-scroll-target="#interpolation-same-weights-for-p-and-f">Interpolation (same weights for <span class="math inline">\(p\)</span> and <span class="math inline">\(f\)</span>)</a></li>
+  <li><a href="#sos2-constraints" id="toc-sos2-constraints" class="nav-link" data-scroll-target="#sos2-constraints">SOS2 Constraints</a></li>
   <li><a href="#visual-explanation" id="toc-visual-explanation" class="nav-link" data-scroll-target="#visual-explanation">Visual Explanation</a></li>
-  <li><a href="#convexity-and-binary-variables" id="toc-convexity-and-binary-variables" class="nav-link" data-scroll-target="#convexity-and-binary-variables">Convexity and Binary Variables</a></li>
+  <li><a href="#convexity-and-why-sos2-works" id="toc-convexity-and-why-sos2-works" class="nav-link" data-scroll-target="#convexity-and-why-sos2-works">Convexity and Why SOS2 Works</a></li>
   </ul></li>
   </ul></li>
   <li><a href="#storage-modeling" id="toc-storage-modeling" class="nav-link" data-scroll-target="#storage-modeling"><span class="flow">Storage Modeling</span></a>
   <ul class="collapse">
   <li><a href="#battery-storage-system" id="toc-battery-storage-system" class="nav-link" data-scroll-target="#battery-storage-system">Battery Storage System</a></li>
   <li><a href="#sets-and-indices" id="toc-sets-and-indices" class="nav-link" data-scroll-target="#sets-and-indices">Sets and Indices</a></li>
-  <li><a href="#decision-variables" id="toc-decision-variables" class="nav-link" data-scroll-target="#decision-variables">Decision Variables</a></li>
+  <li><a href="#decision-variables-1" id="toc-decision-variables-1" class="nav-link" data-scroll-target="#decision-variables-1">Decision Variables</a></li>
   <li><a href="#parameters" id="toc-parameters" class="nav-link" data-scroll-target="#parameters">Parameters</a></li>
   <li><a href="#energy-balance-constraint" id="toc-energy-balance-constraint" class="nav-link" data-scroll-target="#energy-balance-constraint">Energy Balance Constraint</a></li>
   <li><a href="#energy-limits-constraint" id="toc-energy-limits-constraint" class="nav-link" data-scroll-target="#energy-limits-constraint">Energy Limits Constraint</a></li>
@@ -787,44 +788,44 @@ Note
 </section>
 <section id="piecewise-linear-approximation" class="level2">
 <h2 class="anchored" data-anchor-id="piecewise-linear-approximation">Piecewise Linear Approximation</h2>
-<p>For non-linear fuel consumption curves, we use piecewise linear approximation:</p>
+<p>For non-linear fuel consumption curves, we use a <strong>piecewise linear approximation</strong> with a <strong>Special Ordered Set of type 2 (SOS2)</strong> formulation:</p>
 <ol type="1">
-<li>Divide the power range into segments</li>
-<li>Approximate each segment with a linear function</li>
-<li>Use binary variables to select the active segment</li>
+<li>Define breakpoints on the fuel-consumption curve</li>
+<li>Connect breakpoints with linear segments</li>
+<li>Use continuous weights <span class="math inline">\(\lambda\)</span> on breakpoints and binary variables <span class="math inline">\(\delta\)</span> to select the active segment</li>
 </ol>
-<section id="mathematical-formulation-1" class="level3">
-<h3 class="anchored" data-anchor-id="mathematical-formulation-1">Mathematical Formulation</h3>
-<p><span class="math inline">\(f_{g,t} = \sum_{k \in \mathcal{K}} \lambda_{g,t,k} F_{g,k}\)</span></p>
-<p>where:</p>
+<section id="breakpoints-segments-and-parameters" class="level3">
+<h3 class="anchored" data-anchor-id="breakpoints-segments-and-parameters">Breakpoints, Segments, and Parameters</h3>
 <ul>
-<li><span class="math inline">\(\mathcal{K}\)</span> is the set of segments</li>
-<li><span class="math inline">\(\lambda_{g,t,k}\)</span> are the weights for each segment</li>
-<li><span class="math inline">\(F_{g,k}\)</span> is the fuel consumption in segment <span class="math inline">\(k\)</span></li>
+<li><span class="math inline">\(\mathcal{B} = \{1,2,\ldots,K\}\)</span> — set of <strong>breakpoints</strong> indexed by <span class="math inline">\(k\)</span></li>
+<li><span class="math inline">\(\mathcal{L} = \{1,2,\ldots,K-1\}\)</span> — set of <strong>segments</strong> indexed by <span class="math inline">\(s\)</span>; segment <span class="math inline">\(s\)</span> connects breakpoint <span class="math inline">\(s\)</span> to <span class="math inline">\(s+1\)</span></li>
+<li><span class="math inline">\(P_{g,k}\)</span> — power output at breakpoint <span class="math inline">\(k\)</span> for generator <span class="math inline">\(g\)</span> [MW]</li>
+<li><span class="math inline">\(F_{g,k}\)</span> — fuel consumption at breakpoint <span class="math inline">\(k\)</span> for generator <span class="math inline">\(g\)</span> [MWh]</li>
+</ul>
+<p>The breakpoints lie on (or slightly above) the convex fuel curve; the red chords in the figure are the linear segments.</p>
+</section>
+<section id="decision-variables" class="level3">
+<h3 class="anchored" data-anchor-id="decision-variables">Decision Variables</h3>
+<ul>
+<li><span class="math inline">\(\lambda_{g,t,k} \geq 0\)</span> — weight on breakpoint <span class="math inline">\(k\)</span> (convex-combination variable)</li>
+<li><span class="math inline">\(\delta_{g,t,s} \in \{0,1\}\)</span> — <span class="math inline">\(1\)</span> if segment <span class="math inline">\(s\)</span> is active for generator <span class="math inline">\(g\)</span> at time <span class="math inline">\(t\)</span></li>
 </ul>
 </section>
-<section id="binary-variables-for-segment-selection" class="level3">
-<h3 class="anchored" data-anchor-id="binary-variables-for-segment-selection">Binary Variables for Segment Selection</h3>
-<p>To ensure that only one segment is active at a time, we introduce binary variables <span class="math inline">\(\delta_{g,t,k}\)</span>:</p>
-<ul>
-<li><span class="math inline">\(\delta_{g,t,k} = 1\)</span> if segment <span class="math inline">\(k\)</span> is active for generator <span class="math inline">\(g\)</span> at time <span class="math inline">\(t\)</span></li>
-<li><span class="math inline">\(\delta_{g,t,k} = 0\)</span> otherwise</li>
-</ul>
-<p>These binary variables are used to:</p>
-<ol type="1">
-<li>Select which segment is active</li>
-<li>Ensure the weights <span class="math inline">\(\lambda_{g,t,k}\)</span> are only non-zero for the active segment</li>
-<li>Maintain the convexity of the piecewise linear approximation</li>
-</ol>
+<section id="interpolation-same-weights-for-p-and-f" class="level3">
+<h3 class="anchored" data-anchor-id="interpolation-same-weights-for-p-and-f">Interpolation (same weights for <span class="math inline">\(p\)</span> and <span class="math inline">\(f\)</span>)</h3>
+<p><span class="math inline">\(p_{g,t} = \sum_{k \in \mathcal{B}} \lambda_{g,t,k} P_{g,k} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}\)</span></p>
+<p><span class="math inline">\(f_{g,t} = \sum_{k \in \mathcal{B}} \lambda_{g,t,k} F_{g,k} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}\)</span></p>
 </section>
-<section id="constraints" class="level3">
-<h3 class="anchored" data-anchor-id="constraints">Constraints</h3>
-<p><strong>Segment Selection</strong>:</p>
-<p><span class="math inline">\(\sum_{k \in \mathcal{K}} \delta_{g,t,k} = 1 \quad \forall g \in \mathcal{G}, t \in \mathcal{T}\)</span></p>
-<p><strong>Power Output</strong>:</p>
-<p><span class="math inline">\(p_{g,t} = \sum_{k \in \mathcal{K}} \lambda_{g,t,k} P_{g,k} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}\)</span></p>
-<p><strong>Segment Limits</strong>:</p>
-<p><span class="math inline">\(\lambda_{g,t,k} \leq \delta_{g,t,k} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}, k \in \mathcal{K}\)</span></p>
+<section id="sos2-constraints" class="level3">
+<h3 class="anchored" data-anchor-id="sos2-constraints">SOS2 Constraints</h3>
+<p><strong>Convex combination</strong>:</p>
+<p><span class="math inline">\(\sum_{k \in \mathcal{B}} \lambda_{g,t,k} = 1 \quad \forall g \in \mathcal{G}, t \in \mathcal{T}\)</span></p>
+<p><strong>One active segment</strong>:</p>
+<p><span class="math inline">\(\sum_{s \in \mathcal{L}} \delta_{g,t,s} = 1 \quad \forall g \in \mathcal{G}, t \in \mathcal{T}\)</span></p>
+<p><strong>Link weights to segments</strong> (at most two adjacent <span class="math inline">\(\lambda\)</span>’s may be positive):</p>
+<p><span class="math inline">\(\lambda_{g,t,1} \leq \delta_{g,t,1} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}\)</span></p>
+<p><span class="math inline">\(\lambda_{g,t,k} \leq \delta_{g,t,k-1} + \delta_{g,t,k} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}, k \in \{2,\ldots,K-1\}\)</span></p>
+<p><span class="math inline">\(\lambda_{g,t,K} \leq \delta_{g,t,K-1} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}\)</span></p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -835,7 +836,7 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>The binary variables <span class="math inline">\(\delta_{g,t,k}\)</span> ensure that only one segment is active at a time, while the weights <span class="math inline">\(\lambda_{g,t,k}\)</span> determine the exact position within that segment. This approach maintains linearity while accurately approximating non-linear efficiency curves.</p>
+<p>When <span class="math inline">\(\delta_{g,t,s}=1\)</span>, only <span class="math inline">\(\lambda_{g,t,s}\)</span> and <span class="math inline">\(\lambda_{g,t,s+1}\)</span> can be positive. The operating point is a convex combination of the two endpoints of segment <span class="math inline">\(s\)</span>, so <span class="math inline">\((p_{g,t}, f_{g,t})\)</span> lies on the corresponding chord. This is the standard MILP formulation for approximating a convex fuel curve.</p>
 </div>
 </div>
 </section>
@@ -907,21 +908,18 @@ Note
         <span class="math inline">\(\text{Piecewise linear}\)</span>
     </div>
     
-    <!-- Delta variables -->
-    <div style="position: absolute; left: 150px; bottom: 20px;">
+    <!-- Delta variables (one per segment; segment 2 active) -->
+    <div style="position: absolute; left: 100px; bottom: 20px;">
         <span class="math inline">\(\delta_{g,t,1}=0\)</span>
     </div>
-    <div style="position: absolute; left: 250px; bottom: 20px;">
+    <div style="position: absolute; left: 200px; bottom: 20px;">
         <span class="math inline">\(\delta_{g,t,2}=1\)</span>
     </div>
-    <div style="position: absolute; left: 350px; bottom: 20px;">
+    <div style="position: absolute; left: 300px; bottom: 20px;">
         <span class="math inline">\(\delta_{g,t,3}=0\)</span>
     </div>
-    <div style="position: absolute; left: 500px; bottom: 20px;">
-        <span class="math inline">\(\delta_{g,t,4}=0\)</span>
-    </div>
     
-    <!-- Lambda weights -->
+    <!-- Lambda weights on breakpoints (segment 2: λ₁ and λ₂) -->
     <div style="position: absolute; left: 150px; bottom: 0px;">
         <span class="math inline">\(\lambda_{g,t,1}\)</span>
     </div>
@@ -966,40 +964,31 @@ Note
 <p>The diagram shows:</p>
 <ol type="1">
 <li>Original convex fuel consumption curve (blue) and its piecewise linear approximation (red)</li>
-<li>Example point (green) at (<span class="math inline">\(p_{g,t}\)</span>, <span class="math inline">\(f_{g,t}\)</span>)</li>
-<li>Weights (<span class="math inline">\(\lambda\)</span>) determining position within segments</li>
-<li>Binary variables (<span class="math inline">\(\delta\)</span>) selecting active segment</li>
+<li>Four breakpoints (<span class="math inline">\(k=1,\ldots,4\)</span>) and three segments (<span class="math inline">\(s=1,2,3\)</span>)</li>
+<li>Example operating point (green) at (<span class="math inline">\(p_{g,t}\)</span>, <span class="math inline">\(f_{g,t}\)</span>)</li>
+<li>Weights <span class="math inline">\(\lambda_{g,t,k}\)</span> on <strong>breakpoints</strong> and binaries <span class="math inline">\(\delta_{g,t,s}\)</span> on <strong>segments</strong></li>
 </ol>
-<p>The point lies in segment 2, with:</p>
+<p>The green point lies on <strong>segment 2</strong> (between <span class="math inline">\(P_{g,1}\)</span> and <span class="math inline">\(P_{g,2}\)</span>), with:</p>
 <ul>
-<li><span class="math inline">\(\delta_{g,t,2}=1\)</span> selects this segment</li>
-<li><span class="math inline">\(\lambda_{g,t,1}\)</span> and <span class="math inline">\(\lambda_{g,t,2}\)</span> determine the exact position within the segment</li>
-<li>Other segments are inactive (<span class="math inline">\(\delta_{g,t,k}=0\)</span> for <span class="math inline">\(k \neq 2\)</span>)</li>
+<li><span class="math inline">\(\delta_{g,t,2}=1\)</span> and <span class="math inline">\(\delta_{g,t,s}=0\)</span> for <span class="math inline">\(s \neq 2\)</span></li>
+<li><span class="math inline">\(\lambda_{g,t,1} + \lambda_{g,t,2} = 1\)</span> and <span class="math inline">\(\lambda_{g,t,1}, \lambda_{g,t,2} &gt; 0\)</span> (interpolation along the chord)</li>
+<li><span class="math inline">\(\lambda_{g,t,3} = \lambda_{g,t,4} = 0\)</span></li>
 </ul>
 </div>
 </div>
 </section>
-<section id="convexity-and-binary-variables" class="level3">
-<h3 class="anchored" data-anchor-id="convexity-and-binary-variables">Convexity and Binary Variables</h3>
-<p>The piecewise linear approximation must be convex to ensure:</p>
+<section id="convexity-and-why-sos2-works" class="level3">
+<h3 class="anchored" data-anchor-id="convexity-and-why-sos2-works">Convexity and Why SOS2 Works</h3>
+<p>The <strong>fuel consumption</strong> curve <span class="math inline">\(f(p)\)</span> is convex (for convex efficiency curves, <span class="math inline">\(f = p/\eta\)</span> is convex in <span class="math inline">\(p\)</span>). For a convex function, any point on a chord between two breakpoints lies <strong>above</strong> the true curve; the MILP uses the chord as an outer approximation (typically a slight overestimate of fuel use).</p>
+<p>The SOS2 constraints ensure:</p>
 <ol type="1">
-<li>The fuel consumption curve is monotonically increasing</li>
-<li>The optimization problem remains linear</li>
-<li>The solution is unique and globally optimal</li>
+<li>Only one segment is active (<span class="math inline">\(\sum_s \delta_{g,t,s} = 1\)</span>)</li>
+<li>At most two adjacent breakpoint weights are positive</li>
+<li>Interpolation cannot jump across non-adjacent breakpoints</li>
 </ol>
-<p>The binary variables <span class="math inline">\(\delta_{g,t,k}\)</span> enforce convexity by:</p>
-<ol type="1">
-<li>Ensuring only one segment is active at a time</li>
-<li>Preventing interpolation between non-adjacent segments</li>
-<li>Maintaining the proper order of segments</li>
-</ol>
-<p>In the example above:</p>
-<ul>
-<li>The point (<span class="math inline">\(p_{g,t}\)</span>, <span class="math inline">\(f_{g,t}\)</span>) lies in segment 2</li>
-<li><span class="math inline">\(\delta_{g,t,2}=1\)</span> selects this segment</li>
-<li><span class="math inline">\(\lambda_{g,t,1}\)</span> and <span class="math inline">\(\lambda_{g,t,2}\)</span> determine the exact position within the segment</li>
-<li>Other segments are inactive (<span class="math inline">\(\delta_{g,t,k}=0\)</span> for <span class="math inline">\(k \neq 2\)</span>)</li>
-</ul>
+<p>In the example above, with <span class="math inline">\(\delta_{g,t,2}=1\)</span>:</p>
+<p><span class="math inline">\(p_{g,t} = \lambda_{g,t,1} P_{g,1} + \lambda_{g,t,2} P_{g,2}, \quad
+f_{g,t} = \lambda_{g,t,1} F_{g,1} + \lambda_{g,t,2} F_{g,2}\)</span></p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1010,7 +999,7 @@ Tip
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>While the efficiency curve of a thermal generator typically is concave, we model the fuel consumption curve (<span class="math inline">\(f = p/\eta\)</span>) which is convex. This allows us to use piecewise linear approximation in our MILP formulation while maintaining mathematical properties needed for optimization. The convexity of the fuel consumption curve allows us to use piecewise linear approximation in our MILP formulation while maintaining mathematical properties needed for optimization.</p>
+<p>While the <strong>efficiency</strong> curve of a thermal unit is often concave in <span class="math inline">\(p\)</span>, we approximate the <strong>fuel consumption</strong> curve <span class="math inline">\(f(p)\)</span>, which is convex. That convexity justifies this chord-based MILP formulation. Tighter UC formulations (e.g.&nbsp;incremental heat input) are discussed in <span class="citation" data-cites="morales2013tight">Morales-Espana et al. (<a href="#ref-morales2013tight" role="doc-biblioref">2013</a>)</span>.</p>
 </div>
 </div>
 </section>
@@ -1036,8 +1025,8 @@ Tip
 <li><span class="math inline">\(\mathcal{T}\)</span> - Set of time periods indexed by <span class="math inline">\(t \in \{1,2,...,|\mathcal{T}|\}\)</span></li>
 </ul>
 </section>
-<section id="decision-variables" class="level2">
-<h2 class="anchored" data-anchor-id="decision-variables">Decision Variables</h2>
+<section id="decision-variables-1" class="level2">
+<h2 class="anchored" data-anchor-id="decision-variables-1">Decision Variables</h2>
 <ul>
 <li><span class="math inline">\(e_{s,t}\)</span> - Energy level of storage <span class="math inline">\(s\)</span> at time <span class="math inline">\(t\)</span> [MWh]</li>
 <li><span class="math inline">\(p^{ch}_{s,t}\)</span> - Charging power of storage <span class="math inline">\(s\)</span> at time <span class="math inline">\(t\)</span> [MW]</li>
