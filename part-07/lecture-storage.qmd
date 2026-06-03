@@ -183,51 +183,52 @@ Direct linear approximation of efficiency is not possible in MILP because:
 
 ## Piecewise Linear Approximation
 
-For non-linear fuel consumption curves, we use piecewise linear approximation:
+For non-linear fuel consumption curves, we use a **piecewise linear approximation** with a **Special Ordered Set of type 2 (SOS2)** formulation:
 
-1. Divide the power range into segments
-2. Approximate each segment with a linear function
-3. Use binary variables to select the active segment
+1. Define breakpoints on the fuel-consumption curve
+2. Connect breakpoints with linear segments
+3. Use continuous weights $\lambda$ on breakpoints and binary variables $\delta$ to select the active segment
 
-### Mathematical Formulation
+### Breakpoints, Segments, and Parameters
 
-$f_{g,t} = \sum_{k \in \mathcal{K}} \lambda_{g,t,k} F_{g,k}$
+- $\mathcal{B} = \{1,2,\ldots,K\}$ — set of **breakpoints** indexed by $k$
+- $\mathcal{L} = \{1,2,\ldots,K-1\}$ — set of **segments** indexed by $s$; segment $s$ connects breakpoint $s$ to $s+1$
+- $P_{g,k}$ — power output at breakpoint $k$ for generator $g$ [MW]
+- $F_{g,k}$ — fuel consumption at breakpoint $k$ for generator $g$ [MWh]
 
-where:
+The breakpoints lie on (or slightly above) the convex fuel curve; the red chords in the figure are the linear segments.
 
-- $\mathcal{K}$ is the set of segments
-- $\lambda_{g,t,k}$ are the weights for each segment
-- $F_{g,k}$ is the fuel consumption in segment $k$
+### Decision Variables
 
-### Binary Variables for Segment Selection
+- $\lambda_{g,t,k} \geq 0$ — weight on breakpoint $k$ (convex-combination variable)
+- $\delta_{g,t,s} \in \{0,1\}$ — $1$ if segment $s$ is active for generator $g$ at time $t$
 
-To ensure that only one segment is active at a time, we introduce binary variables $\delta_{g,t,k}$:
+### Interpolation (same weights for $p$ and $f$)
 
-- $\delta_{g,t,k} = 1$ if segment $k$ is active for generator $g$ at time $t$
-- $\delta_{g,t,k} = 0$ otherwise
+$p_{g,t} = \sum_{k \in \mathcal{B}} \lambda_{g,t,k} P_{g,k} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}$
 
-These binary variables are used to:
+$f_{g,t} = \sum_{k \in \mathcal{B}} \lambda_{g,t,k} F_{g,k} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}$
 
-1. Select which segment is active
-2. Ensure the weights $\lambda_{g,t,k}$ are only non-zero for the active segment
-3. Maintain the convexity of the piecewise linear approximation
+### SOS2 Constraints
 
-### Constraints
+**Convex combination**:
 
-**Segment Selection**:
+$\sum_{k \in \mathcal{B}} \lambda_{g,t,k} = 1 \quad \forall g \in \mathcal{G}, t \in \mathcal{T}$
 
-$\sum_{k \in \mathcal{K}} \delta_{g,t,k} = 1 \quad \forall g \in \mathcal{G}, t \in \mathcal{T}$
+**One active segment**:
 
-**Power Output**:
+$\sum_{s \in \mathcal{L}} \delta_{g,t,s} = 1 \quad \forall g \in \mathcal{G}, t \in \mathcal{T}$
 
-$p_{g,t} = \sum_{k \in \mathcal{K}} \lambda_{g,t,k} P_{g,k} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}$
+**Link weights to segments** (at most two adjacent $\lambda$'s may be positive):
 
-**Segment Limits**:
+$\lambda_{g,t,1} \leq \delta_{g,t,1} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}$
 
-$\lambda_{g,t,k} \leq \delta_{g,t,k} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}, k \in \mathcal{K}$
+$\lambda_{g,t,k} \leq \delta_{g,t,k-1} + \delta_{g,t,k} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}, k \in \{2,\ldots,K-1\}$
+
+$\lambda_{g,t,K} \leq \delta_{g,t,K-1} \quad \forall g \in \mathcal{G}, t \in \mathcal{T}$
 
 ::: {.callout-note}
-The binary variables $\delta_{g,t,k}$ ensure that only one segment is active at a time, while the weights $\lambda_{g,t,k}$ determine the exact position within that segment. This approach maintains linearity while accurately approximating non-linear efficiency curves.
+When $\delta_{g,t,s}=1$, only $\lambda_{g,t,s}$ and $\lambda_{g,t,s+1}$ can be positive. The operating point is a convex combination of the two endpoints of segment $s$, so $(p_{g,t}, f_{g,t})$ lies on the corresponding chord. This is the standard MILP formulation for approximating a convex fuel curve.
 :::
 
 ### Visual Explanation
@@ -301,21 +302,18 @@ The binary variables $\delta_{g,t,k}$ ensure that only one segment is active at 
         <span class="math inline">\(\text{Piecewise linear}\)</span>
     </div>
     
-    <!-- Delta variables -->
-    <div style="position: absolute; left: 150px; bottom: 20px;">
+    <!-- Delta variables (one per segment; segment 2 active) -->
+    <div style="position: absolute; left: 100px; bottom: 20px;">
         <span class="math inline">\(\delta_{g,t,1}=0\)</span>
     </div>
-    <div style="position: absolute; left: 250px; bottom: 20px;">
+    <div style="position: absolute; left: 200px; bottom: 20px;">
         <span class="math inline">\(\delta_{g,t,2}=1\)</span>
     </div>
-    <div style="position: absolute; left: 350px; bottom: 20px;">
+    <div style="position: absolute; left: 300px; bottom: 20px;">
         <span class="math inline">\(\delta_{g,t,3}=0\)</span>
     </div>
-    <div style="position: absolute; left: 500px; bottom: 20px;">
-        <span class="math inline">\(\delta_{g,t,4}=0\)</span>
-    </div>
     
-    <!-- Lambda weights -->
+    <!-- Lambda weights on breakpoints (segment 2: λ₁ and λ₂) -->
     <div style="position: absolute; left: 150px; bottom: 0px;">
         <span class="math inline">\(\lambda_{g,t,1}\)</span>
     </div>
@@ -355,41 +353,34 @@ The binary variables $\delta_{g,t,k}$ ensure that only one segment is active at 
 The diagram shows:
 
 1. Original convex fuel consumption curve (blue) and its piecewise linear approximation (red)
-2. Example point (green) at ($p_{g,t}$, $f_{g,t}$)
-3. Weights ($\lambda$) determining position within segments
-4. Binary variables ($\delta$) selecting active segment
+2. Four breakpoints ($k=1,\ldots,4$) and three segments ($s=1,2,3$)
+3. Example operating point (green) at ($p_{g,t}$, $f_{g,t}$)
+4. Weights $\lambda_{g,t,k}$ on **breakpoints** and binaries $\delta_{g,t,s}$ on **segments**
 
-The point lies in segment 2, with:
+The green point lies on **segment 2** (between $P_{g,1}$ and $P_{g,2}$), with:
 
-- $\delta_{g,t,2}=1$ selects this segment
-- $\lambda_{g,t,1}$ and $\lambda_{g,t,2}$ determine the exact position within the segment
-- Other segments are inactive ($\delta_{g,t,k}=0$ for $k \neq 2$)
+- $\delta_{g,t,2}=1$ and $\delta_{g,t,s}=0$ for $s \neq 2$
+- $\lambda_{g,t,1} + \lambda_{g,t,2} = 1$ and $\lambda_{g,t,1}, \lambda_{g,t,2} > 0$ (interpolation along the chord)
+- $\lambda_{g,t,3} = \lambda_{g,t,4} = 0$
 :::
 
-### Convexity and Binary Variables
+### Convexity and Why SOS2 Works
 
-The piecewise linear approximation must be convex to ensure:
+The **fuel consumption** curve $f(p)$ is convex (for convex efficiency curves, $f = p/\eta$ is convex in $p$). For a convex function, any point on a chord between two breakpoints lies **above** the true curve; the MILP uses the chord as an outer approximation (typically a slight overestimate of fuel use).
 
-1. The fuel consumption curve is monotonically increasing
-2. The optimization problem remains linear
-3. The solution is unique and globally optimal
+The SOS2 constraints ensure:
 
-The binary variables $\delta_{g,t,k}$ enforce convexity by:
+1. Only one segment is active ($\sum_s \delta_{g,t,s} = 1$)
+2. At most two adjacent breakpoint weights are positive
+3. Interpolation cannot jump across non-adjacent breakpoints
 
-1. Ensuring only one segment is active at a time
-2. Preventing interpolation between non-adjacent segments
-3. Maintaining the proper order of segments
+In the example above, with $\delta_{g,t,2}=1$:
 
-In the example above:
-
-- The point ($p_{g,t}$, $f_{g,t}$) lies in segment 2
-- $\delta_{g,t,2}=1$ selects this segment
-- $\lambda_{g,t,1}$ and $\lambda_{g,t,2}$ determine the exact position within the segment
-- Other segments are inactive ($\delta_{g,t,k}=0$ for $k \neq 2$)
+$p_{g,t} = \lambda_{g,t,1} P_{g,1} + \lambda_{g,t,2} P_{g,2}, \quad
+f_{g,t} = \lambda_{g,t,1} F_{g,1} + \lambda_{g,t,2} F_{g,2}$
 
 ::: {.callout-tip}
-While the efficiency curve of a thermal generator typically is concave, we model the fuel consumption curve ($f = p/\eta$) which is convex. This allows us to use piecewise linear approximation in our MILP formulation while maintaining mathematical properties needed for optimization.
-The convexity of the fuel consumption curve allows us to use piecewise linear approximation in our MILP formulation while maintaining mathematical properties needed for optimization.
+While the **efficiency** curve of a thermal unit is often concave in $p$, we approximate the **fuel consumption** curve $f(p)$, which is convex. That convexity justifies this chord-based MILP formulation. Tighter UC formulations (e.g. incremental heat input) are discussed in @morales2013tight.
 :::
 
 
