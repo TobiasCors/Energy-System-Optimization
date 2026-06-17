@@ -311,7 +311,7 @@ $$
 $$
 
 $$
-\sum_{\tau \in [t-1, \max(t-3,1)]} v_{3,\tau} \leq (1 -v_{4,t}) M \quad \forall t \in \mathcal{T} \quad \text{with} \quad M = |\mathcal{T}|
+\sum_{\tau \in [\max(t-3,1), t-1]} v_{3,\tau} \leq (1 -v_{4,t}) M \quad \forall t \in \mathcal{T} \quad \text{with} \quad M = |\mathcal{T}|
 $$
 
 \newpage
