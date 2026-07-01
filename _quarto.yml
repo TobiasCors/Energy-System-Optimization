@@ -16,7 +16,7 @@ project:
     - part-10/*.qmd
     - part-11/*.qmd
     - part-12/*.qmd
-    # - part-13/*.qmd
+    - part-13/*.qmd
 website:
   title: "Energy System Optimization with Julia"
   repo-url: https://github.com/TobiasCors/Energy-System-Optimization
@@ -124,10 +124,10 @@ website:
         contents:
           - text: "Lecture"
             href: part-12/lecture-repetition.qmd
-      # - section: "13 Electricity Markets"
-      #   contents:
-      #     - text: "Lecture"
-      #       href: part-13/lecture-markets.qmd
+      - section: "13 Electricity Markets"
+        contents:
+          - text: "Lecture"
+            href: part-13/lecture-markets.qmd
       #     - text: "Summary"
       #       href: part-13/lecture-markets-short.qmd
       - text: "***"

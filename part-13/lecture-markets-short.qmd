@@ -1,0 +1,275 @@
+---
+title: "Lecture XIII - Electricity Markets Summary"
+subtitle: "Energy System Optimization with Julia"
+author: "Dr. Tobias Cors"
+institute: "Hamburg University of Applied Science - Summer 2026"
+title-slide-attributes:
+    data-background-color: "#025259"
+html-math-method:
+  method: mathjax
+  url: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+
+format:
+    html:
+        theme: [litera, ../styles.scss]
+    revealjs:
+        theme: [default, ../styles.scss]
+        transition: slide
+        transition-speed: fast
+        highlight-style: arrow
+        slide-number: true
+        code-copy: true
+        code-link: true
+        preview-links: auto
+        footer: " {{< meta title >}} | {{< meta author >}} | [Home](lecture-markets-short.qmd)"
+        output-file: summary-presentation.html
+
+bibliography: ../ESO-bib.bib
+
+engine: julia
+
+execute:
+    echo: true
+---
+
+# [Electricity Markets]{.flow} {.title}
+
+## Introduction
+
+Electricity markets are complex systems that balance instantaneous supply and demand in a high-stakes economic and physical environment. Understanding how they work is essential for energy professionals.
+
+**Key Topics:**
+
+- Market evolution and architecture
+- Price formation mechanisms
+- Renewable integration challenges
+- Current market design debates
+
+# [Market Fundamentals]{.flow} {.title}
+
+## Historical Evolution
+
+Electricity markets evolved from **vertically integrated monopolies** toward **liberalized, competitive markets**.
+
+**Key Changes:**
+
+- **Before**: Vertically integrated utilities controlled generation, transmission, distribution, and retail
+- **Now**: Markets separate these functions (unbundling) to foster competition
+- **Result**: Improved efficiency, lower prices, and innovation
+
+## Market Transition
+
+- **Unbundling**: Separation of functions to enable competition
+- **Marginal Pricing**: Prices based on the last unit needed to meet demand (merit order)
+- **Complexity**: Introduced due to electricity's unique characteristics
+
+## Key Participants
+
+- **Generators**: Power plants, renewable energy producers
+- **Transmission System Operators (TSOs)**: Manage high-voltage networks
+- **Distribution System Operators (DSOs)**: Deliver power to end users
+- **Suppliers/Retailers**: Buy wholesale, sell to consumers
+- **Market Operators**: Facilitate trading (e.g., EPEX SPOT)
+- **Regulators**: Ensure fair competition and system reliability
+
+![Electricity grid infrastructure diagram showing the flow from electricity generator through transmission and distribution operators to consumers, regulated by rules and facilitated by suppliers financially.](https://pplx-res.cloudinary.com/image/upload/v1754738272/pplx_project_search_images/3c38175245432d02176acef7e705b631af9b727e.png){width="85%"}
+
+# [Market Architecture]{.flow} {.title}
+
+## Market Layers and Time Horizons
+
+Electricity markets comprise several interlinked layers:
+
+- **Forward and futures markets**: Price signals months to years ahead, risk hedging
+- **Day-ahead markets**: Central for scheduling generation against forecast demand
+- **Intraday markets**: Continuous adjustments for updated forecasts and unexpected events
+- **Balancing markets**: TSOs manage real-time supply-demand imbalances and grid stability
+- **Ancillary service markets**: Specialized services (frequency regulation, reserves, voltage support)
+
+![Market types showing TSOs and generators](https://cdn.prod.website-files.com/65b3e159d25a6097b6ca5815/66bf22d8d9fb93dfa77268e3_66a1f7e547053619f8568d9a_Imbalance%2520markets_TSOs%2520and%2520generators.png){width="85%"}
+
+![Wholesale Markets structure illustration](https://cdn.prod.website-files.com/65b3e159d25a6097b6ca5815/682300a87bb69929076569b2_Bildschirmfoto%202025-05-02%20um%2011.28.10.png){width="85%"}
+
+## Interconnected System
+
+Each market layer serves distinct functions but is interconnected; inefficiencies or changes in one impact others.
+
+**Example**: The intraday market gains significance as renewable forecast errors grow.
+
+# [Price Formation]{.flow} {.title}
+
+## Merit Order & Marginal Cost Principle
+
+Prices in wholesale electricity markets are determined by the **marginal cost of the most expensive unit dispatched** to meet demand.
+
+### How Merit Order Works
+
+1. **Ranking**: Power plants bid their ma       rginal costs (fuel + operating costs)
+2. **Stacking**: Plants are arranged from cheapest to most expensive
+3. **Selection**: Starting with the cheapest, plants are activated until demand is met
+4. **Price Setting**: The most expensive activated plant sets the market price for **ALL** generators
+
+### Typical Merit Order (€/MWh)
+
+1. **Renewables**: €0-5 (no fuel costs)
+2. **Nuclear**: €10-15 (low operating costs)
+3. **Lignite/Coal**: €20-40 (fuel costs)
+4. **Natural Gas**: €40-80 (higher fuel costs)
+5. **Oil/Peak Plants**: €80-200+ (emergency use)
+
+### Merit Order Effect: Renewables push expensive plants out of the market, reducing overall prices.
+
+![Electricity price fluctuations illustrated by merit order effect with varied renewable energy input and operating costs per capacity.](https://pplx-res.cloudinary.com/image/upload/v1755360506/pplx_project_search_images/7fb2163fbfd799f3c8c99e5861e8dae8a84fbf89.png){width="85%"}
+
+### Key Aspects:
+
+- **Storability problems**: Electricity can be stored but not cost-effectively in large quantities, hence must be balanced instantaneously; price volatility can be extreme
+- **Merit order effect of renewables**: Low marginal cost renewables enter first, depressing prices during high output but creating steep price ramps in scarcity
+- **Price spikes**: Occur when demand exceeds low-cost supply, triggering peaker plants
+
+# [Renewable Integration]{.flow} {.title}
+
+## Impact on Market Dynamics
+
+With rising shares of wind and solar (30-60% or higher in some markets), markets face:
+
+- **Increased price volatility and negative prices** during oversupply
+- **Reduced running hours and revenues** for conventional generators, affecting their economic viability: Missing money problem (investment signal issue but critical for system reliability, increasing renewables reduce the frequency and certainty of high prices needed to justify capital expenditure)
+- **Need for flexibility**: Demand response, storage, interconnectors become essential
+
+## Market Adaptations
+
+Market designs are adjusting by:
+
+- Enhancing intraday, day-ahead and balancing markets for finer temporal granularity (15-minute resolution new standard since 30th September 2025 in Europe)
+- Implementing forecast improvements and more dynamic dispatch
+- Exploring new products that value flexibility and fast response
+
+# [Market Design Challenges]{.flow} {.title}
+
+## European Energy Crisis
+
+The recent Europe-wide energy crisis—gas price surges, nuclear outages, droughts reducing hydro—unveiled vulnerabilities:
+
+- Marginal pricing exposed volatile swings from ~40 €/MWh average to peaks over 500 €/MWh
+- Renewable generators earned "windfall profits" when they received high prices during scarcity periods despite low costs
+
+## Critical Debates
+
+**Is marginal pricing still optimal?**
+
+- Ensures short-run cost reflectiveness
+- Can create revenue uncertainty and political concerns
+
+**Reform Proposals:**
+
+- **Contracts for Difference (CfDs)**: Price stabilization for generators, reducing volatility but potential market distortions
+- **Splitting markets**: Separating renewable and conventional generation markets
+- **Temporary interventions**: Gas price caps or windfall taxes (Spain, Italy), capacity mechanisms or industrial electricity prices (debated in Germany)
+
+**Market Economy vs. State Intervention:**
+
+- Market prices are essential for innovation and investment
+- Current volatile market prices create new business models (e.g., battery storage through arbitrage)
+- State interventions (capacity mechanisms, industrial electricity prices) can distort and dilute price signals
+- Some interventions are politically necessary to ensure acceptance and supply security
+- Balance needed between efficiency and steering
+
+## Future Perspective
+
+- More integration of all actors
+- Technology-neutral and market-economically supported
+- No radical system break planned
+- Balanced adjustments to improve system efficiency and supply security
+
+# [Mathematical & Economic Modeling]{.flow} {.title}
+
+## Market Operations
+
+Advanced market management relies on:
+
+- **Optimization algorithms**: Unit commitment, economic dispatch, and real-time balancing solved via linear and mixed-integer programming
+- **Game theory and strategic bidding**: Generators optimize bids under market rules to maximize profits under uncertainty
+- **Stochastic forecasting**: Managing weather-dependent renewables with probabilistic models
+
+# [Future Outlook]{.flow} {.title}
+
+## Skills for Energy Professionals
+
+Professionals must:
+
+- Understand evolving market designs and regulatory frameworks internationally
+- Analyze market impacts of technology shifts (storage, demand-side response, hydrogen, digitalization)
+- Use quantitative tools for market and risk analysis
+- Engage in policy dialogues to shape designs balancing sustainability, reliability, and affordability
+
+## Key Challenges
+
+- Reconciling efficiency with investment signals
+- Balancing fairness and consumer protection
+- Integrating massive renewable capacity
+- Managing geopolitical shocks and market volatility
+
+# [Key Takeaways]{.flow} {.title}
+
+The electricity market is a complex, layered system balancing instantaneous supply and demand. 
+
+**Core Principles:**
+
+1. **Marginal pricing** grounded in merit order dispatch drives operational efficiency
+2. **Market layers** (forward, day-ahead, intraday, balancing) work together
+3. **Renewable integration** presents challenges requiring flexibility solutions
+4. **Market reforms** aim to reconcile efficiency, investment signals, fairness, and consumer protection
+
+# [Discussion Questions]{.flow} {.title}
+
+## Critical Questions for Debate
+
+1. **Is marginal pricing still optimal?**
+   - Does it ensure efficiency while providing adequate investment signals?
+   - How should we handle windfall profits during price spikes?
+
+2. **Market vs. Regulation Balance**
+   - How much state intervention is acceptable?
+   - Can we maintain market efficiency while ensuring supply security?
+
+3. **Industrial Electricity Price**
+   - Should energy-intensive industries receive price protection?
+   - What are better alternatives to direct price caps?
+
+4. **Capacity Mechanisms**
+   - Are capacity markets necessary or can market-based solutions work?
+   - How to ensure investment in rarely-used but critical capacity?
+
+5. **Digitalization and Flexibility**
+   - How can digitalization improve market efficiency?
+   - What role should flexibility services play in future markets?
+
+6. **Market Segmentation**
+   - Should renewables and conventional generation be in separate markets?
+   - How would this impact investment incentives?
+
+# [Literature]{.flow} {.title}
+
+## Core References
+
+For more interesting literature to learn more about Julia and energy systems, take a look at the [literature list](../general/literature.qmd) of this course.
+
+## Online Resources
+
+### Documentation
+- [Julia Documentation](https://docs.julialang.org/)
+- [JuMP Documentation](https://jump.dev/)
+- [DataFrames.jl Documentation](https://dataframes.juliadata.org/)
+
+### Electricity Market Resources
+- [EPEX SPOT - Power Market Basics](https://www.epexspot.com/en/basicspowermarket)
+- [SMARD - How the Electricity Market Works](https://www.smard.de/page/en/wiki-article/5884/5840/this-is-how-the-electricity-market-works)
+- [Hertie School - Energy Crisis Lecture Series](https://www.hertie-school.org/en/sustainability/about/energy-crisis)
+
+### Research Papers
+- Recent papers in journals like:
+  - IEEE Transactions on Power Systems
+  - Energy
+  - Applied Energy
+  - European Journal of Operational Research
