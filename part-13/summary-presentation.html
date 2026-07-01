@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.9.38">
+
+  <meta name="author" content="Dr.&nbsp;Tobias Cors">
+  <title>Energy System Optimization with Julia – Lecture XIII - Electricity Markets Summary</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-f531780249555be7458c36d13bba2567.css">
+  <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" data-background-color="#025259" class="quarto-title-block center">
+  <h1 class="title">Lecture XIII - Electricity Markets Summary</h1>
+  <p class="subtitle">Energy System Optimization with Julia</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Dr.&nbsp;Tobias Cors 
+</div>
+        <p class="quarto-title-affiliation">
+            Hamburg University of Applied Science - Summer 2026
+          </p>
+    </div>
+</div>
+
+</section>
+<section>
+<section id="electricity-markets" class="title-slide slide level1 title center">
+<h1><span class="flow">Electricity Markets</span></h1>
+
+</section>
+<section id="introduction" class="slide level2">
+<h2>Introduction</h2>
+<p>Electricity markets are complex systems that balance instantaneous supply and demand in a high-stakes economic and physical environment. Understanding how they work is essential for energy professionals.</p>
+<p><strong>Key Topics:</strong></p>
+<ul>
+<li>Market evolution and architecture</li>
+<li>Price formation mechanisms</li>
+<li>Renewable integration challenges</li>
+<li>Current market design debates</li>
+</ul>
+</section></section>
+<section>
+<section id="market-fundamentals" class="title-slide slide level1 title center">
+<h1><span class="flow">Market Fundamentals</span></h1>
+
+</section>
+<section id="historical-evolution" class="slide level2">
+<h2>Historical Evolution</h2>
+<p>Electricity markets evolved from <strong>vertically integrated monopolies</strong> toward <strong>liberalized, competitive markets</strong>.</p>
+<p><strong>Key Changes:</strong></p>
+<ul>
+<li><strong>Before</strong>: Vertically integrated utilities controlled generation, transmission, distribution, and retail</li>
+<li><strong>Now</strong>: Markets separate these functions (unbundling) to foster competition</li>
+<li><strong>Result</strong>: Improved efficiency, lower prices, and innovation</li>
+</ul>
+</section>
+<section id="market-transition" class="slide level2">
+<h2>Market Transition</h2>
+<ul>
+<li><strong>Unbundling</strong>: Separation of functions to enable competition</li>
+<li><strong>Marginal Pricing</strong>: Prices based on the last unit needed to meet demand (merit order)</li>
+<li><strong>Complexity</strong>: Introduced due to electricity’s unique characteristics</li>
+</ul>
+</section>
+<section id="key-participants" class="slide level2">
+<h2>Key Participants</h2>
+<ul>
+<li><strong>Generators</strong>: Power plants, renewable energy producers</li>
+<li><strong>Transmission System Operators (TSOs)</strong>: Manage high-voltage networks</li>
+<li><strong>Distribution System Operators (DSOs)</strong>: Deliver power to end users</li>
+<li><strong>Suppliers/Retailers</strong>: Buy wholesale, sell to consumers</li>
+<li><strong>Market Operators</strong>: Facilitate trading (e.g., EPEX SPOT)</li>
+<li><strong>Regulators</strong>: Ensure fair competition and system reliability</li>
+</ul>
+
+<img data-src="https://pplx-res.cloudinary.com/image/upload/v1754738272/pplx_project_search_images/3c38175245432d02176acef7e705b631af9b727e.png" style="width:85.0%" class="r-stretch quarto-figure-center"><p class="caption">Electricity grid infrastructure diagram showing the flow from electricity generator through transmission and distribution operators to consumers, regulated by rules and facilitated by suppliers financially.</p></section></section>
+<section>
+<section id="market-architecture" class="title-slide slide level1 title center">
+<h1><span class="flow">Market Architecture</span></h1>
+
+</section>
+<section id="market-layers-and-time-horizons" class="slide level2">
+<h2>Market Layers and Time Horizons</h2>
+<p>Electricity markets comprise several interlinked layers:</p>
+<ul>
+<li><strong>Forward and futures markets</strong>: Price signals months to years ahead, risk hedging</li>
+<li><strong>Day-ahead markets</strong>: Central for scheduling generation against forecast demand</li>
+<li><strong>Intraday markets</strong>: Continuous adjustments for updated forecasts and unexpected events</li>
+<li><strong>Balancing markets</strong>: TSOs manage real-time supply-demand imbalances and grid stability</li>
+<li><strong>Ancillary service markets</strong>: Specialized services (frequency regulation, reserves, voltage support)</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://cdn.prod.website-files.com/65b3e159d25a6097b6ca5815/66bf22d8d9fb93dfa77268e3_66a1f7e547053619f8568d9a_Imbalance%2520markets_TSOs%2520and%2520generators.png" style="width:85.0%"></p>
+<figcaption>Market types showing TSOs and generators</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://cdn.prod.website-files.com/65b3e159d25a6097b6ca5815/682300a87bb69929076569b2_Bildschirmfoto%202025-05-02%20um%2011.28.10.png" style="width:85.0%"></p>
+<figcaption>Wholesale Markets structure illustration</figcaption>
+</figure>
+</div>
+</section>
+<section id="interconnected-system" class="slide level2">
+<h2>Interconnected System</h2>
+<p>Each market layer serves distinct functions but is interconnected; inefficiencies or changes in one impact others.</p>
+<p><strong>Example</strong>: The intraday market gains significance as renewable forecast errors grow.</p>
+</section></section>
+<section>
+<section id="price-formation" class="title-slide slide level1 title center">
+<h1><span class="flow">Price Formation</span></h1>
+
+</section>
+<section id="merit-order-marginal-cost-principle" class="slide level2">
+<h2>Merit Order &amp; Marginal Cost Principle</h2>
+<p>Prices in wholesale electricity markets are determined by the <strong>marginal cost of the most expensive unit dispatched</strong> to meet demand.</p>
+<h3 id="how-merit-order-works">How Merit Order Works</h3>
+<ol type="1">
+<li><strong>Ranking</strong>: Power plants bid their ma rginal costs (fuel + operating costs)</li>
+<li><strong>Stacking</strong>: Plants are arranged from cheapest to most expensive</li>
+<li><strong>Selection</strong>: Starting with the cheapest, plants are activated until demand is met</li>
+<li><strong>Price Setting</strong>: The most expensive activated plant sets the market price for <strong>ALL</strong> generators</li>
+</ol>
+<h3 id="typical-merit-order-mwh">Typical Merit Order (€/MWh)</h3>
+<ol type="1">
+<li><strong>Renewables</strong>: €0-5 (no fuel costs)</li>
+<li><strong>Nuclear</strong>: €10-15 (low operating costs)</li>
+<li><strong>Lignite/Coal</strong>: €20-40 (fuel costs)</li>
+<li><strong>Natural Gas</strong>: €40-80 (higher fuel costs)</li>
+<li><strong>Oil/Peak Plants</strong>: €80-200+ (emergency use)</li>
+</ol>
+<h3 id="merit-order-effect-renewables-push-expensive-plants-out-of-the-market-reducing-overall-prices.">Merit Order Effect: Renewables push expensive plants out of the market, reducing overall prices.</h3>
+
+<img data-src="https://pplx-res.cloudinary.com/image/upload/v1755360506/pplx_project_search_images/7fb2163fbfd799f3c8c99e5861e8dae8a84fbf89.png" style="width:85.0%" class="r-stretch quarto-figure-center"><p class="caption">Electricity price fluctuations illustrated by merit order effect with varied renewable energy input and operating costs per capacity.</p><h3 id="key-aspects">Key Aspects:</h3>
+<ul>
+<li><strong>Storability problems</strong>: Electricity can be stored but not cost-effectively in large quantities, hence must be balanced instantaneously; price volatility can be extreme</li>
+<li><strong>Merit order effect of renewables</strong>: Low marginal cost renewables enter first, depressing prices during high output but creating steep price ramps in scarcity</li>
+<li><strong>Price spikes</strong>: Occur when demand exceeds low-cost supply, triggering peaker plants</li>
+</ul>
+</section></section>
+<section>
+<section id="renewable-integration" class="title-slide slide level1 title center">
+<h1><span class="flow">Renewable Integration</span></h1>
+
+</section>
+<section id="impact-on-market-dynamics" class="slide level2">
+<h2>Impact on Market Dynamics</h2>
+<p>With rising shares of wind and solar (30-60% or higher in some markets), markets face:</p>
+<ul>
+<li><strong>Increased price volatility and negative prices</strong> during oversupply</li>
+<li><strong>Reduced running hours and revenues</strong> for conventional generators, affecting their economic viability: Missing money problem (investment signal issue but critical for system reliability, increasing renewables reduce the frequency and certainty of high prices needed to justify capital expenditure)</li>
+<li><strong>Need for flexibility</strong>: Demand response, storage, interconnectors become essential</li>
+</ul>
+</section>
+<section id="market-adaptations" class="slide level2">
+<h2>Market Adaptations</h2>
+<p>Market designs are adjusting by:</p>
+<ul>
+<li>Enhancing intraday, day-ahead and balancing markets for finer temporal granularity (15-minute resolution new standard since 30th September 2025 in Europe)</li>
+<li>Implementing forecast improvements and more dynamic dispatch</li>
+<li>Exploring new products that value flexibility and fast response</li>
+</ul>
+</section></section>
+<section>
+<section id="market-design-challenges" class="title-slide slide level1 title center">
+<h1><span class="flow">Market Design Challenges</span></h1>
+
+</section>
+<section id="european-energy-crisis" class="slide level2">
+<h2>European Energy Crisis</h2>
+<p>The recent Europe-wide energy crisis—gas price surges, nuclear outages, droughts reducing hydro—unveiled vulnerabilities:</p>
+<ul>
+<li>Marginal pricing exposed volatile swings from ~40 €/MWh average to peaks over 500 €/MWh</li>
+<li>Renewable generators earned “windfall profits” when they received high prices during scarcity periods despite low costs</li>
+</ul>
+</section>
+<section id="critical-debates" class="slide level2">
+<h2>Critical Debates</h2>
+<p><strong>Is marginal pricing still optimal?</strong></p>
+<ul>
+<li>Ensures short-run cost reflectiveness</li>
+<li>Can create revenue uncertainty and political concerns</li>
+</ul>
+<p><strong>Reform Proposals:</strong></p>
+<ul>
+<li><strong>Contracts for Difference (CfDs)</strong>: Price stabilization for generators, reducing volatility but potential market distortions</li>
+<li><strong>Splitting markets</strong>: Separating renewable and conventional generation markets</li>
+<li><strong>Temporary interventions</strong>: Gas price caps or windfall taxes (Spain, Italy), capacity mechanisms or industrial electricity prices (debated in Germany)</li>
+</ul>
+<p><strong>Market Economy vs.&nbsp;State Intervention:</strong></p>
+<ul>
+<li>Market prices are essential for innovation and investment</li>
+<li>Current volatile market prices create new business models (e.g., battery storage through arbitrage)</li>
+<li>State interventions (capacity mechanisms, industrial electricity prices) can distort and dilute price signals</li>
+<li>Some interventions are politically necessary to ensure acceptance and supply security</li>
+<li>Balance needed between efficiency and steering</li>
+</ul>
+</section>
+<section id="future-perspective" class="slide level2">
+<h2>Future Perspective</h2>
+<ul>
+<li>More integration of all actors</li>
+<li>Technology-neutral and market-economically supported</li>
+<li>No radical system break planned</li>
+<li>Balanced adjustments to improve system efficiency and supply security</li>
+</ul>
+</section></section>
+<section>
+<section id="mathematical-economic-modeling" class="title-slide slide level1 title center">
+<h1><span class="flow">Mathematical &amp; Economic Modeling</span></h1>
+
+</section>
+<section id="market-operations" class="slide level2">
+<h2>Market Operations</h2>
+<p>Advanced market management relies on:</p>
+<ul>
+<li><strong>Optimization algorithms</strong>: Unit commitment, economic dispatch, and real-time balancing solved via linear and mixed-integer programming</li>
+<li><strong>Game theory and strategic bidding</strong>: Generators optimize bids under market rules to maximize profits under uncertainty</li>
+<li><strong>Stochastic forecasting</strong>: Managing weather-dependent renewables with probabilistic models</li>
+</ul>
+</section></section>
+<section>
+<section id="future-outlook" class="title-slide slide level1 title center">
+<h1><span class="flow">Future Outlook</span></h1>
+
+</section>
+<section id="skills-for-energy-professionals" class="slide level2">
+<h2>Skills for Energy Professionals</h2>
+<p>Professionals must:</p>
+<ul>
+<li>Understand evolving market designs and regulatory frameworks internationally</li>
+<li>Analyze market impacts of technology shifts (storage, demand-side response, hydrogen, digitalization)</li>
+<li>Use quantitative tools for market and risk analysis</li>
+<li>Engage in policy dialogues to shape designs balancing sustainability, reliability, and affordability</li>
+</ul>
+</section>
+<section id="key-challenges" class="slide level2">
+<h2>Key Challenges</h2>
+<ul>
+<li>Reconciling efficiency with investment signals</li>
+<li>Balancing fairness and consumer protection</li>
+<li>Integrating massive renewable capacity</li>
+<li>Managing geopolitical shocks and market volatility</li>
+</ul>
+</section></section>
+<section id="key-takeaways" class="title-slide slide level1 title center">
+<h1><span class="flow">Key Takeaways</span></h1>
+<p>The electricity market is a complex, layered system balancing instantaneous supply and demand.</p>
+<p><strong>Core Principles:</strong></p>
+<ol type="1">
+<li><strong>Marginal pricing</strong> grounded in merit order dispatch drives operational efficiency</li>
+<li><strong>Market layers</strong> (forward, day-ahead, intraday, balancing) work together</li>
+<li><strong>Renewable integration</strong> presents challenges requiring flexibility solutions</li>
+<li><strong>Market reforms</strong> aim to reconcile efficiency, investment signals, fairness, and consumer protection</li>
+</ol>
+</section>
+
+<section>
+<section id="discussion-questions" class="title-slide slide level1 title center">
+<h1><span class="flow">Discussion Questions</span></h1>
+
+</section>
+<section id="critical-questions-for-debate" class="slide level2">
+<h2>Critical Questions for Debate</h2>
+<ol type="1">
+<li><strong>Is marginal pricing still optimal?</strong>
+<ul>
+<li>Does it ensure efficiency while providing adequate investment signals?</li>
+<li>How should we handle windfall profits during price spikes?</li>
+</ul></li>
+<li><strong>Market vs.&nbsp;Regulation Balance</strong>
+<ul>
+<li>How much state intervention is acceptable?</li>
+<li>Can we maintain market efficiency while ensuring supply security?</li>
+</ul></li>
+<li><strong>Industrial Electricity Price</strong>
+<ul>
+<li>Should energy-intensive industries receive price protection?</li>
+<li>What are better alternatives to direct price caps?</li>
+</ul></li>
+<li><strong>Capacity Mechanisms</strong>
+<ul>
+<li>Are capacity markets necessary or can market-based solutions work?</li>
+<li>How to ensure investment in rarely-used but critical capacity?</li>
+</ul></li>
+<li><strong>Digitalization and Flexibility</strong>
+<ul>
+<li>How can digitalization improve market efficiency?</li>
+<li>What role should flexibility services play in future markets?</li>
+</ul></li>
+<li><strong>Market Segmentation</strong>
+<ul>
+<li>Should renewables and conventional generation be in separate markets?</li>
+<li>How would this impact investment incentives?</li>
+</ul></li>
+</ol>
+</section></section>
+<section>
+<section id="literature" class="title-slide slide level1 title center">
+<h1><span class="flow">Literature</span></h1>
+
+</section>
+<section id="core-references" class="slide level2">
+<h2>Core References</h2>
+<p>For more interesting literature to learn more about Julia and energy systems, take a look at the <a href="../general/literature.html">literature list</a> of this course.</p>
+</section>
+<section id="online-resources" class="slide level2">
+<h2>Online Resources</h2>
+<h3 id="documentation">Documentation</h3>
+<ul>
+<li><a href="https://docs.julialang.org/">Julia Documentation</a></li>
+<li><a href="https://jump.dev/">JuMP Documentation</a></li>
+<li><a href="https://dataframes.juliadata.org/">DataFrames.jl Documentation</a></li>
+</ul>
+<h3 id="electricity-market-resources">Electricity Market Resources</h3>
+<ul>
+<li><a href="https://www.epexspot.com/en/basicspowermarket">EPEX SPOT - Power Market Basics</a></li>
+<li><a href="https://www.smard.de/page/en/wiki-article/5884/5840/this-is-how-the-electricity-market-works">SMARD - How the Electricity Market Works</a></li>
+<li><a href="https://www.hertie-school.org/en/sustainability/about/energy-crisis">Hertie School - Energy Crisis Lecture Series</a></li>
+</ul>
+<h3 id="research-papers">Research Papers</h3>
+<ul>
+<li>Recent papers in journals like:
+<ul>
+<li>IEEE Transactions on Power Systems</li>
+<li>Energy</li>
+<li>Applied Energy</li>
+<li>European Journal of Operational Research</li>
+</ul></li>
+</ul>
+
+
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+<p>Lecture XIII - Electricity Markets Summary | Dr.&nbsp;Tobias Cors | <a href="../part-13/lecture-markets-short.html">Home</a></p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': true,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'slide',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'fast',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp("https:\/\/TobiasCors\.github\.io\/Energy-System-Optimization");
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

@@ -1,5 +1,952 @@
 [
   {
+    "objectID": "part-13/lecture-markets.html",
+    "href": "part-13/lecture-markets.html",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "",
+    "text": "The electricity market is the invisible backbone of modern society, determining how electricity flows from generators to our homes and businesses. Unlike other commodities, electricity cannot be easily stored and must be produced exactly when it’s consumed, making this market uniquely complex and fascinating.\nKey Questions We’ll Answer:\n\nHow are electricity prices set?\nWho are the key players?\nWhat makes this market unique?\nIs marginal pricing still optimal in the era of renewables?",
+    "crumbs": [
+      "13 Electricity Markets",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-13/lecture-markets.html#introduction",
+    "href": "part-13/lecture-markets.html#introduction",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "",
+    "text": "The electricity market is the invisible backbone of modern society, determining how electricity flows from generators to our homes and businesses. Unlike other commodities, electricity cannot be easily stored and must be produced exactly when it’s consumed, making this market uniquely complex and fascinating.\nKey Questions We’ll Answer:\n\nHow are electricity prices set?\nWho are the key players?\nWhat makes this market unique?\nIs marginal pricing still optimal in the era of renewables?",
+    "crumbs": [
+      "13 Electricity Markets",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-13/lecture-markets.html#definition",
+    "href": "part-13/lecture-markets.html#definition",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Definition",
+    "text": "Definition\nAn electricity market is a sophisticated system where electricity is bought, sold, and traded as a commodity, connecting producers with consumers through organized exchanges and bilateral contracts.\nUnique Characteristics:\n\nMust balance supply and demand in real-time\nCannot be stored economically at scale\nRequires instantaneous matching of generation and consumption",
+    "crumbs": [
+      "13 Electricity Markets",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-13/lecture-markets.html#key-participants",
+    "href": "part-13/lecture-markets.html#key-participants",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Key Participants",
+    "text": "Key Participants\n\nGenerators: Power plants, renewable energy producers\nTransmission System Operators (TSOs): Manage high-voltage networks\nDistribution System Operators (DSOs): Deliver power to end users\nSuppliers/Retailers: Buy wholesale, sell to consumers\nMarket Operators: Facilitate trading (e.g., EPEX SPOT)\nRegulators: Ensure fair competition and system reliability\n\n\n\n\nElectricity grid infrastructure diagram showing the flow from electricity generator through transmission and distribution operators to consumers, regulated by rules and facilitated by suppliers financially.\n\n\nSource: Illustrative diagram for this lecture; conceptual basis — ETPA grid operators, Eurelectric. See img/SOURCES.md.",
+    "crumbs": [
+      "13 Electricity Markets",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-13/lecture-markets.html#electricity-supply-chain",
+    "href": "part-13/lecture-markets.html#electricity-supply-chain",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Electricity Supply Chain",
+    "text": "Electricity Supply Chain\nThe electricity supply chain consists of four distinct stages, each with specific infrastructure and responsibilities:\n1. Generation: Power plants convert various energy sources into electricity\n\nRenewable: Wind (marginal cost ≈ €0/MWh), Solar (≈ €0/MWh)\nNuclear: Low marginal costs (≈ €10-15/MWh)\nFossil Fuels: Coal (≈ €20-40/MWh), Natural Gas (≈ €40-80/MWh)\nPeak Plants: Oil/Gas turbines (≈ €80-200/MWh)\n\n2. Transmission: High-voltage networks (110-400 kV) transport electricity over long distances\n3. Distribution: Medium and low-voltage networks deliver power locally\n4. Consumption: End users receive electricity through meters and local connections\n\n\n\nDetailed diagram showing electricity grid infrastructure stages from generation at power stations to transmission, distribution, and final consumption in homes and commercial buildings.\n\n\nSource: Illustrative diagram for this lecture; conceptual basis — SMARD electricity market. See img/SOURCES.md.",
+    "crumbs": [
+      "13 Electricity Markets",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-13/lecture-markets.html#wholesale-markets",
+    "href": "part-13/lecture-markets.html#wholesale-markets",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Wholesale Markets",
+    "text": "Wholesale Markets\n\nPurpose: Large-scale trading between generators and suppliers\nVolumes: Typically hundreds of MWh per transaction\nParticipants: Power plants, utilities, large industrial consumers\nPrice Volatility: High - can fluctuate from negative to €1000+/MWh\nTrading Timeframes: Years ahead to real-time (15-minute intervals)",
+    "crumbs": [
+      "13 Electricity Markets",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-13/lecture-markets.html#retail-markets",
+    "href": "part-13/lecture-markets.html#retail-markets",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Retail Markets",
+    "text": "Retail Markets\n\nPurpose: Supply electricity to end consumers\nParticipants: Households, small businesses, industrial customers\nPrice Stability: More stable, often fixed contracts\nAdditional Costs: Include distribution, transmission, taxes, supplier margins\nRegulation: Heavily regulated to protect consumers",
+    "crumbs": [
+      "13 Electricity Markets",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-13/lecture-markets.html#market-structures",
+    "href": "part-13/lecture-markets.html#market-structures",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Market Structures",
+    "text": "Market Structures\n\nRegulated: Single utility, government-set prices\nLiberalized: Competition among suppliers, market-based pricing",
+    "crumbs": [
+      "13 Electricity Markets",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-13/lecture-markets.html#forward-and-futures-markets",
+    "href": "part-13/lecture-markets.html#forward-and-futures-markets",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Forward and Futures Markets",
+    "text": "Forward and Futures Markets\n\nProvide long-term price signals and risk mitigation\nEnable financing of capital-intensive projects (renewables, nuclear)\nInclude standardized contracts traded on exchanges and bilateral agreements\nInfluence behavior in spot markets via hedging",
+    "crumbs": [
+      "13 Electricity Markets",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-13/lecture-markets.html#day-ahead-market",
+    "href": "part-13/lecture-markets.html#day-ahead-market",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Day-Ahead Market",
+    "text": "Day-Ahead Market\n\nCentralized market clearing typically runs once daily\nParticipants submit supply offers and demand bids by 12:00 noon\nMarket operator optimizes to balance forecasted demand and supply at minimum cost\nCovers a large share of total electricity demand\nResults published around 13:00 for next day’s delivery\nSince October 2025: 15-minute products in European day-ahead coupling (SDAC), replacing hourly-only trading in most bidding zones",
+    "crumbs": [
+      "13 Electricity Markets",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-13/lecture-markets.html#intraday-market",
+    "href": "part-13/lecture-markets.html#intraday-market",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Intraday Market",
+    "text": "Intraday Market\n\nContinuous or multiple auctions until close to delivery\nAllows participants to adjust positions based on updated forecasts\nCritical for managing variability from renewables and demand uncertainty\nTrading until 15 minutes before delivery\nIncreasing liquidity and granularity as renewables share grows",
+    "crumbs": [
+      "13 Electricity Markets",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-13/lecture-markets.html#balancing-market",
+    "href": "part-13/lecture-markets.html#balancing-market",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Balancing Market",
+    "text": "Balancing Market\n\nTransmission System Operators (TSOs) activate reserves to maintain supply-demand balance in real-time\nProcures balancing capacity ahead and energy as needed\nRelies on fast-ramping generators, storage, demand response\nEnsures frequency, voltage, and grid stability",
+    "crumbs": [
+      "13 Electricity Markets",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-13/lecture-markets.html#types-of-balancing-reserves",
+    "href": "part-13/lecture-markets.html#types-of-balancing-reserves",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Types of Balancing Reserves",
+    "text": "Types of Balancing Reserves\n\n\n\n\n\n\n\n\n\n\n\nType\nName\nProduct\nActivation\nPricing\nPlatform\n\n\n\n\nFCR\nFrequency Containment Reserve (Primärreserve)\nPower-only (positive & negative together)\nAutomated\nPay-as-clear\nNational\n\n\naFRR\nAutomatic Frequency Restoration Reserve (Sekundärreserve)\nSeparate power & energy (positive & negative)\nAutomated\nPay-as-bid\nPICASSO\n\n\nmFRR\nManual Frequency Restoration Reserve (Minutenreserve)\nSeparate power & energy (positive & negative)\nManual\nPay-as-bid\nMARI\n\n\n\nPICASSO (Platform for the International Coordination of Automatic Frequency Restoration and Stable System Operation): Automatically activates secondary reserve across European borders in real-time.\nMARI (Manually Activated Reserves Initiative): Central European platform for market-based exchange of minute reserve (mFRR), activated manually by TSOs in response to system needs.\n\n\n\nOverview of the organization of European electricity balancing markets and their relation to the wholesale electricity market.\n\n\nSource: ENTSO-E Market Report 2021, Figure 1 — ENTSO-E monitoring. Related analysis: Tolstrup et al. (2020).",
+    "crumbs": [
+      "13 Electricity Markets",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-13/lecture-markets.html#trading-process",
+    "href": "part-13/lecture-markets.html#trading-process",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Trading Process",
+    "text": "Trading Process\n\nSupply Bids: Generators offer electricity at specific prices\nDemand Bids: Suppliers/large consumers bid for required volumes\nMarket Clearing: Computer algorithms match supply and demand\nPrice Discovery: Marginal pricing determines uniform market price\n\n\nSource: Illustrative stock image for trading operations (lecture compilation). See img/SOURCES.md.",
+    "crumbs": [
+      "13 Electricity Markets",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-13/lecture-markets.html#how-merit-order-works",
+    "href": "part-13/lecture-markets.html#how-merit-order-works",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "How Merit Order Works",
+    "text": "How Merit Order Works\n\nRanking: Power plants bid their marginal costs (fuel + operating costs)\nStacking: Plants are arranged from cheapest to most expensive\nSelection: Starting with the cheapest, plants are activated until demand is met\nPrice Setting: The most expensive activated plant sets the market price for ALL generators",
+    "crumbs": [
+      "13 Electricity Markets",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-13/lecture-markets.html#typical-merit-order-mwh",
+    "href": "part-13/lecture-markets.html#typical-merit-order-mwh",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Typical Merit Order (€/MWh)",
+    "text": "Typical Merit Order (€/MWh)\n\nRenewables: €0-5 (no fuel costs)\nNuclear: €10-15 (low operating costs)\nLignite/Coal: €20-40 (fuel costs)\nNatural Gas: €40-80 (higher fuel costs)\nOil/Peak Plants: €80-200+ (emergency use)",
+    "crumbs": [
+      "13 Electricity Markets",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-13/lecture-markets.html#merit-order-effect",
+    "href": "part-13/lecture-markets.html#merit-order-effect",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Merit Order Effect",
+    "text": "Merit Order Effect\nRenewables push expensive plants out of the market, reducing overall prices.\nExample: In 2020, renewables provided 45% of German electricity, reducing average wholesale prices by an estimated €20/MWh compared to a fossil-only system.\nKey Insight: Low marginal cost renewables enter first, depressing prices during high output periods but creating steep price ramps in scarcity.\n\n\n\nElectricity price fluctuations illustrated by merit order effect with varied renewable energy input and operating costs per capacity.\n\n\nSource: Illustrative diagram for this lecture; conceptual basis — Next Kraftwerke merit order, Clean Energy Wire. See img/SOURCES.md.",
+    "crumbs": [
+      "13 Electricity Markets",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-13/lecture-markets.html#transmission-system-operators-tsos",
+    "href": "part-13/lecture-markets.html#transmission-system-operators-tsos",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Transmission System Operators (TSOs)",
+    "text": "Transmission System Operators (TSOs)\nPrimary Function: Maintain grid stability across large regions\nKey Responsibilities:\n\nBalance supply and demand in real-time\nOperate high-voltage transmission networks (110-400 kV)\nManage cross-border electricity flows\nProcure balancing services (frequency regulation, reserves)\nPlan network expansion and maintenance",
+    "crumbs": [
+      "13 Electricity Markets",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-13/lecture-markets.html#distribution-system-operators-dsos",
+    "href": "part-13/lecture-markets.html#distribution-system-operators-dsos",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Distribution System Operators (DSOs)",
+    "text": "Distribution System Operators (DSOs)\nPrimary Function: Deliver electricity to end consumers\nKey Responsibilities:\n\nOperate medium (6-50 kV) and low voltage (230-400 V) networks\nConnect new consumers and distributed generation\nManage local grid congestion\nInstall and maintain smart meters\n\nExample: Germany has 4 TSOs managing control areas, while over 800 DSOs handle local distribution",
+    "crumbs": [
+      "13 Electricity Markets",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-13/lecture-markets.html#market-integration-challenges",
+    "href": "part-13/lecture-markets.html#market-integration-challenges",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Market Integration Challenges",
+    "text": "Market Integration Challenges\nVariability: Wind and solar output depends on weather conditions\n\nGerman solar can vary from 0 to 40+ GW within hours\nWind power fluctuations create price volatility\n\nNear-Zero Marginal Costs: Renewables bid at €0-5/MWh, displacing conventional plants\n\nMerit Order Effect: Lower wholesale prices when renewables are abundant but steep price ramps when renewables are scarce\nNegative Prices: During high renewable output and low demand",
+    "crumbs": [
+      "13 Electricity Markets",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-13/lecture-markets.html#market-adaptations",
+    "href": "part-13/lecture-markets.html#market-adaptations",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Market Adaptations",
+    "text": "Market Adaptations\nFlexibility Services:\n\nBattery storage systems\nDemand response programs\nPower-to-X technologies (hydrogen production)\n\nGrid Infrastructure:\n\nSmart grid technology\nEnhanced transmission capacity\nBetter forecasting systems",
+    "crumbs": [
+      "13 Electricity Markets",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-13/lecture-markets.html#context-the-crisis-2021-2022",
+    "href": "part-13/lecture-markets.html#context-the-crisis-2021-2022",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Context: The Crisis (2021-2022)",
+    "text": "Context: The Crisis (2021-2022)\n\nSince early 2021, Russia drastically cut natural gas supplies to Europe\nNear-total halt mid-2022, driving gas prices up by more than tenfold\nElectricity prices soared to unprecedented levels\n\nPeak wholesale prices &gt;€560/MWh\nHistorical average ~€40/MWh",
+    "crumbs": [
+      "13 Electricity Markets",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-13/lecture-markets.html#effects-on-market-operations",
+    "href": "part-13/lecture-markets.html#effects-on-market-operations",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Effects on Market Operations",
+    "text": "Effects on Market Operations\n\nGas price surges amplify electricity prices (gas plants often set marginal prices)\nNuclear outages, drought-reduced hydro, and coal supply constraints exacerbated supply tightness\nLiquidity strains in markets emerged as firms faced margin calls\nRenewables saw windfall profits during price spikes, triggering political calls for windfall taxes\n\n\n\n\n\n\n\nNote\n\n\n\nWindfall profits are unusually high revenues that generators earn when market prices spike far above their marginal production costs. During the 2021–2022 crisis, many renewables and low-marginal-cost plants were still paid the high marginal market price (merit order), even though their operating costs did not rise with gas. Governments responded with temporary revenue caps and windfall taxes (e.g. EU emergency measures in 2022) to fund consumer relief — while debating whether such interventions distort long-term investment signals.",
+    "crumbs": [
+      "13 Electricity Markets",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-13/lecture-markets.html#exposed-vulnerabilities",
+    "href": "part-13/lecture-markets.html#exposed-vulnerabilities",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Exposed Vulnerabilities",
+    "text": "Exposed Vulnerabilities\n\nEnergy dependence on single suppliers\nMarket design limitations under extreme conditions\nAffordability challenges for vulnerable consumers and energy-intensive industries",
+    "crumbs": [
+      "13 Electricity Markets",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-13/lecture-markets.html#is-marginal-pricing-still-optimal",
+    "href": "part-13/lecture-markets.html#is-marginal-pricing-still-optimal",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Is Marginal Pricing Still Optimal?",
+    "text": "Is Marginal Pricing Still Optimal?\nArguments for Marginal Pricing:\n\nEnsures short-run economic efficiency\nReflects true cost of the last unit needed\nEncourages efficient dispatch\n\nArguments Against:\n\nCreates revenue uncertainty for investors\nCan lead to windfall profits for some generators\nPolitical concerns during price spikes\nInvestment signals complicated by increasing renewables\n\n\n\n\n\n\n\nNote\n\n\n\nThe 2024 EU electricity market reform explicitly kept marginal pricing in day-ahead markets. The debate has shifted toward complementary instruments (CfDs, PPAs, capacity mechanisms) rather than replacing the merit-order principle.",
+    "crumbs": [
+      "13 Electricity Markets",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-13/lecture-markets.html#the-missing-money-problem",
+    "href": "part-13/lecture-markets.html#the-missing-money-problem",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "The Missing Money Problem",
+    "text": "The Missing Money Problem\n\nInsufficient revenue for backup capacity that runs infrequently\nConventional plants needed less often but critical for system reliability\nReduced running hours affect economic viability",
+    "crumbs": [
+      "13 Electricity Markets",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-13/lecture-markets.html#market-complexity-and-digitalization",
+    "href": "part-13/lecture-markets.html#market-complexity-and-digitalization",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Market Complexity and Digitalization",
+    "text": "Market Complexity and Digitalization\n\nMarket consists of numerous actors: grid operators, traders, generators, storage and direct marketers\nHigh manual effort and lack of digitalization hinder efficient cooperation\nDigitalization is key to integrating actors and increasing flexibility\nExample: Automated flexibility platforms can make load shifting and peak management more efficient",
+    "crumbs": [
+      "13 Electricity Markets",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-13/lecture-markets.html#market-economy-vs.-state-intervention",
+    "href": "part-13/lecture-markets.html#market-economy-vs.-state-intervention",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Market Economy vs. State Intervention",
+    "text": "Market Economy vs. State Intervention\nCritics of Increasing Interventions:\n\nMarket prices are essential for innovation and investment\nCurrent volatile market prices create new business models (e.g., battery storage through arbitrage)\nState interventions (capacity mechanisms, industrial electricity prices) can distort and dilute price signals\n\nProponents of Interventions:\n\nSome interventions are politically necessary to ensure acceptance and supply security\nBalance needed between efficiency and steering",
+    "crumbs": [
+      "13 Electricity Markets",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-13/lecture-markets.html#arguments-for",
+    "href": "part-13/lecture-markets.html#arguments-for",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Arguments For",
+    "text": "Arguments For\n\nProtects industrial competitiveness against high energy prices\nPrevents production relocation abroad\nMaintains employment in energy-intensive sectors",
+    "crumbs": [
+      "13 Electricity Markets",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-13/lecture-markets.html#arguments-against",
+    "href": "part-13/lecture-markets.html#arguments-against",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Arguments Against",
+    "text": "Arguments Against\n\nMarket distortions through dampened price signals\nUncertainties in practical implementation (e.g., how new contracts/PPAs are accounted for)\nLack of incentive for flexibility offers or efficiency improvements\nDelays energy transition",
+    "crumbs": [
+      "13 Electricity Markets",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-13/lecture-markets.html#alternative-proposals",
+    "href": "part-13/lecture-markets.html#alternative-proposals",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Alternative Proposals",
+    "text": "Alternative Proposals\n\nFocus on tax/levy-based relief instruments instead of direct price caps\nMore targeted support mechanisms",
+    "crumbs": [
+      "13 Electricity Markets",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-13/lecture-markets.html#capacity-mechanisms",
+    "href": "part-13/lecture-markets.html#capacity-mechanisms",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Capacity Mechanisms",
+    "text": "Capacity Mechanisms\nPurpose: Reward investors for needed power plant capacities that run rarely but are system-critical\nCriticisms:\n\nOften seen as state-organized procurement without real competition\nHigh bureaucratic effort and distortions\nComplex search for market-based but reliable security mechanisms",
+    "crumbs": [
+      "13 Electricity Markets",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-13/lecture-markets.html#alternative-models",
+    "href": "part-13/lecture-markets.html#alternative-models",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Alternative Models",
+    "text": "Alternative Models\n\nMarket-based security obligations\nMandatory security obligations for generation capacities\nHowever, similarly complex with high transaction costs\n\nConsensus: With further phase-out of conventional generation, alternatives for supply security are required\n\n\n\n\n\n\nNote\n\n\n\nGermany (2025–2026): The federal government is introducing a capacity mechanism under the Stromversorgungssicherheits- und Kapazitätsgesetz (StromVKG). First auctions for long-duration capacity (≥10 h) are planned from September 2026, with broader technology-neutral capacity auctions to follow. The aim is to secure dispatchable backup capacity as coal and nuclear exit while renewables share grows.",
+    "crumbs": [
+      "13 Electricity Markets",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-13/lecture-markets.html#eu-electricity-market-reform",
+    "href": "part-13/lecture-markets.html#eu-electricity-market-reform",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "EU Electricity Market Reform",
+    "text": "EU Electricity Market Reform\n\nRegulation (EU) 2024/1747 adopted May 2024, in force from July 2024\nMarginal pricing retained for day-ahead markets — short-term price signals remain central\nTwo-way CfDs mandatory for new publicly supported renewable and low-carbon generation\nStronger consumer protection: more contract choice, PPAs promoted, crisis-response tools for Member States\nExcess CfD revenues to be passed on to consumers where applicable",
+    "crumbs": [
+      "13 Electricity Markets",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-13/lecture-markets.html#market-granularity-and-flexibility",
+    "href": "part-13/lecture-markets.html#market-granularity-and-flexibility",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Market Granularity and Flexibility",
+    "text": "Market Granularity and Flexibility\n\n15-minute day-ahead products live across Europe since 1 October 2025 (EPEX SPOT)\nAligns trading with 15-minute imbalance settlement and higher renewable shares\nIntraday markets absorb growing correction volumes; gate closure moves closer to real-time\nRising negative prices and capture-rate effects for solar/wind as midday supply surges",
+    "crumbs": [
+      "13 Electricity Markets",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-13/lecture-markets.html#germany-in-2026",
+    "href": "part-13/lecture-markets.html#germany-in-2026",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Germany in 2026",
+    "text": "Germany in 2026\n\nRenewables exceed ~50% of generation; wholesale prices more volatile (midday lows, evening peaks)\nNet electricity exporter again in early 2026 after import-heavy years\nCapacity mechanism (StromVKG) and industrial electricity price debates continue\nDigitalization of flexibility trading remains a priority",
+    "crumbs": [
+      "13 Electricity Markets",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-13/lecture-markets.html#contracts-for-difference-cfds",
+    "href": "part-13/lecture-markets.html#contracts-for-difference-cfds",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Contracts for Difference (CfDs)",
+    "text": "Contracts for Difference (CfDs)\n\nLong-term contracts offering fixed price support to generators\nReduces market revenue volatility and investment risk\nComplementary to market pricing rather than replacing it\nChallenge: Potential market distortions if widely applied\n\n\n\n\n\n\n\nNote\n\n\n\nA Contract for Difference (CfD) is a two-way hedge between a generator and a counterparty (often a public entity). A strike price is agreed in advance. The plant still sells electricity on the wholesale market, but any difference between the market price and the strike price is settled afterwards: if the market price is below the strike price, the generator receives a top-up; if it is above, excess revenues are typically returned (under EU rules, often to consumers). This gives investors revenue stability without removing plants from market dispatch. Since 2024, EU law requires new publicly supported renewable and low-carbon investments to use two-way CfDs (Regulation (EU) 2024/1747).",
+    "crumbs": [
+      "13 Electricity Markets",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-13/lecture-markets.html#market-splitting",
+    "href": "part-13/lecture-markets.html#market-splitting",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Market Splitting",
+    "text": "Market Splitting\n\nSeparate market mechanisms for renewables and conventional generation\nReflects different cost and risk profiles\nCould improve investment signals and operational efficiency\nChallenge: Requires innovative design to coordinate interaction and maintain overall efficiency",
+    "crumbs": [
+      "13 Electricity Markets",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-13/lecture-markets.html#short-term-regulatory-interventions",
+    "href": "part-13/lecture-markets.html#short-term-regulatory-interventions",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Short-Term Regulatory Interventions",
+    "text": "Short-Term Regulatory Interventions\n\nPrice caps on gas or electricity (e.g., Spain’s gas price cap)\nWindfall profit taxes on generators benefiting from market spikes\nPros: Immediate consumer relief and political feasibility\nCons: Potential dampening of market signals and liquidity impacts",
+    "crumbs": [
+      "13 Electricity Markets",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-13/lecture-markets.html#enhancing-market-granularity",
+    "href": "part-13/lecture-markets.html#enhancing-market-granularity",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Enhancing Market Granularity",
+    "text": "Enhancing Market Granularity\n\n15-minute day-ahead markets implemented in EU coupling since October 2025\nIncreasing intraday liquidity to reduce balancing risk for market participants\nValuing flexibility from storage, demand response, and interconnections\nIncorporating improved renewable forecasting",
+    "crumbs": [
+      "13 Electricity Markets",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-13/lecture-markets.html#digitalization-as-key-enabler",
+    "href": "part-13/lecture-markets.html#digitalization-as-key-enabler",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Digitalization as Key Enabler",
+    "text": "Digitalization as Key Enabler\n\nFacilitates real-time data availability\nEnables automated market processes\nImproves efficiency in energy trading\nEnhances coordination between market actors",
+    "crumbs": [
+      "13 Electricity Markets",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-13/lecture-markets.html#flexibility-services",
+    "href": "part-13/lecture-markets.html#flexibility-services",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Flexibility Services",
+    "text": "Flexibility Services\n\nStorage systems (batteries, pumped hydro)\nDemand-side management\nCross-sectoral integration (sector coupling)\nEnable better integration of renewable energies\nStabilize systems with variable feed-in",
+    "crumbs": [
+      "13 Electricity Markets",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-13/lecture-markets.html#future-perspective",
+    "href": "part-13/lecture-markets.html#future-perspective",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Future Perspective",
+    "text": "Future Perspective\n\nMore integration of all actors\nTechnology-neutral and market-economically supported\nNo radical system break planned\nBalanced adjustments to improve system efficiency and supply security",
+    "crumbs": [
+      "13 Electricity Markets",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-13/lecture-markets.html#optimization-in-market-operations",
+    "href": "part-13/lecture-markets.html#optimization-in-market-operations",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Optimization in Market Operations",
+    "text": "Optimization in Market Operations\n\nUnit commitment and economic dispatch: Mixed-integer programming optimizes plant operation schedules\nGame theory and strategic bidding: Generators optimize bids under market rules to maximize profits under uncertainty\nStochastic forecasting: Probabilistic models for weather-dependent renewables",
+    "crumbs": [
+      "13 Electricity Markets",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-13/lecture-markets.html#tools-and-technologies",
+    "href": "part-13/lecture-markets.html#tools-and-technologies",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Tools and Technologies",
+    "text": "Tools and Technologies\n\nJulia, Python: For modeling complex interactions\nPLEXOS, GAMS: Specialized optimization software\nEnable exploring policy impacts and simulating market outcomes",
+    "crumbs": [
+      "13 Electricity Markets",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-13/lecture-markets.html#skills-for-energy-professionals",
+    "href": "part-13/lecture-markets.html#skills-for-energy-professionals",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Skills for Energy Professionals",
+    "text": "Skills for Energy Professionals\n\nDeep understanding of physical grid constraints, market rules, and policy frameworks\nProficiency with modeling tools (Python, Julia, specialized optimization software)\nCapacity to assess impacts of evolving technologies (storage, hydrogen) and regulatory changes\nAbility to support policy design balancing sustainability, security, affordability, and market integrity",
+    "crumbs": [
+      "13 Electricity Markets",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-13/lecture-markets.html#critical-questions-for-debate",
+    "href": "part-13/lecture-markets.html#critical-questions-for-debate",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Critical Questions for Debate",
+    "text": "Critical Questions for Debate\n\nIs marginal pricing still optimal?\n\nDoes it ensure efficiency while providing adequate investment signals?\nHow should we handle windfall profits during price spikes?\n\nMarket vs. Regulation Balance\n\nHow much state intervention is acceptable?\nCan we maintain market efficiency while ensuring supply security?\n\nIndustrial Electricity Price\n\nShould energy-intensive industries receive price protection?\nWhat are better alternatives to direct price caps?\n\nCapacity Mechanisms\n\nAre capacity markets necessary or can market-based solutions work?\nHow to ensure investment in rarely-used but critical capacity?\n\nDigitalization and Flexibility\n\nHow can digitalization improve market efficiency?\nWhat role should flexibility services play in future markets?\n\nMarket Segmentation\n\nShould renewables and conventional generation be in separate markets?\nHow would this impact investment incentives?",
+    "crumbs": [
+      "13 Electricity Markets",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-13/lecture-markets.html#key-takeaways",
+    "href": "part-13/lecture-markets.html#key-takeaways",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Key Takeaways",
+    "text": "Key Takeaways\n\nMerit Order System: Ensures economic efficiency by dispatching cheapest generation first\nReal-Time Balance: Supply and demand must match exactly every second\nMultiple Markets: Day-ahead, intraday, and balancing markets work together\nInfrastructure Critical: TSOs and DSOs maintain system reliability\nRenewable Integration: Transforming market dynamics and requiring new flexibility solutions",
+    "crumbs": [
+      "13 Electricity Markets",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-13/lecture-markets.html#current-challenges",
+    "href": "part-13/lecture-markets.html#current-challenges",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Current Challenges",
+    "text": "Current Challenges\n\nPrice volatility from renewable intermittency and fuel price shocks\nGrid infrastructure needs (€750 billion required in Europe by 2030)\nMarket design issues (missing money problem, capacity mechanisms)\nRegulatory complexity balancing competition with reliability",
+    "crumbs": [
+      "13 Electricity Markets",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-13/lecture-markets.html#looking-forward",
+    "href": "part-13/lecture-markets.html#looking-forward",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Looking Forward",
+    "text": "Looking Forward\nThe electricity market needs a balanced framework that:\n\nPreserves the dynamics of market prices (marginal pricing confirmed in EU reform)\nUses CfDs and PPAs to stabilize investment without abandoning wholesale markets\nLeverages digitalization, storage, and finer market time resolution (15-minute products)\nAddresses supply security through capacity mechanisms (e.g. Germany’s StromVKG)\n\nThe electricity market directly impacts everyone - from the prices we pay to the reliability of our power supply and the pace of climate action.",
+    "crumbs": [
+      "13 Electricity Markets",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-13/lecture-markets.html#literature-i",
+    "href": "part-13/lecture-markets.html#literature-i",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Literature I",
+    "text": "Literature I\nFor the full course bibliography, see the literature list.",
+    "crumbs": [
+      "13 Electricity Markets",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-13/lecture-markets.html#literature-ii-online-resources",
+    "href": "part-13/lecture-markets.html#literature-ii-online-resources",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Literature II — Online Resources",
+    "text": "Literature II — Online Resources\n\nDocumentation\n\nJulia Documentation\nJuMP Documentation\nDataFrames.jl Documentation\n\n\n\nElectricity Market Resources\n\nEPEX SPOT - Power Market Basics\nEPEX SPOT - 15-minute products\nEU Council - Electricity market reform\nSMARD - How the Electricity Market Works\nFlorence School of Regulation - Future electricity market design\nHertie School - Energy Crisis Lecture Series\n\n\n\nMarket Design and Analysis\n\nNext Kraftwerke - Merit Order\nClean Energy Wire - Merit Order Effect\nSMARD - Electricity Market in Transition",
+    "crumbs": [
+      "13 Electricity Markets",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-13/lecture-markets.html#discussion-resources",
+    "href": "part-13/lecture-markets.html#discussion-resources",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Discussion Resources",
+    "text": "Discussion Resources\n\nEnergate Talk Discussion - German electricity market design discussion\nHertie School Lecture Series - Prof. Lion Hirth on European energy crisis",
+    "crumbs": [
+      "13 Electricity Markets",
+      "Lecture"
+    ]
+  },
+  {
+    "objectID": "part-13/lecture-presentation.html#introduction",
+    "href": "part-13/lecture-presentation.html#introduction",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Introduction",
+    "text": "Introduction\nThe electricity market is the invisible backbone of modern society, determining how electricity flows from generators to our homes and businesses. Unlike other commodities, electricity cannot be easily stored and must be produced exactly when it’s consumed, making this market uniquely complex and fascinating.\nKey Questions We’ll Answer:\n\nHow are electricity prices set?\nWho are the key players?\nWhat makes this market unique?\nIs marginal pricing still optimal in the era of renewables?"
+  },
+  {
+    "objectID": "part-13/lecture-presentation.html#definition",
+    "href": "part-13/lecture-presentation.html#definition",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Definition",
+    "text": "Definition\nAn electricity market is a sophisticated system where electricity is bought, sold, and traded as a commodity, connecting producers with consumers through organized exchanges and bilateral contracts.\nUnique Characteristics:\n\nMust balance supply and demand in real-time\nCannot be stored economically at scale\nRequires instantaneous matching of generation and consumption"
+  },
+  {
+    "objectID": "part-13/lecture-presentation.html#key-participants",
+    "href": "part-13/lecture-presentation.html#key-participants",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Key Participants",
+    "text": "Key Participants\n\nGenerators: Power plants, renewable energy producers\nTransmission System Operators (TSOs): Manage high-voltage networks\nDistribution System Operators (DSOs): Deliver power to end users\nSuppliers/Retailers: Buy wholesale, sell to consumers\nMarket Operators: Facilitate trading (e.g., EPEX SPOT)\nRegulators: Ensure fair competition and system reliability\n\n\nElectricity grid infrastructure diagram showing the flow from electricity generator through transmission and distribution operators to consumers, regulated by rules and facilitated by suppliers financially.Source: Illustrative diagram for this lecture; conceptual basis — ETPA grid operators, Eurelectric. See img/SOURCES.md."
+  },
+  {
+    "objectID": "part-13/lecture-presentation.html#electricity-supply-chain",
+    "href": "part-13/lecture-presentation.html#electricity-supply-chain",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Electricity Supply Chain",
+    "text": "Electricity Supply Chain\nThe electricity supply chain consists of four distinct stages, each with specific infrastructure and responsibilities:\n1. Generation: Power plants convert various energy sources into electricity\n\nRenewable: Wind (marginal cost ≈ €0/MWh), Solar (≈ €0/MWh)\nNuclear: Low marginal costs (≈ €10-15/MWh)\nFossil Fuels: Coal (≈ €20-40/MWh), Natural Gas (≈ €40-80/MWh)\nPeak Plants: Oil/Gas turbines (≈ €80-200/MWh)\n\n2. Transmission: High-voltage networks (110-400 kV) transport electricity over long distances\n3. Distribution: Medium and low-voltage networks deliver power locally\n4. Consumption: End users receive electricity through meters and local connections\n\nDetailed diagram showing electricity grid infrastructure stages from generation at power stations to transmission, distribution, and final consumption in homes and commercial buildings.Source: Illustrative diagram for this lecture; conceptual basis — SMARD electricity market. See img/SOURCES.md."
+  },
+  {
+    "objectID": "part-13/lecture-presentation.html#wholesale-markets",
+    "href": "part-13/lecture-presentation.html#wholesale-markets",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Wholesale Markets",
+    "text": "Wholesale Markets\n\nPurpose: Large-scale trading between generators and suppliers\nVolumes: Typically hundreds of MWh per transaction\nParticipants: Power plants, utilities, large industrial consumers\nPrice Volatility: High - can fluctuate from negative to €1000+/MWh\nTrading Timeframes: Years ahead to real-time (15-minute intervals)"
+  },
+  {
+    "objectID": "part-13/lecture-presentation.html#retail-markets",
+    "href": "part-13/lecture-presentation.html#retail-markets",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Retail Markets",
+    "text": "Retail Markets\n\nPurpose: Supply electricity to end consumers\nParticipants: Households, small businesses, industrial customers\nPrice Stability: More stable, often fixed contracts\nAdditional Costs: Include distribution, transmission, taxes, supplier margins\nRegulation: Heavily regulated to protect consumers"
+  },
+  {
+    "objectID": "part-13/lecture-presentation.html#market-structures",
+    "href": "part-13/lecture-presentation.html#market-structures",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Market Structures",
+    "text": "Market Structures\n\nRegulated: Single utility, government-set prices\nLiberalized: Competition among suppliers, market-based pricing"
+  },
+  {
+    "objectID": "part-13/lecture-presentation.html#forward-and-futures-markets",
+    "href": "part-13/lecture-presentation.html#forward-and-futures-markets",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Forward and Futures Markets",
+    "text": "Forward and Futures Markets\n\nProvide long-term price signals and risk mitigation\nEnable financing of capital-intensive projects (renewables, nuclear)\nInclude standardized contracts traded on exchanges and bilateral agreements\nInfluence behavior in spot markets via hedging"
+  },
+  {
+    "objectID": "part-13/lecture-presentation.html#day-ahead-market",
+    "href": "part-13/lecture-presentation.html#day-ahead-market",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Day-Ahead Market",
+    "text": "Day-Ahead Market\n\nCentralized market clearing typically runs once daily\nParticipants submit supply offers and demand bids by 12:00 noon\nMarket operator optimizes to balance forecasted demand and supply at minimum cost\nCovers a large share of total electricity demand\nResults published around 13:00 for next day’s delivery\nSince October 2025: 15-minute products in European day-ahead coupling (SDAC), replacing hourly-only trading in most bidding zones"
+  },
+  {
+    "objectID": "part-13/lecture-presentation.html#intraday-market",
+    "href": "part-13/lecture-presentation.html#intraday-market",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Intraday Market",
+    "text": "Intraday Market\n\nContinuous or multiple auctions until close to delivery\nAllows participants to adjust positions based on updated forecasts\nCritical for managing variability from renewables and demand uncertainty\nTrading until 15 minutes before delivery\nIncreasing liquidity and granularity as renewables share grows"
+  },
+  {
+    "objectID": "part-13/lecture-presentation.html#balancing-market",
+    "href": "part-13/lecture-presentation.html#balancing-market",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Balancing Market",
+    "text": "Balancing Market\n\nTransmission System Operators (TSOs) activate reserves to maintain supply-demand balance in real-time\nProcures balancing capacity ahead and energy as needed\nRelies on fast-ramping generators, storage, demand response\nEnsures frequency, voltage, and grid stability"
+  },
+  {
+    "objectID": "part-13/lecture-presentation.html#types-of-balancing-reserves",
+    "href": "part-13/lecture-presentation.html#types-of-balancing-reserves",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Types of Balancing Reserves",
+    "text": "Types of Balancing Reserves\n\n\n\n\n\n\n\n\n\n\n\nType\nName\nProduct\nActivation\nPricing\nPlatform\n\n\n\n\nFCR\nFrequency Containment Reserve (Primärreserve)\nPower-only (positive & negative together)\nAutomated\nPay-as-clear\nNational\n\n\naFRR\nAutomatic Frequency Restoration Reserve (Sekundärreserve)\nSeparate power & energy (positive & negative)\nAutomated\nPay-as-bid\nPICASSO\n\n\nmFRR\nManual Frequency Restoration Reserve (Minutenreserve)\nSeparate power & energy (positive & negative)\nManual\nPay-as-bid\nMARI\n\n\n\nPICASSO (Platform for the International Coordination of Automatic Frequency Restoration and Stable System Operation): Automatically activates secondary reserve across European borders in real-time.\nMARI (Manually Activated Reserves Initiative): Central European platform for market-based exchange of minute reserve (mFRR), activated manually by TSOs in response to system needs.\n\nOverview of the organization of European electricity balancing markets and their relation to the wholesale electricity market.Source: ENTSO-E Market Report 2021, Figure 1 — ENTSO-E monitoring. Related analysis: Tolstrup et al. (2020)."
+  },
+  {
+    "objectID": "part-13/lecture-presentation.html#trading-process",
+    "href": "part-13/lecture-presentation.html#trading-process",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Trading Process",
+    "text": "Trading Process\n\nSupply Bids: Generators offer electricity at specific prices\nDemand Bids: Suppliers/large consumers bid for required volumes\nMarket Clearing: Computer algorithms match supply and demand\nPrice Discovery: Marginal pricing determines uniform market price\n\n\nSource: Illustrative stock image for trading operations (lecture compilation). See img/SOURCES.md."
+  },
+  {
+    "objectID": "part-13/lecture-presentation.html#how-merit-order-works",
+    "href": "part-13/lecture-presentation.html#how-merit-order-works",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "How Merit Order Works",
+    "text": "How Merit Order Works\n\nRanking: Power plants bid their marginal costs (fuel + operating costs)\nStacking: Plants are arranged from cheapest to most expensive\nSelection: Starting with the cheapest, plants are activated until demand is met\nPrice Setting: The most expensive activated plant sets the market price for ALL generators"
+  },
+  {
+    "objectID": "part-13/lecture-presentation.html#typical-merit-order-mwh",
+    "href": "part-13/lecture-presentation.html#typical-merit-order-mwh",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Typical Merit Order (€/MWh)",
+    "text": "Typical Merit Order (€/MWh)\n\nRenewables: €0-5 (no fuel costs)\nNuclear: €10-15 (low operating costs)\nLignite/Coal: €20-40 (fuel costs)\nNatural Gas: €40-80 (higher fuel costs)\nOil/Peak Plants: €80-200+ (emergency use)"
+  },
+  {
+    "objectID": "part-13/lecture-presentation.html#merit-order-effect",
+    "href": "part-13/lecture-presentation.html#merit-order-effect",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Merit Order Effect",
+    "text": "Merit Order Effect\nRenewables push expensive plants out of the market, reducing overall prices.\nExample: In 2020, renewables provided 45% of German electricity, reducing average wholesale prices by an estimated €20/MWh compared to a fossil-only system.\nKey Insight: Low marginal cost renewables enter first, depressing prices during high output periods but creating steep price ramps in scarcity.\n\nElectricity price fluctuations illustrated by merit order effect with varied renewable energy input and operating costs per capacity.Source: Illustrative diagram for this lecture; conceptual basis — Next Kraftwerke merit order, Clean Energy Wire. See img/SOURCES.md."
+  },
+  {
+    "objectID": "part-13/lecture-presentation.html#transmission-system-operators-tsos",
+    "href": "part-13/lecture-presentation.html#transmission-system-operators-tsos",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Transmission System Operators (TSOs)",
+    "text": "Transmission System Operators (TSOs)\nPrimary Function: Maintain grid stability across large regions\nKey Responsibilities:\n\nBalance supply and demand in real-time\nOperate high-voltage transmission networks (110-400 kV)\nManage cross-border electricity flows\nProcure balancing services (frequency regulation, reserves)\nPlan network expansion and maintenance"
+  },
+  {
+    "objectID": "part-13/lecture-presentation.html#distribution-system-operators-dsos",
+    "href": "part-13/lecture-presentation.html#distribution-system-operators-dsos",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Distribution System Operators (DSOs)",
+    "text": "Distribution System Operators (DSOs)\nPrimary Function: Deliver electricity to end consumers\nKey Responsibilities:\n\nOperate medium (6-50 kV) and low voltage (230-400 V) networks\nConnect new consumers and distributed generation\nManage local grid congestion\nInstall and maintain smart meters\n\nExample: Germany has 4 TSOs managing control areas, while over 800 DSOs handle local distribution"
+  },
+  {
+    "objectID": "part-13/lecture-presentation.html#market-integration-challenges",
+    "href": "part-13/lecture-presentation.html#market-integration-challenges",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Market Integration Challenges",
+    "text": "Market Integration Challenges\nVariability: Wind and solar output depends on weather conditions\n\nGerman solar can vary from 0 to 40+ GW within hours\nWind power fluctuations create price volatility\n\nNear-Zero Marginal Costs: Renewables bid at €0-5/MWh, displacing conventional plants\n\nMerit Order Effect: Lower wholesale prices when renewables are abundant but steep price ramps when renewables are scarce\nNegative Prices: During high renewable output and low demand"
+  },
+  {
+    "objectID": "part-13/lecture-presentation.html#market-adaptations",
+    "href": "part-13/lecture-presentation.html#market-adaptations",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Market Adaptations",
+    "text": "Market Adaptations\nFlexibility Services:\n\nBattery storage systems\nDemand response programs\nPower-to-X technologies (hydrogen production)\n\nGrid Infrastructure:\n\nSmart grid technology\nEnhanced transmission capacity\nBetter forecasting systems"
+  },
+  {
+    "objectID": "part-13/lecture-presentation.html#context-the-crisis-2021-2022",
+    "href": "part-13/lecture-presentation.html#context-the-crisis-2021-2022",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Context: The Crisis (2021-2022)",
+    "text": "Context: The Crisis (2021-2022)\n\nSince early 2021, Russia drastically cut natural gas supplies to Europe\nNear-total halt mid-2022, driving gas prices up by more than tenfold\nElectricity prices soared to unprecedented levels\n\nPeak wholesale prices &gt;€560/MWh\nHistorical average ~€40/MWh"
+  },
+  {
+    "objectID": "part-13/lecture-presentation.html#effects-on-market-operations",
+    "href": "part-13/lecture-presentation.html#effects-on-market-operations",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Effects on Market Operations",
+    "text": "Effects on Market Operations\n\nGas price surges amplify electricity prices (gas plants often set marginal prices)\nNuclear outages, drought-reduced hydro, and coal supply constraints exacerbated supply tightness\nLiquidity strains in markets emerged as firms faced margin calls\nRenewables saw windfall profits during price spikes, triggering political calls for windfall taxes\n\n\n\n\n\n\n\nNote\n\n\nWindfall profits are unusually high revenues that generators earn when market prices spike far above their marginal production costs. During the 2021–2022 crisis, many renewables and low-marginal-cost plants were still paid the high marginal market price (merit order), even though their operating costs did not rise with gas. Governments responded with temporary revenue caps and windfall taxes (e.g. EU emergency measures in 2022) to fund consumer relief — while debating whether such interventions distort long-term investment signals."
+  },
+  {
+    "objectID": "part-13/lecture-presentation.html#exposed-vulnerabilities",
+    "href": "part-13/lecture-presentation.html#exposed-vulnerabilities",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Exposed Vulnerabilities",
+    "text": "Exposed Vulnerabilities\n\nEnergy dependence on single suppliers\nMarket design limitations under extreme conditions\nAffordability challenges for vulnerable consumers and energy-intensive industries"
+  },
+  {
+    "objectID": "part-13/lecture-presentation.html#is-marginal-pricing-still-optimal",
+    "href": "part-13/lecture-presentation.html#is-marginal-pricing-still-optimal",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Is Marginal Pricing Still Optimal?",
+    "text": "Is Marginal Pricing Still Optimal?\nArguments for Marginal Pricing:\n\nEnsures short-run economic efficiency\nReflects true cost of the last unit needed\nEncourages efficient dispatch\n\nArguments Against:\n\nCreates revenue uncertainty for investors\nCan lead to windfall profits for some generators\nPolitical concerns during price spikes\nInvestment signals complicated by increasing renewables\n\n\n\n\n\n\n\nNote\n\n\nThe 2024 EU electricity market reform explicitly kept marginal pricing in day-ahead markets. The debate has shifted toward complementary instruments (CfDs, PPAs, capacity mechanisms) rather than replacing the merit-order principle."
+  },
+  {
+    "objectID": "part-13/lecture-presentation.html#the-missing-money-problem",
+    "href": "part-13/lecture-presentation.html#the-missing-money-problem",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "The Missing Money Problem",
+    "text": "The Missing Money Problem\n\nInsufficient revenue for backup capacity that runs infrequently\nConventional plants needed less often but critical for system reliability\nReduced running hours affect economic viability"
+  },
+  {
+    "objectID": "part-13/lecture-presentation.html#market-complexity-and-digitalization",
+    "href": "part-13/lecture-presentation.html#market-complexity-and-digitalization",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Market Complexity and Digitalization",
+    "text": "Market Complexity and Digitalization\n\nMarket consists of numerous actors: grid operators, traders, generators, storage and direct marketers\nHigh manual effort and lack of digitalization hinder efficient cooperation\nDigitalization is key to integrating actors and increasing flexibility\nExample: Automated flexibility platforms can make load shifting and peak management more efficient"
+  },
+  {
+    "objectID": "part-13/lecture-presentation.html#market-economy-vs.-state-intervention",
+    "href": "part-13/lecture-presentation.html#market-economy-vs.-state-intervention",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Market Economy vs. State Intervention",
+    "text": "Market Economy vs. State Intervention\nCritics of Increasing Interventions:\n\nMarket prices are essential for innovation and investment\nCurrent volatile market prices create new business models (e.g., battery storage through arbitrage)\nState interventions (capacity mechanisms, industrial electricity prices) can distort and dilute price signals\n\nProponents of Interventions:\n\nSome interventions are politically necessary to ensure acceptance and supply security\nBalance needed between efficiency and steering"
+  },
+  {
+    "objectID": "part-13/lecture-presentation.html#arguments-for",
+    "href": "part-13/lecture-presentation.html#arguments-for",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Arguments For",
+    "text": "Arguments For\n\nProtects industrial competitiveness against high energy prices\nPrevents production relocation abroad\nMaintains employment in energy-intensive sectors"
+  },
+  {
+    "objectID": "part-13/lecture-presentation.html#arguments-against",
+    "href": "part-13/lecture-presentation.html#arguments-against",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Arguments Against",
+    "text": "Arguments Against\n\nMarket distortions through dampened price signals\nUncertainties in practical implementation (e.g., how new contracts/PPAs are accounted for)\nLack of incentive for flexibility offers or efficiency improvements\nDelays energy transition"
+  },
+  {
+    "objectID": "part-13/lecture-presentation.html#alternative-proposals",
+    "href": "part-13/lecture-presentation.html#alternative-proposals",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Alternative Proposals",
+    "text": "Alternative Proposals\n\nFocus on tax/levy-based relief instruments instead of direct price caps\nMore targeted support mechanisms"
+  },
+  {
+    "objectID": "part-13/lecture-presentation.html#capacity-mechanisms",
+    "href": "part-13/lecture-presentation.html#capacity-mechanisms",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Capacity Mechanisms",
+    "text": "Capacity Mechanisms\nPurpose: Reward investors for needed power plant capacities that run rarely but are system-critical\nCriticisms:\n\nOften seen as state-organized procurement without real competition\nHigh bureaucratic effort and distortions\nComplex search for market-based but reliable security mechanisms"
+  },
+  {
+    "objectID": "part-13/lecture-presentation.html#alternative-models",
+    "href": "part-13/lecture-presentation.html#alternative-models",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Alternative Models",
+    "text": "Alternative Models\n\nMarket-based security obligations\nMandatory security obligations for generation capacities\nHowever, similarly complex with high transaction costs\n\nConsensus: With further phase-out of conventional generation, alternatives for supply security are required\n\n\n\n\n\n\nNote\n\n\nGermany (2025–2026): The federal government is introducing a capacity mechanism under the Stromversorgungssicherheits- und Kapazitätsgesetz (StromVKG). First auctions for long-duration capacity (≥10 h) are planned from September 2026, with broader technology-neutral capacity auctions to follow. The aim is to secure dispatchable backup capacity as coal and nuclear exit while renewables share grows."
+  },
+  {
+    "objectID": "part-13/lecture-presentation.html#eu-electricity-market-reform",
+    "href": "part-13/lecture-presentation.html#eu-electricity-market-reform",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "EU Electricity Market Reform",
+    "text": "EU Electricity Market Reform\n\nRegulation (EU) 2024/1747 adopted May 2024, in force from July 2024\nMarginal pricing retained for day-ahead markets — short-term price signals remain central\nTwo-way CfDs mandatory for new publicly supported renewable and low-carbon generation\nStronger consumer protection: more contract choice, PPAs promoted, crisis-response tools for Member States\nExcess CfD revenues to be passed on to consumers where applicable"
+  },
+  {
+    "objectID": "part-13/lecture-presentation.html#market-granularity-and-flexibility",
+    "href": "part-13/lecture-presentation.html#market-granularity-and-flexibility",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Market Granularity and Flexibility",
+    "text": "Market Granularity and Flexibility\n\n15-minute day-ahead products live across Europe since 1 October 2025 (EPEX SPOT)\nAligns trading with 15-minute imbalance settlement and higher renewable shares\nIntraday markets absorb growing correction volumes; gate closure moves closer to real-time\nRising negative prices and capture-rate effects for solar/wind as midday supply surges"
+  },
+  {
+    "objectID": "part-13/lecture-presentation.html#germany-in-2026",
+    "href": "part-13/lecture-presentation.html#germany-in-2026",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Germany in 2026",
+    "text": "Germany in 2026\n\nRenewables exceed ~50% of generation; wholesale prices more volatile (midday lows, evening peaks)\nNet electricity exporter again in early 2026 after import-heavy years\nCapacity mechanism (StromVKG) and industrial electricity price debates continue\nDigitalization of flexibility trading remains a priority"
+  },
+  {
+    "objectID": "part-13/lecture-presentation.html#contracts-for-difference-cfds",
+    "href": "part-13/lecture-presentation.html#contracts-for-difference-cfds",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Contracts for Difference (CfDs)",
+    "text": "Contracts for Difference (CfDs)\n\nLong-term contracts offering fixed price support to generators\nReduces market revenue volatility and investment risk\nComplementary to market pricing rather than replacing it\nChallenge: Potential market distortions if widely applied\n\n\n\n\n\n\n\nNote\n\n\nA Contract for Difference (CfD) is a two-way hedge between a generator and a counterparty (often a public entity). A strike price is agreed in advance. The plant still sells electricity on the wholesale market, but any difference between the market price and the strike price is settled afterwards: if the market price is below the strike price, the generator receives a top-up; if it is above, excess revenues are typically returned (under EU rules, often to consumers). This gives investors revenue stability without removing plants from market dispatch. Since 2024, EU law requires new publicly supported renewable and low-carbon investments to use two-way CfDs (Regulation (EU) 2024/1747)."
+  },
+  {
+    "objectID": "part-13/lecture-presentation.html#market-splitting",
+    "href": "part-13/lecture-presentation.html#market-splitting",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Market Splitting",
+    "text": "Market Splitting\n\nSeparate market mechanisms for renewables and conventional generation\nReflects different cost and risk profiles\nCould improve investment signals and operational efficiency\nChallenge: Requires innovative design to coordinate interaction and maintain overall efficiency"
+  },
+  {
+    "objectID": "part-13/lecture-presentation.html#short-term-regulatory-interventions",
+    "href": "part-13/lecture-presentation.html#short-term-regulatory-interventions",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Short-Term Regulatory Interventions",
+    "text": "Short-Term Regulatory Interventions\n\nPrice caps on gas or electricity (e.g., Spain’s gas price cap)\nWindfall profit taxes on generators benefiting from market spikes\nPros: Immediate consumer relief and political feasibility\nCons: Potential dampening of market signals and liquidity impacts"
+  },
+  {
+    "objectID": "part-13/lecture-presentation.html#enhancing-market-granularity",
+    "href": "part-13/lecture-presentation.html#enhancing-market-granularity",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Enhancing Market Granularity",
+    "text": "Enhancing Market Granularity\n\n15-minute day-ahead markets implemented in EU coupling since October 2025\nIncreasing intraday liquidity to reduce balancing risk for market participants\nValuing flexibility from storage, demand response, and interconnections\nIncorporating improved renewable forecasting"
+  },
+  {
+    "objectID": "part-13/lecture-presentation.html#digitalization-as-key-enabler",
+    "href": "part-13/lecture-presentation.html#digitalization-as-key-enabler",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Digitalization as Key Enabler",
+    "text": "Digitalization as Key Enabler\n\nFacilitates real-time data availability\nEnables automated market processes\nImproves efficiency in energy trading\nEnhances coordination between market actors"
+  },
+  {
+    "objectID": "part-13/lecture-presentation.html#flexibility-services",
+    "href": "part-13/lecture-presentation.html#flexibility-services",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Flexibility Services",
+    "text": "Flexibility Services\n\nStorage systems (batteries, pumped hydro)\nDemand-side management\nCross-sectoral integration (sector coupling)\nEnable better integration of renewable energies\nStabilize systems with variable feed-in"
+  },
+  {
+    "objectID": "part-13/lecture-presentation.html#future-perspective",
+    "href": "part-13/lecture-presentation.html#future-perspective",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Future Perspective",
+    "text": "Future Perspective\n\nMore integration of all actors\nTechnology-neutral and market-economically supported\nNo radical system break planned\nBalanced adjustments to improve system efficiency and supply security"
+  },
+  {
+    "objectID": "part-13/lecture-presentation.html#optimization-in-market-operations",
+    "href": "part-13/lecture-presentation.html#optimization-in-market-operations",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Optimization in Market Operations",
+    "text": "Optimization in Market Operations\n\nUnit commitment and economic dispatch: Mixed-integer programming optimizes plant operation schedules\nGame theory and strategic bidding: Generators optimize bids under market rules to maximize profits under uncertainty\nStochastic forecasting: Probabilistic models for weather-dependent renewables"
+  },
+  {
+    "objectID": "part-13/lecture-presentation.html#tools-and-technologies",
+    "href": "part-13/lecture-presentation.html#tools-and-technologies",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Tools and Technologies",
+    "text": "Tools and Technologies\n\nJulia, Python: For modeling complex interactions\nPLEXOS, GAMS: Specialized optimization software\nEnable exploring policy impacts and simulating market outcomes"
+  },
+  {
+    "objectID": "part-13/lecture-presentation.html#skills-for-energy-professionals",
+    "href": "part-13/lecture-presentation.html#skills-for-energy-professionals",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Skills for Energy Professionals",
+    "text": "Skills for Energy Professionals\n\nDeep understanding of physical grid constraints, market rules, and policy frameworks\nProficiency with modeling tools (Python, Julia, specialized optimization software)\nCapacity to assess impacts of evolving technologies (storage, hydrogen) and regulatory changes\nAbility to support policy design balancing sustainability, security, affordability, and market integrity"
+  },
+  {
+    "objectID": "part-13/lecture-presentation.html#critical-questions-for-debate",
+    "href": "part-13/lecture-presentation.html#critical-questions-for-debate",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Critical Questions for Debate",
+    "text": "Critical Questions for Debate\n\nIs marginal pricing still optimal?\n\nDoes it ensure efficiency while providing adequate investment signals?\nHow should we handle windfall profits during price spikes?\n\nMarket vs. Regulation Balance\n\nHow much state intervention is acceptable?\nCan we maintain market efficiency while ensuring supply security?\n\nIndustrial Electricity Price\n\nShould energy-intensive industries receive price protection?\nWhat are better alternatives to direct price caps?\n\nCapacity Mechanisms\n\nAre capacity markets necessary or can market-based solutions work?\nHow to ensure investment in rarely-used but critical capacity?\n\nDigitalization and Flexibility\n\nHow can digitalization improve market efficiency?\nWhat role should flexibility services play in future markets?\n\nMarket Segmentation\n\nShould renewables and conventional generation be in separate markets?\nHow would this impact investment incentives?"
+  },
+  {
+    "objectID": "part-13/lecture-presentation.html#key-takeaways",
+    "href": "part-13/lecture-presentation.html#key-takeaways",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Key Takeaways",
+    "text": "Key Takeaways\n\nMerit Order System: Ensures economic efficiency by dispatching cheapest generation first\nReal-Time Balance: Supply and demand must match exactly every second\nMultiple Markets: Day-ahead, intraday, and balancing markets work together\nInfrastructure Critical: TSOs and DSOs maintain system reliability\nRenewable Integration: Transforming market dynamics and requiring new flexibility solutions"
+  },
+  {
+    "objectID": "part-13/lecture-presentation.html#current-challenges",
+    "href": "part-13/lecture-presentation.html#current-challenges",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Current Challenges",
+    "text": "Current Challenges\n\nPrice volatility from renewable intermittency and fuel price shocks\nGrid infrastructure needs (€750 billion required in Europe by 2030)\nMarket design issues (missing money problem, capacity mechanisms)\nRegulatory complexity balancing competition with reliability"
+  },
+  {
+    "objectID": "part-13/lecture-presentation.html#looking-forward",
+    "href": "part-13/lecture-presentation.html#looking-forward",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Looking Forward",
+    "text": "Looking Forward\nThe electricity market needs a balanced framework that:\n\nPreserves the dynamics of market prices (marginal pricing confirmed in EU reform)\nUses CfDs and PPAs to stabilize investment without abandoning wholesale markets\nLeverages digitalization, storage, and finer market time resolution (15-minute products)\nAddresses supply security through capacity mechanisms (e.g. Germany’s StromVKG)\n\nThe electricity market directly impacts everyone - from the prices we pay to the reliability of our power supply and the pace of climate action."
+  },
+  {
+    "objectID": "part-13/lecture-presentation.html#literature-i",
+    "href": "part-13/lecture-presentation.html#literature-i",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Literature I",
+    "text": "Literature I\nFor the full course bibliography, see the literature list."
+  },
+  {
+    "objectID": "part-13/lecture-presentation.html#literature-ii-online-resources",
+    "href": "part-13/lecture-presentation.html#literature-ii-online-resources",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Literature II — Online Resources",
+    "text": "Literature II — Online Resources\nDocumentation\n\nJulia Documentation\nJuMP Documentation\nDataFrames.jl Documentation\n\nElectricity Market Resources\n\nEPEX SPOT - Power Market Basics\nEPEX SPOT - 15-minute products\nEU Council - Electricity market reform\nSMARD - How the Electricity Market Works\nFlorence School of Regulation - Future electricity market design\nHertie School - Energy Crisis Lecture Series\n\nMarket Design and Analysis\n\nNext Kraftwerke - Merit Order\nClean Energy Wire - Merit Order Effect\nSMARD - Electricity Market in Transition"
+  },
+  {
+    "objectID": "part-13/lecture-presentation.html#discussion-resources",
+    "href": "part-13/lecture-presentation.html#discussion-resources",
+    "title": "Lecture XIII - Electricity Markets",
+    "section": "Discussion Resources",
+    "text": "Discussion Resources\n\nEnergate Talk Discussion - German electricity market design discussion\nHertie School Lecture Series - Prof. Lion Hirth on European energy crisis\n\n\n\n\n\nTolstrup, Ksenia, Jesus Lago, and L. J. Vries. 2020. “Effect of Market Design on Strategic Bidding Behavior: Model-Based Analysis of European Electricity Balancing Markets.” Applied Energy 270 (July): 115130. https://doi.org/10.1016/j.apenergy.2020.115130."
+  },
+  {
     "objectID": "part-12/lecture-repetition.html",
     "href": "part-12/lecture-repetition.html",
     "title": "Lecture XII - Course Repetition and Summary",
@@ -8006,5 +8953,264 @@
       "11 Framework",
       "Lecture"
     ]
+  },
+  {
+    "objectID": "part-13/summary-presentation.html#introduction",
+    "href": "part-13/summary-presentation.html#introduction",
+    "title": "Lecture XIII - Electricity Markets Summary",
+    "section": "Introduction",
+    "text": "Introduction\nElectricity markets are complex systems that balance instantaneous supply and demand in a high-stakes economic and physical environment. Understanding how they work is essential for energy professionals.\nKey Topics:\n\nMarket evolution and architecture\nPrice formation mechanisms\nRenewable integration challenges\nCurrent market design debates"
+  },
+  {
+    "objectID": "part-13/summary-presentation.html#historical-evolution",
+    "href": "part-13/summary-presentation.html#historical-evolution",
+    "title": "Lecture XIII - Electricity Markets Summary",
+    "section": "Historical Evolution",
+    "text": "Historical Evolution\nElectricity markets evolved from vertically integrated monopolies toward liberalized, competitive markets.\nKey Changes:\n\nBefore: Vertically integrated utilities controlled generation, transmission, distribution, and retail\nNow: Markets separate these functions (unbundling) to foster competition\nResult: Improved efficiency, lower prices, and innovation"
+  },
+  {
+    "objectID": "part-13/summary-presentation.html#market-transition",
+    "href": "part-13/summary-presentation.html#market-transition",
+    "title": "Lecture XIII - Electricity Markets Summary",
+    "section": "Market Transition",
+    "text": "Market Transition\n\nUnbundling: Separation of functions to enable competition\nMarginal Pricing: Prices based on the last unit needed to meet demand (merit order)\nComplexity: Introduced due to electricity’s unique characteristics"
+  },
+  {
+    "objectID": "part-13/summary-presentation.html#key-participants",
+    "href": "part-13/summary-presentation.html#key-participants",
+    "title": "Lecture XIII - Electricity Markets Summary",
+    "section": "Key Participants",
+    "text": "Key Participants\n\nGenerators: Power plants, renewable energy producers\nTransmission System Operators (TSOs): Manage high-voltage networks\nDistribution System Operators (DSOs): Deliver power to end users\nSuppliers/Retailers: Buy wholesale, sell to consumers\nMarket Operators: Facilitate trading (e.g., EPEX SPOT)\nRegulators: Ensure fair competition and system reliability\n\n\nElectricity grid infrastructure diagram showing the flow from electricity generator through transmission and distribution operators to consumers, regulated by rules and facilitated by suppliers financially."
+  },
+  {
+    "objectID": "part-13/summary-presentation.html#market-layers-and-time-horizons",
+    "href": "part-13/summary-presentation.html#market-layers-and-time-horizons",
+    "title": "Lecture XIII - Electricity Markets Summary",
+    "section": "Market Layers and Time Horizons",
+    "text": "Market Layers and Time Horizons\nElectricity markets comprise several interlinked layers:\n\nForward and futures markets: Price signals months to years ahead, risk hedging\nDay-ahead markets: Central for scheduling generation against forecast demand\nIntraday markets: Continuous adjustments for updated forecasts and unexpected events\nBalancing markets: TSOs manage real-time supply-demand imbalances and grid stability\nAncillary service markets: Specialized services (frequency regulation, reserves, voltage support)\n\n\n\n\nMarket types showing TSOs and generators\n\n\n\n\n\nWholesale Markets structure illustration"
+  },
+  {
+    "objectID": "part-13/summary-presentation.html#interconnected-system",
+    "href": "part-13/summary-presentation.html#interconnected-system",
+    "title": "Lecture XIII - Electricity Markets Summary",
+    "section": "Interconnected System",
+    "text": "Interconnected System\nEach market layer serves distinct functions but is interconnected; inefficiencies or changes in one impact others.\nExample: The intraday market gains significance as renewable forecast errors grow."
+  },
+  {
+    "objectID": "part-13/summary-presentation.html#merit-order-marginal-cost-principle",
+    "href": "part-13/summary-presentation.html#merit-order-marginal-cost-principle",
+    "title": "Lecture XIII - Electricity Markets Summary",
+    "section": "Merit Order & Marginal Cost Principle",
+    "text": "Merit Order & Marginal Cost Principle\nPrices in wholesale electricity markets are determined by the marginal cost of the most expensive unit dispatched to meet demand.\nHow Merit Order Works\n\nRanking: Power plants bid their ma rginal costs (fuel + operating costs)\nStacking: Plants are arranged from cheapest to most expensive\nSelection: Starting with the cheapest, plants are activated until demand is met\nPrice Setting: The most expensive activated plant sets the market price for ALL generators\n\nTypical Merit Order (€/MWh)\n\nRenewables: €0-5 (no fuel costs)\nNuclear: €10-15 (low operating costs)\nLignite/Coal: €20-40 (fuel costs)\nNatural Gas: €40-80 (higher fuel costs)\nOil/Peak Plants: €80-200+ (emergency use)\n\nMerit Order Effect: Renewables push expensive plants out of the market, reducing overall prices.\n\nElectricity price fluctuations illustrated by merit order effect with varied renewable energy input and operating costs per capacity.Key Aspects:\n\nStorability problems: Electricity can be stored but not cost-effectively in large quantities, hence must be balanced instantaneously; price volatility can be extreme\nMerit order effect of renewables: Low marginal cost renewables enter first, depressing prices during high output but creating steep price ramps in scarcity\nPrice spikes: Occur when demand exceeds low-cost supply, triggering peaker plants"
+  },
+  {
+    "objectID": "part-13/summary-presentation.html#impact-on-market-dynamics",
+    "href": "part-13/summary-presentation.html#impact-on-market-dynamics",
+    "title": "Lecture XIII - Electricity Markets Summary",
+    "section": "Impact on Market Dynamics",
+    "text": "Impact on Market Dynamics\nWith rising shares of wind and solar (30-60% or higher in some markets), markets face:\n\nIncreased price volatility and negative prices during oversupply\nReduced running hours and revenues for conventional generators, affecting their economic viability: Missing money problem (investment signal issue but critical for system reliability, increasing renewables reduce the frequency and certainty of high prices needed to justify capital expenditure)\nNeed for flexibility: Demand response, storage, interconnectors become essential"
+  },
+  {
+    "objectID": "part-13/summary-presentation.html#market-adaptations",
+    "href": "part-13/summary-presentation.html#market-adaptations",
+    "title": "Lecture XIII - Electricity Markets Summary",
+    "section": "Market Adaptations",
+    "text": "Market Adaptations\nMarket designs are adjusting by:\n\nEnhancing intraday, day-ahead and balancing markets for finer temporal granularity (15-minute resolution new standard since 30th September 2025 in Europe)\nImplementing forecast improvements and more dynamic dispatch\nExploring new products that value flexibility and fast response"
+  },
+  {
+    "objectID": "part-13/summary-presentation.html#european-energy-crisis",
+    "href": "part-13/summary-presentation.html#european-energy-crisis",
+    "title": "Lecture XIII - Electricity Markets Summary",
+    "section": "European Energy Crisis",
+    "text": "European Energy Crisis\nThe recent Europe-wide energy crisis—gas price surges, nuclear outages, droughts reducing hydro—unveiled vulnerabilities:\n\nMarginal pricing exposed volatile swings from ~40 €/MWh average to peaks over 500 €/MWh\nRenewable generators earned “windfall profits” when they received high prices during scarcity periods despite low costs"
+  },
+  {
+    "objectID": "part-13/summary-presentation.html#critical-debates",
+    "href": "part-13/summary-presentation.html#critical-debates",
+    "title": "Lecture XIII - Electricity Markets Summary",
+    "section": "Critical Debates",
+    "text": "Critical Debates\nIs marginal pricing still optimal?\n\nEnsures short-run cost reflectiveness\nCan create revenue uncertainty and political concerns\n\nReform Proposals:\n\nContracts for Difference (CfDs): Price stabilization for generators, reducing volatility but potential market distortions\nSplitting markets: Separating renewable and conventional generation markets\nTemporary interventions: Gas price caps or windfall taxes (Spain, Italy), capacity mechanisms or industrial electricity prices (debated in Germany)\n\nMarket Economy vs. State Intervention:\n\nMarket prices are essential for innovation and investment\nCurrent volatile market prices create new business models (e.g., battery storage through arbitrage)\nState interventions (capacity mechanisms, industrial electricity prices) can distort and dilute price signals\nSome interventions are politically necessary to ensure acceptance and supply security\nBalance needed between efficiency and steering"
+  },
+  {
+    "objectID": "part-13/summary-presentation.html#future-perspective",
+    "href": "part-13/summary-presentation.html#future-perspective",
+    "title": "Lecture XIII - Electricity Markets Summary",
+    "section": "Future Perspective",
+    "text": "Future Perspective\n\nMore integration of all actors\nTechnology-neutral and market-economically supported\nNo radical system break planned\nBalanced adjustments to improve system efficiency and supply security"
+  },
+  {
+    "objectID": "part-13/summary-presentation.html#market-operations",
+    "href": "part-13/summary-presentation.html#market-operations",
+    "title": "Lecture XIII - Electricity Markets Summary",
+    "section": "Market Operations",
+    "text": "Market Operations\nAdvanced market management relies on:\n\nOptimization algorithms: Unit commitment, economic dispatch, and real-time balancing solved via linear and mixed-integer programming\nGame theory and strategic bidding: Generators optimize bids under market rules to maximize profits under uncertainty\nStochastic forecasting: Managing weather-dependent renewables with probabilistic models"
+  },
+  {
+    "objectID": "part-13/summary-presentation.html#skills-for-energy-professionals",
+    "href": "part-13/summary-presentation.html#skills-for-energy-professionals",
+    "title": "Lecture XIII - Electricity Markets Summary",
+    "section": "Skills for Energy Professionals",
+    "text": "Skills for Energy Professionals\nProfessionals must:\n\nUnderstand evolving market designs and regulatory frameworks internationally\nAnalyze market impacts of technology shifts (storage, demand-side response, hydrogen, digitalization)\nUse quantitative tools for market and risk analysis\nEngage in policy dialogues to shape designs balancing sustainability, reliability, and affordability"
+  },
+  {
+    "objectID": "part-13/summary-presentation.html#key-challenges",
+    "href": "part-13/summary-presentation.html#key-challenges",
+    "title": "Lecture XIII - Electricity Markets Summary",
+    "section": "Key Challenges",
+    "text": "Key Challenges\n\nReconciling efficiency with investment signals\nBalancing fairness and consumer protection\nIntegrating massive renewable capacity\nManaging geopolitical shocks and market volatility"
+  },
+  {
+    "objectID": "part-13/summary-presentation.html#critical-questions-for-debate",
+    "href": "part-13/summary-presentation.html#critical-questions-for-debate",
+    "title": "Lecture XIII - Electricity Markets Summary",
+    "section": "Critical Questions for Debate",
+    "text": "Critical Questions for Debate\n\nIs marginal pricing still optimal?\n\nDoes it ensure efficiency while providing adequate investment signals?\nHow should we handle windfall profits during price spikes?\n\nMarket vs. Regulation Balance\n\nHow much state intervention is acceptable?\nCan we maintain market efficiency while ensuring supply security?\n\nIndustrial Electricity Price\n\nShould energy-intensive industries receive price protection?\nWhat are better alternatives to direct price caps?\n\nCapacity Mechanisms\n\nAre capacity markets necessary or can market-based solutions work?\nHow to ensure investment in rarely-used but critical capacity?\n\nDigitalization and Flexibility\n\nHow can digitalization improve market efficiency?\nWhat role should flexibility services play in future markets?\n\nMarket Segmentation\n\nShould renewables and conventional generation be in separate markets?\nHow would this impact investment incentives?"
+  },
+  {
+    "objectID": "part-13/summary-presentation.html#core-references",
+    "href": "part-13/summary-presentation.html#core-references",
+    "title": "Lecture XIII - Electricity Markets Summary",
+    "section": "Core References",
+    "text": "Core References\nFor more interesting literature to learn more about Julia and energy systems, take a look at the literature list of this course."
+  },
+  {
+    "objectID": "part-13/summary-presentation.html#online-resources",
+    "href": "part-13/summary-presentation.html#online-resources",
+    "title": "Lecture XIII - Electricity Markets Summary",
+    "section": "Online Resources",
+    "text": "Online Resources\nDocumentation\n\nJulia Documentation\nJuMP Documentation\nDataFrames.jl Documentation\n\nElectricity Market Resources\n\nEPEX SPOT - Power Market Basics\nSMARD - How the Electricity Market Works\nHertie School - Energy Crisis Lecture Series\n\nResearch Papers\n\nRecent papers in journals like:\n\nIEEE Transactions on Power Systems\nEnergy\nApplied Energy\nEuropean Journal of Operational Research"
+  },
+  {
+    "objectID": "part-13/lecture-markets-short.html",
+    "href": "part-13/lecture-markets-short.html",
+    "title": "Lecture XIII - Electricity Markets Summary",
+    "section": "",
+    "text": "Electricity markets are complex systems that balance instantaneous supply and demand in a high-stakes economic and physical environment. Understanding how they work is essential for energy professionals.\nKey Topics:\n\nMarket evolution and architecture\nPrice formation mechanisms\nRenewable integration challenges\nCurrent market design debates"
+  },
+  {
+    "objectID": "part-13/lecture-markets-short.html#introduction",
+    "href": "part-13/lecture-markets-short.html#introduction",
+    "title": "Lecture XIII - Electricity Markets Summary",
+    "section": "",
+    "text": "Electricity markets are complex systems that balance instantaneous supply and demand in a high-stakes economic and physical environment. Understanding how they work is essential for energy professionals.\nKey Topics:\n\nMarket evolution and architecture\nPrice formation mechanisms\nRenewable integration challenges\nCurrent market design debates"
+  },
+  {
+    "objectID": "part-13/lecture-markets-short.html#historical-evolution",
+    "href": "part-13/lecture-markets-short.html#historical-evolution",
+    "title": "Lecture XIII - Electricity Markets Summary",
+    "section": "Historical Evolution",
+    "text": "Historical Evolution\nElectricity markets evolved from vertically integrated monopolies toward liberalized, competitive markets.\nKey Changes:\n\nBefore: Vertically integrated utilities controlled generation, transmission, distribution, and retail\nNow: Markets separate these functions (unbundling) to foster competition\nResult: Improved efficiency, lower prices, and innovation"
+  },
+  {
+    "objectID": "part-13/lecture-markets-short.html#market-transition",
+    "href": "part-13/lecture-markets-short.html#market-transition",
+    "title": "Lecture XIII - Electricity Markets Summary",
+    "section": "Market Transition",
+    "text": "Market Transition\n\nUnbundling: Separation of functions to enable competition\nMarginal Pricing: Prices based on the last unit needed to meet demand (merit order)\nComplexity: Introduced due to electricity’s unique characteristics"
+  },
+  {
+    "objectID": "part-13/lecture-markets-short.html#key-participants",
+    "href": "part-13/lecture-markets-short.html#key-participants",
+    "title": "Lecture XIII - Electricity Markets Summary",
+    "section": "Key Participants",
+    "text": "Key Participants\n\nGenerators: Power plants, renewable energy producers\nTransmission System Operators (TSOs): Manage high-voltage networks\nDistribution System Operators (DSOs): Deliver power to end users\nSuppliers/Retailers: Buy wholesale, sell to consumers\nMarket Operators: Facilitate trading (e.g., EPEX SPOT)\nRegulators: Ensure fair competition and system reliability\n\n\n\n\nElectricity grid infrastructure diagram showing the flow from electricity generator through transmission and distribution operators to consumers, regulated by rules and facilitated by suppliers financially."
+  },
+  {
+    "objectID": "part-13/lecture-markets-short.html#market-layers-and-time-horizons",
+    "href": "part-13/lecture-markets-short.html#market-layers-and-time-horizons",
+    "title": "Lecture XIII - Electricity Markets Summary",
+    "section": "Market Layers and Time Horizons",
+    "text": "Market Layers and Time Horizons\nElectricity markets comprise several interlinked layers:\n\nForward and futures markets: Price signals months to years ahead, risk hedging\nDay-ahead markets: Central for scheduling generation against forecast demand\nIntraday markets: Continuous adjustments for updated forecasts and unexpected events\nBalancing markets: TSOs manage real-time supply-demand imbalances and grid stability\nAncillary service markets: Specialized services (frequency regulation, reserves, voltage support)\n\n\n\n\nMarket types showing TSOs and generators\n\n\n\n\n\nWholesale Markets structure illustration"
+  },
+  {
+    "objectID": "part-13/lecture-markets-short.html#interconnected-system",
+    "href": "part-13/lecture-markets-short.html#interconnected-system",
+    "title": "Lecture XIII - Electricity Markets Summary",
+    "section": "Interconnected System",
+    "text": "Interconnected System\nEach market layer serves distinct functions but is interconnected; inefficiencies or changes in one impact others.\nExample: The intraday market gains significance as renewable forecast errors grow."
+  },
+  {
+    "objectID": "part-13/lecture-markets-short.html#merit-order-marginal-cost-principle",
+    "href": "part-13/lecture-markets-short.html#merit-order-marginal-cost-principle",
+    "title": "Lecture XIII - Electricity Markets Summary",
+    "section": "Merit Order & Marginal Cost Principle",
+    "text": "Merit Order & Marginal Cost Principle\nPrices in wholesale electricity markets are determined by the marginal cost of the most expensive unit dispatched to meet demand.\n\nHow Merit Order Works\n\nRanking: Power plants bid their ma rginal costs (fuel + operating costs)\nStacking: Plants are arranged from cheapest to most expensive\nSelection: Starting with the cheapest, plants are activated until demand is met\nPrice Setting: The most expensive activated plant sets the market price for ALL generators\n\n\n\nTypical Merit Order (€/MWh)\n\nRenewables: €0-5 (no fuel costs)\nNuclear: €10-15 (low operating costs)\nLignite/Coal: €20-40 (fuel costs)\nNatural Gas: €40-80 (higher fuel costs)\nOil/Peak Plants: €80-200+ (emergency use)\n\n\n\nMerit Order Effect: Renewables push expensive plants out of the market, reducing overall prices.\n\n\n\nElectricity price fluctuations illustrated by merit order effect with varied renewable energy input and operating costs per capacity.\n\n\n\n\nKey Aspects:\n\nStorability problems: Electricity can be stored but not cost-effectively in large quantities, hence must be balanced instantaneously; price volatility can be extreme\nMerit order effect of renewables: Low marginal cost renewables enter first, depressing prices during high output but creating steep price ramps in scarcity\nPrice spikes: Occur when demand exceeds low-cost supply, triggering peaker plants"
+  },
+  {
+    "objectID": "part-13/lecture-markets-short.html#impact-on-market-dynamics",
+    "href": "part-13/lecture-markets-short.html#impact-on-market-dynamics",
+    "title": "Lecture XIII - Electricity Markets Summary",
+    "section": "Impact on Market Dynamics",
+    "text": "Impact on Market Dynamics\nWith rising shares of wind and solar (30-60% or higher in some markets), markets face:\n\nIncreased price volatility and negative prices during oversupply\nReduced running hours and revenues for conventional generators, affecting their economic viability: Missing money problem (investment signal issue but critical for system reliability, increasing renewables reduce the frequency and certainty of high prices needed to justify capital expenditure)\nNeed for flexibility: Demand response, storage, interconnectors become essential"
+  },
+  {
+    "objectID": "part-13/lecture-markets-short.html#market-adaptations",
+    "href": "part-13/lecture-markets-short.html#market-adaptations",
+    "title": "Lecture XIII - Electricity Markets Summary",
+    "section": "Market Adaptations",
+    "text": "Market Adaptations\nMarket designs are adjusting by:\n\nEnhancing intraday, day-ahead and balancing markets for finer temporal granularity (15-minute resolution new standard since 30th September 2025 in Europe)\nImplementing forecast improvements and more dynamic dispatch\nExploring new products that value flexibility and fast response"
+  },
+  {
+    "objectID": "part-13/lecture-markets-short.html#european-energy-crisis",
+    "href": "part-13/lecture-markets-short.html#european-energy-crisis",
+    "title": "Lecture XIII - Electricity Markets Summary",
+    "section": "European Energy Crisis",
+    "text": "European Energy Crisis\nThe recent Europe-wide energy crisis—gas price surges, nuclear outages, droughts reducing hydro—unveiled vulnerabilities:\n\nMarginal pricing exposed volatile swings from ~40 €/MWh average to peaks over 500 €/MWh\nRenewable generators earned “windfall profits” when they received high prices during scarcity periods despite low costs"
+  },
+  {
+    "objectID": "part-13/lecture-markets-short.html#critical-debates",
+    "href": "part-13/lecture-markets-short.html#critical-debates",
+    "title": "Lecture XIII - Electricity Markets Summary",
+    "section": "Critical Debates",
+    "text": "Critical Debates\nIs marginal pricing still optimal?\n\nEnsures short-run cost reflectiveness\nCan create revenue uncertainty and political concerns\n\nReform Proposals:\n\nContracts for Difference (CfDs): Price stabilization for generators, reducing volatility but potential market distortions\nSplitting markets: Separating renewable and conventional generation markets\nTemporary interventions: Gas price caps or windfall taxes (Spain, Italy), capacity mechanisms or industrial electricity prices (debated in Germany)\n\nMarket Economy vs. State Intervention:\n\nMarket prices are essential for innovation and investment\nCurrent volatile market prices create new business models (e.g., battery storage through arbitrage)\nState interventions (capacity mechanisms, industrial electricity prices) can distort and dilute price signals\nSome interventions are politically necessary to ensure acceptance and supply security\nBalance needed between efficiency and steering"
+  },
+  {
+    "objectID": "part-13/lecture-markets-short.html#future-perspective",
+    "href": "part-13/lecture-markets-short.html#future-perspective",
+    "title": "Lecture XIII - Electricity Markets Summary",
+    "section": "Future Perspective",
+    "text": "Future Perspective\n\nMore integration of all actors\nTechnology-neutral and market-economically supported\nNo radical system break planned\nBalanced adjustments to improve system efficiency and supply security"
+  },
+  {
+    "objectID": "part-13/lecture-markets-short.html#market-operations",
+    "href": "part-13/lecture-markets-short.html#market-operations",
+    "title": "Lecture XIII - Electricity Markets Summary",
+    "section": "Market Operations",
+    "text": "Market Operations\nAdvanced market management relies on:\n\nOptimization algorithms: Unit commitment, economic dispatch, and real-time balancing solved via linear and mixed-integer programming\nGame theory and strategic bidding: Generators optimize bids under market rules to maximize profits under uncertainty\nStochastic forecasting: Managing weather-dependent renewables with probabilistic models"
+  },
+  {
+    "objectID": "part-13/lecture-markets-short.html#skills-for-energy-professionals",
+    "href": "part-13/lecture-markets-short.html#skills-for-energy-professionals",
+    "title": "Lecture XIII - Electricity Markets Summary",
+    "section": "Skills for Energy Professionals",
+    "text": "Skills for Energy Professionals\nProfessionals must:\n\nUnderstand evolving market designs and regulatory frameworks internationally\nAnalyze market impacts of technology shifts (storage, demand-side response, hydrogen, digitalization)\nUse quantitative tools for market and risk analysis\nEngage in policy dialogues to shape designs balancing sustainability, reliability, and affordability"
+  },
+  {
+    "objectID": "part-13/lecture-markets-short.html#key-challenges",
+    "href": "part-13/lecture-markets-short.html#key-challenges",
+    "title": "Lecture XIII - Electricity Markets Summary",
+    "section": "Key Challenges",
+    "text": "Key Challenges\n\nReconciling efficiency with investment signals\nBalancing fairness and consumer protection\nIntegrating massive renewable capacity\nManaging geopolitical shocks and market volatility"
+  },
+  {
+    "objectID": "part-13/lecture-markets-short.html#critical-questions-for-debate",
+    "href": "part-13/lecture-markets-short.html#critical-questions-for-debate",
+    "title": "Lecture XIII - Electricity Markets Summary",
+    "section": "Critical Questions for Debate",
+    "text": "Critical Questions for Debate\n\nIs marginal pricing still optimal?\n\nDoes it ensure efficiency while providing adequate investment signals?\nHow should we handle windfall profits during price spikes?\n\nMarket vs. Regulation Balance\n\nHow much state intervention is acceptable?\nCan we maintain market efficiency while ensuring supply security?\n\nIndustrial Electricity Price\n\nShould energy-intensive industries receive price protection?\nWhat are better alternatives to direct price caps?\n\nCapacity Mechanisms\n\nAre capacity markets necessary or can market-based solutions work?\nHow to ensure investment in rarely-used but critical capacity?\n\nDigitalization and Flexibility\n\nHow can digitalization improve market efficiency?\nWhat role should flexibility services play in future markets?\n\nMarket Segmentation\n\nShould renewables and conventional generation be in separate markets?\nHow would this impact investment incentives?"
+  },
+  {
+    "objectID": "part-13/lecture-markets-short.html#core-references",
+    "href": "part-13/lecture-markets-short.html#core-references",
+    "title": "Lecture XIII - Electricity Markets Summary",
+    "section": "Core References",
+    "text": "Core References\nFor more interesting literature to learn more about Julia and energy systems, take a look at the literature list of this course."
+  },
+  {
+    "objectID": "part-13/lecture-markets-short.html#online-resources",
+    "href": "part-13/lecture-markets-short.html#online-resources",
+    "title": "Lecture XIII - Electricity Markets Summary",
+    "section": "Online Resources",
+    "text": "Online Resources\n\nDocumentation\n\nJulia Documentation\nJuMP Documentation\nDataFrames.jl Documentation\n\n\n\nElectricity Market Resources\n\nEPEX SPOT - Power Market Basics\nSMARD - How the Electricity Market Works\nHertie School - Energy Crisis Lecture Series\n\n\n\nResearch Papers\n\nRecent papers in journals like:\n\nIEEE Transactions on Power Systems\nEnergy\nApplied Energy\nEuropean Journal of Operational Research"
   }
 ]

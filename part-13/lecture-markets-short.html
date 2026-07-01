@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Dr.&nbsp;Tobias Cors">
 
-<title>Tutorial III.II - Package Management – Energy System Optimization with Julia</title>
+<title>Lecture XIII - Electricity Markets Summary – Energy System Optimization with Julia</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -22,41 +23,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -120,7 +86,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../part-03/lecture-packages.html">03 Data</a></li><li class="breadcrumb-item"><a href="../part-03/tutorial-03-02-handling.html">02 - Packages</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Lecture XIII - Electricity Markets Summary</li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -216,13 +182,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
  <span class="menu-text">03 Data</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../part-03/lecture-packages.html" class="sidebar-item-text sidebar-link">
@@ -237,7 +203,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../part-03/tutorial-03-02-handling.html" class="sidebar-item-text sidebar-link active">
+  <a href="../part-03/tutorial-03-02-handling.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">02 - Packages</span></a>
   </div>
 </li>
@@ -533,38 +499,96 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
-  <li><a href="#section-1---using-the-package-manager" id="toc-section-1---using-the-package-manager" class="nav-link" data-scroll-target="#section-1---using-the-package-manager">Section 1 - Using the Package Manager</a>
+  <li><a href="#electricity-markets" id="toc-electricity-markets" class="nav-link active" data-scroll-target="#electricity-markets"><span class="flow">Electricity Markets</span></a>
   <ul class="collapse">
-  <li><a href="#exercise-1.1---import-the-pkg-module" id="toc-exercise-1.1---import-the-pkg-module" class="nav-link" data-scroll-target="#exercise-1.1---import-the-pkg-module">Exercise 1.1 - Import the Pkg Module</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">Introduction</a></li>
   </ul></li>
-  <li><a href="#section-2---adding-packages" id="toc-section-2---adding-packages" class="nav-link" data-scroll-target="#section-2---adding-packages">Section 2 - Adding Packages</a>
+  <li><a href="#market-fundamentals" id="toc-market-fundamentals" class="nav-link" data-scroll-target="#market-fundamentals"><span class="flow">Market Fundamentals</span></a>
   <ul class="collapse">
-  <li><a href="#exercise-2.1---add-the-dataframes-package" id="toc-exercise-2.1---add-the-dataframes-package" class="nav-link" data-scroll-target="#exercise-2.1---add-the-dataframes-package">Exercise 2.1 - Add the DataFrames Package</a></li>
+  <li><a href="#historical-evolution" id="toc-historical-evolution" class="nav-link" data-scroll-target="#historical-evolution">Historical Evolution</a></li>
+  <li><a href="#market-transition" id="toc-market-transition" class="nav-link" data-scroll-target="#market-transition">Market Transition</a></li>
+  <li><a href="#key-participants" id="toc-key-participants" class="nav-link" data-scroll-target="#key-participants">Key Participants</a></li>
   </ul></li>
-  <li><a href="#section-3---updating-and-removing-packages" id="toc-section-3---updating-and-removing-packages" class="nav-link" data-scroll-target="#section-3---updating-and-removing-packages">Section 3 - Updating and Removing Packages</a></li>
-  <li><a href="#section-4---managing-environments" id="toc-section-4---managing-environments" class="nav-link" data-scroll-target="#section-4---managing-environments">Section 4 - Managing Environments</a>
+  <li><a href="#market-architecture" id="toc-market-architecture" class="nav-link" data-scroll-target="#market-architecture"><span class="flow">Market Architecture</span></a>
   <ul class="collapse">
-  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  <li><a href="#market-layers-and-time-horizons" id="toc-market-layers-and-time-horizons" class="nav-link" data-scroll-target="#market-layers-and-time-horizons">Market Layers and Time Horizons</a></li>
+  <li><a href="#interconnected-system" id="toc-interconnected-system" class="nav-link" data-scroll-target="#interconnected-system">Interconnected System</a></li>
   </ul></li>
-  <li><a href="#solutions" id="toc-solutions" class="nav-link" data-scroll-target="#solutions">Solutions</a></li>
+  <li><a href="#price-formation" id="toc-price-formation" class="nav-link" data-scroll-target="#price-formation"><span class="flow">Price Formation</span></a>
+  <ul class="collapse">
+  <li><a href="#merit-order-marginal-cost-principle" id="toc-merit-order-marginal-cost-principle" class="nav-link" data-scroll-target="#merit-order-marginal-cost-principle">Merit Order &amp; Marginal Cost Principle</a>
+  <ul class="collapse">
+  <li><a href="#how-merit-order-works" id="toc-how-merit-order-works" class="nav-link" data-scroll-target="#how-merit-order-works">How Merit Order Works</a></li>
+  <li><a href="#typical-merit-order-mwh" id="toc-typical-merit-order-mwh" class="nav-link" data-scroll-target="#typical-merit-order-mwh">Typical Merit Order (€/MWh)</a></li>
+  <li><a href="#merit-order-effect-renewables-push-expensive-plants-out-of-the-market-reducing-overall-prices." id="toc-merit-order-effect-renewables-push-expensive-plants-out-of-the-market-reducing-overall-prices." class="nav-link" data-scroll-target="#merit-order-effect-renewables-push-expensive-plants-out-of-the-market-reducing-overall-prices.">Merit Order Effect: Renewables push expensive plants out of the market, reducing overall prices.</a></li>
+  <li><a href="#key-aspects" id="toc-key-aspects" class="nav-link" data-scroll-target="#key-aspects">Key Aspects:</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#renewable-integration" id="toc-renewable-integration" class="nav-link" data-scroll-target="#renewable-integration"><span class="flow">Renewable Integration</span></a>
+  <ul class="collapse">
+  <li><a href="#impact-on-market-dynamics" id="toc-impact-on-market-dynamics" class="nav-link" data-scroll-target="#impact-on-market-dynamics">Impact on Market Dynamics</a></li>
+  <li><a href="#market-adaptations" id="toc-market-adaptations" class="nav-link" data-scroll-target="#market-adaptations">Market Adaptations</a></li>
+  </ul></li>
+  <li><a href="#market-design-challenges" id="toc-market-design-challenges" class="nav-link" data-scroll-target="#market-design-challenges"><span class="flow">Market Design Challenges</span></a>
+  <ul class="collapse">
+  <li><a href="#european-energy-crisis" id="toc-european-energy-crisis" class="nav-link" data-scroll-target="#european-energy-crisis">European Energy Crisis</a></li>
+  <li><a href="#critical-debates" id="toc-critical-debates" class="nav-link" data-scroll-target="#critical-debates">Critical Debates</a></li>
+  <li><a href="#future-perspective" id="toc-future-perspective" class="nav-link" data-scroll-target="#future-perspective">Future Perspective</a></li>
+  </ul></li>
+  <li><a href="#mathematical-economic-modeling" id="toc-mathematical-economic-modeling" class="nav-link" data-scroll-target="#mathematical-economic-modeling"><span class="flow">Mathematical &amp; Economic Modeling</span></a>
+  <ul class="collapse">
+  <li><a href="#market-operations" id="toc-market-operations" class="nav-link" data-scroll-target="#market-operations">Market Operations</a></li>
+  </ul></li>
+  <li><a href="#future-outlook" id="toc-future-outlook" class="nav-link" data-scroll-target="#future-outlook"><span class="flow">Future Outlook</span></a>
+  <ul class="collapse">
+  <li><a href="#skills-for-energy-professionals" id="toc-skills-for-energy-professionals" class="nav-link" data-scroll-target="#skills-for-energy-professionals">Skills for Energy Professionals</a></li>
+  <li><a href="#key-challenges" id="toc-key-challenges" class="nav-link" data-scroll-target="#key-challenges">Key Challenges</a></li>
+  </ul></li>
+  <li><a href="#key-takeaways" id="toc-key-takeaways" class="nav-link" data-scroll-target="#key-takeaways"><span class="flow">Key Takeaways</span></a></li>
+  <li><a href="#discussion-questions" id="toc-discussion-questions" class="nav-link" data-scroll-target="#discussion-questions"><span class="flow">Discussion Questions</span></a>
+  <ul class="collapse">
+  <li><a href="#critical-questions-for-debate" id="toc-critical-questions-for-debate" class="nav-link" data-scroll-target="#critical-questions-for-debate">Critical Questions for Debate</a></li>
+  </ul></li>
+  <li><a href="#literature" id="toc-literature" class="nav-link" data-scroll-target="#literature"><span class="flow">Literature</span></a>
+  <ul class="collapse">
+  <li><a href="#core-references" id="toc-core-references" class="nav-link" data-scroll-target="#core-references">Core References</a></li>
+  <li><a href="#online-resources" id="toc-online-resources" class="nav-link" data-scroll-target="#online-resources">Online Resources</a>
+  <ul class="collapse">
+  <li><a href="#documentation" id="toc-documentation" class="nav-link" data-scroll-target="#documentation">Documentation</a></li>
+  <li><a href="#electricity-market-resources" id="toc-electricity-market-resources" class="nav-link" data-scroll-target="#electricity-market-resources">Electricity Market Resources</a></li>
+  <li><a href="#research-papers" id="toc-research-papers" class="nav-link" data-scroll-target="#research-papers">Research Papers</a></li>
+  </ul></li>
+  </ul></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/edit/main/part-03/tutorial-03-02-handling.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/blob/main/part-03/tutorial-03-02-handling.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="tutorial-03-02-handling.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li><li><a href="tutorial-03-02-handling.ipynb" download="tutorial-03-02-handling.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/edit/main/part-13/lecture-markets-short.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/blob/main/part-13/lecture-markets-short.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="summary-presentation.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../part-03/lecture-packages.html">03 Data</a></li><li class="breadcrumb-item"><a href="../part-03/tutorial-03-02-handling.html">02 - Packages</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Tutorial III.II - Package Management</h1>
+<h1 class="title">Lecture XIII - Electricity Markets Summary</h1>
 <p class="subtitle lead">Energy System Optimization with Julia</p>
 </div>
 
 
+<div class="quarto-title-meta-author">
+  <div class="quarto-title-meta-heading">Author</div>
+  <div class="quarto-title-meta-heading">Affiliation</div>
+  
+    <div class="quarto-title-meta-contents">
+    <p class="author">Dr.&nbsp;Tobias Cors </p>
+  </div>
+  <div class="quarto-title-meta-contents">
+        <p class="affiliation">
+            Hamburg University of Applied Science - Summer 2026
+          </p>
+      </div>
+  </div>
 
 <div class="quarto-title-meta">
 
-    
+      
   
     
   </div>
@@ -574,116 +598,317 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="introduction" class="level1">
-<h1>Introduction</h1>
-<p>Welcome to this beginner-friendly guide on understanding packages and package management in Julia!</p>
-<p>Think of packages as pre-written sets of tools that extend what Julia can do. It’s like having a toolbox where you can add new tools (packages) to help you solve specific problems. For example, there are packages for working with data, creating visualizations, or solving complex math problems.</p>
-<p>The best part? Most Julia packages are free to use, thanks to the open-source community!</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>While we’ll practice some commands here, you’ll typically manage packages in Julia’s REPL (Read-Eval-Print Loop), which is like Julia’s command center.</p>
-</div>
-</div>
-</section>
-<section id="section-1---using-the-package-manager" class="level1">
-<h1>Section 1 - Using the Package Manager</h1>
-<p>Julia’s built-in package manager, Pkg, provides a robust set of tools for managing packages. To utilize these tools, start by importing the Pkg module. This module allows you to add, update, and remove packages, and manage environments efficiently. Note, <code>import PackageName</code> lets you access exported functions with <code>PackageName.function</code>, while <code>using PackageName</code> imports all exported names into the local namespace for direct access.</p>
-<section id="exercise-1.1---import-the-pkg-module" class="level2">
-<h2 class="anchored" data-anchor-id="exercise-1.1---import-the-pkg-module">Exercise 1.1 - Import the Pkg Module</h2>
-<p>Import the Pkg module to start managing packages effectively.</p>
-<div id="2" class="cell" data-execution_count="0">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># YOUR CODE BELOW</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div id="4" class="cell" data-execution_count="0">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test your answer</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span> </span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">Pkg</span>.<span class="fu">update</span>()</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">println</span>(<span class="st">"Pkg module imported successfully and packages were updated!"</span>)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="cf">catch</span> <span class="cn">e</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@error</span> <span class="st">"The Pkg module was not imported yet! Have you used the correct syntax?"</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-</div>
-</section>
-</section>
-<section id="section-2---adding-packages" class="level1">
-<h1>Section 2 - Adding Packages</h1>
-<p>Adding packages in Julia is straightforward using the <code>Pkg.add("PackageName")</code> function. Replace <code>PackageName</code> with the actual package name you wish to add.</p>
-<section id="exercise-2.1---add-the-dataframes-package" class="level2">
-<h2 class="anchored" data-anchor-id="exercise-2.1---add-the-dataframes-package">Exercise 2.1 - Add the DataFrames Package</h2>
-<p>Let’s add a popular package called DataFrames. It’s great for working with structured data, like spreadsheets.</p>
-<div id="6" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># YOUR CODE BELOW</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div id="8" class="cell" data-execution_count="0">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test your answer</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span> </span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="im">using</span> <span class="bu">DataFrames</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">println</span>(<span class="st">"Package added successfully!"</span>)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="cf">catch</span> <span class="cn">e</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@error</span> <span class="st">"Package was not added yet! Have you used the correct syntax?"</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-</div>
-</section>
-</section>
-<section id="section-3---updating-and-removing-packages" class="level1">
-<h1>Section 3 - Updating and Removing Packages</h1>
-<p>Just like apps on your phone, packages can be updated or removed when you no longer need them.</p>
+<section id="electricity-markets" class="level1 title">
+<h1 class="title"><span class="flow">Electricity Markets</span></h1>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>Electricity markets are complex systems that balance instantaneous supply and demand in a high-stakes economic and physical environment. Understanding how they work is essential for energy professionals.</p>
+<p><strong>Key Topics:</strong></p>
 <ul>
-<li>To update a package: <code>Pkg.update("PackageName")</code></li>
-<li>To update all packages: <code>Pkg.update()</code></li>
-<li>To remove a package: <code>Pkg.rm("PackageName")</code></li>
+<li>Market evolution and architecture</li>
+<li>Price formation mechanisms</li>
+<li>Renewable integration challenges</li>
+<li>Current market design debates</li>
 </ul>
-<div class="callout-example">
-<p>If you wanted to update DataFrames, you’d use <code>Pkg.update("DataFrames")</code>. To remove it, you’d use <code>Pkg.rm("DataFrames")</code>.</p>
+</section>
+</section>
+<section id="market-fundamentals" class="level1 title">
+<h1 class="title"><span class="flow">Market Fundamentals</span></h1>
+<section id="historical-evolution" class="level2">
+<h2 class="anchored" data-anchor-id="historical-evolution">Historical Evolution</h2>
+<p>Electricity markets evolved from <strong>vertically integrated monopolies</strong> toward <strong>liberalized, competitive markets</strong>.</p>
+<p><strong>Key Changes:</strong></p>
+<ul>
+<li><strong>Before</strong>: Vertically integrated utilities controlled generation, transmission, distribution, and retail</li>
+<li><strong>Now</strong>: Markets separate these functions (unbundling) to foster competition</li>
+<li><strong>Result</strong>: Improved efficiency, lower prices, and innovation</li>
+</ul>
+</section>
+<section id="market-transition" class="level2">
+<h2 class="anchored" data-anchor-id="market-transition">Market Transition</h2>
+<ul>
+<li><strong>Unbundling</strong>: Separation of functions to enable competition</li>
+<li><strong>Marginal Pricing</strong>: Prices based on the last unit needed to meet demand (merit order)</li>
+<li><strong>Complexity</strong>: Introduced due to electricity’s unique characteristics</li>
+</ul>
+</section>
+<section id="key-participants" class="level2">
+<h2 class="anchored" data-anchor-id="key-participants">Key Participants</h2>
+<ul>
+<li><strong>Generators</strong>: Power plants, renewable energy producers</li>
+<li><strong>Transmission System Operators (TSOs)</strong>: Manage high-voltage networks</li>
+<li><strong>Distribution System Operators (DSOs)</strong>: Deliver power to end users</li>
+<li><strong>Suppliers/Retailers</strong>: Buy wholesale, sell to consumers</li>
+<li><strong>Market Operators</strong>: Facilitate trading (e.g., EPEX SPOT)</li>
+<li><strong>Regulators</strong>: Ensure fair competition and system reliability</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://pplx-res.cloudinary.com/image/upload/v1754738272/pplx_project_search_images/3c38175245432d02176acef7e705b631af9b727e.png" class="img-fluid figure-img" style="width:85.0%"></p>
+<figcaption>Electricity grid infrastructure diagram showing the flow from electricity generator through transmission and distribution operators to consumers, regulated by rules and facilitated by suppliers financially.</figcaption>
+</figure>
 </div>
 </section>
-<section id="section-4---managing-environments" class="level1">
-<h1>Section 4 - Managing Environments</h1>
-<p>Think of environments as separate workspaces for different projects. It’s like having different folders for different school subjects. It’s a best practice to create a new environment for each project to avoid conflicts between package versions. Activate a new environment with <code>Pkg.activate("new_environment")</code> and add packages to it with <code>Pkg.add("PackageName")</code>. This ensures that each of your projects has a clean, dedicated set of dependencies. When you create a new environment, Julia generates two important files:</p>
+</section>
+<section id="market-architecture" class="level1 title">
+<h1 class="title"><span class="flow">Market Architecture</span></h1>
+<section id="market-layers-and-time-horizons" class="level2">
+<h2 class="anchored" data-anchor-id="market-layers-and-time-horizons">Market Layers and Time Horizons</h2>
+<p>Electricity markets comprise several interlinked layers:</p>
+<ul>
+<li><strong>Forward and futures markets</strong>: Price signals months to years ahead, risk hedging</li>
+<li><strong>Day-ahead markets</strong>: Central for scheduling generation against forecast demand</li>
+<li><strong>Intraday markets</strong>: Continuous adjustments for updated forecasts and unexpected events</li>
+<li><strong>Balancing markets</strong>: TSOs manage real-time supply-demand imbalances and grid stability</li>
+<li><strong>Ancillary service markets</strong>: Specialized services (frequency regulation, reserves, voltage support)</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://cdn.prod.website-files.com/65b3e159d25a6097b6ca5815/66bf22d8d9fb93dfa77268e3_66a1f7e547053619f8568d9a_Imbalance%2520markets_TSOs%2520and%2520generators.png" class="img-fluid figure-img" style="width:85.0%"></p>
+<figcaption>Market types showing TSOs and generators</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://cdn.prod.website-files.com/65b3e159d25a6097b6ca5815/682300a87bb69929076569b2_Bildschirmfoto%202025-05-02%20um%2011.28.10.png" class="img-fluid figure-img" style="width:85.0%"></p>
+<figcaption>Wholesale Markets structure illustration</figcaption>
+</figure>
+</div>
+</section>
+<section id="interconnected-system" class="level2">
+<h2 class="anchored" data-anchor-id="interconnected-system">Interconnected System</h2>
+<p>Each market layer serves distinct functions but is interconnected; inefficiencies or changes in one impact others.</p>
+<p><strong>Example</strong>: The intraday market gains significance as renewable forecast errors grow.</p>
+</section>
+</section>
+<section id="price-formation" class="level1 title">
+<h1 class="title"><span class="flow">Price Formation</span></h1>
+<section id="merit-order-marginal-cost-principle" class="level2">
+<h2 class="anchored" data-anchor-id="merit-order-marginal-cost-principle">Merit Order &amp; Marginal Cost Principle</h2>
+<p>Prices in wholesale electricity markets are determined by the <strong>marginal cost of the most expensive unit dispatched</strong> to meet demand.</p>
+<section id="how-merit-order-works" class="level3">
+<h3 class="anchored" data-anchor-id="how-merit-order-works">How Merit Order Works</h3>
 <ol type="1">
-<li><code>Project.toml</code>: Lists direct dependencies of your project.</li>
-<li><code>Manifest.toml</code>: Contains a complete dependency graph of your project.</li>
+<li><strong>Ranking</strong>: Power plants bid their ma rginal costs (fuel + operating costs)</li>
+<li><strong>Stacking</strong>: Plants are arranged from cheapest to most expensive</li>
+<li><strong>Selection</strong>: Starting with the cheapest, plants are activated until demand is met</li>
+<li><strong>Price Setting</strong>: The most expensive activated plant sets the market price for <strong>ALL</strong> generators</li>
 </ol>
-<p>These files help ensure reproducibility and should be version controlled with your project. But don’t worry, you don’t have to worry about this yet.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
+</section>
+<section id="typical-merit-order-mwh" class="level3">
+<h3 class="anchored" data-anchor-id="typical-merit-order-mwh">Typical Merit Order (€/MWh)</h3>
+<ol type="1">
+<li><strong>Renewables</strong>: €0-5 (no fuel costs)</li>
+<li><strong>Nuclear</strong>: €10-15 (low operating costs)</li>
+<li><strong>Lignite/Coal</strong>: €20-40 (fuel costs)</li>
+<li><strong>Natural Gas</strong>: €40-80 (higher fuel costs)</li>
+<li><strong>Oil/Peak Plants</strong>: €80-200+ (emergency use)</li>
+</ol>
+</section>
+<section id="merit-order-effect-renewables-push-expensive-plants-out-of-the-market-reducing-overall-prices." class="level3">
+<h3 class="anchored" data-anchor-id="merit-order-effect-renewables-push-expensive-plants-out-of-the-market-reducing-overall-prices.">Merit Order Effect: Renewables push expensive plants out of the market, reducing overall prices.</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://pplx-res.cloudinary.com/image/upload/v1755360506/pplx_project_search_images/7fb2163fbfd799f3c8c99e5861e8dae8a84fbf89.png" class="img-fluid figure-img" style="width:85.0%"></p>
+<figcaption>Electricity price fluctuations illustrated by merit order effect with varied renewable energy input and operating costs per capacity.</figcaption>
+</figure>
 </div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>If you plan to stick to working with notebooks, you don’t have to care about environments yet. Just use the regular environment for the course and you don’t have to activate anything.</p>
-</div>
-</div>
-<section id="conclusion" class="level2">
-<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
-<p>Congratulations! You’ve completed the tutorial on packages and package management in Julia. These skills are important for effectively managing and utilizing external libraries. Continue to the next file to learn more.</p>
+</section>
+<section id="key-aspects" class="level3">
+<h3 class="anchored" data-anchor-id="key-aspects">Key Aspects:</h3>
+<ul>
+<li><strong>Storability problems</strong>: Electricity can be stored but not cost-effectively in large quantities, hence must be balanced instantaneously; price volatility can be extreme</li>
+<li><strong>Merit order effect of renewables</strong>: Low marginal cost renewables enter first, depressing prices during high output but creating steep price ramps in scarcity</li>
+<li><strong>Price spikes</strong>: Occur when demand exceeds low-cost supply, triggering peaker plants</li>
+</ul>
 </section>
 </section>
-<section id="solutions" class="level1">
-<h1>Solutions</h1>
-<p>You will likely find solutions to most exercises online. However, I strongly encourage you to work on these exercises independently without searching explicitly for the exact answers to the exercises. Understanding someone else’s solution is very different from developing your own. Use the lecture notes and try to solve the exercises on your own. This approach will significantly enhance your learning and problem-solving skills.</p>
-<p>Remember, the goal is not just to complete the exercises, but to understand the concepts and improve your programming abilities. If you encounter difficulties, review the lecture materials, experiment with different approaches, and don’t hesitate to ask for clarification during class discussions.</p>
-<p>Later, you will find the solutions to these exercises online in the associated GitHub repository, but we will also quickly go over them in next week’s tutorial. To access the solutions, click on the Github button on the lower right and search for the folder with today’s lecture and tutorial. Alternatively, you can ask ChatGPT or Claude to explain them to you. But please remember, the goal is not just to complete the exercises, but to understand the concepts and improve your programming abilities.</p>
+</section>
+<section id="renewable-integration" class="level1 title">
+<h1 class="title"><span class="flow">Renewable Integration</span></h1>
+<section id="impact-on-market-dynamics" class="level2">
+<h2 class="anchored" data-anchor-id="impact-on-market-dynamics">Impact on Market Dynamics</h2>
+<p>With rising shares of wind and solar (30-60% or higher in some markets), markets face:</p>
+<ul>
+<li><strong>Increased price volatility and negative prices</strong> during oversupply</li>
+<li><strong>Reduced running hours and revenues</strong> for conventional generators, affecting their economic viability: Missing money problem (investment signal issue but critical for system reliability, increasing renewables reduce the frequency and certainty of high prices needed to justify capital expenditure)</li>
+<li><strong>Need for flexibility</strong>: Demand response, storage, interconnectors become essential</li>
+</ul>
+</section>
+<section id="market-adaptations" class="level2">
+<h2 class="anchored" data-anchor-id="market-adaptations">Market Adaptations</h2>
+<p>Market designs are adjusting by:</p>
+<ul>
+<li>Enhancing intraday, day-ahead and balancing markets for finer temporal granularity (15-minute resolution new standard since 30th September 2025 in Europe)</li>
+<li>Implementing forecast improvements and more dynamic dispatch</li>
+<li>Exploring new products that value flexibility and fast response</li>
+</ul>
+</section>
+</section>
+<section id="market-design-challenges" class="level1 title">
+<h1 class="title"><span class="flow">Market Design Challenges</span></h1>
+<section id="european-energy-crisis" class="level2">
+<h2 class="anchored" data-anchor-id="european-energy-crisis">European Energy Crisis</h2>
+<p>The recent Europe-wide energy crisis—gas price surges, nuclear outages, droughts reducing hydro—unveiled vulnerabilities:</p>
+<ul>
+<li>Marginal pricing exposed volatile swings from ~40 €/MWh average to peaks over 500 €/MWh</li>
+<li>Renewable generators earned “windfall profits” when they received high prices during scarcity periods despite low costs</li>
+</ul>
+</section>
+<section id="critical-debates" class="level2">
+<h2 class="anchored" data-anchor-id="critical-debates">Critical Debates</h2>
+<p><strong>Is marginal pricing still optimal?</strong></p>
+<ul>
+<li>Ensures short-run cost reflectiveness</li>
+<li>Can create revenue uncertainty and political concerns</li>
+</ul>
+<p><strong>Reform Proposals:</strong></p>
+<ul>
+<li><strong>Contracts for Difference (CfDs)</strong>: Price stabilization for generators, reducing volatility but potential market distortions</li>
+<li><strong>Splitting markets</strong>: Separating renewable and conventional generation markets</li>
+<li><strong>Temporary interventions</strong>: Gas price caps or windfall taxes (Spain, Italy), capacity mechanisms or industrial electricity prices (debated in Germany)</li>
+</ul>
+<p><strong>Market Economy vs.&nbsp;State Intervention:</strong></p>
+<ul>
+<li>Market prices are essential for innovation and investment</li>
+<li>Current volatile market prices create new business models (e.g., battery storage through arbitrage)</li>
+<li>State interventions (capacity mechanisms, industrial electricity prices) can distort and dilute price signals</li>
+<li>Some interventions are politically necessary to ensure acceptance and supply security</li>
+<li>Balance needed between efficiency and steering</li>
+</ul>
+</section>
+<section id="future-perspective" class="level2">
+<h2 class="anchored" data-anchor-id="future-perspective">Future Perspective</h2>
+<ul>
+<li>More integration of all actors</li>
+<li>Technology-neutral and market-economically supported</li>
+<li>No radical system break planned</li>
+<li>Balanced adjustments to improve system efficiency and supply security</li>
+</ul>
+</section>
+</section>
+<section id="mathematical-economic-modeling" class="level1 title">
+<h1 class="title"><span class="flow">Mathematical &amp; Economic Modeling</span></h1>
+<section id="market-operations" class="level2">
+<h2 class="anchored" data-anchor-id="market-operations">Market Operations</h2>
+<p>Advanced market management relies on:</p>
+<ul>
+<li><strong>Optimization algorithms</strong>: Unit commitment, economic dispatch, and real-time balancing solved via linear and mixed-integer programming</li>
+<li><strong>Game theory and strategic bidding</strong>: Generators optimize bids under market rules to maximize profits under uncertainty</li>
+<li><strong>Stochastic forecasting</strong>: Managing weather-dependent renewables with probabilistic models</li>
+</ul>
+</section>
+</section>
+<section id="future-outlook" class="level1 title">
+<h1 class="title"><span class="flow">Future Outlook</span></h1>
+<section id="skills-for-energy-professionals" class="level2">
+<h2 class="anchored" data-anchor-id="skills-for-energy-professionals">Skills for Energy Professionals</h2>
+<p>Professionals must:</p>
+<ul>
+<li>Understand evolving market designs and regulatory frameworks internationally</li>
+<li>Analyze market impacts of technology shifts (storage, demand-side response, hydrogen, digitalization)</li>
+<li>Use quantitative tools for market and risk analysis</li>
+<li>Engage in policy dialogues to shape designs balancing sustainability, reliability, and affordability</li>
+</ul>
+</section>
+<section id="key-challenges" class="level2">
+<h2 class="anchored" data-anchor-id="key-challenges">Key Challenges</h2>
+<ul>
+<li>Reconciling efficiency with investment signals</li>
+<li>Balancing fairness and consumer protection</li>
+<li>Integrating massive renewable capacity</li>
+<li>Managing geopolitical shocks and market volatility</li>
+</ul>
+</section>
+</section>
+<section id="key-takeaways" class="level1 title">
+<h1 class="title"><span class="flow">Key Takeaways</span></h1>
+<p>The electricity market is a complex, layered system balancing instantaneous supply and demand.</p>
+<p><strong>Core Principles:</strong></p>
+<ol type="1">
+<li><strong>Marginal pricing</strong> grounded in merit order dispatch drives operational efficiency</li>
+<li><strong>Market layers</strong> (forward, day-ahead, intraday, balancing) work together</li>
+<li><strong>Renewable integration</strong> presents challenges requiring flexibility solutions</li>
+<li><strong>Market reforms</strong> aim to reconcile efficiency, investment signals, fairness, and consumer protection</li>
+</ol>
+</section>
+<section id="discussion-questions" class="level1 title">
+<h1 class="title"><span class="flow">Discussion Questions</span></h1>
+<section id="critical-questions-for-debate" class="level2">
+<h2 class="anchored" data-anchor-id="critical-questions-for-debate">Critical Questions for Debate</h2>
+<ol type="1">
+<li><strong>Is marginal pricing still optimal?</strong>
+<ul>
+<li>Does it ensure efficiency while providing adequate investment signals?</li>
+<li>How should we handle windfall profits during price spikes?</li>
+</ul></li>
+<li><strong>Market vs.&nbsp;Regulation Balance</strong>
+<ul>
+<li>How much state intervention is acceptable?</li>
+<li>Can we maintain market efficiency while ensuring supply security?</li>
+</ul></li>
+<li><strong>Industrial Electricity Price</strong>
+<ul>
+<li>Should energy-intensive industries receive price protection?</li>
+<li>What are better alternatives to direct price caps?</li>
+</ul></li>
+<li><strong>Capacity Mechanisms</strong>
+<ul>
+<li>Are capacity markets necessary or can market-based solutions work?</li>
+<li>How to ensure investment in rarely-used but critical capacity?</li>
+</ul></li>
+<li><strong>Digitalization and Flexibility</strong>
+<ul>
+<li>How can digitalization improve market efficiency?</li>
+<li>What role should flexibility services play in future markets?</li>
+</ul></li>
+<li><strong>Market Segmentation</strong>
+<ul>
+<li>Should renewables and conventional generation be in separate markets?</li>
+<li>How would this impact investment incentives?</li>
+</ul></li>
+</ol>
+</section>
+</section>
+<section id="literature" class="level1 title">
+<h1 class="title"><span class="flow">Literature</span></h1>
+<section id="core-references" class="level2">
+<h2 class="anchored" data-anchor-id="core-references">Core References</h2>
+<p>For more interesting literature to learn more about Julia and energy systems, take a look at the <a href="../general/literature.html">literature list</a> of this course.</p>
+</section>
+<section id="online-resources" class="level2">
+<h2 class="anchored" data-anchor-id="online-resources">Online Resources</h2>
+<section id="documentation" class="level3">
+<h3 class="anchored" data-anchor-id="documentation">Documentation</h3>
+<ul>
+<li><a href="https://docs.julialang.org/">Julia Documentation</a></li>
+<li><a href="https://jump.dev/">JuMP Documentation</a></li>
+<li><a href="https://dataframes.juliadata.org/">DataFrames.jl Documentation</a></li>
+</ul>
+</section>
+<section id="electricity-market-resources" class="level3">
+<h3 class="anchored" data-anchor-id="electricity-market-resources">Electricity Market Resources</h3>
+<ul>
+<li><a href="https://www.epexspot.com/en/basicspowermarket">EPEX SPOT - Power Market Basics</a></li>
+<li><a href="https://www.smard.de/page/en/wiki-article/5884/5840/this-is-how-the-electricity-market-works">SMARD - How the Electricity Market Works</a></li>
+<li><a href="https://www.hertie-school.org/en/sustainability/about/energy-crisis">Hertie School - Energy Crisis Lecture Series</a></li>
+</ul>
+</section>
+<section id="research-papers" class="level3">
+<h3 class="anchored" data-anchor-id="research-papers">Research Papers</h3>
+<ul>
+<li>Recent papers in journals like:
+<ul>
+<li>IEEE Transactions on Power Systems</li>
+<li>Energy</li>
+<li>Applied Energy</li>
+<li>European Journal of Operational Research</li>
+</ul></li>
+</ul>
 
 
+</section>
+</section>
 </section>
 
 </main> <!-- /main -->
@@ -1095,7 +1320,7 @@ Note
     </div>   
     <div class="nav-footer-center">
 <p>Energy System Optimization with Julia, Tobias Cors<br>CC BY-NC-SA 4.0</p>
-<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/edit/main/part-03/tutorial-03-02-handling.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/blob/main/part-03/tutorial-03-02-handling.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/edit/main/part-13/lecture-markets-short.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/blob/main/part-13/lecture-markets-short.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/TobiasCors/Energy-System-Optimization/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">
